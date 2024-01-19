@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     use HasFactory;
+    protected $keyType='string';
+
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
@@ -23,11 +25,11 @@ class Page extends Model
 
     public function portal_setting()
     {
-        return $this->belongsTo('App\Models\Portal_setting','portal_setting_id');
+        return $this->belongsTo(Portal_setting::class,'portal_setting_id');
     }
 
     public function posts()
     {
-        return $this->hasMany('App\Models\Post','page_id');
+        return $this->hasMany(Post::class,'page_id');
     }
 }

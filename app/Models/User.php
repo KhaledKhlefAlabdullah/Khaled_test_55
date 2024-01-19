@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    protected $keyType='string';
 
     protected $primaryKey='id';
     public $incrementing = false;
@@ -50,51 +51,56 @@ class User extends Authenticatable
 
     public function user_profile()
     {
-        return $this->hasOne('App\Models\User_profile','user_id');
+        return $this->hasOne(User_profile::class,'user_id');
     }
 
     public function portal_settings()
     {
-        return $this->hasMany('App\Models\Portal_setting','user_id');
+        return $this->hasMany(Portal_setting::Class,'user_id');
     }
 
     public function participating_entities()
     {
-        return $this->hasMany('App\Models\Participating_entity','user_id');
+        return $this->hasMany(Participating_entity::class,'user_id');
     }
 
     public function contact_us_messages()
     {
-        return $this->hasMany('App\Models\Contact_us_message','user_id');
+        return $this->hasMany(Contact_us_message::class,'user_id');
     }
 
-    public function chat_member()
+    public function chats()
     {
-        return $this->hasMany('App\Models\Chat_member','user_id');
+        return $this->belongsToMany(Chat::class,'chat_members','user_id','chat_id');
     }
 
     public function sentMessages()
     {
-        return $this->hasMany('App\Models\Message', 'sender_id');
+        return $this->hasMany(Message::class, 'sender_id');
     }
 
     public function receivedMessages()
     {
-        return $this->hasMany('App\Models\Message', 'receiver_id');
+        return $this->hasMany(Message::class, 'receiver_id');
     }
 
     public function notifications()
     {
-        return $this->hasMany('App\Models\Notification','user_id');
+        return $this->hasMany(Notification::class,'user_id');
     }
 
     public function dams()
     {
-        return $this->hasMany('App\Models\Dam','user_id');
+        return $this->hasMany(Dam::class,'user_id');
     }
 
     public function monitoring_points()
     {
-        return $this->hasMany('App\Models\Monitoring_point','user_id');
+        return $this->hasMany(Monitoring_point::class,'user_id');
+    }
+
+    public function stakholder()
+    {
+        return $this->hasOne(Stakekolder::class,'user_id');
     }
 }

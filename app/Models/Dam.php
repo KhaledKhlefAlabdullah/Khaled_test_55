@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dam extends Model
 {
     use HasFactory;
+    protected $keyType='string';
 
     protected $primaryKey='id';
 
@@ -25,11 +26,11 @@ class Dam extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 
-    public function dams_notifications_settings()
+    public function notifications_settings()
     {
-        return $this->hasMany('App\Models\Dams_notification_setting','dam_id');
+        return $this->belongsToMany(Notifications_setting::class,'dams_notification_settings','dam_id','notification_setting_id');
     }
 }

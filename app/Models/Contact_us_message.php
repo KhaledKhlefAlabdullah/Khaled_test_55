@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contact_us_message extends Model
 {
     use HasFactory;
+    protected $keyType='string';
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
@@ -19,6 +20,6 @@ class Contact_us_message extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 }

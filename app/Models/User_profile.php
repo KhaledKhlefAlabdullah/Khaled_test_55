@@ -5,24 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Chat_member extends Model
+class User_profile extends Model
 {
     use HasFactory;
+    protected $keyType='string';
+
     protected $primaryKey='id';
     public $incrementing = false;
-    protected $fillable=[
-        'id',
-        'chat_id',
-        'user_id',
-    ];
 
-    public function chat()
-    {
-        return $this->belongsTo('App\Models\Chat','chat_id');
-    }
+    protected $fillable=[
+      'id',
+      'user_id',
+      'name',
+      'contact_person',
+      'avatar_URL',
+      'location',
+      'phone_number'
+    ];
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 }

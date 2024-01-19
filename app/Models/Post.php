@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     use HasFactory;
+    protected $keyType='string';
+
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
@@ -24,16 +26,16 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function page()
     {
-        return $this->belongsTo('App\Models\Page','page_id');
+        return $this->belongsTo(Page::class,'page_id');
     }
 
     public function category()
     {
-        return $this->belongsTo('App\Models\Category','category_id');
+        return $this->belongsTo(Category::class,'category_id');
     }
 }

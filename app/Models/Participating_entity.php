@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Participating_entity extends Model
 {
     use HasFactory;
+    protected $keyType='string';
+
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
@@ -20,6 +22,6 @@ class Participating_entity extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Mode ls\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 }

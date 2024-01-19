@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->string('id')->unique()->primary();
             $table->string('name');
-            $table->enum('type',['Post','News','File','Notification','Report','Time line',]);
+            $table->enum('type',['Post','News','File','Notification','Report','Timeline_event','entity']);
             $table->string('parent_id');
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

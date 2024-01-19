@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Portal_setting extends Model
 {
     use HasFactory;
+    protected $keyType='string';
 
     protected $primaryKey='id';
     public $incrementing = false;
@@ -20,11 +21,11 @@ class Portal_setting extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function pages()
     {
-        return $this->hasMany('App\Models\Page','portal_setting_id');
+        return $this->hasMany(Page::class,'portal_setting_id');
     }
 }

@@ -13,7 +13,6 @@ class Portal_setting extends Model
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
         'user_id',
         'key',
         'value'
@@ -24,8 +23,4 @@ class Portal_setting extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-    public function pages()
-    {
-        return $this->hasMany(Page::class,'portal_setting_id');
-    }
 }

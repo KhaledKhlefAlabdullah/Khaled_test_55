@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('portal_settings', function (Blueprint $table) {
-            $table->string('id')->unique()->primary();
+            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
             $table->string('key');
             $table->text('value');
             $table->string('user_id');

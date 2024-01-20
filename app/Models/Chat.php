@@ -13,7 +13,7 @@ class Chat extends Model
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
+        'chat_name'
     ];
 
     public function users()

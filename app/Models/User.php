@@ -21,7 +21,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'name',
         'stakeholder_type',
         'password',
@@ -57,6 +56,11 @@ class User extends Authenticatable
     public function portal_settings()
     {
         return $this->hasMany(Portal_setting::Class,'user_id');
+    }
+
+    public function pages()
+    {
+        return $this->hasMany(Page::class,'user_id');
     }
 
     public function participating_entities()

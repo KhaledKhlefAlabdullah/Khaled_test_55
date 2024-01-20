@@ -13,7 +13,6 @@ class Post extends Model
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
         'user_id',
         'category_id',
         'page_id',

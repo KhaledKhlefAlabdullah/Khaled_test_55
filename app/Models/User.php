@@ -105,6 +105,6 @@ class User extends Authenticatable
 
     public function stakholder()
     {
-        return $this->hasOne(Stakekolder::class,'user_id');
+        return $this->hasOne(Stakeholder::class,'user_id');
     }
 }

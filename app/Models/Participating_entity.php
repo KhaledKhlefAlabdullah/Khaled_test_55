@@ -13,7 +13,6 @@ class Participating_entity extends Model
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
         'user_id',
         'title',
         'media_URL',

@@ -12,7 +12,6 @@ class Category extends Model
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
         'name',
         'type',
         'parent_id'

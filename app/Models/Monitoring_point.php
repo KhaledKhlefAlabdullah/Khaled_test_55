@@ -15,7 +15,6 @@ class Monitoring_point extends Model
     public $incrementing=false;
 
     protected $fillable=[
-        'id',
         'user_id',
         'name',
         'location',

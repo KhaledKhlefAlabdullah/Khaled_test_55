@@ -15,7 +15,6 @@ class Notifications_setting extends Model
     public $incrementing=false;
 
     protected $fillable=[
-        'id',
         'user_id',
         'main_category_id',
         'sub_category_id',

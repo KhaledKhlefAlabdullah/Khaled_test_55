@@ -15,7 +15,6 @@ class Message extends Model
     public $incrementing=false;
 
     protected $fillable=[
-        'id',
         'sender_id',
         'receiver_id',
         'chat_id',

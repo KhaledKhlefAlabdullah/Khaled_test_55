@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Monitoring_point extends Model
+class MonitoringPoint extends Model
 {
     use HasFactory;
 
@@ -34,6 +34,6 @@ class Monitoring_point extends Model
 
     public function  monitoring_points_notification_settings()
     {
-        return $this->hasMany('App\Models\Monitoring_points_notification_setting','monitoring_point_id');
+        return $this->hasMany('App\Models\MonitoringPointsNotificationSetting', 'monitoring_point_id');
     }
 }

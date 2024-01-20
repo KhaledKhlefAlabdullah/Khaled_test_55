@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('dam_id')->references('id')->on('dams')->onDelete('cascade');
             $table->foreign('notification_setting_id')->references('id')->on('notifications_settings')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

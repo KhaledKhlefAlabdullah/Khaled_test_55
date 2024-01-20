@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('parent_id');
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

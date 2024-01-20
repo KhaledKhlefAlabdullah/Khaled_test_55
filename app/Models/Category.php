@@ -28,12 +28,12 @@ class Category extends Model
 
     public function main_category_notifications_settings()
     {
-        return $this->hasMany('App\Models\Notifications_setting','main_category_id');
+        return $this->hasMany('App\Models\NotificationsSetting', 'main_category_id');
     }
 
     public function sub_category_notifications_settings()
     {
-        return $this->hasMany('App\Models\Notifications_setting','sub_category_id');
+        return $this->hasMany('App\Models\NotificationsSetting', 'sub_category_id');
     }
 
 }

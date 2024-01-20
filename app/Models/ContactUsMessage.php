@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Participating_entity extends Model
+class ContactUsMessage extends Model
 {
     use HasFactory;
     protected $primaryKey='id';
@@ -13,13 +13,12 @@ class Participating_entity extends Model
     protected $fillable=[
         'id',
         'user_id',
-        'title',
-        'media_URL',
-        'media_type'
+        'message',
+        'is_read',
     ];
 
     public function user()
     {
-        return $this->belongsTo('App\Mode ls\User','user_id');
+        return $this->belongsTo('App\Models\User','user_id');
     }
 }

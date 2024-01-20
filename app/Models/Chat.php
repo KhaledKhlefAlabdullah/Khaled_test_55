@@ -16,7 +16,7 @@ class Chat extends Model
 
     public function chat_members()
     {
-        return $this->hasMany('App\Models\Chat_member','chat_id');
+        return $this->hasMany('App\Models\ChatMember', 'chat_id');
     }
 
     public function mesages()

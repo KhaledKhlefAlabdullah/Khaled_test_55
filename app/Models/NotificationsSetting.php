@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notifications_setting extends Model
+class NotificationsSetting extends Model
 {
     use HasFactory;
 
@@ -33,12 +33,12 @@ class Notifications_setting extends Model
 
     public function dams_notification_settings()
     {
-        return $this->hasMany('App\Models\Dams_notification_setting','notification_setting_id');
+        return $this->hasMany('App\Models\DamsNotificationSetting', 'notification_setting_id');
     }
 
     public function dams_notifications_settings()
     {
-        return $this->hasMany('App\Models\Dams_notification_setting','notification_setting_id');
+        return $this->hasMany('App\Models\DamsNotificationSetting', 'notification_setting_id');
     }
 
     public function main_category()
@@ -53,6 +53,6 @@ class Notifications_setting extends Model
 
     public function  monitoring_points_notification_settings()
     {
-        return $this->hasMany('App\Models\Monitoring_points_notification_setting','notifications_setting_id');
+        return $this->hasMany('App\Models\MonitoringPointsNotificationSetting', 'notifications_setting_id');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dams_notification_setting;
+use App\Models\DamsNotificationSetting;
 use Illuminate\Http\Request;
 
 class DamNotificationSettingController extends Controller
@@ -15,13 +15,6 @@ class DamNotificationSettingController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -34,23 +27,17 @@ class DamNotificationSettingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Dams_notification_setting $dam_notification_setting)
+    public function show(DamsNotificationSetting $dam_notification_setting)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Dams_notification_setting $dam_notification_setting)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dams_notification_setting $dam_notification_setting)
+    public function update(Request $request, DamsNotificationSetting $dam_notification_setting)
     {
         //
     }
@@ -58,7 +45,7 @@ class DamNotificationSettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dams_notification_setting $dam_notification_setting)
+    public function destroy(DamsNotificationSetting $dam_notification_setting)
     {
         //
     }

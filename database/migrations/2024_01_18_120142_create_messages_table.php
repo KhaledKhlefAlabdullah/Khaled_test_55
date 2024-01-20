@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('chat_id')->references('id')->on('chats')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

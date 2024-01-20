@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreign('monitoring_point_id', 'monitoring_point_id')->references('id')->on('monitoring_points')->onDelete('cascade');
             $table->foreign('notifications_setting_id','notifications_setting_id')->references('id')->on('notifications_settings')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

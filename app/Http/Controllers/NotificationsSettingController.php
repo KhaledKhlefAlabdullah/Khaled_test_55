@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Notifications_setting;
+use App\Models\NotificationsSetting;
 use Illuminate\Http\Request;
 
 class NotificationsSettingController extends Controller
@@ -15,13 +15,6 @@ class NotificationsSettingController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -34,23 +27,16 @@ class NotificationsSettingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Notifications_setting $notifications_setting)
+    public function show(NotificationsSetting $notifications_setting)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Notifications_setting $notifications_setting)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Notifications_setting $notifications_setting)
+    public function update(Request $request, NotificationsSetting $notifications_setting)
     {
         //
     }
@@ -58,7 +44,7 @@ class NotificationsSettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Notifications_setting $notifications_setting)
+    public function destroy(NotificationsSetting $notifications_setting)
     {
         //
     }

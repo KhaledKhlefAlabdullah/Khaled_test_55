@@ -12,8 +12,9 @@ class Page extends Model
     public $incrementing = false;
     protected $fillable=[
         'id',
-        'portal_setting_id',
+        'user_id',
         'title',
+        'type',
         'description',
         'phone_number',
         'location',
@@ -21,10 +22,16 @@ class Page extends Model
         'end_time'
     ];
 
-    public function portal_setting()
+//    public function portal_setting()
+//    {
+//        return $this->belongsTo('App\Models\Portal_setting','portal_setting_id');
+//    }
+
+    public function user()
     {
-        return $this->belongsTo('App\Models\Portal_setting','portal_setting_id');
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
+
 
     public function posts()
     {

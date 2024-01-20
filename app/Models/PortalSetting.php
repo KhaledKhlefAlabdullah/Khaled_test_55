@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Portal_setting extends Model
+class PortalSetting extends Model
 {
     use HasFactory;
 
@@ -23,8 +23,8 @@ class Portal_setting extends Model
         return $this->belongsTo('App\Models\User','user_id');
     }
 
-    public function pages()
-    {
-        return $this->hasMany('App\Models\Page','portal_setting_id');
-    }
+//    public function pages()
+//    {
+//        return $this->hasMany('App\Models\Page','portal_setting_id');
+//    }
 }

@@ -30,6 +30,6 @@ class Dam extends Model
 
     public function dams_notifications_settings()
     {
-        return $this->hasMany('App\Models\Dams_notification_setting','dam_id');
+        return $this->hasMany('App\Models\DamsNotificationSetting', 'dam_id');
     }
 }

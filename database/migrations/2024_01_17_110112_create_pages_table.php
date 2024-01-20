@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,15 +12,17 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->string('id')->unique()->primary();
-            $table->string('portal_setting_id');
+            $table->string('user_id');
             $table->string('title');
+            $table->string('type');
             $table->text('description')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('location')->nullable();
             $table->date('start_time')->nullable();
             $table->date('end_time')->nullable();
-            $table->foreign('portal_setting_id')->references('id')->on('portal_settings')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

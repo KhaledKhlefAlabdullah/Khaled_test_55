@@ -55,22 +55,27 @@ class User extends Authenticatable
 
     public function portal_settings()
     {
-        return $this->hasMany('App\Models\Portal_setting','user_id');
+        return $this->hasMany('App\Models\PortalSetting', 'user_id');
+    }
+
+    public function pages()
+    {
+        return $this->hasMany('App\Models\Page', 'user_id');
     }
 
     public function participating_entities()
     {
-        return $this->hasMany('App\Models\Participating_entity','user_id');
+        return $this->hasMany('App\Models\ParticipatingEntity', 'user_id');
     }
 
     public function contact_us_messages()
     {
-        return $this->hasMany('App\Models\Contact_us_message','user_id');
+        return $this->hasMany('App\Models\ContactUsMessage', 'user_id');
     }
 
     public function chat_member()
     {
-        return $this->hasMany('App\Models\Chat_member','user_id');
+        return $this->hasMany('App\Models\ChatMember', 'user_id');
     }
 
     public function sentMessages()
@@ -95,6 +100,6 @@ class User extends Authenticatable
 
     public function monitoring_points()
     {
-        return $this->hasMany('App\Models\Monitoring_point','user_id');
+        return $this->hasMany('App\Models\MonitoringPoint', 'user_id');
     }
 }

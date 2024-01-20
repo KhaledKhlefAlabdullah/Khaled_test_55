@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Chat_member;
+use App\Models\ChatMember;
 use Illuminate\Http\Request;
 
 class ChatMembersController extends Controller
@@ -34,7 +34,7 @@ class ChatMembersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Chat_member $chat_members)
+    public function show(ChatMember $chat_members)
     {
         //
     }
@@ -42,7 +42,7 @@ class ChatMembersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Chat_member $chat_members)
+    public function edit(ChatMember $chat_members)
     {
         //
     }
@@ -50,7 +50,7 @@ class ChatMembersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chat_member $chat_members)
+    public function update(Request $request, ChatMember $chat_members)
     {
         //
     }
@@ -58,7 +58,7 @@ class ChatMembersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chat_member $chat_members)
+    public function destroy(ChatMember $chat_members)
     {
         //
     }

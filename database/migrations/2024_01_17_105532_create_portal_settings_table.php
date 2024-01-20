@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('portal_settings', function (Blueprint $table) {
             $table->string('id')->unique()->primary();
+            $table->string('user_id');
             $table->string('key');
             $table->text('value');
-            $table->string('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

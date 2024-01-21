@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Timeline_quiry extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
     protected $keyType='string';
 
     protected $primaryKey='id';

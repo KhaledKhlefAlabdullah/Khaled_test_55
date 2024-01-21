@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Page extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuid;
     protected $keyType='string';
 
     protected $primaryKey='id';
@@ -32,4 +33,5 @@ class Page extends Model
     {
         return $this->hasMany(Post::class,'page_id');
     }
+
 }

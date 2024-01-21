@@ -20,9 +20,7 @@ class PageFactory extends Factory
     {
         return [
             'id' => Str::uuid(),
-            'user_id' => function () {
-                return \App\Models\User::factory()->create()->id;
-            },
+            'user_id' => "$2y$12$3ClKtHPbYrWhEgGDLnIdmeosprVMI69-rsCNePY.FsRzTPLb4n24K",
             'title' => $this->faker->sentence,
             'type' => $this->faker->word,
             'description' => $this->faker->paragraph,

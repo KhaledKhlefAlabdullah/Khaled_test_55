@@ -23,6 +23,7 @@ class Stakeholder extends Model
         'user_id',
         'parent_id',
         'representative_government_agency',
+        'industrial_area_id',
         'tent_company_state',
         'company_representative_name',
         'job_title',
@@ -104,5 +105,10 @@ class Stakeholder extends Model
     public function wastes()
     {
         return $this->hasMany(Waste::class,'stakeholder_id');
+    }
+
+    public function industrial_area()
+    {
+        return $this->belongsTo(Industrial_area::class,'industrial_area_id');
     }
 }

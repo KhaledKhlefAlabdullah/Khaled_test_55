@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('stakeholders', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('user_id');
+            $table->string('industrial_area_id');
             $table->string('parent_id')->nullable();
             $table->string('representative_government_agency')->nullable();
             $table->enum('tent_company_state',['operating','evacuating','trapped','evacuated'])->nullable();
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->enum('infrastructures_state',['available','partially','interrupted'])->nullable();
             $table->string('infrastructure_type')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('industrial_area_id')->references('id')->on('industrial_areas')->onDelete('cascade');
             $table->foreign('parent_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

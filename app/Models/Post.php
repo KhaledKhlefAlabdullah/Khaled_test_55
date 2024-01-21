@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Post extends Model
 {
     use HasFactory;
     protected $keyType='string';
 
     protected $primaryKey='id';
-    public $incrementing = false;
+
+    public $incrementing=false;
+
     protected $fillable=[
         'user_id',
         'category_id',

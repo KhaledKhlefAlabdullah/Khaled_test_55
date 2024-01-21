@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shipments', function (Blueprint $table) {
-            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
+            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('route_id');
             $table->string('product_id');
             $table->string('customer_id');
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreign('customer_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('timeline_shares_requests', function (Blueprint $table) {
-            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
+            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('timeline_id');
             $table->string('send_stakeholder_id');
             $table->string('receive_stakeholder_id');
@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('send_stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->foreign('receive_stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

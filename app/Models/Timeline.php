@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Timeline extends Model
 {
     use HasFactory;
@@ -14,6 +13,9 @@ class Timeline extends Model
     protected $primaryKey='id';
 
     public $incrementing = false;
+
+
+
 
     protected $fillable=[
         'stakeholder_id'

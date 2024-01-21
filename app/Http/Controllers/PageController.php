@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PageRequest;
+use App\Http\Requests\Page\StorePageRequest;
+use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -19,9 +19,7 @@ class PageController extends Controller
     public function index()
     {
         try {
-            $data = Page::all();
-
-            return PageResource::collection($data);
+            return PageResource::collection(Page::paginate());
 
         } catch (Exception $e) {
             return response()->json([
@@ -34,15 +32,13 @@ class PageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PageRequest $request)
+    public function store(StorePageRequest $request)
     {
         try {
-            $validData = $request->validated();
-//        dd($validData);
-            Page::create($validData);
+            $valid_data = $request->validated();
+            $page = Page::create($valid_data);
 
-
-            return PageResource::make($validData);
+            return new PageResource($page);
 
         } catch (Exception $e) {
             return response()->json([
@@ -57,9 +53,8 @@ class PageController extends Controller
     public function show(Page $page)
     {
         try {
+            return new PageResource($page);
 
-            return PageResource::make($page);
-//        return Page::findOrFail($page->id);
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()
@@ -71,19 +66,19 @@ class PageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PageRequest $request, Page $page)
+    public function update(UpdatePageRequest $request, Page $page)
     {
         try {
 
-            $validData = $request->validated();
-            $page->update($validData);
+            $valid_data = $request->validated();
+            $page->update($valid_data);
 
+            return new PageResource($page);
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()
             ], 400);
         }
-
     }
 
     /**
@@ -91,6 +86,14 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
-        Page::destroy($page->id);
+        try {
+            $page->delete();
+
+            return response()->noContent();
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }

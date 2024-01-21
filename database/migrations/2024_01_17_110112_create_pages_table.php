@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('location')->nullable();
-            $table->date('start_time')->nullable();
-            $table->date('end_time')->nullable();
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

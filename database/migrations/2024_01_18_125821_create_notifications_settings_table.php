@@ -21,7 +21,6 @@ return new class extends Migration
             $table->enum('notification_priorities',['none','top','low','high']);
             $table->boolean('is_on')->default(false);
             $table->text('note')->nullable();
-            $table->date('deleted_at')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('main_category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('sub_category_id')->references('id')->on('categories')->onDelete('cascade');

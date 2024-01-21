@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('stakeholder_type',['Tenant Company', 'Portal Manager', 'Industrial Area Representative', 'Infrastructure Provider', 'Government Representative']);
-            $table->boolean('isActive');
-            $table->date('deleted_at');
+            $table->enum('stakeholder_type',['Tenant_company', 'Portal_manager', 'Industrial_area_representative', 'Infrastructure_provider', 'Government_representative'])->default('Tenant_company');
+            $table->boolean('is_active')->default(false);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -31,7 +30,7 @@ return new class extends Migration
         DB::table('users')->insert([
             'email'=>'test@example.com',
             'password'=>$password,
-            'stakeholder_type'=>'Tenant_Company',
+            'stakeholder_type'=>'Tenant_company',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

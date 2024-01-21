@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->boolean('is_read');
             $table->enum('notification_type',['email','sms','notification']);
-            $table->date('deleted_at')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

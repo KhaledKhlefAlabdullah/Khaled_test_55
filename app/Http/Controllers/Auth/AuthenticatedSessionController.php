@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function login(LoginRequest $request): \Illuminate\Http\JsonResponse
+    public function store(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
             // Extract credentials from the request
@@ -70,7 +70,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Destroy an authenticated session.
      */
-    public function logout(Request $request): \Illuminate\Http\JsonResponse
+    public function destroy(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
             // Revoke the user's access token

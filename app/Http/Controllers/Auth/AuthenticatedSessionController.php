@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\AuthenticationException;
@@ -21,16 +22,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
-            // Extract credentials from the request
-            $credentials = $request->only('email', 'password');
 
-            // Attempt to authenticate the user
-            if (!auth()->attempt($credentials)) {
-                // Throw ValidationException if authentication fails
-                throw ValidationException::withMessages([
-                    'email' => [trans('auth.failed')],
-                ]);
-            }
+            $request->authenticate();
 
             // Delete all existing tokens for the authenticated user
             $request->user()->tokens()->delete();

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUsMessageRequest;
+use App\Http\Resources\ContactUsMessagesResource;
 use App\Models\Contact_us_message;
+use Exception;
 use Illuminate\Http\Request;
 
 class ContactUsMessageController extends Controller
@@ -15,7 +17,13 @@ class ContactUsMessageController extends Controller
      */
     public function index()
     {
-        return Contact_us_message::all();
+        try {
+            return ContactUsMessagesResource::collection(Contact_us_message::paginate());
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
 
@@ -28,17 +36,30 @@ class ContactUsMessageController extends Controller
      */
     public function store(ContactUsMessageRequest $request)
     {
-        $validData = $request->validated();
+        $valid_data = $request->validated();
+        try {
+            $contact_us_message = Contact_us_message::create($valid_data);
 
-        Contact_us_message::created($validData);
+            return new ContactUsMessagesResource($contact_us_message);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Contact_us_message $contactUsMessage)
+    public function show(Contact_us_message $contact_us_message)
     {
-        return Contact_us_message::findOrFail($contactUsMessage->id);
+        try {
+            return new ContactUsMessagesResource($contact_us_message);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
 
@@ -49,11 +70,18 @@ class ContactUsMessageController extends Controller
      */
     public function update(Request $request, Contact_us_message $contact_us_message)
     {
-        $validData = $request->validated([
+        $valid_data = $request->validate([
             'is_read' => ['boolean',]
         ]);
 
-        $contact_us_message->update($validData);
+        try {
+            $contact_us_message->update($valid_data);
+            return new ContactUsMessagesResource($contact_us_message);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
@@ -63,6 +91,15 @@ class ContactUsMessageController extends Controller
      */
     public function destroy(Contact_us_message $contact_us_message)
     {
-        Contact_us_message::destroy($contact_us_message->id);
+        try {
+            $contact_us_message->delete();
+
+            return response()->noContent(); // HTTP 204 No Content
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Failed to delete the resource.',
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }

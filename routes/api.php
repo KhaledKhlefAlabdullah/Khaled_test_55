@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\PageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StakeholderController;
@@ -24,7 +23,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 
 Route::apiResources([
-    'pages' => PageController::class,
+    'pages' => \App\Http\Controllers\PageController::class,
+    'contact_us_messages' => \App\Http\Controllers\ContactUsMessageController::class,
 ], ['except' => ['edit', 'create']]);
 
 

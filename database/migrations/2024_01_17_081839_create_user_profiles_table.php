@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('user_id')->unique();
             $table->string('name');
             $table->string('contact_person');
-            $table->string('avatar_URL');
+            $table->string('avatar_URL')->nullable();
             $table->string('location');
             $table->string('phone_number');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

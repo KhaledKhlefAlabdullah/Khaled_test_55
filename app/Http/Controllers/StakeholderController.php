@@ -41,6 +41,7 @@ class StakeholderController extends Controller
             // validate the inputs
             $request->validate([
                 'user_id' => 'required|string',
+                'industrial_area_id' => 'required|string',
                 'parent_id' => 'nullable|string',
                 'representative_government_agency' => 'nullable|string',
                 'tent_company_state' => 'nullable|in:operating,evacuating,trapped,evacuated',
@@ -53,6 +54,7 @@ class StakeholderController extends Controller
             // create new stakeholder with validate inputs
             $stakeholder = Stakeholder::create([
                 'user_id' => $request->input('user_id'),
+                'industrial_area_id' => $request->input('industrial_area_id'),
                 'parent_id' => $request->input('parent_id'),
                 'representative_government_agency' => $request->input('representative_government_agency'),
                 'tent_company_state' => $request->input('tent_company_state'),
@@ -122,8 +124,10 @@ class StakeholderController extends Controller
                 'stakeholder_id'=>'required|string'
             ]);
 
+            $stakeholder_id = $request->stakeholder_id;
+
             // Find the stakeholder by ID
-            $stakeholder = Stakeholder::findOrFail($request->stakeholder_id);
+            $stakeholder = Stakeholder::findOrFail($stakeholder_id);
 
             // Update the stakeholder with validated inputs
             $stakeholder->update($validatedData);

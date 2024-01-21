@@ -44,6 +44,8 @@ Route::group(['prefix' => 'registration_requests'], function(){
 
     Route::post('/add',[RegiatrationRequestController::class,'store']);
 
+    Route::post('/accept_or_failed',[RegiatrationRequestController::class,'accept_or_failed']);
+
     Route::post('/delete',[RegiatrationRequestController::class,'destroy']);
 
 });

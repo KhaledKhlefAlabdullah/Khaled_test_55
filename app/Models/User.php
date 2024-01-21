@@ -22,7 +22,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'email',
         'stakeholder_type',
         'password',
         'isActive',
@@ -107,6 +107,11 @@ class User extends Authenticatable
     public function stakholder()
     {
         return $this->hasOne(Stakeholder::class,'user_id');
+    }
+
+    public function registration_requests()
+    {
+        return $this->hasMany(Registration_request::class,'user_id');
     }
 
     public function industrial_area()

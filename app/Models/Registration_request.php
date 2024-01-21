@@ -18,8 +18,8 @@ class Registration_request extends Model
 
 
     protected $fillable=[
-        'stakeholder_id',
-        'company_name',
+        'user_id',
+        'name',
         'representative_name',
         'email',
         'password',
@@ -30,8 +30,8 @@ class Registration_request extends Model
         'failed_message'
     ];
 
-    public function stakeholder()
+    public function user()
     {
-        return $this->belongsTo(Stakeholder::class,'stakeholder_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 }

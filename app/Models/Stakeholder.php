@@ -21,7 +21,6 @@ class Stakeholder extends Model
 
     protected $fillable=[
         'user_id',
-        'parent_id',
         'representative_government_agency',
         'industrial_area_id',
         'tent_company_state',
@@ -50,11 +49,6 @@ class Stakeholder extends Model
     public function services()
     {
         return $this->hasMany(Service::class,'stakeholder_id');
-    }
-
-    public function registration_requests()
-    {
-        return $this->hasMany(Registration_request::class,'stakeholder_id');
     }
 
     public function timelines()

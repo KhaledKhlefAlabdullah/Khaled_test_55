@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('registration_requests', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
-            $table->string('stakeholder_id');
+            $table->string('user_id');
             $table->string('company_name');
             $table->string('representative_name');
             $table->string('email')->unique();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('job_title');
             $table->enum('request_state',['accepted','failed','pending'])->default('pending');
             $table->string('failed_message')->nullable();
-            $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
 

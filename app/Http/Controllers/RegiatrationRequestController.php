@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\Registration_request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 
 class RegiatrationRequestController extends Controller
@@ -38,7 +40,7 @@ class RegiatrationRequestController extends Controller
         try {
             // Validate the incoming request data
             $request->validate([
-                'stakeholder_id' => 'required|string',
+                'user_id' => 'required|string|exists:users,id',
                 'company_name' => 'required|string',
                 'representative_name' => 'required|string',
                 'email' => 'required|email|unique:registration_requests',
@@ -52,7 +54,7 @@ class RegiatrationRequestController extends Controller
 
             // Create a new stakeholder using Eloquent
             Registration_request::create([
-                'stakeholder_id' => $request->input('stakeholder_id'),
+                'user_id' => $request->input('user_id'),
                 'company_name' => $request->input('company_name'),
                 'representative_name' => $request->input('representative_name'),
                 'email' => $request->input('email'),
@@ -80,9 +82,55 @@ class RegiatrationRequestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function accept_or_failed(Request $request)
     {
-        //
+        try {
+
+            $request->validate([
+                'registration_id' => 'required|string|exists:registration_requests,id',
+                'state' => 'required|boolean'
+            ]);
+
+            $registration_id = $request->registration_id;
+
+            $state = $request->state;
+
+            $registration_request = Registration_request::findOrFail($registration_id);
+
+            if($state){
+
+                $registration_request->update([
+                    'request_state' => __('accepted') ,
+                    'failed_message' => __('your request accepted')
+                ]);
+                // I have to complete it towmoro
+                // Simulate a request to the RegisteredUserController@store method
+                $response = Route::dispatch(Request::create('/api/register', 'POST', $registration_request->toArray()));
+
+                // Return a success response
+                return $response;
+
+            }else{
+
+                $registration_request->update([
+                    'request_state' => __('failed') ,
+                    'failed_message' => __('your request failed')
+                ]);
+
+                // Return a success response
+                return response()->json([
+                    'message' => __('Registration request refused'),
+                ], 201); // 201 Created status code
+
+            }
+
+        } catch (\Exception $e) {
+            // Return an error response if an exception occurs
+            return response()->json([
+                'error' => __('Error adding Registration request'),
+                'message' => __($e->getMessage()),
+            ], 500); // 500 Internal Server Error status code
+        }
     }
 
 

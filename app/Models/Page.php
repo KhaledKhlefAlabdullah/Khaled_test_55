@@ -13,8 +13,9 @@ class Page extends Model
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'portal_setting_id',
+        'user_id',
         'title',
+        'type',
         'description',
         'phone_number',
         'location',

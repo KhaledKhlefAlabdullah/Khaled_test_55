@@ -22,7 +22,8 @@ class PageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'string', 'exists:users,id', 'uuid'],
+            'id' => ['uuid'],
+            'user_id' => ['required', 'string', 'exists:users,id',],
             'title' => ['required', 'string',],
             'type' => ['required', 'string',],
             'description' => ['nullable', 'string'],

@@ -12,7 +12,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $keyType='string';
-
     protected $primaryKey='id';
     public $incrementing = false;
 
@@ -107,5 +106,10 @@ class User extends Authenticatable
     public function stakholder()
     {
         return $this->hasOne(Stakeholder::class,'user_id');
+    }
+
+    public function industrial_area()
+    {
+        return $this->hasOne(Industrial_area::class,'user_id');
     }
 }

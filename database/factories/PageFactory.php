@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Page>
@@ -18,17 +19,18 @@ class PageFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => fake()->unique()->uuid,
-            'user_id' => function () {
-                return fake(User::class)->create()->id;
-            },
-            'title' => fake()->sentence,
-            'type' => fake()->word,
-            'description' => fake()->paragraph,
-            'phone_number' => fake()->phoneNumber,
-            'location' => fake()->address,
-            'start_time' => fake()->dateTimeThisYear,
-            'end_time' => fake()->dateTimeThisYear,
+            'id' => Str::uuid(),
+            'user_id' => "$2y$12$3ClKtHPbYrWhEgGDLnIdmeosprVMI69-rsCNePY.FsRzTPLb4n24K",
+            'title' => $this->faker->sentence,
+            'type' => $this->faker->word,
+            'description' => $this->faker->paragraph,
+            'phone_number' => $this->faker->phoneNumber,
+            'location' => $this->faker->address,
+            'start_time' => $this->faker->date,
+            'end_time' => $this->faker->date,
+            'created_at' => now(),
+            'updated_at' => now(),
+            'deleted_at' => null,
         ];
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PageRequest;
+use App\Http\Resources\PageResource;
 use App\Models\Page;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -14,9 +16,18 @@ class PageController extends Controller
      * Rule for [portal manager]
      *
      */
-    public function index(string $user_id)
+    public function index()
     {
-        return User::findOrFail($user_id)->pages;
+        try {
+            $data = Page::all();
+
+            return PageResource::collection($data);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
 
@@ -25,9 +36,19 @@ class PageController extends Controller
      */
     public function store(PageRequest $request)
     {
-        $validData = $request->validated();
+        try {
+            $validData = $request->validated();
+//        dd($validData);
+            Page::create($validData);
 
-        Page::created($validData);
+
+            return PageResource::make($validData);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
@@ -35,7 +56,15 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        return Page::findOrFail($page->id);
+        try {
+
+            return PageResource::make($page);
+//        return Page::findOrFail($page->id);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
 
@@ -44,9 +73,17 @@ class PageController extends Controller
      */
     public function update(PageRequest $request, Page $page)
     {
-        $validData = $request->validated();
+        try {
 
-        $page->update($validData);
+            $validData = $request->validated();
+            $page->update($validData);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
+
     }
 
     /**

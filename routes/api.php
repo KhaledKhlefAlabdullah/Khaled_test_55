@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StakeholderController;
@@ -22,7 +23,9 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 
-Route::apiResource('/pages', \App\Http\Controllers\PageController::class);
+Route::apiResources([
+    'pages' => PageController::class,
+], ['except' => ['edit', 'create']]);
 
 
 

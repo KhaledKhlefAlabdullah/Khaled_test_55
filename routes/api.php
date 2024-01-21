@@ -21,6 +21,11 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::apiResource('/pages', \App\Http\Controllers\PageController::class);
+
+
+
 Route::group(['prefix' => 'stakeholders'], function () {
 
     Route::get('/', [StakeholderController::class, 'index']);

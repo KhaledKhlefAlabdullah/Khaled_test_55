@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Portal_setting extends Model
 {
     use HasFactory;
@@ -12,6 +11,9 @@ class Portal_setting extends Model
 
     protected $primaryKey='id';
     public $incrementing = false;
+
+
+
     protected $fillable=[
         'user_id',
         'key',

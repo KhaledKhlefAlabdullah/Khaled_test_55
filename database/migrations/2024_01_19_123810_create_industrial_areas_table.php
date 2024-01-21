@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
-                        $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+        Schema::create('industrial_areas', function (Blueprint $table) {
+            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('user_id');
-            $table->string('title');
-            $table->string('type');
-            $table->text('description')->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('location')->nullable();
-            $table->date('start_time')->nullable();
-            $table->date('end_time')->nullable();
+            $table->string('name');
+            $table->text('address');
+            $table->string('representative_name');
+            $table->string('representative_email');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pages');
+        Schema::dropIfExists('industrial_areas');
     }
 };

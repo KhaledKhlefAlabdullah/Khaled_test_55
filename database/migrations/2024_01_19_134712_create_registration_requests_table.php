@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('registration_requests', function (Blueprint $table) {
-            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
+            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('stakeholder_id');
             $table->string('company_name');
             $table->string('representative_name');
@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('failed_message')->nullable();
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
+
         });
     }
 

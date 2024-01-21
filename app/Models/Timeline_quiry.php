@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Timeline_quiry extends Model
 {
     use HasFactory;
@@ -13,6 +12,9 @@ class Timeline_quiry extends Model
     protected $primaryKey='id';
 
     public $incrementing = false;
+
+
+
 
     protected $fillable=[
         'timeline_event_id',

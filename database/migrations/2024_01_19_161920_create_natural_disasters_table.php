@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('natural_disasters', function (Blueprint $table) {
-            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
+            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('name')->nullable();
             $table->string('disaster_type')->nullable();
             $table->date('disaster_date');
             $table->text('description')->nullable();
             $table->text('location');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

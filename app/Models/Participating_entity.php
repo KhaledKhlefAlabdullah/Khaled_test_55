@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Participating_entity extends Model
 {
     use HasFactory;
@@ -12,6 +11,9 @@ class Participating_entity extends Model
 
     protected $primaryKey='id';
     public $incrementing = false;
+
+
+
     protected $fillable=[
         'user_id',
         'title',

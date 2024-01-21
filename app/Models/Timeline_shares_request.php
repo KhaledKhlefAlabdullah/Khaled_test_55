@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Timeline_shares_request extends Model
 {
     use HasFactory;
@@ -14,6 +13,9 @@ class Timeline_shares_request extends Model
     protected $primaryKey='id';
 
     public $incrementing = false;
+
+
+
 
     protected $fillable=[
         'user_id',

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 class Natural_disaster extends Model
 {
     use HasFactory;
@@ -12,6 +11,9 @@ class Natural_disaster extends Model
     protected $keyType='string';
     protected $primaryKey='id';
     public $incrementing = false;
+
+
+
 
     protected $fillable=[
         'name',

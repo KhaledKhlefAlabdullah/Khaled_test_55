@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('disaster_reports', function (Blueprint $table) {
-            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
+            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('natural_disaster_id');
             $table->string('entity_id');
             $table->string('shipment_id');
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->foreign('waste_id')->references('id')->on('wastes')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

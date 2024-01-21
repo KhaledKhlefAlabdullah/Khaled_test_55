@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;use Illuminate\Support\Str;
 
 class Stakeholder extends Model
 {
@@ -15,6 +15,9 @@ class Stakeholder extends Model
 
     public $incrementing = false;
 
+
+
+
     protected $fillable=[
         'user_id',
         'parent_id',
@@ -25,6 +28,7 @@ class Stakeholder extends Model
         'infrastructures_state',
         'infrastructure_type'
     ];
+
 
     public function user()
     {

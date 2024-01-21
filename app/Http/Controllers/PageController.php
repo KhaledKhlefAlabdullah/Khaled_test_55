@@ -34,8 +34,8 @@ class PageController extends Controller
      */
     public function store(StorePageRequest $request)
     {
+        $valid_data = $request->validated();
         try {
-            $valid_data = $request->validated();
             $page = Page::create($valid_data);
 
             return new PageResource($page);

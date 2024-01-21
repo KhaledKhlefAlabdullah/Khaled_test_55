@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('media_URL')->nullable();
             $table->enum('media_type',['image','video','file'])->nullable();
             $table->enum('update_frequency',['daily','weekly','monthly'])->nullable();
-            $table->date('deleted_at')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

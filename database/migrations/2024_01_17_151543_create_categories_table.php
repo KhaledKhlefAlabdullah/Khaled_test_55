@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->string('id')->unique()->primary();
+            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
             $table->string('name');
-            $table->enum('type',['Post','News','File','Notification','Report','Time line',]);
+            $table->enum('type',['Post','News','File','Notification','Report','Timeline_event','entity']);
             $table->string('parent_id');
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

@@ -5,26 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PortalSetting extends Model
+class Contact_us_message extends Model
 {
     use HasFactory;
-
+    protected $keyType='string';
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
         'user_id',
-        'key',
-        'value'
+        'message',
+        'is_read',
     ];
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
-
-//    public function pages()
-//    {
-//        return $this->hasMany('App\Models\Page','portal_setting_id');
-//    }
 }

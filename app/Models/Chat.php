@@ -8,19 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Chat extends Model
 {
     use HasFactory;
+    protected $keyType='string';
+
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
+        'chat_name'
     ];
 
-    public function chat_members()
+    public function users()
     {
-        return $this->hasMany('App\Models\ChatMember', 'chat_id');
+        return $this->belongsToMany(User::class,'chat_members','chat_id','user_id');
     }
 
     public function mesages()
     {
-        return $this->hasMany('App\Models\Message','chat_id');
+        return $this->hasMany(Message::class,'chat_id');
     }
 }

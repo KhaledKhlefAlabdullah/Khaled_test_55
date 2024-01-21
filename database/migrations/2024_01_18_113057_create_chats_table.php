@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chats', function (Blueprint $table) {
-            $table->string('id')->primary()->unique();
+            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
+            $table->string('chat_name');
             $table->timestamps();
             $table->softDeletes();
         });

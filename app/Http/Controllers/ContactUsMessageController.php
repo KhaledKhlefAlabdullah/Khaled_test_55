@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUsMessageRequest;
-use App\Models\ContactUsMessage;
+use App\Models\Contact_us_message;
 use Illuminate\Http\Request;
 
 class ContactUsMessageController extends Controller
@@ -15,7 +15,7 @@ class ContactUsMessageController extends Controller
      */
     public function index()
     {
-        return ContactUsMessage::all();
+        return Contact_us_message::all();
     }
 
 
@@ -30,15 +30,15 @@ class ContactUsMessageController extends Controller
     {
         $validData = $request->validated();
 
-        ContactUsMessage::created($validData);
+        Contact_us_message::created($validData);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(ContactUsMessage $contactUsMessage)
+    public function show(Contact_us_message $contactUsMessage)
     {
-        return ContactUsMessage::findOrFail($contactUsMessage->id);
+        return Contact_us_message::findOrFail($contactUsMessage->id);
     }
 
 
@@ -47,7 +47,7 @@ class ContactUsMessageController extends Controller
      *
      *  Only can update is_read
      */
-    public function update(Request $request, ContactUsMessage $contact_us_message)
+    public function update(Request $request, Contact_us_message $contact_us_message)
     {
         $validData = $request->validated([
             'is_read' => ['boolean',]
@@ -61,8 +61,8 @@ class ContactUsMessageController extends Controller
      *
      * TODO: : Rule for [portal manager]
      */
-    public function destroy(ContactUsMessage $contact_us_message)
+    public function destroy(Contact_us_message $contact_us_message)
     {
-        ContactUsMessage::destroy($contact_us_message->id);
+        Contact_us_message::destroy($contact_us_message->id);
     }
 }

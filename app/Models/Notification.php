@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Notification extends Model
 {
     use HasFactory;
+    protected $keyType='string';
 
     protected $primaryKey='id';
 
     public $incrementing=false;
 
     protected $fillable=[
-        'id',
         'user_id',
         'title',
         'description',
@@ -26,6 +26,6 @@ class Notification extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 }

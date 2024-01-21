@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('notifications_settings', function (Blueprint $table) {
-            $table->string('id')->primary()->unique();
+            $table->string('id')->primary()->unique()->default(str_replace(['/','\\'], '-', \Illuminate\Support\Facades\Hash::make(now())));
             $table->string('user_id');
             $table->string('main_category_id');
             $table->string('sub_category_id');

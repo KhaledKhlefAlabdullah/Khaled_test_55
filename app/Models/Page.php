@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     use HasFactory;
+    protected $keyType='string';
+
     protected $primaryKey='id';
     public $incrementing = false;
     protected $fillable=[
-        'id',
-        'user_id',
+        'portal_setting_id',
         'title',
-        'type',
         'description',
         'phone_number',
         'location',
@@ -22,19 +22,13 @@ class Page extends Model
         'end_time'
     ];
 
-//    public function portal_setting()
-//    {
-//        return $this->belongsTo('App\Models\Portal_setting','portal_setting_id');
-//    }
-
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
-
 
     public function posts()
     {
-        return $this->hasMany('App\Models\Post','page_id');
+        return $this->hasMany(Post::class,'page_id');
     }
 }

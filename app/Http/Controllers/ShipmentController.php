@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MonitoringPointsNotificationSetting;
+use App\Models\Shipment;
 use Illuminate\Http\Request;
 
-class MonitoringPointsNotificationSettingController extends Controller
+class ShipmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,13 @@ class MonitoringPointsNotificationSettingController extends Controller
         //
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -27,17 +34,23 @@ class MonitoringPointsNotificationSettingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MonitoringPointsNotificationSetting $monitoring_points_notification_setting)
+    public function show(Shipment $shipment)
     {
         //
     }
 
-
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Shipment $shipment)
+    {
+        //
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MonitoringPointsNotificationSetting $monitoring_points_notification_setting)
+    public function update(Request $request, Shipment $shipment)
     {
         //
     }
@@ -45,7 +58,7 @@ class MonitoringPointsNotificationSettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MonitoringPointsNotificationSetting $monitoring_points_notification_setting)
+    public function destroy(Shipment $shipment)
     {
         //
     }

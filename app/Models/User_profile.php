@@ -5,20 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ContactUsMessage extends Model
+class User_profile extends Model
 {
     use HasFactory;
+    protected $keyType='string';
+
     protected $primaryKey='id';
     public $incrementing = false;
+
     protected $fillable=[
-        'id',
-        'user_id',
-        'message',
-        'is_read',
+      'user_id',
+      'name',
+      'contact_person',
+      'avatar_URL',
+      'location',
+      'phone_number'
     ];
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 }

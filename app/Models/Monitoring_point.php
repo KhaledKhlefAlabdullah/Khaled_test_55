@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MonitoringPoint extends Model
+class Monitoring_point extends Model
 {
     use HasFactory;
+    protected $keyType='string';
 
     protected $primaryKey='id';
 
     public $incrementing=false;
 
     protected $fillable=[
-        'id',
         'user_id',
         'name',
         'location',
@@ -29,11 +29,11 @@ class MonitoringPoint extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User','user_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 
-    public function  monitoring_points_notification_settings()
+    public function  notifications_settings()
     {
-        return $this->hasMany('App\Models\MonitoringPointsNotificationSetting', 'monitoring_point_id');
+        return $this->hasMany('App\Models\Monitoring_points_notification_setting','monitoring_point_id');
     }
 }

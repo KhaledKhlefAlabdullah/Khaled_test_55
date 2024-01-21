@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ChatMember;
+use App\Models\Timeline;
 use Illuminate\Http\Request;
 
-class ChatMembersController extends Controller
+class TimelineController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class ChatMembersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ChatMember $chat_members)
+    public function show(Timeline $timeline)
     {
         //
     }
@@ -42,7 +42,7 @@ class ChatMembersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ChatMember $chat_members)
+    public function edit(Timeline $timeline)
     {
         //
     }
@@ -50,7 +50,7 @@ class ChatMembersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ChatMember $chat_members)
+    public function update(Request $request, Timeline $timeline)
     {
         //
     }
@@ -58,7 +58,7 @@ class ChatMembersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ChatMember $chat_members)
+    public function destroy(Timeline $timeline)
     {
         //
     }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DamsNotificationSetting;
+use App\Models\Timeline_event;
 use Illuminate\Http\Request;
 
-class DamNotificationSettingController extends Controller
+class TimelineEventController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +15,13 @@ class DamNotificationSettingController extends Controller
         //
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -27,17 +34,23 @@ class DamNotificationSettingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(DamsNotificationSetting $dam_notification_setting)
+    public function show(Timeline_event $timeline_event)
     {
         //
     }
 
-
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Timeline_event $timeline_event)
+    {
+        //
+    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, DamsNotificationSetting $dam_notification_setting)
+    public function update(Request $request, Timeline_event $timeline_event)
     {
         //
     }
@@ -45,7 +58,7 @@ class DamNotificationSettingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DamsNotificationSetting $dam_notification_setting)
+    public function destroy(Timeline_event $timeline_event)
     {
         //
     }

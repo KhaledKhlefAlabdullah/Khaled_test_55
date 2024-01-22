@@ -4,20 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\Registration_request;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-class RegiatrationRequestController extends Controller
+class RegistrationRequestController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try{
 
-            $registration_requests =Registration_request::all();
+            $request->validate([
+                'user_id' => 'string|exists:users,id'
+            ]);
+
+            // get all registration for industrial area representative
+            $registration_requests = User::findOrFail($request->input('user_id'))->registration_requests;
+
+            // return the data
             return response()->json([
                 'registration requests' => $registration_requests,
                 'message' => __('Get all registration requests successfully'),
@@ -39,9 +47,9 @@ class RegiatrationRequestController extends Controller
     {
         try {
             // Validate the incoming request data
-            $request->validate([
+            $validatedData=$request->validate([
                 'user_id' => 'required|string|exists:users,id',
-                'company_name' => 'required|string',
+                'name' => 'required|string',
                 'representative_name' => 'required|string',
                 'email' => 'required|email|unique:registration_requests',
                 'password' => 'required|string',
@@ -53,21 +61,11 @@ class RegiatrationRequestController extends Controller
             ]);
 
             // Create a new stakeholder using Eloquent
-            Registration_request::create([
-                'user_id' => $request->input('user_id'),
-                'company_name' => $request->input('company_name'),
-                'representative_name' => $request->input('representative_name'),
-                'email' => $request->input('email'),
-                'password' => password_hash($request->input('password'),PASSWORD_DEFAULT),
-                'location' => $request->input('location'),
-                'phone_number' => $request->input('phone_number'),
-                'job_title' => $request->input('job_title'),
-                'request_state' => $request->input('request_state'),
-                'failed_message' => $request->input('failed_message'),
-            ]);
+            $registration_request = Registration_request::create($validatedData);
 
             // Return a success response
             return response()->json([
+                'request' => $registration_request,
                 'message' => __('Registration request added successfully'),
             ], 201); // 201 Created status code
         } catch (\Exception $e) {
@@ -86,32 +84,55 @@ class RegiatrationRequestController extends Controller
     {
         try {
 
+            // validate request inputs
             $request->validate([
                 'registration_id' => 'required|string|exists:registration_requests,id',
                 'state' => 'required|boolean'
             ]);
 
+            // store registration id to fetch the registration request to handle it (Accept or Refuse)
             $registration_id = $request->registration_id;
 
+            // if state is 'true' accept the registration request, or refuse it
             $state = $request->state;
 
+            // fetch the registration request
             $registration_request = Registration_request::findOrFail($registration_id);
 
+            // check state
             if($state){
 
+                // update request state to accept and message to your request accepted
                 $registration_request->update([
                     'request_state' => __('accepted') ,
                     'failed_message' => __('your request accepted')
                 ]);
-                // I have to complete it towmoro
+
                 // Simulate a request to the RegisteredUserController@store method
-                $response = Route::dispatch(Request::create('/api/register', 'POST', $registration_request->toArray()));
+                $request = Request::create('/api/register', 'POST', [
+                    'user_id' => $registration_request->user_id,
+                    'industrial_area_id' => '',
+                    'name' => $registration_request->name,
+                    'email' => $registration_request->email,
+                    'password' => $registration_request->password,
+                    'password_confirmation' => $registration_request->password,
+                    'phone_number' => $registration_request->phone_number,
+                    'contact_person' => null,
+                    'stakeholder_type' => null,
+                    'location' => $registration_request->location,
+                    'representative_name' => $registration_request->representative_name,
+                    'job_title' => $registration_request->job_title
+                ]);
+
+                // make an object of RegisteredUserController to use register user function ( store )
+                $response = (new RegisteredUserController())->store($request);
 
                 // Return a success response
                 return $response;
 
             }else{
 
+                // update the request state to failed if state is not true, and message to your request failed
                 $registration_request->update([
                     'request_state' => __('failed') ,
                     'failed_message' => __('your request failed')
@@ -157,3 +178,4 @@ class RegiatrationRequestController extends Controller
         }
     }
 }
+

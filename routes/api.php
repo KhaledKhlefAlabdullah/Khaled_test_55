@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StakeholderController;
 use \App\Http\Controllers\UserController;
-use \App\Http\Controllers\RegiatrationRequestController;
+use \App\Http\Controllers\RegistrationRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,13 +40,13 @@ Route::group(['prefix' => 'stakeholders'], function () {
 
 Route::group(['prefix' => 'registration_requests'], function(){
 
-    Route::get('/',[RegiatrationRequestController::class,'index']);
+    Route::get('/',[RegistrationRequestController::class,'index']);
 
-    Route::post('/add',[RegiatrationRequestController::class,'store']);
+    Route::post('/add',[RegistrationRequestController::class,'store']);
 
-    Route::post('/accept_or_failed',[RegiatrationRequestController::class,'accept_or_failed']);
+    Route::post('/accept_or_failed',[RegistrationRequestController::class,'accept_or_failed']);
 
-    Route::post('/delete',[RegiatrationRequestController::class,'destroy']);
+    Route::post('/delete',[RegistrationRequestController::class,'destroy']);
 
 });
 

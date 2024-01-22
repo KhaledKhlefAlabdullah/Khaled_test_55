@@ -14,9 +14,6 @@ class Registration_request extends Model
 
     public $incrementing = false;
 
-
-
-
     protected $fillable=[
         'user_id',
         'name',

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('registration_requests', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
             $table->string('user_id');
-            $table->string('company_name');
+            $table->string('name');
             $table->string('representative_name');
             $table->string('email')->unique();
             $table->string('password');

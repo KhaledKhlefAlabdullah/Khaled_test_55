@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('location');
             $table->enum('point_type',['normal','high','dangerous']);
-            $table->text('API_link')->nullable();
+            $table->text('api_link')->nullable();
             $table->boolean('is_custom')->default(false);
             $table->double('water_level')->nullable();
             $table->string('risk_indicators')->nullable();

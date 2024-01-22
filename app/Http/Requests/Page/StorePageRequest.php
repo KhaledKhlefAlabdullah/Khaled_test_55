@@ -23,13 +23,13 @@ class StorePageRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'string', 'exists:users,id', 'uuid'],
-            'title' => ['required', 'string',],
-            'type' => ['required', 'string',],
-            'description' => ['nullable', 'string'],
-            'phone_number' => ['nullable', 'string'],
-            'location' => ['nullable', 'string'],
-            'start_time' => ['nullable', 'date'],
-            'end_time' => ['nullable', 'date'],
+            'title' => ['required', 'string', 'max:255',],
+            'type' => ['required', 'string', 'max:255',],
+            'description' => ['nullable', 'string', 'max:255',],
+            'phone_number' => ['nullable', 'string', 'max:255',],
+            'location' => ['nullable', 'string', 'max:255',],
+            'start_time' => ['nullable', 'date',],
+            'end_time' => ['nullable', 'date',],
         ];
 
 

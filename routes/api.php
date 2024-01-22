@@ -25,7 +25,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::apiResources([
     'pages' => \App\Http\Controllers\PageController::class,
     'contact_us_messages' => \App\Http\Controllers\ContactUsMessageController::class,
-], ['except' => ['edit', 'create']]);
+], [
+    'except' => ['edit', 'create'],
+//    'middleware' => ['auth:sanctum', ],
+]);
 
 
 

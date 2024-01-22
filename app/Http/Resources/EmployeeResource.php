@@ -2,13 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Contact_us_message;
-use App\Models\User;
-use App\Models\User_profile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContactUsMessagesResource extends JsonResource
+class EmployeeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,13 +14,16 @@ class ContactUsMessagesResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
         return [
             'id' => $this->id,
-//            'user_id' => $this->user_id,
-            'user' => new UserResource($this->user),
-            'message' => $this->message,
-            'is_read' => $this->is_read,
+            'route_id' => $this->route_id,
+            'department_id' => $this->department_id,
+            'station_id' => $this->station_id,
+            'stakeholder_id' => $this->stakeholder_id,
+            'public_id' => $this->public_id,
+            'is_leader_shop' => $this->is_leader_shop,
+            'slug' => $this->slug,
+            'phone_number' => $this->phone_number,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,

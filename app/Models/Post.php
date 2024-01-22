@@ -22,7 +22,11 @@ class Post extends Model
         'slug',
         'body',
         'media_URL',
-        'priority',
+        'media_type',
+        'is_priority',
+        'priority_count',
+        'is_general_news',
+        'is_publish',
     ];
 
     public function user()

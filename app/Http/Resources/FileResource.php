@@ -4,15 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-class PageResource extends JsonResource
+
+class FileResource extends JsonResource
 {
-
-    /**
-     * Indicates if the resource's collection keys should be preserved.
-     *
-     * @var bool
-     */
-
     /**
      * Transform the resource into an array.
      *
@@ -23,17 +17,17 @@ class PageResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-//            'user' => new UserResource($this->user),
-            'posts' => PostResource::collection($this->whenLoaded('posts')),
+            'category_id' => $this->category_id,
+            'file_type' => $this->file_type,
             'title' => $this->title,
-            'type' => $this->type,
             'description' => $this->description,
-            'phone_number' => $this->phone_number,
-            'location' => $this->location,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
+            'version' => $this->version,
+            'media_url' => $this->media_url,
+            'media_type' => $this->media_type,
+            'update_frequency' => $this->update_frequency,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
         ];
     }
 }

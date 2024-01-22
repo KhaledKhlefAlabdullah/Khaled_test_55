@@ -6,8 +6,10 @@ use App\Http\Requests\Page\StorePageRequest;
 use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
+use Auth;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -19,6 +21,7 @@ class PageController extends Controller
     public function index()
     {
         try {
+
             return PageResource::collection(Page::paginate());
 
         } catch (Exception $e) {
@@ -31,12 +34,15 @@ class PageController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * Only "Portal Manager" can be store a page.
      */
     public function store(StorePageRequest $request)
     {
         $valid_data = $request->validated();
         try {
             $page = Page::create($valid_data);
+//            $page = Auth::User()->pages()->create($valid_data);
 
             return new PageResource($page);
 
@@ -53,7 +59,7 @@ class PageController extends Controller
     public function show(Page $page)
     {
         try {
-            return new PageResource($page);
+            return (new PageResource($page))->load('posts');
 
         } catch (Exception $e) {
             return response()->json([

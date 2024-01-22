@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('version')->nullable();
-            $table->string('media_URL')->nullable();
+            $table->string('media_url')->nullable();
             $table->enum('media_type',['image','video','file'])->nullable();
             $table->enum('update_frequency',['daily','weekly','monthly'])->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

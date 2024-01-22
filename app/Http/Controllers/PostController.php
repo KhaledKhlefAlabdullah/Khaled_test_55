@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
-class PostCategoryController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Dam\StoreDamRequest;
+use App\Http\Resources\DamResource;
 use App\Models\Dam;
+use Exception;
 use Illuminate\Http\Request;
 
 class DamController extends Controller
@@ -12,23 +15,35 @@ class DamController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return DamResource::collection(Dam::paginate());
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreDamRequest $request)
     {
-        //
+        $valid_data = $request->validated();
+
+        try {
+
+            $valid_data['user_id'] = \Auth::id();
+
+            $dam = Dam::create($valid_data);
+
+            return new DamResource($dam);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**

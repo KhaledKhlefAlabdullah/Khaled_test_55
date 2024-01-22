@@ -12,7 +12,6 @@ class UpdatePageRequest extends StorePageRequest
         $parentRules = parent::rules();
 
         $customRules = [
-            'user_id' => ['sometimes', 'required', 'string', 'max:255', 'exists:users,id', 'uuid'],
             'title' => ['sometimes', 'required', 'max:255', 'string'],
             'type' => ['sometimes', 'required', 'max:255', 'string'],
         ];

@@ -34,14 +34,19 @@ class PageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     * TODO Fix this function
      * Only "Portal Manager" can be store a page.
      */
     public function store(StorePageRequest $request)
     {
-        $valid_data = $request->validated();
+//        $request->user_id = \Auth::id();
+//        $valid_data = $request->validated();
         try {
-            $page = Page::create($valid_data);
+
+            $valid_data = $request->validated();
+            $page = Auth::user()->pages()->create($valid_data);
+
+//            $page = Page::create($valid_data);
 //            $page = Auth::User()->pages()->create($valid_data);
 
             return new PageResource($page);
@@ -75,7 +80,6 @@ class PageController extends Controller
     public function update(UpdatePageRequest $request, Page $page)
     {
         try {
-
             $valid_data = $request->validated();
             $page->update($valid_data);
 
@@ -95,7 +99,7 @@ class PageController extends Controller
         try {
             $page->delete();
 
-            return response()->noContent();
+            return response()->json(null, 204);
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()

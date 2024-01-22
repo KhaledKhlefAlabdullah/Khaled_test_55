@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Requests\Category;
+
+class UpdateCategoryRequest extends StoreCategoryRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     * Add validation rules for 'name' and 'type' fields in the 'rules' method
+     *
+     * In the 'rules' method of [StoreCategoryRequest], validation rules for the 'name' and 'type' fields have been added.
+     * The 'name' field is set to be sometimes required, of string type, and with a maximum length of 255 characters.
+     * The 'type' field is also set to be sometimes required and should have a value from the specified enum options ('Post', 'News', 'File', 'Notification', 'Report', 'Timeline_event', 'entity').
+     * These rules are merged with the parent class rules and returned.
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     *
+     */
+    public function rules(): array
+    {
+
+        $parentRules = parent::rules();
+
+        $customRules = [
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'type' => ['sometimes', 'required', 'in:Post,News,File,Notification,Report,Timeline_event,entity'],
+        ];
+
+        return array_merge($parentRules, $customRules);
+
+    }
+}

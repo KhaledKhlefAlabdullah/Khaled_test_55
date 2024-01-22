@@ -17,6 +17,8 @@ class ChatResource extends JsonResource
         return [
             'id' => $this->id,
             'chat_name' => $this->chat_name,
+            'users' => UserResource::collection($this->whenLoaded('users')),
+            'messages' => MessageResource::collection($this->whenLoaded('messages')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,

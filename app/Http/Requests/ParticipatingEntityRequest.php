@@ -22,7 +22,6 @@ class ParticipatingEntityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'uuid', 'exists:users,id'],
             'title' => ['nullable', 'string'],
             'media_URL' => ['required', 'string'],
             'media_type' => ['nullable', 'in:image,video,file,website_URL']

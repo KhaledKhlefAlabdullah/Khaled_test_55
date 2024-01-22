@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 
-class ContactUsMessageRequest extends FormRequest
+class ContactUsMessageRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +21,10 @@ class ContactUsMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'string', 'max:100', 'exists:users,id',],
             'message' => ['required', 'string', 'max:255'],
             'is_read' => ['required', 'boolean'],
         ];
     }
+
 }

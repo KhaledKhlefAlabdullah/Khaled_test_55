@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Dam;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\BaseRequest;
 
-class StoreDamRequest extends FormRequest
+class StoreDamRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +22,7 @@ class StoreDamRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'string', 'max:255', 'exists:users,id'],
             'name' => ['required', 'string', 'max:255',],
             'location' => ['required', 'string', 'max:255',],
             'water_level' => ['required', 'numeric',],
@@ -30,4 +30,5 @@ class StoreDamRequest extends FormRequest
             'source' => ['nullable', 'string', 'max:255',]
         ];
     }
+
 }

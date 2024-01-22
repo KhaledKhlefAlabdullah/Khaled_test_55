@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Page;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class StorePageRequest extends FormRequest
+class StorePageRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,14 @@ class StorePageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255',],
-            'type' => ['required', 'string', 'max:255',],
-            'description' => ['nullable', 'string', 'max:255',],
-            'phone_number' => ['nullable', 'string', 'max:255',],
-            'location' => ['nullable', 'string', 'max:255',],
-            'start_time' => ['nullable', 'date',],
-            'end_time' => ['nullable', 'date',],
+            'user_id' => ['required', 'string', 'max:255', 'exists:users,id',],
+            'title' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:255'],
+            'phone_number' => ['nullable', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
+            'start_time' => ['nullable', 'date'],
+            'end_time' => ['nullable', 'date'],
         ];
-
-
     }
 }

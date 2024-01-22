@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Requests;
-
 use Illuminate\Foundation\Http\FormRequest;
 
 class ParticipatingEntityRequest extends FormRequest
@@ -22,8 +21,9 @@ class ParticipatingEntityRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'string', 'max:100', 'exists:users,id',],
             'title' => ['nullable', 'string'],
-            'media_URL' => ['required', 'string'],
+            'media_URL' => ['required', 'string', 'url'],
             'media_type' => ['nullable', 'in:image,video,file,website_URL']
         ];
     }

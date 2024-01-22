@@ -11,7 +11,7 @@ class UpdateDamRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateDamRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['sometimes', 'required', 'string', 'max:255',],
+            'location' => ['sometimes', 'required', 'string', 'max:255',],
+            'water_level' => ['sometimes', 'required', 'numeric',],
+            'discharge' => ['sometimes', 'required', 'string',],
+            'source' => ['nullable', 'string', 'max:255',]
         ];
     }
 }

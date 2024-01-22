@@ -6,10 +6,6 @@ use App\Http\Requests\Page\StorePageRequest;
 use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
-use Auth;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -20,15 +16,8 @@ class PageController extends Controller
      */
     public function index()
     {
-        try {
-
             return PageResource::collection(Page::paginate());
 
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
     }
 
 
@@ -39,23 +28,13 @@ class PageController extends Controller
      */
     public function store(StorePageRequest $request)
     {
-//        $request->user_id = \Auth::id();
-//        $valid_data = $request->validated();
-        try {
 
             $valid_data = $request->validated();
-            $page = Auth::user()->pages()->create($valid_data);
 
-//            $page = Page::create($valid_data);
-//            $page = Auth::User()->pages()->create($valid_data);
+        $page = Page::create($valid_data);
 
             return new PageResource($page);
 
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
     }
 
     /**
@@ -63,14 +42,8 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        try {
-            return (new PageResource($page))->load('posts');
 
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        return (new PageResource($page))->load('posts');
     }
 
 
@@ -79,16 +52,12 @@ class PageController extends Controller
      */
     public function update(UpdatePageRequest $request, Page $page)
     {
-        try {
-            $valid_data = $request->validated();
+
+        $valid_data = $request->validated();
             $page->update($valid_data);
 
             return new PageResource($page);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
@@ -96,14 +65,10 @@ class PageController extends Controller
      */
     public function destroy(Page $page)
     {
-        try {
-            $page->delete();
+
+        $page->delete();
 
             return response()->json(null, 204);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 }

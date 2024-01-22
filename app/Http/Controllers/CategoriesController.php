@@ -15,13 +15,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        try {
-            return CategoryResource::collection(Category::paginate());
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
+        return CategoryResource::collection(Category::paginate());
+
     }
 
     /**
@@ -30,16 +26,11 @@ class CategoriesController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $valid_data = $request->validated();
-        try {
             $category = Category::create($valid_data);
 
             return new CategoryResource($category);
 
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
@@ -47,13 +38,8 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-        try {
             return new CategoryResource($category);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
 
@@ -62,16 +48,11 @@ class CategoriesController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        try {
             $valid_data = $request->validated();
             $category->update($valid_data);
 
             return new CategoryResource($category);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
@@ -79,14 +60,10 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        try {
-            $category->delete();
+
+        $category->delete();
 
             return response()->json(null, 204);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 }

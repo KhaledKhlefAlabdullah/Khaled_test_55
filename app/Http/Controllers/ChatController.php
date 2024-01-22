@@ -14,13 +14,8 @@ class ChatController extends Controller
      */
     public function index()
     {
-        try {
             return ChatResource::collection(Chat::paginate());
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
 
@@ -33,29 +28,34 @@ class ChatController extends Controller
             'chat_name' => ['required', 'string', 'max:255',],
         ]);
 
-        try {
             $chat = Chat::create($valid_data);
 
             return new ChatResource($chat);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
      * Display the specified resource.
+     * // TODO: I'm don't check this function
      */
     public function show(Chat $chat)
     {
-        try {
-            return (new ChatResource($chat))->load(['']);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        // way 1
+        // Assuming $chat is an instance of the Chat model
+//            return (new ChatResource($chat))->additional([
+//                'messages' => $chat->messages()->orderBy('created_at', 'desc')->paginate(),
+//                 'users' => $chat->users(),
+//            ]);
+
+        // way 2
+        // Assuming $chat is an instance of the Chat model
+        return (new ChatResource($chat))->additional([
+            'messages' => $chat->messages()->latest()->paginate(),
+            'users' => $chat->users(),
+        ]);
+
+
+
     }
 
 
@@ -68,15 +68,10 @@ class ChatController extends Controller
             'chat_name' => ['sometimes', 'required', 'string', 'max:255',],
         ]);
 
-        try {
             $chat->update($valid_data);
 
             return new ChatResource($chat);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
@@ -84,14 +79,9 @@ class ChatController extends Controller
      */
     public function destroy(Chat $chat)
     {
-        try {
             $chat->delete();
 
             return response()->json(null, 204);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 }

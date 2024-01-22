@@ -54,7 +54,7 @@ Route::apiResources([
 
 ], [
     'except' => ['edit', 'create'],
-//    'middleware' => ['auth:sanctum', ],
+    'middleware' => ['auth:sanctum',],
 ]);
 
 

@@ -17,13 +17,9 @@ class ContactUsMessageController extends Controller
      */
     public function index()
     {
-        try {
-            return ContactUsMessagesResource::collection(Contact_us_message::paginate());
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
+        return ContactUsMessagesResource::collection(Contact_us_message::paginate());
+
     }
 
 
@@ -37,18 +33,12 @@ class ContactUsMessageController extends Controller
     public function store(ContactUsMessageRequest $request)
     {
         $valid_data = $request->validated();
-        try {
 
-            $valid_data['user_id'] = \Auth::id();
 
             $contact_us_message = Contact_us_message::create($valid_data);
 
             return new ContactUsMessagesResource($contact_us_message);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
@@ -56,13 +46,9 @@ class ContactUsMessageController extends Controller
      */
     public function show(Contact_us_message $contact_us_message)
     {
-        try {
-            return new ContactUsMessagesResource($contact_us_message);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
+        return new ContactUsMessagesResource($contact_us_message);
+
     }
 
 
@@ -77,14 +63,10 @@ class ContactUsMessageController extends Controller
             'is_read' => ['boolean',]
         ]);
 
-        try {
-            $contact_us_message->update($valid_data);
+
+        $contact_us_message->update($valid_data);
             return new ContactUsMessagesResource($contact_us_message);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
@@ -94,15 +76,10 @@ class ContactUsMessageController extends Controller
      */
     public function destroy(Contact_us_message $contact_us_message)
     {
-        try {
-            $contact_us_message->delete();
+
+        $contact_us_message->delete();
 
             return response()->json(null, 204);
-        } catch (Exception $e) {
-            return response()->json([
-                'error' => 'Failed to delete the resource.',
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 }

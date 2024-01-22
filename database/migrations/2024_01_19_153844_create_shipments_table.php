@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shipments', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('route_id');
             $table->string('product_id');
             $table->string('customer_id');

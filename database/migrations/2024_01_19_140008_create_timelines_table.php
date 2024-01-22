@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('timelines', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('stakeholder_id');
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();

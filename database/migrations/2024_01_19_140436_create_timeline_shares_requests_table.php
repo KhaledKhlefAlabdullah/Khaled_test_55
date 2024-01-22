@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('timeline_shares_requests', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('timeline_id');
             $table->string('send_stakeholder_id');
             $table->string('receive_stakeholder_id');

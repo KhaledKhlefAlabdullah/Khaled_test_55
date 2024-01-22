@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('suppliers', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('route_id');
             $table->string('material_id');
             $table->string('stakeholder_id');

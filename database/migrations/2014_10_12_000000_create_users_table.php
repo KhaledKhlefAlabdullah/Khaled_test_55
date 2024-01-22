@@ -15,7 +15,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -28,6 +28,7 @@ return new class extends Migration
 
         $password=password_hash('123',PASSWORD_DEFAULT);
         DB::table('users')->insert([
+            'id' => \Illuminate\Support\Str::uuid(),
             'email'=>'test@example.com',
             'password'=>$password,
             'stakeholder_type'=>'Tenant_company',

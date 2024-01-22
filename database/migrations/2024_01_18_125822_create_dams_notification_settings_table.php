@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dams_notification_settings', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('dam_id');
             $table->string('notification_setting_id');
             $table->foreign('dam_id')->references('id')->on('dams')->onDelete('cascade');

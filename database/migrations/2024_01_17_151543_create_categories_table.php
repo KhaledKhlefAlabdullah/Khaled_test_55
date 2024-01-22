@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('name');
             $table->enum('type',['Post','News','File','Notification','Report','Timeline_event','entity']);
-            $table->string('parent_id');
+            $table->uuid('parent_id')->nullable(); // Make parent_id nullable
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
+
     }
 
     /**

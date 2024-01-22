@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('natural_disasters', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(\Illuminate\Support\Str::uuid())->unique();
+            $table->uuid('id')->primary()->unique();
             $table->string('name')->nullable();
             $table->string('disaster_type')->nullable();
             $table->date('disaster_date');

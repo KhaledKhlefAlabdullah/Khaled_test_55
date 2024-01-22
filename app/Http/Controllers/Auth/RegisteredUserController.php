@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Industrial_area;
 use App\Models\Stakeholder;
 use App\Models\User;
 use App\Models\User_profile;
@@ -21,20 +22,21 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
 
-    // create new subdomain account
+    // Create a new subdomain account
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
 
             // Validate the inputs
             $validatedData = $request->validate([
-                'industrial_area_id' => ['exists:industrial_areas,id'],
+                'user_id' => ['exists:users,id'],
+                'industrial_area_id' => ['nullable', 'exists:industrial_areas,id'],
                 'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'phone_number' => ['required', 'string', 'regex:/^[0-9]{9,20}$/'],
-                'contact_person' => ['required', 'string', 'max:50', 'min:3'],
-                'stakeholder_type' => ['in:Tenant_company,Portal_manager,Industrial_area_representative,Infrastructure_provider,Government_representative'],
+                'contact_person' => ['nullable', 'string', 'max:50', 'min:3'],
+                'stakeholder_type' => ['nullable', 'in:Tenant_company,Portal_manager,Industrial_area_representative,Infrastructure_provider,Government_representative'],
                 'location' => ['string'],
                 'representative_name' => ['string'],
                 'job_title' => ['string']
@@ -44,17 +46,22 @@ class RegisteredUserController extends Controller
             $user = User::create([
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
-                'stakeholder_type' => $validatedData['stakeholder_type']
+                'stakeholder_type' => $validatedData['stakeholder_type'] == null ? 'Tenant_company' : $validatedData['stakeholder_type']
             ]);
 
             // Create a new user profile
             $user_profile = User_profile::create([
                 'user_id' => $user->id,
                 'name' => $validatedData['name'],
-                'contact_person' => $validatedData['contact_person'],
+                'contact_person' => $validatedData['contact_person'] == null ? '' : $validatedData['contact_person'],
                 'location' => $validatedData['location'],
                 'phone_number' => $validatedData['phone_number']
             ]);
+
+            // If industrial_area_id is not provided, fetch it by user_id because the relation between users and industrials_areas is on to on
+            if ($validatedData['industrial_area_id'] == null) {
+                $validatedData['industrial_area_id'] = Industrial_area::where('user_id', $validatedData['user_id'])->first()->id;
+            }
 
             // Create a new stakeholder
             $stakeholder = Stakeholder::create([
@@ -67,7 +74,7 @@ class RegisteredUserController extends Controller
             return response()->json(
                 [
                     'user' => $user,
-                    'user_profile'=> $user_profile,
+                    'user_profile' => $user_profile,
                     'stakeholder' => $stakeholder,
                     'message' => __('User created successfully')
                 ], 200);

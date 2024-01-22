@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ParticipatingEntityRequest;
-use App\Models\ParticipatingEntity;
+use App\Models\Participating_entity;
 
 class ParticipatingEntityController extends Controller
 {
@@ -12,7 +12,7 @@ class ParticipatingEntityController extends Controller
      */
     public function index()
     {
-        return ParticipatingEntity::all();
+        //
     }
 
 
@@ -23,9 +23,7 @@ class ParticipatingEntityController extends Controller
      */
     public function store(ParticipatingEntityRequest $request)
     {
-        $validData = $request->validated();
-
-        ParticipatingEntity::create($validData);
+        //
     }
 
     /**
@@ -33,11 +31,10 @@ class ParticipatingEntityController extends Controller
      *
      * Rule for [portal manager]
      */
-    public function show(ParticipatingEntity $pe)
+    public function show(Participating_entity $pe)
     {
-        return ParticipatingEntity::findOrFail($pe->id);
+        //
     }
-
 
 
     /**
@@ -45,11 +42,9 @@ class ParticipatingEntityController extends Controller
      *
      * Rule for [portal manager]
      */
-    public function update(ParticipatingEntityRequest $request, ParticipatingEntity $pe)
+    public function update(ParticipatingEntityRequest $request, Participating_entity $pe)
     {
-        $validData = $request->validated();
-
-        $pe->update($validData);
+        //
     }
 
     /**
@@ -57,8 +52,8 @@ class ParticipatingEntityController extends Controller
      *
      * Rule for [portal manager]
      */
-    public function destroy(ParticipatingEntity $pe)
+    public function destroy(Participating_entity $pe)
     {
-        ParticipatingEntity::destroy($pe->id);
+        //
     }
 }

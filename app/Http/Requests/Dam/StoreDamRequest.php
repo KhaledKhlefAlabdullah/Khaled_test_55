@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Dam;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
-class ContactUsMessageRequest extends FormRequest
+class StoreDamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +23,11 @@ class ContactUsMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message' => ['required', 'string', 'max:255'],
-            'is_read' => ['required', 'boolean'],
+            'name' => ['required', 'string', 'max:255',],
+            'location' => ['required', 'string', 'max:255',],
+            'water_level' => ['required', 'numeric',],
+            'discharge' => ['required', 'string',],
+            'source' => ['nullable', 'string', 'max:255',]
         ];
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Dam;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactUsMessageRequest extends FormRequest
+class UpdateDamRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,8 +22,7 @@ class ContactUsMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message' => ['required', 'string', 'max:255'],
-            'is_read' => ['required', 'boolean'],
+            //
         ];
     }
 }

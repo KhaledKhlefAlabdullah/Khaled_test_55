@@ -38,6 +38,9 @@ class ContactUsMessageController extends Controller
     {
         $valid_data = $request->validated();
         try {
+
+            $valid_data['user_id'] = \Auth::id();
+
             $contact_us_message = Contact_us_message::create($valid_data);
 
             return new ContactUsMessagesResource($contact_us_message);
@@ -94,7 +97,7 @@ class ContactUsMessageController extends Controller
         try {
             $contact_us_message->delete();
 
-            return response()->noContent(); // HTTP 204 No Content
+            return response()->json(null, 204);
         } catch (Exception $e) {
             return response()->json([
                 'error' => 'Failed to delete the resource.',

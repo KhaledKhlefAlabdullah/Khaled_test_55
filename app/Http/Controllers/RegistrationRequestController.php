@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-class RegiatrationRequestController extends Controller
+class RegistrationRequestController extends Controller
 {
     /**
      * Display a listing of the resource.

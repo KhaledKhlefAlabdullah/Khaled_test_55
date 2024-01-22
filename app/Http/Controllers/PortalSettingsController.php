@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PortalSettingRequest;
+use App\Models\Portal_setting;
 use App\Models\PortalSetting;
 use App\Models\User;
 
@@ -11,18 +12,10 @@ class PortalSettingsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $user_id)
+    public function index()
     {
-        return User::findOrFail($user_id)->portal_settings;
+        //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-//    public function create()
-//    {
-//        //
-//    }
 
     /**
      * Store a newly created resource in storage.
@@ -31,29 +24,21 @@ class PortalSettingsController extends Controller
     {
         $validData = $request->validated();
 
-        PortalSetting::created($validData);
+        Portal_setting::created($validData);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PortalSetting $portalSettings)
+    public function show(Portal_setting $portalSettings)
     {
-        return PortalSetting::findOrFail($portalSettings->id);
+        return Portal_setting::findOrFail($portalSettings->id);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-//    public function edit(PortalSetting $portalSettings)
-//    {
-//        //
-//    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(PortalSettingRequest $request, PortalSetting $portalSettings)
+    public function update(PortalSettingRequest $request, Portal_setting $portalSettings)
     {
         $updateData = $request->validated();
 
@@ -63,8 +48,8 @@ class PortalSettingsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PortalSetting $portalSettings)
+    public function destroy(Portal_setting $portalSettings)
     {
-        PortalSetting::destroy($portalSettings->id);
+        Portal_setting::destroy($portalSettings->id);
     }
 }

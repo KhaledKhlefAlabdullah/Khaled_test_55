@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\File_categories;
-use Illuminate\Http\Request;
+use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category;
+use Exception;
 
 class CategoriesController extends Controller
 {
@@ -12,54 +15,78 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        try {
+            return CategoryResource::collection(Category::paginate());
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        //
+        $valid_data = $request->validated();
+        try {
+            $category = Category::create($valid_data);
+
+            return new CategoryResource($category);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(File_categories $file_categories)
+    public function show(Category $category)
     {
-        //
+        try {
+            return new CategoryResource($category);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(File_categories $file_categories)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, File_categories $file_categories)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        try {
+            $valid_data = $request->validated();
+            $category->update($valid_data);
+
+            return new CategoryResource($category);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(File_categories $file_categories)
+    public function destroy(Category $category)
     {
-        //
+        try {
+            $category->delete();
+
+            return response()->json(null, 204);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 }

@@ -22,6 +22,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'industrial_area_id',
         'email',
         'stakeholder_type',
         'password',
@@ -116,6 +117,6 @@ class User extends Authenticatable
 
     public function industrial_area()
     {
-        return $this->hasOne(Industrial_area::class,'user_id');
+        return $this->belongsTo(Industrial_area::class,'industrial_area_id');
     }
 }

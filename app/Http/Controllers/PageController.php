@@ -16,8 +16,13 @@ class PageController extends Controller
      */
     public function index()
     {
-            return PageResource::collection(Page::paginate());
+        // Get all pages paginated
+        $pages = Page::paginate();
 
+        // If there is only one page, return it
+        return $pages->count() == 1 ?
+            new PageResource($pages->first()) :
+            PageResource::collection($pages); // Otherwise, return the List of pages
     }
 
 
@@ -29,20 +34,24 @@ class PageController extends Controller
     public function store(StorePageRequest $request)
     {
 
-            $valid_data = $request->validated();
+        $valid_data = $request->validated();
 
         $page = Page::create($valid_data);
 
-            return new PageResource($page);
+        return new PageResource($page);
 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Page $page)
+    public function show(string $id)
     {
+        $page = Page::find($id);
 
+        if (!$page) {
+            return response()->json(['message' => 'This page ID not found'], 404);
+        }
         return (new PageResource($page))->load('posts');
     }
 
@@ -50,25 +59,36 @@ class PageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePageRequest $request, Page $page)
+    public function update(UpdatePageRequest $request, string $id)
     {
 
-        $valid_data = $request->validated();
-            $page->update($valid_data);
+        $page = Page::find($id);
 
-            return new PageResource($page);
+        if (!$page) {
+            return response()->json(['message' => 'This page ID not found'], 404);
+        }
+
+        $valid_data = $request->validated();
+        $page->update($valid_data);
+
+        return new PageResource($page);
 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Page $page)
+    public function destroy(string $id)
     {
+        $page = Page::find($id);
+
+        if (!$page) {
+            return response()->json(['message' => 'This page ID not found'], 404);
+        }
 
         $page->delete();
 
-        return response()->noContent();
+        return response()->json(['message' => 'Page is deleted Successfully']);
 
     }
 }

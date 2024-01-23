@@ -50,34 +50,35 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+
     public function user_profile()
     {
-        return $this->hasOne(User_profile::class,'user_id');
+        return $this->hasOne(User_profile::class, 'user_id');
     }
 
     public function portal_settings()
     {
-        return $this->hasMany(Portal_setting::Class,'user_id');
+        return $this->hasMany(Portal_setting::Class, 'user_id');
     }
 
     public function pages()
     {
-        return $this->hasMany(Page::class,'user_id');
+        return $this->hasMany(Page::class, 'user_id');
     }
 
     public function participating_entities()
     {
-        return $this->hasMany(Participating_entity::class,'user_id');
+        return $this->hasMany(Participating_entity::class, 'user_id');
     }
 
     public function contact_us_messages()
     {
-        return $this->hasMany(Contact_us_message::class,'user_id');
+        return $this->hasMany(Contact_us_message::class, 'user_id');
     }
 
     public function chats()
     {
-        return $this->belongsToMany(Chat::class,'chat_members','user_id','chat_id');
+        return $this->belongsToMany(Chat::class, 'chat_members', 'user_id', 'chat_id');
     }
 
     public function sentMessages()
@@ -92,27 +93,27 @@ class User extends Authenticatable
 
     public function notifications()
     {
-        return $this->hasMany(Notification::class,'user_id');
+        return $this->hasMany(Notification::class, 'user_id');
     }
 
     public function dams()
     {
-        return $this->hasMany(Dam::class,'user_id');
+        return $this->hasMany(Dam::class, 'user_id');
     }
 
     public function monitoring_points()
     {
-        return $this->hasMany(Monitoring_point::class,'user_id');
+        return $this->hasMany(Monitoring_point::class, 'user_id');
     }
 
     public function stakholder()
     {
-        return $this->hasOne(Stakeholder::class,'user_id');
+        return $this->hasOne(Stakeholder::class, 'user_id');
     }
 
     public function registration_requests()
     {
-        return $this->hasMany(Registration_request::class,'user_id');
+        return $this->hasMany(Registration_request::class, 'user_id');
     }
 
     public function industrial_area()

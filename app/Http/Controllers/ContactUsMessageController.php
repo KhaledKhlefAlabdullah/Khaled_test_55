@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContactUsMessageRequest;
 use App\Http\Resources\ContactUsMessagesResource;
 use App\Models\Contact_us_message;
-use Exception;
 use Illuminate\Http\Request;
 
 class ContactUsMessageController extends Controller
@@ -16,8 +15,11 @@ class ContactUsMessageController extends Controller
      */
     public function index()
     {
-        return ContactUsMessagesResource::collection(Contact_us_message::paginate());
+        $messages = Contact_us_message::paginate();
 
+        return $messages->count() == 1
+            ? new ContactUsMessagesResource($messages->first())
+            : ContactUsMessagesResource::collection($messages);
     }
 
 
@@ -32,21 +34,23 @@ class ContactUsMessageController extends Controller
     {
         $valid_data = $request->validated();
 
+        $contact_us_message = Contact_us_message::create($valid_data);
 
-            $contact_us_message = Contact_us_message::create($valid_data);
-
-            return new ContactUsMessagesResource($contact_us_message);
-
+        return new ContactUsMessagesResource($contact_us_message);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Contact_us_message $contact_us_message)
+    public function show(string $id)
     {
+        $contact_us_message = Contact_us_message::find($id);
+
+        if (!$contact_us_message) {
+            return response()->json(['message' => 'Contact us message ID not found'], 404);
+        }
 
         return new ContactUsMessagesResource($contact_us_message);
-
     }
 
 
@@ -55,15 +59,21 @@ class ContactUsMessageController extends Controller
      *
      *  Only can update is_read
      */
-    public function update(Request $request, Contact_us_message $contact_us_message)
+    public function update(Request $request, string $id)
     {
+
+        $contact_us_message = Contact_us_message::find($id);
+
+        if (!$contact_us_message) {
+            return response()->json(['message' => 'Contact us message ID not found'], 404);
+        }
+
         $valid_data = $request->validate([
             'is_read' => ['boolean',]
         ]);
 
-
         $contact_us_message->update($valid_data);
-            return new ContactUsMessagesResource($contact_us_message);
+        return new ContactUsMessagesResource($contact_us_message);
 
     }
 
@@ -72,12 +82,18 @@ class ContactUsMessageController extends Controller
      *
      * Rule for [portal manager]
      */
-    public function destroy(Contact_us_message $contact_us_message)
+    public function destroy(string $id)
     {
+
+        $contact_us_message = Contact_us_message::find($id);
+
+        if (!$contact_us_message) {
+            return response()->json(['message' => 'Contact us message ID not found'], 404);
+        }
 
         $contact_us_message->delete();
 
-        return response()->noContent();
+        return response()->json(['message' => 'Deleted Successfully']);
 
     }
 }

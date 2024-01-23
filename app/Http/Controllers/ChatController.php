@@ -13,7 +13,12 @@ class ChatController extends Controller
      */
     public function index()
     {
-        return ChatResource::collection(Chat::paginate());
+        // Get a list of all chats
+        $chats = Chat::latest()->paginate();
+
+        return $chats->count() == 1
+            ? new ChatResource($chats->first()) // return single chat
+            : ChatResource::collection($chats); // return all chat resources
     }
 
 
@@ -22,14 +27,16 @@ class ChatController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the request
         $valid_data = $request->validate([
             'chat_name' => ['required', 'string', 'max:255',],
         ]);
 
+        // Create the chat
         $chat = Chat::create($valid_data);
 
+        // Return the chat
         return new ChatResource($chat);
-
     }
 
     /**
@@ -38,8 +45,10 @@ class ChatController extends Controller
      */
     public function show(string $id)
     {
+        // Get the chat
         $chat = Chat::find($id);
 
+        // Check if the chat exists
         if (!$chat) {
             return response()->json(['message' => 'Chat not found'], 404);
         }
@@ -60,20 +69,24 @@ class ChatController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // Validate the request
         $valid_data = $request->validate([
             'chat_name' => ['sometimes', 'required', 'string', 'max:255',],
         ]);
 
+        // Get the chat By ID
         $chat = Chat::find($id);
 
+        // Check if the chat exists
         if (!$chat) {
             return response()->json(['message' => 'Chat not found'], 404);
         }
 
+        // Update the chat
         $chat->update($valid_data);
 
+        // Return the chat data
         return new ChatResource($chat);
-
     }
 
     /**
@@ -81,16 +94,18 @@ class ChatController extends Controller
      */
     public function destroy(string $id)
     {
-
+        // Get the chat By ID
         $chat = Chat::find($id);
 
+        // Check if the chat exists
         if (!$chat) {
-            return response()->json(['message' => 'Chat not found'], 404);
+            return response()->json(['message' => 'Chat ID not found'], 404);
         }
 
+        // Delete the chat
         $chat->delete();
 
-        return response()->noContent();
-
+        // Return message success
+        return response()->json(['message' => 'Deleted successfully']);
     }
 }

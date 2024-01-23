@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Message\StoreMessageRequest;
-use App\Http\Requests\UpdateMessageRequest;
+use App\Http\Requests\Message\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 

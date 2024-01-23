@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Timeline;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TimelineResource extends JsonResource
+class TimelineQuireResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,9 @@ class TimelineResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'timeline_event_id' => $this->timeline_event_id,
             'stakeholder_id' => $this->stakeholder_id,
+            'inquiry' => $this->inquiry,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
 

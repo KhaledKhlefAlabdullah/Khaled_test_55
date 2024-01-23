@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Notification;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserProfileResource extends JsonResource
+class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +17,11 @@ class UserProfileResource extends JsonResource
         return [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'name' => $this->name,
-            'contact_person' => $this->contact_person,
-            'avatar_URL' => $this->avatar_URL,
-            'location' => $this->location,
-            'phone_number' => $this->phone_number,
+            'title' => $this->title,
+            'description' => $this->description,
+            'slug' => $this->slug,
+            'is_read' => $this->is_read,
+            'notification_type' => $this->notification_type,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
 

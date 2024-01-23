@@ -15,18 +15,18 @@ class RegistrationRequestController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         try{
 
-            $this->authorize('view_all',Registration_request::class);
+            // authorize the user if can use this function
+            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
 
-            $request->validate([
-                'user_id' => 'string|exists:users,id'
-            ]);
+            // get authenticated user id
+            $user_id = Auth::id();
 
             // get all registration for industrial area representative
-            $registration_requests = User::findOrFail($request->input('user_id'))->registration_requests;
+            $registration_requests = User::findOrFail($user_id)->registration_requests;
 
             // return the data
             return response()->json([
@@ -38,6 +38,40 @@ class RegistrationRequestController extends Controller
             // Return an error response if an exception occurs
             return response()->json([
                 'error' => __('Error in get all registration requests'),
+                'message' => __($e->getMessage()),
+            ], 500); // 500 Internal Server Error status code
+        }
+    }
+
+    /**
+     * Display a request details.
+     */
+    public function show(Request $request)
+    {
+        try{
+
+            // authorize the user if can use this function
+            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
+
+            // get authenticated user id
+            $user_id = Auth::id();
+
+            // get registration request id from api request
+            $registration_id = $request->registration_id;
+
+            // get all registration for industrial area representative
+            $registration_request = Registration_request::where(['id' => $registration_id, 'user_id' => $user_id])->first();
+
+            // return the data
+            return response()->json([
+                'registration request details' => $registration_request,
+                'message' => __('Get registration request details successfully'),
+            ], 200);
+
+        }catch (\Exception $e) {
+            // Return an error response if an exception occurs
+            return response()->json([
+                'error' => __('Error in get registration request details'),
                 'message' => __($e->getMessage()),
             ], 500); // 500 Internal Server Error status code
         }
@@ -86,6 +120,8 @@ class RegistrationRequestController extends Controller
     public function accept_or_failed(Request $request)
     {
         try {
+            // authorize the user if can use this function
+            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
 
             // validate request inputs
             $request->validate([
@@ -114,7 +150,7 @@ class RegistrationRequestController extends Controller
                 // Simulate a request to the RegisteredUserController@store method
                 $request = Request::create('/api/register', 'POST', [
                     'user_id' => $registration_request->user_id,
-                    'industrial_area_id' => '',
+                    'industrial_area_id' => null,
                     'name' => $registration_request->name,
                     'email' => $registration_request->email,
                     'password' => $registration_request->password,
@@ -164,6 +200,10 @@ class RegistrationRequestController extends Controller
     public function destroy(Request $request)
     {
         try {
+
+            // authorize the user if can use this function
+            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
+
             // Get the registration request from the request
             $registration_id = $request->input('registration_id');
 

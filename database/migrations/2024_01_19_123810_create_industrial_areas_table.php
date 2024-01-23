@@ -13,12 +13,8 @@ return new class extends Migration
     {
         Schema::create('industrial_areas', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->string('user_id');
             $table->string('name');
             $table->text('address');
-            $table->string('representative_name');
-            $table->string('representative_email');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

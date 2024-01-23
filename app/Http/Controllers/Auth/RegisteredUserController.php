@@ -29,19 +29,44 @@ class RegisteredUserController extends Controller
 
             // Validate the inputs
             $validatedData = $request->validate([
-                'user_id' => ['exists:users,id'],
+                'user_id' => ['nullable','exists:users,id'],
                 'industrial_area_id' => ['nullable', 'exists:industrial_areas,id'],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                'phone_number' => ['required', 'string', 'regex:/^[0-9]{9,20}$/'],
+                'phone_number' => ['nullable','string', 'regex:/^[0-9]{9,20}$/'],
                 'contact_person' => ['nullable', 'string', 'max:50', 'min:3'],
                 'stakeholder_type' => ['nullable', 'in:Tenant_company,Portal_manager,Industrial_area_representative,Infrastructure_provider,Government_representative'],
                 'location' => ['string'],
-                'representative_name' => ['string'],
-                'job_title' => ['string']
+                'representative_name' => ['nullable','string'],
+                'job_title' => ['nullable','string']
             ]);
 
+            if (empty($validatedData['user_id']) && empty($validatedData['phone_number']) && empty($validatedData['contact_person']) && empty($validatedData['representative_name']) && empty($validatedData['job_title'])) {
+                // Create a new user
+                $user = User::create([
+                    'industrial_area_id' =>$validatedData['industrial_area_id'],
+                    'email' => $validatedData['email'],
+                    'password' => Hash::make($validatedData['password']),
+                    'stakeholder_type' => $validatedData['stakeholder_type'] == null ? 'Tenant_company' : $validatedData['stakeholder_type']
+                ]);
+
+                // Create a new user profile
+                $user_profile = User_profile::create([
+                    'user_id' => $user->id,
+                    'name' => $validatedData['name'],
+                    'contact_person' => $validatedData['contact_person'] == null ? '' : $validatedData['contact_person'],
+                    'location' => $validatedData['location'],
+                    'phone_number' => $validatedData['phone_number'] ? $validatedData['phone_number'] : '0000000000'
+                ]);
+
+                return response()->json(
+                    [
+                        'user' => $user,
+                        'user_profile' => $user_profile,
+                        'message' => __('User created successfully')
+                    ], 200);
+            }
             // Create a new user
             $user = User::create([
                 'email' => $validatedData['email'],
@@ -55,7 +80,7 @@ class RegisteredUserController extends Controller
                 'name' => $validatedData['name'],
                 'contact_person' => $validatedData['contact_person'] == null ? '' : $validatedData['contact_person'],
                 'location' => $validatedData['location'],
-                'phone_number' => $validatedData['phone_number']
+                'phone_number' => $validatedData['phone_number'] ? $validatedData['phone_number'] : '0000000000'
             ]);
 
             // If industrial_area_id is not provided, fetch it by user_id because the relation between users and industrials_areas is on to on

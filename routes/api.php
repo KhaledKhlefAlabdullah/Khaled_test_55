@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\StakeholderController;
 use \App\Http\Controllers\UserController;
 use \App\Http\Controllers\RegistrationRequestController;
+use \App\Http\Controllers\IndustrialAreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -73,13 +74,28 @@ Route::group(['prefix' => 'stakeholders'], function () {
 
 Route::group(['prefix' => 'registration_requests'], function(){
 
-    Route::get('/',[RegistrationRequestController::class,'index'])->middleware('auth:sanctum');
+    Route::middleware('auth:sanctum')->group(function (){
+
+        Route::get('/',[RegistrationRequestController::class,'index']);
+
+        Route::get('/details',[RegistrationRequestController::class,'show']);
+
+        Route::post('/accept_or_failed',[RegistrationRequestController::class,'accept_or_failed']);
+
+        Route::post('/delete',[RegistrationRequestController::class,'destroy']);
+
+    });
 
     Route::post('/add',[RegistrationRequestController::class,'store']);
+});
 
-    Route::post('/accept_or_failed',[RegistrationRequestController::class,'accept_or_failed']);
+Route::group(['prefix' => 'industrial_areas'],function (){
 
-    Route::post('/delete',[RegistrationRequestController::class,'destroy']);
+    Route::middleware('auth:sanctum')->group(function (){
+
+        Route::post('/add',[IndustrialAreaController::class,'store']);
+
+    });
 
 });
 

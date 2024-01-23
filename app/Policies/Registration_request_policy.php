@@ -13,23 +13,7 @@ class Registration_request_policy
     /**
      * Determine whether the user can view any models.
      */
-    public function view_all(User $user): bool
-    {
-        return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Registration_request $registrationRequest): bool
-    {
-        return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE;
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function accept_or_failed(User $user): bool
+    public function view_or_details_or_accept_denied(User $user): bool
     {
         return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE;
     }

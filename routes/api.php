@@ -73,7 +73,7 @@ Route::group(['prefix' => 'stakeholders'], function () {
 
 Route::group(['prefix' => 'registration_requests'], function(){
 
-    Route::get('/',[RegistrationRequestController::class,'index']);
+    Route::get('/',[RegistrationRequestController::class,'index'])->middleware('auth:sanctum');
 
     Route::post('/add',[RegistrationRequestController::class,'store']);
 

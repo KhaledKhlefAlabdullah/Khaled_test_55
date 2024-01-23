@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\Registration_request;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
@@ -17,6 +18,8 @@ class RegistrationRequestController extends Controller
     public function index(Request $request)
     {
         try{
+
+            $this->authorize('view_all',Registration_request::class);
 
             $request->validate([
                 'user_id' => 'string|exists:users,id'

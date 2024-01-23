@@ -20,7 +20,32 @@ class IndustrialAreaController extends Controller
      */
     public function create()
     {
-        //
+        try {
+
+            $industrial_areas = Industrial_area::all();
+
+            if($industrial_areas->isNotEmpty()){
+
+                return response()->json([
+                    'industrial_areas' => $industrial_areas,
+                    'message' => __('Successfully request')
+                ],201);
+
+            }
+
+            return response()->json([
+                'message' => __('Successfully request but there industrial areas in database yeet')
+            ],402);
+
+        }
+        catch (\Exception $e){
+
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message'=> __('Failed to get any thing')
+            ],501);
+
+        }
     }
 
     /**

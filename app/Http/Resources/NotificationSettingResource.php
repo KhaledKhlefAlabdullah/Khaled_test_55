@@ -25,8 +25,8 @@ class NotificationSettingResource extends JsonResource
             'is_on' => $this->is_on,
             'note' => $this->note,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

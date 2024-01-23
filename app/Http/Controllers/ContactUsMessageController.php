@@ -12,12 +12,10 @@ class ContactUsMessageController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * TODO: Rule for [portal manager]
      *
      */
     public function index()
     {
-
         return ContactUsMessagesResource::collection(Contact_us_message::paginate());
 
     }
@@ -25,7 +23,7 @@ class ContactUsMessageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * TODO: Rule for [Tenant Company, Industrial Area Representative, Infrastructure Provider, Government Representative]
+     * Rule for [Tenant Company, Industrial Area Representative, Infrastructure Provider, Government Representative]
      *
      * @param ContactUsMessageRequest $request
      *
@@ -72,7 +70,7 @@ class ContactUsMessageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * TODO: : Rule for [portal manager]
+     * Rule for [portal manager]
      */
     public function destroy(Contact_us_message $contact_us_message)
     {

@@ -26,8 +26,8 @@ class FileResource extends JsonResource
             'media_type' => $this->media_type,
             'update_frequency' => $this->update_frequency,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

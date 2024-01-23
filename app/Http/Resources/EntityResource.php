@@ -32,8 +32,8 @@ class EntityResource extends JsonResource
             'note' => $this->note,
             'description' => $this->description,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
 
         ];
     }

@@ -19,8 +19,8 @@ class MonitoringPointNotificationSettingResource extends JsonResource
             'monitoring_point_id' => $this->monitoring_point_id,
             'notifications_setting_id' => $this->notifications_setting_id,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

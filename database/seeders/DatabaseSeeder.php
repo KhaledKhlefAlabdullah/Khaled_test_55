@@ -10,6 +10,7 @@ use App\Models\Message;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\User;
+use Database\Factories\ChatMemberFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,12 +20,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(10)->create();
-        Page::factory()->count(10)->create();
-        Contact_us_message::factory()->count(10)->create();
-        Category::factory()->count(10)->create();
-        Post::factory()->count(10)->create();
-        Chat::factory()->count(10)->create();
-        Message::factory()->count(10)->create();
+//        User::factory()->count(10)->create();
+//        Page::factory()->count(10)->create();
+//        Contact_us_message::factory()->count(10)->create();
+//        Category::factory()->count(10)->create();
+//        Post::factory()->count(10)->create();
+//        Chat::factory()->count(10)->create();
+//        Message::factory()->count(10)->create();
+
     }
 }

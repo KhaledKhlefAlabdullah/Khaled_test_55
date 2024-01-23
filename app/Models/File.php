@@ -22,7 +22,7 @@ class File extends Model
         'title',
         'description',
         'version',
-        'media_URL',
+        'media_url',
         'media_type'
     ];
 

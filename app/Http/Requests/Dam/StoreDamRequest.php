@@ -31,4 +31,21 @@ class StoreDamRequest extends BaseRequest
         ];
     }
 
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'user_id' => 'User ID',
+            'name' => 'Name',
+            'location' => 'Location',
+            'water_level' => 'Water Level',
+            'discharge' => 'Discharge',
+            'source' => 'Source',
+        ];
+    }
 }

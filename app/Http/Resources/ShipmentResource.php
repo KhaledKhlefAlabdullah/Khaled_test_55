@@ -26,8 +26,8 @@ class ShipmentResource extends JsonResource
             'location' => $this->location,
             'contact_info' => $this->contact_info,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

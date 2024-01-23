@@ -36,4 +36,19 @@ class UpdateCategoryRequest extends StoreCategoryRequest
         return array_merge($parentRules, $customRules);
 
     }
+
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'name' => 'Name',
+            'type' => 'Type',
+            'parent_id' => 'Parent ID',
+        ];
+    }
 }

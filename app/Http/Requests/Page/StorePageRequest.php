@@ -32,4 +32,24 @@ class StorePageRequest extends BaseRequest
             'end_time' => ['nullable', 'date'],
         ];
     }
+
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'user_id' => 'User ID',
+            'title' => 'Title',
+            'type' => 'Type',
+            'description' => 'Description',
+            'phone_number' => 'Phone Number',
+            'location' => 'Location',
+            'start_time' => 'Start Time',
+            'end_time' => 'End Time',
+        ];
+    }
 }

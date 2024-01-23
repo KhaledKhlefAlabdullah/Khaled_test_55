@@ -23,7 +23,7 @@ class PageController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * TODO Fix this function
+     * Fix this function
      * Only "Portal Manager" can be store a page.
      */
     public function store(StorePageRequest $request)

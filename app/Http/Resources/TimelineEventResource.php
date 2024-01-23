@@ -26,8 +26,8 @@ class TimelineEventResource extends JsonResource
             'production_percentage' => $this->production_percentage,
             'is_active' => $this->is_active,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

@@ -22,15 +22,14 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'body' => $this->body,
-            'media_URL' => $this->media_URL,
+            'media_url' => $this->media_url,
             'media_type' => $this->media_type,
             'is_priority' => $this->is_priority,
             'priority_count' => $this->priority_count,
             'is_general_news' => $this->is_general_news,
             'is_publish' => $this->is_publish,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at
+            'updated_at' => $this->updated_at
         ];
     }
 }

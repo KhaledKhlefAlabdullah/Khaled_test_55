@@ -29,4 +29,20 @@ class UpdateDamRequest extends FormRequest
             'source' => ['nullable', 'string', 'max:255',]
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'name' => 'Name',
+            'location' => 'Location',
+            'water_level' => 'Water Level',
+            'discharge' => 'Discharge',
+            'source' => 'Source'
+        ];
+    }
 }

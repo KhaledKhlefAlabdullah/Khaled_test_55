@@ -19,8 +19,8 @@ class DamNotificationResource extends JsonResource
             'dam_id' => $this->dam_id,
             'notification_setting_id' => $this->notification_setting_id,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

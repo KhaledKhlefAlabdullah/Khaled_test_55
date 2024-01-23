@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\User_profile;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use function Laravel\Prompts\select;
 
 class ContactUsMessagesResource extends JsonResource
 {
@@ -21,12 +22,12 @@ class ContactUsMessagesResource extends JsonResource
         return [
             'id' => $this->id,
 //            'user_id' => $this->user_id,
-            'user' => new UserResource($this->user),
             'message' => $this->message,
             'is_read' => $this->is_read,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+
+            'user' => new UserResource($this->user)
         ];
     }
 }

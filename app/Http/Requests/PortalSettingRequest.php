@@ -25,4 +25,19 @@ class PortalSettingRequest extends BaseRequest
             'value' => ['required',]
         ];
     }
+
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'user_id' => 'User ID',
+            'key' => 'Key',
+            'value' => 'Value',
+        ];
+    }
 }

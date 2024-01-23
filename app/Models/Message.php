@@ -19,7 +19,7 @@ class Message extends Model
         'receiver_id',
         'chat_id',
         'message',
-        'media_URL',
+        'media_url',
         'message_type',
         'is_read',
         'is_edite',

@@ -18,7 +18,7 @@ class Participating_entity extends Model
     protected $fillable=[
         'user_id',
         'title',
-        'media_URL',
+        'media_url',
         'media_type'
     ];
 

@@ -16,7 +16,6 @@ class ChatFactory extends Factory
             'chat_name' => $this->faker->name(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'deleted_at' => Carbon::now(),
         ];
     }
 }

@@ -27,4 +27,18 @@ class ContactUsMessageRequest extends BaseRequest
         ];
     }
 
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'user_id' => 'User ID',
+            'message' => 'Message',
+            'is_read' => 'Is Read',
+        ];
+    }
 }

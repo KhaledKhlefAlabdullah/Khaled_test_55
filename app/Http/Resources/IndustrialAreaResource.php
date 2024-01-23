@@ -22,8 +22,8 @@ class IndustrialAreaResource extends JsonResource
             'representative_name' => $this->representative_name,
             'representative_email' => $this->representative_email,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

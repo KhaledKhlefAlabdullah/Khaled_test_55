@@ -21,7 +21,7 @@ class Post extends Model
         'title',
         'slug',
         'body',
-        'media_URL',
+        'media_url',
         'media_type',
         'is_priority',
         'priority_count',

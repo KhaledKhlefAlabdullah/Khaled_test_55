@@ -58,7 +58,6 @@ Route::apiResources([
 ]);
 
 
-
 Route::group(['prefix' => 'stakeholders'], function () {
 
     Route::get('/', [StakeholderController::class, 'index']);
@@ -71,19 +70,19 @@ Route::group(['prefix' => 'stakeholders'], function () {
 
 });
 
-Route::group(['prefix' => 'registration_requests'], function(){
+Route::group(['prefix' => 'registration_requests'], function () {
 
-    Route::get('/',[RegistrationRequestController::class,'index']);
+    Route::get('/', [RegistrationRequestController::class, 'index']);
 
-    Route::post('/add',[RegistrationRequestController::class,'store']);
+    Route::post('/add', [RegistrationRequestController::class, 'store']);
 
-    Route::post('/accept_or_failed',[RegistrationRequestController::class,'accept_or_failed']);
+    Route::post('/accept_or_failed', [RegistrationRequestController::class, 'accept_or_failed']);
 
-    Route::post('/delete',[RegistrationRequestController::class,'destroy']);
+    Route::post('/delete', [RegistrationRequestController::class, 'destroy']);
 
 });
 
 
-Route::get('users',[UserController::class,'index'])->name('users');
+Route::get('users', [UserController::class, 'index'])->name('users');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

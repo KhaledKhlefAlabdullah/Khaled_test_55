@@ -25,8 +25,8 @@ class SupplierResource extends JsonResource
             'slug' => $this->slug,
             'is_available' => $this->is_available,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

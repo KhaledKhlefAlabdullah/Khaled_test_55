@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug')->nullable();
             $table->text('body');
-            $table->string('media_URL')->nullable();
+            $table->string('media_url')->nullable();
             $table->enum('media_type', ['image', 'video', 'file'])->nullable();
             $table->boolean('is_priority')->nullable();
             $table->integer('priority_count')->nullable();

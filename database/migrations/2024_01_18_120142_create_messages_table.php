@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('receiver_id');
             $table->string('chat_id');
             $table->text('message');
-            $table->string('media_URL')->nullable();
+            $table->string('media_url')->nullable();
             $table->enum('message_type',['text','image','video'])->nullable();
             $table->boolean('is_read')->default(false);
             $table->boolean('is_edite')->default(false);

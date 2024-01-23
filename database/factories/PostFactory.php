@@ -22,7 +22,7 @@ class PostFactory extends Factory
             'title' => fake()->sentence,
             'slug' => fake()->slug,
             'body' => fake()->paragraph,
-            'media_URL' => fake()->imageUrl, // Replace with the appropriate method for your media URL generation
+            'media_url' => fake()->imageUrl, // Replace with the appropriate method for your media URL generation
             'media_type' => fake()->randomElement(['image', 'video', 'file']),
             'is_priority' => fake()->boolean,
             'priority_count' => fake()->numberBetween(1, 100),

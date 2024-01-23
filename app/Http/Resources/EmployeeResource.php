@@ -25,8 +25,8 @@ class EmployeeResource extends JsonResource
             'slug' => $this->slug,
             'phone_number' => $this->phone_number,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

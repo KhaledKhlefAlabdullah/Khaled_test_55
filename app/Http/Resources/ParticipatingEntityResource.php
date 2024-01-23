@@ -18,11 +18,11 @@ class ParticipatingEntityResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'title' => $this->title,
-            'media_url' => $this->media_URL,
+            'media_url' => $this->media_url,
             'media_type' => $this->media_type,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

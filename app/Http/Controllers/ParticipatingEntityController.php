@@ -19,7 +19,7 @@ class ParticipatingEntityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * TODO: : Rule for [portal manager]
+     * Rule for [portal manager]
      */
     public function store(ParticipatingEntityRequest $request)
     {

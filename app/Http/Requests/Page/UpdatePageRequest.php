@@ -21,4 +21,22 @@ class UpdatePageRequest extends FormRequest
             'end_time' => ['nullable', 'date'],
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'title' => 'Title',
+            'type' => 'Type',
+            'description' => 'Description',
+            'phone_number' => 'Phone Number',
+            'location' => 'Location',
+            'start_time' => 'Start Time',
+            'end_time' => 'End Time',
+        ];
+    }
 }

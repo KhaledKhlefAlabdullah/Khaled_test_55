@@ -20,14 +20,14 @@ class MessageResource extends JsonResource
             'receiver_id' => $this->receiver_id,
             'chat_id' => $this->chat_id,
             'message' => $this->chat_id,
-            'media_URL' => $this->chat_id,
+            'media_url' => $this->chat_id,
             'message_type' => $this->chat_id,
             'is_read' => $this->chat_id,
             'is_edite' => $this->chat_id,
             'is_starred' => $this->chat_id,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
+            'updated_at' => $this->updated_at
+
         ];
     }
 }

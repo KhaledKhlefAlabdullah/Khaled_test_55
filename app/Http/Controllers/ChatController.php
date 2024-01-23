@@ -14,7 +14,6 @@ class ChatController extends Controller
     public function index()
     {
         return ChatResource::collection(Chat::paginate());
-
     }
 
 
@@ -37,34 +36,39 @@ class ChatController extends Controller
      * Display the specified resource.
      *
      */
-    public function show(Chat $chat)
+    public function show(string $id)
     {
-        // way 1
-        // Assuming $chat is an instance of the Chat model
-//            return (new ChatResource($chat))->additional([
-//                'messages' => $chat->messages()->orderBy('created_at', 'desc')->paginate(),
-//                 'users' => $chat->users(),
-//            ]);
+        $chat = Chat::find($id);
 
-        // way 2
+        if (!$chat) {
+            return response()->json(['message' => 'Chat not found'], 404);
+        }
+
+        // When requesting only one chat, all messages and their users must be fetched
         // Assuming $chat is an instance of the Chat model
         return (new ChatResource($chat))->additional([
-            'messages' => $chat->messages()->latest()->paginate(),
-            'users' => $chat->users(),
+            'messages' => $chat->messages()
+                ->latest()
+                ->paginate(),
+            'users' => $chat->users()->get()
         ]);
-
-
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chat $chat)
+    public function update(Request $request, string $id)
     {
         $valid_data = $request->validate([
             'chat_name' => ['sometimes', 'required', 'string', 'max:255',],
         ]);
+
+        $chat = Chat::find($id);
+
+        if (!$chat) {
+            return response()->json(['message' => 'Chat not found'], 404);
+        }
 
         $chat->update($valid_data);
 
@@ -75,8 +79,15 @@ class ChatController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chat $chat)
+    public function destroy(string $id)
     {
+
+        $chat = Chat::find($id);
+
+        if (!$chat) {
+            return response()->json(['message' => 'Chat not found'], 404);
+        }
+
         $chat->delete();
 
         return response()->noContent();

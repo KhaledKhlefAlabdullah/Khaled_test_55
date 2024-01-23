@@ -19,12 +19,12 @@ class MessageResource extends JsonResource
             'sender_id' => $this->sender_id,
             'receiver_id' => $this->receiver_id,
             'chat_id' => $this->chat_id,
-            'message' => $this->chat_id,
-            'media_url' => $this->chat_id,
-            'message_type' => $this->chat_id,
-            'is_read' => $this->chat_id,
-            'is_edite' => $this->chat_id,
-            'is_starred' => $this->chat_id,
+            'message' => $this->message,
+            'media_url' => $this->media_url,
+            'message_type' => $this->message_type,
+            'is_read' => $this->is_read,
+            'is_edite' => $this->is_edite,
+            'is_starred' => $this->is_starred,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
 

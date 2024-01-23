@@ -12,9 +12,8 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuid;
-
-    protected $keyType = 'string';
-    protected $primaryKey = 'id';
+    protected $keyType='string';
+    protected $primaryKey='id';
     public $incrementing = false;
 
     /**
@@ -23,6 +22,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'industrial_area_id',
         'email',
         'stakeholder_type',
         'password',
@@ -118,6 +118,6 @@ class User extends Authenticatable
 
     public function industrial_area()
     {
-        return $this->hasOne(Industrial_area::class, 'user_id');
+        return $this->belongsTo(Industrial_area::class,'industrial_area_id');
     }
 }

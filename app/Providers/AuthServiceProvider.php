@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Industrial_area;
+use App\Models\Registration_request;
+use App\Policies\Industrial_area_policy;
+use App\Policies\Registration_request_policy;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -14,6 +18,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        Registration_request::class => Registration_request_policy::class,
+        Industrial_area::class => Industrial_area_policy::class,
     ];
 
     /**

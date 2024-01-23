@@ -16,11 +16,13 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
+            $table->string('industrial_area_id')->unique()->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('stakeholder_type',['Tenant_company', 'Portal_manager', 'Industrial_area_representative', 'Infrastructure_provider', 'Government_representative'])->default('Tenant_company');
             $table->boolean('is_active')->default(false);
+            $table->foreign('industrial_area_id')->references('id')->on('industrial_areas')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
@@ -31,7 +33,7 @@ return new class extends Migration
             'id' => \Illuminate\Support\Str::uuid(),
             'email'=>'test@example.com',
             'password'=>$password,
-            'stakeholder_type'=>'Tenant_company',
+            'stakeholder_type'=>'Portal_manager',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

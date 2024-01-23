@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ChatResource;
 use App\Models\Chat;
-use Exception;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
@@ -14,7 +13,7 @@ class ChatController extends Controller
      */
     public function index()
     {
-            return ChatResource::collection(Chat::paginate());
+        return ChatResource::collection(Chat::paginate());
 
     }
 
@@ -28,15 +27,15 @@ class ChatController extends Controller
             'chat_name' => ['required', 'string', 'max:255',],
         ]);
 
-            $chat = Chat::create($valid_data);
+        $chat = Chat::create($valid_data);
 
-            return new ChatResource($chat);
+        return new ChatResource($chat);
 
     }
 
     /**
      * Display the specified resource.
-     * // TODO: I'm don't check this function
+     *
      */
     public function show(Chat $chat)
     {
@@ -55,7 +54,6 @@ class ChatController extends Controller
         ]);
 
 
-
     }
 
 
@@ -68,9 +66,9 @@ class ChatController extends Controller
             'chat_name' => ['sometimes', 'required', 'string', 'max:255',],
         ]);
 
-            $chat->update($valid_data);
+        $chat->update($valid_data);
 
-            return new ChatResource($chat);
+        return new ChatResource($chat);
 
     }
 
@@ -79,9 +77,9 @@ class ChatController extends Controller
      */
     public function destroy(Chat $chat)
     {
-            $chat->delete();
+        $chat->delete();
 
-            return response()->json(null, 204);
+        return response()->noContent();
 
     }
 }

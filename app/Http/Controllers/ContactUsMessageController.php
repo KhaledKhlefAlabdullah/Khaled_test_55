@@ -79,7 +79,7 @@ class ContactUsMessageController extends Controller
 
         $contact_us_message->delete();
 
-            return response()->json(null, 204);
+        return response()->noContent();
 
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Message\StoreMessageRequest;
+use App\Http\Requests\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
-use Illuminate\Http\Request;
+
 
 class MessageController extends Controller
 {
@@ -32,9 +34,16 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreMessageRequest $request)
     {
-        //
+        // Validate the request data
+        $valid_data = $request->validated();
+
+        // Create the message
+        $message = Message::create($valid_data);
+
+        // Return the newly created message
+        return new MessageResource($message);
     }
 
     /**
@@ -42,6 +51,7 @@ class MessageController extends Controller
      */
     public function show(string $message_id)
     {
+        // Get the message by message ID
         $message = Message::find($message_id);
 
         return (!$message) ?
@@ -53,9 +63,23 @@ class MessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMessageRequest $request, string $id)
     {
-        //
+        // Get the message by message ID
+        $message = Message::find($id);
+
+        // Check if the message exists
+        if (!$message) {
+            return response()->json(['message' => 'Message not found'], 404);
+        }
+        // Validate the message
+        $valid_data = $request->validated();
+
+        // Update the message
+        $message->update($valid_data);
+
+        // Return the updated message
+        return new MessageResource($message);
     }
 
     /**
@@ -75,6 +99,6 @@ class MessageController extends Controller
         $message->delete();
 
         // Return the deleted message
-        return response()->json(['message' => 'Message deleted']);
+        return response()->json(['message' => 'Message deleted successfully']);
     }
 }

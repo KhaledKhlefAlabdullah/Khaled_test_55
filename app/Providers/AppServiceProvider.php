@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // todo remove it after finished
+        // TODO: remove it after finished
         Schema::defaultStringLength(191);
     }
 }

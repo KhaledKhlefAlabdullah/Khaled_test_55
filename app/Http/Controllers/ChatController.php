@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ChatResource;
 use App\Models\Chat;
-use Exception;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
@@ -14,13 +13,8 @@ class ChatController extends Controller
      */
     public function index()
     {
-        try {
-            return ChatResource::collection(Chat::paginate());
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        return ChatResource::collection(Chat::paginate());
+
     }
 
 
@@ -33,29 +27,33 @@ class ChatController extends Controller
             'chat_name' => ['required', 'string', 'max:255',],
         ]);
 
-        try {
-            $chat = Chat::create($valid_data);
+        $chat = Chat::create($valid_data);
 
-            return new ChatResource($chat);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        return new ChatResource($chat);
+
     }
 
     /**
      * Display the specified resource.
+     *
      */
     public function show(Chat $chat)
     {
-        try {
-            return (new ChatResource($chat))->load(['']);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        // way 1
+        // Assuming $chat is an instance of the Chat model
+//            return (new ChatResource($chat))->additional([
+//                'messages' => $chat->messages()->orderBy('created_at', 'desc')->paginate(),
+//                 'users' => $chat->users(),
+//            ]);
+
+        // way 2
+        // Assuming $chat is an instance of the Chat model
+        return (new ChatResource($chat))->additional([
+            'messages' => $chat->messages()->latest()->paginate(),
+            'users' => $chat->users(),
+        ]);
+
+
     }
 
 
@@ -68,15 +66,10 @@ class ChatController extends Controller
             'chat_name' => ['sometimes', 'required', 'string', 'max:255',],
         ]);
 
-        try {
-            $chat->update($valid_data);
+        $chat->update($valid_data);
 
-            return new ChatResource($chat);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        return new ChatResource($chat);
+
     }
 
     /**
@@ -84,14 +77,9 @@ class ChatController extends Controller
      */
     public function destroy(Chat $chat)
     {
-        try {
-            $chat->delete();
+        $chat->delete();
 
-            return response()->json(null, 204);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        return response()->noContent();
+
     }
 }

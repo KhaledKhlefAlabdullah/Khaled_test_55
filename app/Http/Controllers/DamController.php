@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Dam\StoreDamRequest;
+use App\Http\Requests\Dam\UpdateDamRequest;
 use App\Http\Resources\DamResource;
 use App\Models\Dam;
-use Exception;
-use Illuminate\Http\Request;
 
 class DamController extends Controller
 {
@@ -15,13 +14,7 @@ class DamController extends Controller
      */
     public function index()
     {
-        try {
-            return DamResource::collection(Dam::paginate());
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        return DamResource::collection(Dam::paginate());
     }
 
 
@@ -31,19 +24,8 @@ class DamController extends Controller
     public function store(StoreDamRequest $request)
     {
         $valid_data = $request->validated();
-
-        try {
-
-            $valid_data['user_id'] = \Auth::id();
-
-            $dam = Dam::create($valid_data);
-
-            return new DamResource($dam);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        $dam = Dam::create($valid_data);
+        return new DamResource($dam);
     }
 
     /**
@@ -51,23 +33,21 @@ class DamController extends Controller
      */
     public function show(Dam $dam)
     {
-        //
+        return new DamResource($dam);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Dam $dam)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Dam $dam)
+    public function update(UpdateDamRequest $request, Dam $dam)
     {
-        //
+        $valid_data = $request->validated();
+
+        $dam->update($valid_data);
+
+        return new DamResource($dam);
+
     }
 
     /**
@@ -75,6 +55,8 @@ class DamController extends Controller
      */
     public function destroy(Dam $dam)
     {
-        //
+        $dam->delete();
+
+        return response()->noContent();
     }
 }

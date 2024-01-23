@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class PortalSettingRequest extends FormRequest
+class PortalSettingRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,6 +20,7 @@ class PortalSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => ['required', 'string', 'max:100', 'exists:users,id',],
             'key' => ['required', 'string',],
             'value' => ['required',]
         ];

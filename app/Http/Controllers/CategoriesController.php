@@ -7,6 +7,7 @@ use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Exception;
+use Spatie\FlareClient\Http\Exceptions\BadResponseCode;
 
 class CategoriesController extends Controller
 {
@@ -15,13 +16,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        try {
-            return CategoryResource::collection(Category::paginate());
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
+        return CategoryResource::collection(Category::paginate());
+
     }
 
     /**
@@ -30,16 +27,11 @@ class CategoriesController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $valid_data = $request->validated();
-        try {
-            $category = Category::create($valid_data);
+        $category = Category::create($valid_data);
 
-            return new CategoryResource($category);
+        return new CategoryResource($category);
 
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+
     }
 
     /**
@@ -47,13 +39,8 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-        try {
-            return new CategoryResource($category);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        return new CategoryResource($category);
+
     }
 
 
@@ -67,11 +54,11 @@ class CategoriesController extends Controller
             $category->update($valid_data);
 
             return new CategoryResource($category);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
+
+        } catch (BadResponseCode $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
         }
+
     }
 
     /**
@@ -79,14 +66,7 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
-        try {
-            $category->delete();
-
-            return response()->json(null, 204);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], 400);
-        }
+        $category->delete();
+        return response()->noContent();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -24,7 +25,8 @@ class StoreCategoryRequest extends FormRequest
         return [
             'name' => ['string', 'max:255', 'required',],
             'type' => ['required', 'in:Post,News,File,Notification,Report,Timeline_event,entity'],
-            'parent_id' => ['nullable', 'uuid', 'exists:categories,id',],
+            'parent_id' => ['nullable', 'uuid', 'different:id', 'exists:categories,id', ''],
+
         ];
     }
 }

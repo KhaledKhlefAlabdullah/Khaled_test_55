@@ -42,31 +42,6 @@ class RegisteredUserController extends Controller
                 'job_title' => ['nullable','string']
             ]);
 
-            if (empty($validatedData['user_id']) && empty($validatedData['phone_number']) && empty($validatedData['contact_person']) && empty($validatedData['representative_name']) && empty($validatedData['job_title'])) {
-                // Create a new user
-                $user = User::create([
-                    'industrial_area_id' =>$validatedData['industrial_area_id'],
-                    'email' => $validatedData['email'],
-                    'password' => Hash::make($validatedData['password']),
-                    'stakeholder_type' => $validatedData['stakeholder_type'] == null ? 'Tenant_company' : $validatedData['stakeholder_type']
-                ]);
-
-                // Create a new user profile
-                $user_profile = User_profile::create([
-                    'user_id' => $user->id,
-                    'name' => $validatedData['name'],
-                    'contact_person' => $validatedData['contact_person'] == null ? '' : $validatedData['contact_person'],
-                    'location' => $validatedData['location'],
-                    'phone_number' => $validatedData['phone_number'] ? $validatedData['phone_number'] : '0000000000'
-                ]);
-
-                return response()->json(
-                    [
-                        'user' => $user,
-                        'user_profile' => $user_profile,
-                        'message' => __('User created successfully')
-                    ], 200);
-            }
             // Create a new user
             $user = User::create([
                 'email' => $validatedData['email'],
@@ -82,6 +57,18 @@ class RegisteredUserController extends Controller
                 'location' => $validatedData['location'],
                 'phone_number' => $validatedData['phone_number'] ? $validatedData['phone_number'] : '0000000000'
             ]);
+
+            // check if this fields is empty return response with user and user profile because this user is not stakeholder
+            if (empty($validatedData['user_id']) && empty($validatedData['phone_number']) && empty($validatedData['contact_person']) && empty($validatedData['representative_name']) && empty($validatedData['job_title'])) {
+
+                return response()->json(
+                    [
+                        'user' => $user,
+                        'user_profile' => $user_profile,
+                        'message' => __('User created successfully')
+                    ], 200);
+
+            }
 
             // If industrial_area_id is not provided, fetch it by user_id because the relation between users and industrials_areas is on to on
             if ($validatedData['industrial_area_id'] == null) {

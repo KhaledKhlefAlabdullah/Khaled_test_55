@@ -29,6 +29,7 @@ use App\Http\Controllers\TimelineQuirieController;
 use App\Http\Controllers\TimelineSharesRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Middleware\Portal_manager_middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -50,22 +51,22 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     // Pages
-    Route::apiResource('pages', PageController::class)->except(['create', 'edit']);
+    Route::apiResource('pages', PageController::class);
 //    Route::prefix('pages')->group(function () {
 //        Route::get('/', 'index')->name('pages.index');
 //    });
 
     // Contact Us Messages
-    Route::apiResource('contact-us-messages', ContactUsMessageController::class)->except(['create', 'edit']);
+    Route::apiResource('contact-us-messages', ContactUsMessageController::class);
 
     // Categories
-    Route::apiResource('categories', CategoriesController::class)->except(['create', 'edit']);
+    Route::apiResource('categories', CategoriesController::class);
 
     // Chats
-    Route::apiResource('chats', ChatController::class)->except(['create', 'edit']);
+    Route::apiResource('chats', ChatController::class);
 
     // Messages
-    Route::apiResource('messages', MessageController::class)->except(['index', 'create', 'edit']);
+    Route::apiResource('messages', MessageController::class)->except(['index']);
 
     // Show messages by chat ID
     Route::prefix('messages')->group(function () {
@@ -74,84 +75,85 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
     // Dams
-    Route::apiResource('dams', DamController::class)->except(['create', 'edit']);
+    Route::apiResource('dams', DamController::class);
 
     // Disaster Reports
-    Route::apiResource('disaster-reports', DisasterReportController::class)->except(['create', 'edit']);
+    Route::apiResource('disaster-reports', DisasterReportController::class);
 
 
     // Entities
-    Route::apiResource('entities', EntityController::class)->except(['create', 'edit']);
+    Route::apiResource('entities', EntityController::class);
 
     // Files
-    Route::apiResource('files', FileController::class)->except(['create', 'edit']);
+    Route::apiResource('files', FileController::class);
+
 
     // Industrial Areas
-//    Route::apiResource('industrial-areas', IndustrialAreaController::class)->except(['create', 'edit']);
+//    Route::apiResource('industrial-areas', IndustrialAreaController::class);
 
     // Monitoring Points
-    Route::apiResource('monitoring-points', MonitoringPointController::class)->except(['create', 'edit']);
+    Route::apiResource('monitoring-points', MonitoringPointController::class);
 
     // Natural Disasters
-    Route::apiResource('natural-disasters', NaturalDisasterController::class)->except(['create', 'edit']);
+    Route::apiResource('natural-disasters', NaturalDisasterController::class);
 
     // Notifications
-    Route::apiResource('notifications', NotificationController::class)->except(['create', 'edit']);
+    Route::apiResource('notifications', NotificationController::class);
 
     // Notification Settings
-    Route::apiResource('notification-settings', NotificationsSettingController::class)->except(['create', 'edit']);
+    Route::apiResource('notification-settings', NotificationsSettingController::class);
 
     // Participating Entities
-    Route::apiResource('participating-entities', ParticipatingEntityController::class)->except(['create', 'edit']);
+    Route::apiResource('participating-entities', ParticipatingEntityController::class);
 
     // Portal Settings
-    Route::apiResource('portal-settings', PortalSettingsController::class)->except(['create', 'edit']);
+    Route::apiResource('portal-settings', PortalSettingsController::class);
 
     // Posts
-    Route::apiResource('posts', PostController::class)->except(['create', 'edit']);
+    Route::apiResource('posts', PostController::class);
 
     // Services
-    Route::apiResource('services', ServiceController::class)->except(['create', 'edit']);
+    Route::apiResource('services', ServiceController::class);
 
     // Shipments
-    Route::apiResource('shipments', ShipmentController::class)->except(['create', 'edit']);
+    Route::apiResource('shipments', ShipmentController::class);
 
     // Suppliers
-    Route::apiResource('suppliers', SupplierController::class)->except(['create', 'edit']);
+    Route::apiResource('suppliers', SupplierController::class);
 
     // Employees
-    Route::apiResource('employees', EmployeeController::class)->except(['create', 'edit']);
+    Route::apiResource('employees', EmployeeController::class);
 
     // Timelines
-    Route::apiResource('timelines', TimelineController::class)->except(['create', 'edit']);
+    Route::apiResource('timelines', TimelineController::class);
 
     // Timeline Events
-    Route::apiResource('timeline-events', TimelineEventController::class)->except(['create', 'edit']);
+    Route::apiResource('timeline-events', TimelineEventController::class);
 
     // Timeline Queries
-    Route::apiResource('timeline-queries', TimelineQuirieController::class)->except(['create', 'edit']);
+    Route::apiResource('timeline-queries', TimelineQuirieController::class);
 
     // Timeline Shares Requests
-    Route::apiResource('timeline-shares-requests', TimelineSharesRequestController::class)->except(['create', 'edit']);
+    Route::apiResource('timeline-shares-requests', TimelineSharesRequestController::class);
 
     // User Profiles
-    Route::apiResource('user-profiles', UserProfileController::class)->except(['create', 'edit']);
+    Route::apiResource('user-profiles', UserProfileController::class);
 
 });
 
-Route::middleware(['auth:sanctum'])->group(function (){
+Route::middleware(['auth:sanctum'])->group(function () {
 
-    Route::middleware([\App\Http\Middleware\Portal_manager_middleware::class])->group(function (){
+    Route::middleware([Portal_manager_middleware::class])->group(function () {
 
-        Route::group(['prefix' => 'industrial-areas'],function (){
+        Route::group(['prefix' => 'industrial-areas'], function () {
 
-            Route::get('/',[IndustrialAreaController::class,'index']);
+            Route::get('/', [IndustrialAreaController::class, 'index']);
 
-            Route::get('/details',[IndustrialAreaController::class,'show']);
+            Route::get('/details', [IndustrialAreaController::class, 'show']);
 
-            Route::post('/add',[IndustrialAreaController::class,'store']);
+            Route::post('/add', [IndustrialAreaController::class, 'store']);
 
-            Route::post('/edite',[IndustrialAreaController::class,'update']);
+            Route::post('/edite', [IndustrialAreaController::class, 'update']);
 
         });
 
@@ -159,7 +161,6 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
 
 });
-
 
 
 Route::group(['prefix' => 'stakeholders'], function () {

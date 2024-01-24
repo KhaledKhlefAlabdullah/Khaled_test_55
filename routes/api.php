@@ -139,6 +139,28 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
+Route::middleware(['auth:sanctum'])->group(function (){
+
+    Route::middleware([\App\Http\Middleware\Portal_manager_middleware::class])->group(function (){
+
+        Route::group(['prefix' => 'industrial-areas'],function (){
+
+            Route::get('/',[IndustrialAreaController::class,'index']);
+
+            Route::get('/details',[IndustrialAreaController::class,'show']);
+
+            Route::post('/add',[IndustrialAreaController::class,'store']);
+
+            Route::post('/edite',[IndustrialAreaController::class,'update']);
+
+        });
+
+    });
+
+
+});
+
+
 
 Route::group(['prefix' => 'stakeholders'], function () {
 

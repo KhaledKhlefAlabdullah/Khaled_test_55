@@ -20,7 +20,7 @@ class EntityRequest extends FormRequest
     /**
      * Data preparation before validation.
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         // Set user_id based on the current user making the request
         $this->merge(['stakeholder_id' => Auth::id()]);
@@ -29,7 +29,7 @@ class EntityRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -77,7 +77,7 @@ class EntityRequest extends FormRequest
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      * @param array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'id' => 'ID',

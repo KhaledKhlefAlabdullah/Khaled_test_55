@@ -17,6 +17,7 @@ class EmployeeController extends Controller
         // Get all the employees of the stakeholder relationship
         $employees = Stakeholder::with('employees')->get();
 
+
         return ($employees->count() == 1)
             ? new EmployeeResource($employees->first)
             : EmployeeResource::collection($employees);

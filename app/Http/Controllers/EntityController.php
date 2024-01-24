@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EntityRequest;
+use App\Http\Resources\EntityResource;
 use App\Models\Entity;
-use Illuminate\Http\Request;
+use App\Models\Stakeholder;
+
 
 class EntityController extends Controller
 {
@@ -12,54 +15,81 @@ class EntityController extends Controller
      */
     public function index()
     {
-        //
-    }
+        // Get Entity using relationship
+        $entities = Stakeholder::with('entities')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return ($entities->count() == 1)
+            ? new EntityResource($entities->first())
+            : EntityResource::collection($entities);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EntityRequest $request)
     {
-        //
+        // Validate the request
+        $valid_data = $request->validated();
+
+        // Create the Entity
+        $entity = Entity::create($valid_data);
+
+        return new EntityResource($entity);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Entity $entity)
+    public function show(string $id)
     {
-        //
+        // Get the entity
+        $entity = Entity::find($id);
+
+        if (!$entity) {
+            return response()->json(['message' => 'Entity not found'], 404);
+        }
+
+        // Return the entity
+        return new EntityResource($entity);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Entity $entity)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Entity $entity)
+    public function update(EntityRequest $request, string $id)
     {
-        //
+        // Get the entity
+        $entity = Entity::fined($id);
+
+        if (!$entity) {
+            return response()->json(['message' => 'Entity not found'], 404);
+        }
+
+        // Validate the request
+        $valid_data = $request->validated();
+
+        // Update the entity
+        $entity->update($valid_data);
+
+        return new EntityResource($entity);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Entity $entity)
+    public function destroy(string $id)
     {
-        //
+        // Get the entity by ID
+        $entity = Entity::fined($id);
+
+        if (!$entity) {
+            return response()->json(['message' => 'Entity not found'], 404);
+        }
+
+        // Delete the entity
+        $entity->delete();
+
+        return response()->json(['message' => 'Entity deleted successfully']);
     }
 }

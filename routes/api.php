@@ -79,8 +79,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Disaster Reports
     Route::apiResource('disaster-reports', DisasterReportController::class)->except(['create', 'edit']);
 
-    // Employees
-    Route::apiResource('employees', EmployeeController::class)->except(['create', 'edit']);
 
     // Entities
     Route::apiResource('entities', EntityController::class)->except(['create', 'edit']);
@@ -89,7 +87,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('files', FileController::class)->except(['create', 'edit']);
 
     // Industrial Areas
-    Route::apiResource('industrial-areas', IndustrialAreaController::class)->except(['create', 'edit']);
+//    Route::apiResource('industrial-areas', IndustrialAreaController::class)->except(['create', 'edit']);
 
     // Monitoring Points
     Route::apiResource('monitoring-points', MonitoringPointController::class)->except(['create', 'edit']);
@@ -120,6 +118,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Suppliers
     Route::apiResource('suppliers', SupplierController::class)->except(['create', 'edit']);
+
+    // Employees
+    Route::apiResource('employees', EmployeeController::class)->except(['create', 'edit']);
 
     // Timelines
     Route::apiResource('timelines', TimelineController::class)->except(['create', 'edit']);

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NaturalDisasterRequest;
+use App\Http\Resources\NaturalDisasterResource;
 use App\Models\Natural_disaster;
-use Illuminate\Http\Request;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
 
 class NaturalDisasterController extends Controller
 {
@@ -12,54 +15,84 @@ class NaturalDisasterController extends Controller
      */
     public function index()
     {
-        //
-    }
+        // Get all Natural Disasters
+        $data = Natural_disaster::paginate();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return ($data->count() == 1)
+            ? new NaturalDisasterResource($data->first())
+            : NaturalDisasterResource::collection($data);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(NaturalDisasterRequest $request)
     {
-        //
+        // Validate the request
+        $valid_data = $request->validated();
+
+        // Create the Natural Disaster
+        $natural_disaster = Natural_disaster::create($valid_data);
+
+        return new NaturalDisasterResource($natural_disaster);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Natural_disaster $natural_disaster)
+    public function show(string $id)
     {
-        //
-    }
+        try {
+            // Get the Natural Disaster by ID and check if the Natural Disaster exists
+            $natural_disaster = getAndCheckModelById(Natural_disaster::class, $id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Natural_disaster $natural_disaster)
-    {
-        //
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+
+        return new NaturalDisasterResource($natural_disaster);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Natural_disaster $natural_disaster)
+    public function update(NaturalDisasterRequest $request, string $id)
     {
-        //
+        try {
+            // Get the Natural Disaster by ID and check if the Natural Disaster exists
+            $natural_disaster = getAndCheckModelById(Natural_disaster::class, $id);
+
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+
+
+        // Validate the request
+        $valid_data = $request->validated();
+
+        // Update the Natural Disaster
+        $natural_disaster->update($valid_data);
+
+        return new NaturalDisasterResource($natural_disaster);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Natural_disaster $natural_disaster)
+    public function destroy(string $id)
     {
-        //
+        try {
+            // Get the Natural Disaster by ID and check if the Natural Disaster exists
+            $natural_disaster = getAndCheckModelById(Natural_disaster::class, $id);
+
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+
+        // Delete the Natural Disaster
+        $natural_disaster->delete();
+
+        return response()->json(['message' => 'Natural Disaster deleted successfully']);
     }
+
 }

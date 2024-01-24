@@ -5,6 +5,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 
+/*
+ * @extends BaseRequest
+ */
+
 class MonitoringPointRequest extends BaseRequest
 {
     /**
@@ -22,13 +26,31 @@ class MonitoringPointRequest extends BaseRequest
      */
     public function rules(): array
     {
+        if ($this->method() == 'POST') {
+            return [
+                'user_id' => ['required', 'uuid', 'exists:users,id'],
+                'name' => ['required', 'string', 'max:255', 'unique:monitoring_points,name'],
+                'location' => ['required', 'string', 'max:255'],
+                'point_type' => ['required', 'in:normal,high,dangerous'],
+                'api_link' => ['nullable', 'url'],
+                'is_custom' => ['sometimes', 'required', 'boolean'],
+                'water_level' => ['nullable', 'numeric'],
+                'risk_indicators' => ['nullable', 'string'],
+                'discharge' => ['nullable', 'string'],
+                'source' => ['nullable', 'string'],
+            ];
+        }
+
         return [
-            'user_id' => ['required', 'uuid', 'exists:users,id'],
-            'name' => ['required', 'string', 'max:255', 'unique:monitoring_points,name'],
-            'location' => ['required', 'string', 'max:255'],
-            'point_type' => ['required', 'in:normal,high,dangerous'],
+            'name' => ['sometimes', 'required', 'string', 'max:255', 'unique:monitoring_points,name'],
+            'location' => ['sometimes', 'required', 'string', 'max:255'],
+            'point_type' => ['sometimes', 'required', 'in:normal,high,dangerous'],
             'api_link' => ['nullable', 'url'],
             'is_custom' => ['sometimes', 'required', 'boolean'],
+            'water_level' => ['nullable', 'numeric'],
+            'risk_indicators' => ['nullable', 'string'],
+            'discharge' => ['nullable', 'string'],
+            'source' => ['nullable', 'string'],
         ];
     }
 }

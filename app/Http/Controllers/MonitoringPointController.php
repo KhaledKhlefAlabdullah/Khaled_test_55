@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MonitoringPointRequest;
 use App\Http\Resources\MonitoringPointResource;
 use App\Models\Monitoring_point;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
 
 class MonitoringPointController extends Controller
 {
@@ -41,14 +43,14 @@ class MonitoringPointController extends Controller
      */
     public function show(string $id)
     {
-        // Get the monitoring point by ID
-        $monitoring_point = Monitoring_point::find($id);
+        try {
+            $data = getAndCheckModelById(Monitoring_point::class, $id);
 
-        if (!$monitoring_point) {
-            return response()->json(['message' => 'Monitoring point not found'], 404);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        return new MonitoringPointResource($monitoring_point);
+        return new MonitoringPointResource($data);
     }
 
 
@@ -58,10 +60,11 @@ class MonitoringPointController extends Controller
     public function update(MonitoringPointRequest $request, string $id)
     {
         // Get the monitoring point by ID
-        $monitoring_point = Monitoring_point::find($id);
+        try {
+            $monitoring_point = getAndCheckModelById(Monitoring_point::class, $id);
 
-        if (!$monitoring_point) {
-            return response()->json(['message' => 'Monitoring point not found'], 404);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
         // Validate the data
@@ -78,11 +81,11 @@ class MonitoringPointController extends Controller
      */
     public function destroy(string $id)
     {
-        // Get the monitoring point by ID
-        $monitoring_point = Monitoring_point::find($id);
+        try {
+            $monitoring_point = getAndCheckModelById(Monitoring_point::class, $id);
 
-        if (!$monitoring_point) {
-            return response()->json(['message' => 'Monitoring point not found'], 404);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
         // Delete the monitoring point

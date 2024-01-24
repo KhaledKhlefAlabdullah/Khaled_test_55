@@ -149,7 +149,7 @@ class RegistrationRequestController extends Controller
 
                 // create industrial area representative (user)
                 // Simulate a request to the RegisteredUserController@store method
-                Public_use::fake_register_request(
+                $response = Public_use::fake_register_request(
                     name: $registration_request->name,
                     email: $registration_request->email,
                     password: $registration_request->password,
@@ -160,9 +160,7 @@ class RegistrationRequestController extends Controller
                     job_title: $registration_request->job_title
                 );
 
-                return response()->json([
-                    'message' => __('your accept the request but dont add user')
-                ],200);
+                return $response;
 
             }else{
 

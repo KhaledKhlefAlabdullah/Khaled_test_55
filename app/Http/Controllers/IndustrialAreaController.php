@@ -69,7 +69,7 @@ class IndustrialAreaController extends Controller
 
             // create industrial area representative (user)
             // Simulate a request to the RegisteredUserController@store method
-            Public_use::fake_register_request(
+            $response = Public_use::fake_register_request(
                 industrial_area_id: $industrial_area->id,
                 name: $request->input('representative_name'),
                 email: $request->input('email'),
@@ -79,9 +79,7 @@ class IndustrialAreaController extends Controller
                 location: $industrial_area->address
             );
 
-            return response()->json([
-                'message' => __('industrial area created but without any representative')
-            ],200);
+            return $response;
         }
         catch (\Exception $e){
 

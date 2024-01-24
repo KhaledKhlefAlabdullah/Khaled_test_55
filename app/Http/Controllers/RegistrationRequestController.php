@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\Registration_request;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use function App\Helpers\fake_register_request;
 
 
 class RegistrationRequestController extends Controller
@@ -120,8 +119,6 @@ class RegistrationRequestController extends Controller
     public function accept_or_failed(Request $request)
     {
         try {
-            // authorize the user if can use this function
-            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
 
             // validate request inputs
             $request->validate([
@@ -149,7 +146,7 @@ class RegistrationRequestController extends Controller
 
                 // create industrial area representative (user)
                 // Simulate a request to the RegisteredUserController@store method
-                $response = Public_use::fake_register_request(
+                $response = fake_register_request(
                     name: $registration_request->name,
                     email: $registration_request->email,
                     password: $registration_request->password,
@@ -193,9 +190,6 @@ class RegistrationRequestController extends Controller
     public function destroy(Request $request)
     {
         try {
-
-            // authorize the user if can use this function
-            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
 
             // Get the registration request from the request
             $registration_id = $request->input('registration_id');

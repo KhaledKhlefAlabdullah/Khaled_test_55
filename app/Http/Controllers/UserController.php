@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Industrial_area;
-use App\Models\Stakeholder;
 use App\Models\User;
-use App\Policies\User_policy;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function App\Helpers\fake_register_request;
 
 class UserController extends Controller
 {
@@ -99,30 +98,40 @@ class UserController extends Controller
         try{
 
             $validatedData = $request->validate([
-
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:3',
+                'phone_number' => 'nullable|string|max:20',
+                'contact_person' => 'nullable|string|max:255',
+                'stakeholder_type' => 'required|string|in:Tenant_company,Other_Stakeholder_Type',
+                'location' => 'nullable|string|max:255'
             ]);
+
+            // create industrial area representative (user)
+            // Simulate a request to the RegisteredUserController@store method
+            $response = \App\Helpers\fake_register_request(
+                name: $validatedData['name'],
+                email: $validatedData['email'],
+                password: $validatedData['password'],
+                password_confirmation: $validatedData['password'],
+                phone_number: $validatedData['phone_number'],
+                contact_person: $validatedData['contact_person'],
+                stakeholder_type: $validatedData['stakeholder_type'],
+                location: $validatedData['location']
+            );
+
+            return $response;
 
         }
         catch (\Exception $e){
 
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There are problem in server side try another time')
+            ]);
+
         }
 
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
     }
 
     /**
@@ -136,8 +145,37 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            // validate the user_id
+            $request->validate([
+                'user_id' => 'required|string|exists:users,id'
+            ]);
+
+            // get the user
+            $user = User::findOrFail($request->input('user_id'));
+
+            // remove the user
+            $user->delete();
+
+            return response()->json([
+                'message' => 'User deleted successfully'
+            ], 200);
+
+        } catch (ModelNotFoundException $e) {
+
+            return response()->json([
+                'error' => 'User not found'
+            ], 404);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'error' => 'Something went wrong'
+            ], 500);
+
+        }
+
     }
 }

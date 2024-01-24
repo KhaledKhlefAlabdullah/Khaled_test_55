@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Models\Industrial_area;
 use App\Models\User;
 use Illuminate\Http\Request;
+use function App\Helpers\fake_register_request;
 
 class IndustrialAreaController extends Controller
 {
@@ -69,7 +69,7 @@ class IndustrialAreaController extends Controller
 
             // create industrial area representative (user)
             // Simulate a request to the RegisteredUserController@store method
-            $response = Public_use::fake_register_request(
+            $response = fake_register_request(
                 industrial_area_id: $industrial_area->id,
                 name: $request->input('representative_name'),
                 email: $request->input('email'),

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,10 +12,10 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
+            $table->string('stakeholder_id');
             $table->string('route_id');
             $table->string('department_id');
             $table->string('station_id');
-            $table->string('stakeholder_id');
             $table->string('public_id')->unique();
             $table->boolean('is_leader_shop');
             $table->string('slug')->nullable();

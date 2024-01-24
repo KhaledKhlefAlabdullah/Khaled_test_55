@@ -28,7 +28,6 @@ class DisasterReportResource extends JsonResource
             'stop_date' => $this->stop_date,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
-
         ];
     }
 }

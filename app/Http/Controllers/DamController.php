@@ -14,7 +14,13 @@ class DamController extends Controller
      */
     public function index()
     {
-        return DamResource::collection(Dam::paginate());
+        // Get all Dams
+        $dams = Dam::paginate();
+
+        // Return DamResource collection
+        return ($dams->count() == 1)
+            ? new DamResource($dams->first())
+            : DamResource::collection($dams);
     }
 
 
@@ -23,16 +29,29 @@ class DamController extends Controller
      */
     public function store(StoreDamRequest $request)
     {
+        // Validate the Dam
         $valid_data = $request->validated();
+
+        // Create Dam
         $dam = Dam::create($valid_data);
+
+        // Return DamResource
         return new DamResource($dam);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Dam $dam)
+    public function show(string $id)
     {
+        // Get Dam by ID
+        $dam = Dam::find($id);
+
+        // Check dam exists
+        if (!$dam) {
+            return response()->json(['message' => 'Dam not found'], 404);
+        }
+
         return new DamResource($dam);
     }
 
@@ -40,23 +59,41 @@ class DamController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDamRequest $request, Dam $dam)
+    public function update(UpdateDamRequest $request, string $id)
     {
+        // Get Dam by ID
+        $dam = Dam::find($id);
+
+        // Check dam exists
+        if (!$dam) {
+            return response()->json(['message' => 'Dam not found'], 404);
+        }
+
+        // Validate the Dam
         $valid_data = $request->validated();
 
+        // Update Dam
         $dam->update($valid_data);
 
+        // Return DamResource
         return new DamResource($dam);
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dam $dam)
+    public function destroy(string $id)
     {
+        // Get Dam by ID
+        $dam = Dam::find($id);
+
+        // Check dam exists
+        if (!$dam) {
+            return response()->json(['message' => 'Dam not found'], 404);
+        }
+        // Delete Dam
         $dam->delete();
 
-        return response()->noContent();
+        return response()->json(['message' => 'Dam deleted successfully'],);
     }
 }

@@ -70,8 +70,8 @@ class User_policy
     /**
      *  Get all user belong to this industrial area
      */
-    public function view_subdomain_users(User $user, Industrial_area $industrialArea)
+    public function view_subdomain_users(User $user)
     {
-        return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE && $user->id == $industrialArea->user_id;
+        return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE && !empty($user->industrial_area_id);
     }
 }

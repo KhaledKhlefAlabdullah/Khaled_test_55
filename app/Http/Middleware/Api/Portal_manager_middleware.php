@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\Api;
 
-use App\Models\Registration_request;
-use App\Policies\Registration_request_policy;
+use App\Models\Industrial_area;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-class Industrial_area_representative_middleware
+class Portal_manager_middleware
 {
     /**
      * Handle an incoming request.
@@ -18,8 +17,7 @@ class Industrial_area_representative_middleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        Gate::authorize('view_or_details_or_accept_denied', Registration_request::class);
+        Gate::authorize('view_details_create_update', Industrial_area::class);
 
         return $next($request);
     }

@@ -29,7 +29,9 @@ use App\Http\Controllers\TimelineQuirieController;
 use App\Http\Controllers\TimelineSharesRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Middleware\Portal_manager_middleware;
+use App\Http\Middleware\Api\Industrial_area_representative_middleware;
+use App\Http\Middleware\Api\Portal_manager_middleware;
+use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -143,6 +145,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
+
+    // Routes for portal manager role
     Route::middleware([Portal_manager_middleware::class])->group(function () {
 
         Route::group(['prefix' => 'industrial-areas'], function () {
@@ -156,6 +160,41 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('/edite', [IndustrialAreaController::class, 'update']);
 
         });
+
+    });
+
+
+    // Routes for industrial area representative role
+    Route::middleware([Industrial_area_representative_middleware::class])->group(function (){
+
+        Route::group(['prefix'=> 'subdomain-users'],function (){
+
+            Route::get('/', [UserController::class, 'subdomain_users']);
+
+            Route::get('/details', [UserController::class, 'subdomain_user_details']);
+
+        });
+
+
+        Route::group(['prefix' => 'registration_requests'], function () {
+
+            Route::get('/', [RegistrationRequestController::class, 'index']);
+
+            Route::post('/accept_or_failed', [RegistrationRequestController::class, 'accept_or_failed']);
+
+            Route::post('/delete', [RegistrationRequestController::class, 'destroy']);
+
+        });
+
+
+
+        // Routes for industrial area representative role
+        Route::middleware([Ifrastructar_provider_middleware::class])->group(function (){
+
+
+        });
+
+
 
     });
 
@@ -175,21 +214,13 @@ Route::group(['prefix' => 'stakeholders'], function () {
 
 });
 
-Route::group(['prefix' => 'registration_requests'], function () {
-
-    Route::get('/', [RegistrationRequestController::class, 'index']);
-
-    Route::post('/add', [RegistrationRequestController::class, 'store']);
-
-    Route::post('/accept_or_failed', [RegistrationRequestController::class, 'accept_or_failed']);
-
-    Route::post('/delete', [RegistrationRequestController::class, 'destroy']);
-
-});
-
-Route::post('/add', [RegistrationRequestController::class, 'store']);
 
 
-Route::get('users', [UserController::class, 'index'])->name('users');
+Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);
+
+
+Route::get('users', [UserController::class, 'index']);
+
+
 
 require __DIR__ . '/auth.php';

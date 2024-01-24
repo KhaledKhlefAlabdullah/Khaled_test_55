@@ -69,26 +69,19 @@ class IndustrialAreaController extends Controller
 
             // create industrial area representative (user)
             // Simulate a request to the RegisteredUserController@store method
-            $request = Request::create('/api/register', 'POST', [
-                'user_id' => null,
-                'industrial_area_id' => $industrial_area->id,
-                'name' => $request->input('representative_name'),
-                'email' => $request->input('email'),
-                'password' => 'P@ssword',
-                'password_confirmation' => 'P@ssword',
-                'phone_number' => null,
-                'contact_person' => null,
-                'stakeholder_type' => 'Industrial_area_representative',
-                'location' => $industrial_area->address,
-                'representative_name' => null,
-                'job_title' => null
-            ]);
+            Public_use::fake_register_request(
+                industrial_area_id: $industrial_area->id,
+                name: $request->input('representative_name'),
+                email: $request->input('email'),
+                password: 'P@ssword',
+                password_confirmation: 'P@ssword',
+                stakeholder_type: 'Industrial_area_representative',
+                location: $industrial_area->address
+            );
 
-            // make an object of RegisteredUserController to use register user function ( store )
-            $response = (new RegisteredUserController())->store($request);
-
-            return $response;
-
+            return response()->json([
+                'message' => __('industrial area created but without any representative')
+            ],200);
         }
         catch (\Exception $e){
 

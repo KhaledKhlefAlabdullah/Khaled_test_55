@@ -106,7 +106,7 @@ class User extends Authenticatable
         return $this->hasMany(Monitoring_point::class, 'user_id');
     }
 
-    public function stakholder()
+    public function stakeholder()
     {
         return $this->hasOne(Stakeholder::class, 'user_id');
     }

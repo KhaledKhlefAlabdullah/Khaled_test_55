@@ -29,7 +29,6 @@ class RegisteredUserController extends Controller
 
             // Validate the inputs
             $validatedData = $request->validate([
-                'user_id' => ['nullable','exists:users,id'],
                 'industrial_area_id' => ['nullable', 'exists:industrial_areas,id'],
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
@@ -46,7 +45,7 @@ class RegisteredUserController extends Controller
             $user = User::create([
                 'industrial_area_id' => $validatedData['industrial_area_id'],
                 'email' => $validatedData['email'],
-                'password' => Hash::make($validatedData['password']),
+                'password' => password_hash($validatedData['password'],PASSWORD_DEFAULT),
                 'stakeholder_type' => $validatedData['stakeholder_type'] == null ? 'Tenant_company' : $validatedData['stakeholder_type']
             ]);
 
@@ -60,7 +59,7 @@ class RegisteredUserController extends Controller
             ]);
 
             // check if this fields is empty return response with user and user profile because this user is not stakeholder
-            if (empty($validatedData['user_id']) && empty($validatedData['phone_number']) && empty($validatedData['contact_person']) && empty($validatedData['representative_name']) && empty($validatedData['job_title'])) {
+            if (empty($validatedData['phone_number']) && empty($validatedData['contact_person']) && empty($validatedData['representative_name']) && empty($validatedData['job_title'])) {
 
                 return response()->json(
                     [
@@ -72,8 +71,12 @@ class RegisteredUserController extends Controller
             }
 
             // If industrial_area_id is not provided, fetch it by user_id because the relation between users and industrials_areas is on to on
-            if ($validatedData['industrial_area_id'] == null) {
-                $validatedData['industrial_area_id'] = Industrial_area::where('user_id', $validatedData['user_id'])->first()->id;
+            if (empty($validatedData['industrial_area_id'])) {
+                $validatedData['industrial_area_id'] = Auth::user()->industrial_area_id;
+            }else{
+                return response()->json([
+                    'message'=> __('failed to create stakeholder')
+                ],500);
             }
 
             // Create a new stakeholder

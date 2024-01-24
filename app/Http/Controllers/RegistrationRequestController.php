@@ -147,27 +147,22 @@ class RegistrationRequestController extends Controller
                     'failed_message' => __('your request accepted')
                 ]);
 
+                // create industrial area representative (user)
                 // Simulate a request to the RegisteredUserController@store method
-                $request = Request::create('/api/register', 'POST', [
-                    'user_id' => $registration_request->user_id,
-                    'industrial_area_id' => null,
-                    'name' => $registration_request->name,
-                    'email' => $registration_request->email,
-                    'password' => $registration_request->password,
-                    'password_confirmation' => $registration_request->password,
-                    'phone_number' => $registration_request->phone_number,
-                    'contact_person' => null,
-                    'stakeholder_type' => null,
-                    'location' => $registration_request->location,
-                    'representative_name' => $registration_request->representative_name,
-                    'job_title' => $registration_request->job_title
-                ]);
+                Public_use::fake_register_request(
+                    name: $registration_request->name,
+                    email: $registration_request->email,
+                    password: $registration_request->password,
+                    password_confirmation: $registration_request->password,
+                    phone_number: $registration_request->phone_number,
+                    location: $registration_request->location,
+                    representative_name: $registration_request->representative_name,
+                    job_title: $registration_request->job_title
+                );
 
-                // make an object of RegisteredUserController to use register user function ( store )
-                $response = (new RegisteredUserController())->store($request);
-
-                // Return a success response
-                return $response;
+                return response()->json([
+                    'message' => __('your accept the request but dont add user')
+                ],200);
 
             }else{
 

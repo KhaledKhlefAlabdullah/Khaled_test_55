@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -12,8 +13,9 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasUuid;
-    protected $keyType='string';
-    protected $primaryKey='id';
+
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
     public $incrementing = false;
 
     /**
@@ -81,27 +83,27 @@ class User extends Authenticatable
         return $this->belongsToMany(Chat::class, 'chat_members', 'user_id', 'chat_id');
     }
 
-    public function sentMessages()
+    public function sentMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function receivedMessages()
+    public function receivedMessages(): HasMany
     {
         return $this->hasMany(Message::class, 'receiver_id');
     }
 
-    public function notifications()
+    public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class, 'user_id');
     }
 
-    public function dams()
+    public function dams(): HasMany
     {
         return $this->hasMany(Dam::class, 'user_id');
     }
 
-    public function monitoring_points()
+    public function monitoring_points(): HasMany
     {
         return $this->hasMany(Monitoring_point::class, 'user_id');
     }
@@ -111,13 +113,13 @@ class User extends Authenticatable
         return $this->hasOne(Stakeholder::class, 'user_id');
     }
 
-    public function registration_requests()
+    public function registration_requests(): HasMany
     {
         return $this->hasMany(Registration_request::class, 'user_id');
     }
 
     public function industrial_area()
     {
-        return $this->belongsTo(Industrial_area::class,'industrial_area_id');
+        return $this->belongsTo(Industrial_area::class, 'industrial_area_id');
     }
 }

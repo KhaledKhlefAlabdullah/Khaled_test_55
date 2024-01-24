@@ -112,7 +112,7 @@ class IndustrialAreaController extends Controller
             ]);
 
             // get all industrial areas in database
-            $industrial_area = Industrial_area::findOrFail($request->input('id'))->user();
+            $industrial_area = Industrial_area::findOrFail($request->input('id'))->with('user')->get();
 
             // check if their industrial areas in database
             if(!empty($industrial_area)){

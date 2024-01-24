@@ -44,6 +44,7 @@ class RegisteredUserController extends Controller
 
             // Create a new user
             $user = User::create([
+                'industrial_area_id' => $validatedData['industrial_area_id'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make($validatedData['password']),
                 'stakeholder_type' => $validatedData['stakeholder_type'] == null ? 'Tenant_company' : $validatedData['stakeholder_type']

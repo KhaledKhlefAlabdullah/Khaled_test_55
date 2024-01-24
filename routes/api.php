@@ -188,17 +188,6 @@ Route::group(['prefix' => 'registration_requests'], function () {
 Route::post('/add', [RegistrationRequestController::class, 'store']);
 
 
-Route::group(['prefix' => 'industrial_areas'], function () {
-
-    Route::middleware('auth:sanctum')->group(function () {
-
-        Route::post('/add', [IndustrialAreaController::class, 'store']);
-
-    });
-
-});
-
-
 Route::get('users', [UserController::class, 'index'])->name('users');
 
 require __DIR__ . '/auth.php';

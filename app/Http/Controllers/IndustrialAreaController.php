@@ -16,9 +16,6 @@ class IndustrialAreaController extends Controller
     {
         try {
 
-            // authorize the user if stakeholder type is Industrial_area_representative
-            $this->authorize('view_details_create_update',Industrial_area::class);
-
             // get all industrial areas in database
             $industrial_areas = Industrial_area::all();
 
@@ -55,9 +52,6 @@ class IndustrialAreaController extends Controller
     public function store(Request $request)
     {
         try{
-
-            // authorize the user if Portal Manager
-            $this->authorize('view_details_create_update',Industrial_area::class);
 
             // validate the inputs data
             $request->validate([

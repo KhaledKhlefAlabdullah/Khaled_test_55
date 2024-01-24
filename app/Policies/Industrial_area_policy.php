@@ -15,7 +15,7 @@ class Industrial_area_policy
      */
     public function view_details_create_update(User $user): bool
     {
-        return $user->stakeholder_type==$this::PORTAL_MANAGER;
+        return $user->stakeholder_type == $this::PORTAL_MANAGER;
     }
 
 }

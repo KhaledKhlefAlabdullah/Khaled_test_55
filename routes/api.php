@@ -139,6 +139,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 
+Route::get('industrial_areas',[IndustrialAreaController::class,'index'])->middleware(['auth:sanctum',\App\Http\Middleware\Portal_manager_middleware::class]);
+
 Route::group(['prefix' => 'stakeholders'], function () {
 
     Route::get('/', [StakeholderController::class, 'index']);

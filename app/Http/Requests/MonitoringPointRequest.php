@@ -26,12 +26,11 @@ class MonitoringPointRequest extends BaseRequest
      */
     public function rules(): array
     {
-        if ($this->method() == 'POST') {
+        if ($this->method() == 'PUT') {
             return [
-                'user_id' => ['required', 'uuid', 'exists:users,id'],
-                'name' => ['required', 'string', 'max:255', 'unique:monitoring_points,name'],
-                'location' => ['required', 'string', 'max:255'],
-                'point_type' => ['required', 'in:normal,high,dangerous'],
+                'name' => ['sometimes', 'required', 'string', 'max:255', 'unique:monitoring_points,name'],
+                'location' => ['sometimes', 'required', 'string', 'max:255'],
+                'point_type' => ['sometimes', 'required', 'in:normal,high,dangerous'],
                 'api_link' => ['nullable', 'url'],
                 'is_custom' => ['sometimes', 'required', 'boolean'],
                 'water_level' => ['nullable', 'numeric'],
@@ -39,18 +38,39 @@ class MonitoringPointRequest extends BaseRequest
                 'discharge' => ['nullable', 'string'],
                 'source' => ['nullable', 'string'],
             ];
+
         }
 
         return [
-            'name' => ['sometimes', 'required', 'string', 'max:255', 'unique:monitoring_points,name'],
-            'location' => ['sometimes', 'required', 'string', 'max:255'],
-            'point_type' => ['sometimes', 'required', 'in:normal,high,dangerous'],
+            'user_id' => ['required', 'uuid', 'exists:users,id'],
+            'name' => ['required', 'string', 'max:255', 'unique:monitoring_points,name'],
+            'location' => ['required', 'string', 'max:255'],
+            'point_type' => ['required', 'in:normal,high,dangerous'],
             'api_link' => ['nullable', 'url'],
             'is_custom' => ['sometimes', 'required', 'boolean'],
             'water_level' => ['nullable', 'numeric'],
             'risk_indicators' => ['nullable', 'string'],
             'discharge' => ['nullable', 'string'],
             'source' => ['nullable', 'string'],
+        ];
+
+    }
+
+
+    public function attributes()
+    {
+        return [
+            'id' => 'ID',
+            'user_id' => 'User ID',
+            'name' => 'Name',
+            'location' => 'Location',
+            'point_type' => 'Point Type',
+            'api_link' => 'API Link',
+            'is_custom' => 'Is Custom',
+            'water_level' => 'Water Level',
+            'risk_indicators' => 'Risk Indicators',
+            'discharge' => 'Discharge',
+            'source' => 'Source'
         ];
     }
 }

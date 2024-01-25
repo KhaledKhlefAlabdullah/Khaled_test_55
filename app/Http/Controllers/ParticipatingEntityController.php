@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ParticipatingEntityRequest;
+use App\Http\Resources\ParticipatingEntityResource;
 use App\Models\Participating_entity;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
 
 class ParticipatingEntityController extends Controller
 {
@@ -12,7 +15,11 @@ class ParticipatingEntityController extends Controller
      */
     public function index()
     {
-        //
+        $data = Participating_entity::paginate();
+
+        return ($data->count() == 1)
+            ? new ParticipatingEntityResource($data->first())
+            : ParticipatingEntityResource::collection($data);
     }
 
 
@@ -23,7 +30,13 @@ class ParticipatingEntityController extends Controller
      */
     public function store(ParticipatingEntityRequest $request)
     {
-        //
+        // Validate the request
+        $valid_data = $request->validated();
+
+        // Create the entity
+        $entity = Participating_entity::create($valid_data);
+
+        return new ParticipatingEntityResource($entity);
     }
 
     /**
@@ -31,9 +44,16 @@ class ParticipatingEntityController extends Controller
      *
      * Rule for [portal manager]
      */
-    public function show(Participating_entity $pe)
+    public function show(string $id)
     {
-        //
+        // Get the data by id and check if it exists
+        try {
+            $data = getAndCheckModelById(Participating_entity::class, $id);
+
+            return new ParticipatingEntityResource($data);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
 
@@ -42,9 +62,22 @@ class ParticipatingEntityController extends Controller
      *
      * Rule for [portal manager]
      */
-    public function update(ParticipatingEntityRequest $request, Participating_entity $pe)
+    public function update(ParticipatingEntityRequest $request, string $id)
     {
-        //
+        // Get the data by id and check if it exists
+        try {
+            $data = getAndCheckModelById(Participating_entity::class, $id);
+
+            // Validate the request
+            $valid_data = $request->validated();
+
+            // Update the entity
+            $data->update($valid_data);
+
+            return new ParticipatingEntityResource($data);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
     /**
@@ -52,8 +85,18 @@ class ParticipatingEntityController extends Controller
      *
      * Rule for [portal manager]
      */
-    public function destroy(Participating_entity $pe)
+    public function destroy(string $id)
     {
-        //
+        // Get the data by id and check if it exists
+        try {
+            $data = getAndCheckModelById(Participating_entity::class, $id);
+
+            // Delete the entity
+            $data->delete();
+
+            return new ParticipatingEntityResource($data);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 }

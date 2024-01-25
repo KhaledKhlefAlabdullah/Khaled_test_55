@@ -22,29 +22,31 @@ class FileRequest extends BaseRequest
      */
     public function rules(): array
     {
-        if ($this->method() == 'POST') {
+        if ($this->method() == 'PUT') {
             return [
-                'user_id' => ['required', 'uuid', 'exists:users,id'],
-                'category_id' => ['required', 'uuid', 'exists:categories,id'],
-                'file_type' => ['required', 'in:Education,Manuals,Plans'],
-                'title' => ['required', 'string', 'max:255'],
-                'description' => ['required', 'string', 'max:255'],
+                'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
+                'file_type' => ['sometimes', 'required', 'in:Education,Manuals,Plans'],
+                'title' => ['sometimes', 'required', 'string', 'max:255'],
+                'description' => ['sometimes', 'required', 'string', 'max:255'],
                 'version' => ['nullable', 'string', 'max:100'],
                 'media_url' => ['nullable', 'string', 'url'],
                 'media_type' => ['nullable', 'in:image,video,file'],
                 'update_frequency' => ['nullable', 'in:daily,weekly,monthly'],
             ];
+
         }
         return [
-            'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
-            'file_type' => ['sometimes', 'required', 'in:Education,Manuals,Plans'],
-            'title' => ['sometimes', 'required', 'string', 'max:255'],
-            'description' => ['sometimes', 'required', 'string', 'max:255'],
+            'user_id' => ['required', 'uuid', 'exists:users,id'],
+            'category_id' => ['required', 'uuid', 'exists:categories,id'],
+            'file_type' => ['required', 'in:Education,Manuals,Plans'],
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:255'],
             'version' => ['nullable', 'string', 'max:100'],
             'media_url' => ['nullable', 'string', 'url'],
             'media_type' => ['nullable', 'in:image,video,file'],
             'update_frequency' => ['nullable', 'in:daily,weekly,monthly'],
         ];
+
     }
 
 
@@ -60,10 +62,7 @@ class FileRequest extends BaseRequest
             'version' => 'Version',
             'media_url' => 'Media URL',
             'media_type' => 'Media Type',
-            'update_frequency' => 'Update Frequency',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'deleted_at' => 'Deleted At',
+            'update_frequency' => 'Update Frequency'
         ];
     }
 }

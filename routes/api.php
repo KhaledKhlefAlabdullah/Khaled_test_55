@@ -32,6 +32,8 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\Api\Industrial_area_representative_middleware;
 use App\Http\Middleware\Api\Portal_manager_middleware;
 use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
+use App\Http\Middleware\Api\Tenant_company_middleware;
+use App\Http\Middleware\Api\Government_representative_middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -171,7 +173,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             Route::get('/', [UserController::class, 'subdomain_users']);
 
+            Route::post('/add', [UserController::class, 'store_new_subdomain_user']);
+
             Route::get('/details', [UserController::class, 'subdomain_user_details']);
+
+            Route::post('/delete', [UserController::class, 'destroy']);
 
         });
 
@@ -190,6 +196,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         // Routes for industrial area representative role
         Route::middleware([Ifrastructar_provider_middleware::class])->group(function (){
+
+
+        });
+
+        // Routes for industrial area representative role
+        Route::middleware([Tenant_company_middleware::class])->group(function (){
+
+
+        });
+
+        // Routes for industrial area representative role
+        Route::middleware([Government_representative_middleware::class])->group(function (){
 
 
         });

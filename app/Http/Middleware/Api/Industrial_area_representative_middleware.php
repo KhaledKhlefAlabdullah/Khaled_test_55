@@ -21,7 +21,7 @@ class Industrial_area_representative_middleware
 
         Gate::authorize('view_or_details_or_accept_denied', Registration_request::class);
 
-        Gate::authorize('view_subdomain_users', User::class);
+        Gate::authorize('view_subdomain_users', Registration_request::class);
 
         return $next($request);
     }

@@ -5,9 +5,10 @@ namespace App\Models;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Industrial_area extends Model
 {
-    use HasFactory,HasUuid;
+    use HasFactory,HasUuid, SoftDeletes;
 
     protected $primaryKey='id';
     protected $keyType='string';

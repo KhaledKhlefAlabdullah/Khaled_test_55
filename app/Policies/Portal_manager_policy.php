@@ -6,7 +6,7 @@ use App\Models\Industrial_area;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class Industrial_area_policy
+class Portal_manager_policy
 {
     const PORTAL_MANAGER = 'Portal_manager';
 

@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\FlareClient\Http\Exceptions\BadResponse;
 use Spatie\FlareClient\Http\Exceptions\BadResponseCode;
 
 class Category extends Model
 {
-    use HasFactory, HasUuid;
+    use HasFactory, HasUuid, SoftDeletes;
 
     protected $keyType = 'string';
     protected $primaryKey = 'id';

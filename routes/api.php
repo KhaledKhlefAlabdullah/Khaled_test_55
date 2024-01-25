@@ -165,7 +165,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 
-
     // Routes for industrial area representative role
     Route::middleware([Industrial_area_representative_middleware::class])->group(function (){
 
@@ -178,6 +177,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/details', [UserController::class, 'subdomain_user_details']);
 
             Route::post('/delete', [UserController::class, 'destroy']);
+
+        });
+
+        Route::group(['prefix' => 'services'],function (){
+
+            Route::get('/',[ServiceController::class, 'index']);
+
+            Route::post('/add',[ServiceController::class, 'store']);
+
+            Route::post('/edite',[ServiceController::class, 'update']);
 
         });
 

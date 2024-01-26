@@ -201,30 +201,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         });
 
+    });
 
-
-        // Routes for industrial area representative role
-        Route::middleware([Ifrastructar_provider_middleware::class])->group(function (){
-
-
-        });
-
-        // Routes for industrial area representative role
-        Route::middleware([Tenant_company_middleware::class])->group(function (){
-
-
-        });
-
-        // Routes for industrial area representative role
-        Route::middleware([Government_representative_middleware::class])->group(function (){
-
-
-        });
-
+    // Routes for industrial area representative role
+    Route::middleware([Ifrastructar_provider_middleware::class])->group(function (){
 
 
     });
 
+    // Routes for industrial area representative role
+    Route::middleware([Tenant_company_middleware::class])->group(function (){
+
+
+    });
+
+    // Routes for industrial area representative role
+    Route::middleware([Government_representative_middleware::class])->group(function (){
+
+
+    });
+
+    Route::get('profile',[UserProfileController::class,'show']);
 
 });
 

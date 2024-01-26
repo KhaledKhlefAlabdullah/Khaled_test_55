@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\Api;
 
 use App\Models\Industrial_area;
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -17,7 +18,7 @@ class Portal_manager_middleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        Gate::authorize('view_details_create_update', Industrial_area::class);
+        Gate::authorize('portal_manager_policy', User::class);
 
         return $next($request);
     }

@@ -22,22 +22,24 @@ class NaturalDisasterRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->method() == 'POST') {
+        if ($this->method() == 'PUT') {
             return [
-                'name' => ['required', 'string', 'max:255'],
+                'name' => ['sometimes', 'required', 'string', 'max:255'],
                 'disaster_type' => ['nullable', 'string', 'max:255'],
                 'disaster_date' => ['nullable', 'date'],
                 'description' => ['nullable', 'string', 'max:255'],
                 'location' => ['nullable', 'string', 'max:255'],
             ];
+
         }
         return [
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'disaster_type' => ['nullable', 'string', 'max:255'],
             'disaster_date' => ['nullable', 'date'],
             'description' => ['nullable', 'string', 'max:255'],
             'location' => ['nullable', 'string', 'max:255'],
         ];
+
     }
 
 

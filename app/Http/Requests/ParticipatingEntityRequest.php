@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ParticipatingEntityRequest extends FormRequest
@@ -17,14 +18,21 @@ class ParticipatingEntityRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
+        if ($this->method() === 'PUT') {
+            return [
+                'title' => ['nullable', 'string'],
+                'media_url' => ['sometimes', 'required', 'url'],
+                'media_type' => ['nullable', 'in:image,video,file,website_URL']
+            ];
+        }
         return [
-            'user_id' => ['required', 'string', 'max:100', 'exists:users,id',],
+            'user_id' => ['required', 'uuid', 'exists:users,id',],
             'title' => ['nullable', 'string'],
-            'media_url' => ['required', 'string', 'url'],
+            'media_url' => ['required', 'url'],
             'media_type' => ['nullable', 'in:image,video,file,website_URL']
         ];
     }

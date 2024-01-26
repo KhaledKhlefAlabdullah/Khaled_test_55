@@ -34,13 +34,12 @@ class EntityRequest extends FormRequest
     public function rules(): array
     {
 
-        if ($this->method() == 'POST') {
+        if ($this->method() == 'PUT') {
             return [
-                'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
-                'category_id' => ['required', 'uuid', 'exists:categories,id'],
-                'name' => ['required', 'string', 'max:100'],
-                'slug' => ['required', 'string', 'max:100', 'unique:entities,slug'],
-                'public_id' => ['required', 'integer', 'unique:entities,public_id'],
+                'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
+                'name' => ['sometimes', 'required', 'string', 'max:100'],
+                'slug' => ['sometimes', 'required', 'string', 'max:100', 'unique:entities,slug'],
+                'public_id' => ['sometimes', 'required', 'integer', 'unique:entities,public_id'],
                 'phone_number' => ['nullable', 'string', 'max:100', 'unique:entities,phone_number'],
                 'location' => ['nullable', 'string', 'max:255'],
                 'from' => ['nullable', 'string', 'max:255'],
@@ -52,12 +51,14 @@ class EntityRequest extends FormRequest
                 'note' => ['nullable', 'string', 'max:255'],
                 'description' => ['nullable', 'string', 'max:255'],
             ];
+
         }
         return [
-            'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
-            'name' => ['sometimes', 'required', 'string', 'max:100'],
-            'slug' => ['sometimes', 'required', 'string', 'max:100', 'unique:entities,slug'],
-            'public_id' => ['sometimes', 'required', 'integer', 'unique:entities,public_id'],
+            'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
+            'category_id' => ['required', 'uuid', 'exists:categories,id'],
+            'name' => ['required', 'string', 'max:100'],
+            'slug' => ['required', 'string', 'max:100', 'unique:entities,slug'],
+            'public_id' => ['required', 'integer', 'unique:entities,public_id'],
             'phone_number' => ['nullable', 'string', 'max:100', 'unique:entities,phone_number'],
             'location' => ['nullable', 'string', 'max:255'],
             'from' => ['nullable', 'string', 'max:255'],
@@ -69,6 +70,7 @@ class EntityRequest extends FormRequest
             'note' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
         ];
+
 
     }
 

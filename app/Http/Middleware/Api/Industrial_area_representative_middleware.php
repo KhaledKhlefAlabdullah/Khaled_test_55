@@ -19,9 +19,7 @@ class Industrial_area_representative_middleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        Gate::authorize('view_or_details_or_accept_denied', Registration_request::class);
-
-        Gate::authorize('view_subdomain_users', Registration_request::class);
+        Gate::authorize('industrial_area_policy', User::class);
 
         return $next($request);
     }

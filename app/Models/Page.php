@@ -14,6 +14,7 @@ class Page extends Model
     protected $keyType = 'string';
 
     protected $primaryKey = 'id';
+
     public $incrementing = false;
 
 

@@ -208,7 +208,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Ifrastructar_provider_middleware::class])->group(function () {
+    Route::middleware([Ifrastructar_provider_middleware::class])->group(function (){
 
 
     });
@@ -225,7 +225,21 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 
-    Route::get('profile', [UserProfileController::class, 'show']);
+    // Routes for all users expect Portal manager role
+    Route::middleware([Allow_all_users_expect_portal_manager_middleware::class])->group(function (){
+
+        // For profile functions
+        Route::group(['prefix'=>'profile'],function (){
+
+            Route::get('/',[UserProfileController::class,'show']);
+
+            Route::post('/edite',[UserProfileController::class,'update']);
+
+        });
+
+
+    });
+
 
 });
 

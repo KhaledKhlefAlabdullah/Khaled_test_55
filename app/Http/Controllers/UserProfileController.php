@@ -26,20 +26,20 @@ class UserProfileController extends Controller
 
             $user_profile = null;
 
-
             switch ($user_type){
 
                 case 'Industrial_area_representative':
 
                     // name from user_profiles
                     // email from users
+                    // location from user_profiles
                     // contact person from user_profiles
                     // profile image from user_profiles
 
                     $user_profile = DB::table('users')
                         ->join('user_profiles','users.id','=','user_profiles.user_id')
                         ->select('user_profiles.name as name','users.email as email','user_profiles.contact_person  as contact_person',
-                            'user_profiles.avatar_URL  as profile_image')->where('users.id','=',$user_id)->get();
+                            'user_profiles.location as location','user_profiles.avatar_URL  as profile_image')->where('users.id','=',$user_id)->get();
                     break;
                 case 'Tenant_company':
 
@@ -128,6 +128,7 @@ class UserProfileController extends Controller
             $request->validate([
                 'name' => 'required|string|min:3',
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+                'location' => 'required|string',
                 'profile_image' => 'required|string '
                     //'image|mimes:jpeg,png,gif,bmp'
             ]);
@@ -142,6 +143,7 @@ class UserProfileController extends Controller
 
                     // name to user_profiles
                     // email to users
+                    // location from user_profiles
                     // contact person to user_profiles
                     // profile image to user_profiles
 
@@ -156,6 +158,7 @@ class UserProfileController extends Controller
                     $user->user_profile()->update([
                         'name' => $request->input('name'),
                         'contact_person' => $request->input('contact_person'),
+                        'location' => $request->input('location'),
                         'avatar_URL' => $request->input('profile_image'),
                     ]);
 
@@ -173,7 +176,6 @@ class UserProfileController extends Controller
                     $request->validate([
                         'phone_number' => 'required|string|regex:/^[0-9]{9,20}$/',
                         'contact_person' => 'required|string|min:3|max:50',
-                        'location' => 'required|string',
                         'company_representative_name' => 'required|string|min:3',
                         'job_title' => 'required|string|min:3'
                     ]);
@@ -209,7 +211,6 @@ class UserProfileController extends Controller
                     $request->validate([
                         'phone_number' => 'required|string|regex:/^[0-9]{9,20}$/',
                         'contact_person' => 'required|string|min:3|max:50',
-                        'location' => 'required|string',
                         'infrastructure_type' => 'required|string|min:3',
                     ]);
 
@@ -241,7 +242,6 @@ class UserProfileController extends Controller
 
                     $request->validate([
                         'phone_number' => 'required|string|regex:/^[0-9]{9,20}$/',
-                        'location' => 'required|string',
                         'representative_government_agency' => 'required|string|min:3',
                     ]);
 

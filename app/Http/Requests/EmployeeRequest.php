@@ -36,7 +36,7 @@ class EmployeeRequest extends FormRequest
 
         if ($this->method() == 'PUT') {
             return [
-                'route_id' => ['sometimes', 'required', 'uuid', 'exists:routes,id'],
+                'route_id' => ['sometimes', 'required', 'uuid', 'exists:entities,id'],
                 'department_id' => ['sometimes', 'required', 'uuid', 'exists:departments,id'],
                 'station_id' => ['sometimes', 'required', 'uuid', 'exists:stations,id'],
                 'public_id' => ['sometimes', 'required', 'string', 'max::255', 'unique:employees,public_id'],
@@ -47,7 +47,7 @@ class EmployeeRequest extends FormRequest
         }
         return [
             'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
-            'route_id' => ['required', 'uuid', 'exists:routes,id'],
+            'route_id' => ['required', 'uuid', 'exists:entities,id'],
             'department_id' => ['required', 'uuid', 'exists:departments,id'],
             'station_id' => ['required', 'uuid', 'exists:stations,id'],
             'public_id' => ['required', 'string', 'max::255', 'unique:employees,public_id'],
@@ -66,10 +66,10 @@ class EmployeeRequest extends FormRequest
     {
         return [
             'id' => 'ID',
-            'stakeholder_id' => 'Stakeholder ID',
+            'stakeholder_id' => 'Stakeholder',
             'route_id' => 'Route ID',
-            'department_id' => 'Department ID',
-            'station_id' => 'Station ID',
+            'department_id' => 'Department',
+            'station_id' => 'Station',
             'public_id' => 'Public ID',
             'is_leader_shop' => 'Is leader shop',
             'slug' => 'Slug',

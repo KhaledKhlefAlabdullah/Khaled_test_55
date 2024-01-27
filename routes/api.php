@@ -29,11 +29,11 @@ use App\Http\Controllers\TimelineQuirieController;
 use App\Http\Controllers\TimelineSharesRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Middleware\Api\Government_representative_middleware;
+use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
 use App\Http\Middleware\Api\Industrial_area_representative_middleware;
 use App\Http\Middleware\Api\Portal_manager_middleware;
-use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
 use App\Http\Middleware\Api\Tenant_company_middleware;
-use App\Http\Middleware\Api\Government_representative_middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -70,11 +70,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('chats', ChatController::class);
 
     // Messages
-    Route::apiResource('messages', MessageController::class)->except(['index']);
+//    Route::apiResource('messages', MessageController::class)->except(['index']);
 
-    // Show messages by chat ID
-    Route::prefix('messages')->group(function () {
-        Route::get('/get/{chat_id}', [MessageController::class, 'showMessagesByChatId'])->name('messages.showMessagesByChatId');
+    // Messages
+    Route::prefix('messages')->controller(MessageController::class)->group(function () {
+        Route::get('/get/{chat_id}', 'showMessagesByChatId')->name('messages.showMessagesByChatId');
+        Route::post('/', 'store')->name('messages.store');
+        Route::get('/{id}', 'show')->name('messages.show');
+        Route::put('/{message}', 'update')->name('messages.update');
+        Route::delete('/{id}', 'destroy')->name('messages.destroy');
     });
 
 
@@ -117,7 +121,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('posts', PostController::class);
 
     // Services
-    Route::apiResource('services', ServiceController::class);
+//    Route::apiResource('services', ServiceController::class);
 
     // Shipments
     Route::apiResource('shipments', ShipmentController::class);
@@ -166,9 +170,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Industrial_area_representative_middleware::class])->group(function (){
+    Route::middleware([Industrial_area_representative_middleware::class])->group(function () {
 
-        Route::group(['prefix'=> 'subdomain-users'],function (){
+        Route::group(['prefix' => 'subdomain-users'], function () {
 
             Route::get('/', [UserController::class, 'subdomain_users']);
 
@@ -180,13 +184,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         });
 
-        Route::group(['prefix' => 'services'],function (){
+        Route::group(['prefix' => 'services'], function () {
 
-            Route::get('/',[ServiceController::class, 'index']);
+            Route::get('/', [ServiceController::class, 'index']);
 
-            Route::post('/add',[ServiceController::class, 'store']);
+            Route::post('/add', [ServiceController::class, 'store']);
 
-            Route::post('/edite',[ServiceController::class, 'update']);
+            Route::post('/edite', [ServiceController::class, 'update']);
 
         });
 
@@ -204,24 +208,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Ifrastructar_provider_middleware::class])->group(function (){
+    Route::middleware([Ifrastructar_provider_middleware::class])->group(function () {
 
 
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Tenant_company_middleware::class])->group(function (){
+    Route::middleware([Tenant_company_middleware::class])->group(function () {
 
 
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Government_representative_middleware::class])->group(function (){
+    Route::middleware([Government_representative_middleware::class])->group(function () {
 
 
     });
 
-    Route::get('profile',[UserProfileController::class,'show']);
+    Route::get('profile', [UserProfileController::class, 'show']);
 
 });
 
@@ -239,12 +243,10 @@ Route::group(['prefix' => 'stakeholders'], function () {
 });
 
 
-
 Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);
 
 
 Route::get('users', [UserController::class, 'index']);
-
 
 
 require __DIR__ . '/auth.php';

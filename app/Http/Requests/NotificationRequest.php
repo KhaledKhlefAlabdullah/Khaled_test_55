@@ -44,7 +44,6 @@ class NotificationRequest extends BaseRequest
     public function attributes()
     {
         return [
-            'id' => 'ID',
             'user_id' => 'User ID',
             'title' => 'Title',
             'description' => 'Description',

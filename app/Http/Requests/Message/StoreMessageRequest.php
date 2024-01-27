@@ -53,15 +53,15 @@ class StoreMessageRequest extends FormRequest
     public function attributes()
     {
         return [
-            'sender_id' => 'Sender ID',
-            'receiver_id' => 'Receiver ID',
-            'chat_id' => 'Chat ID',
+            'sender_id' => 'Sender',
+            'receiver_id' => 'Receiver',
+            'chat_id' => 'Chat',
             'message' => 'Message',
             'media_url' => 'Media URL',
             'message_type' => 'Message Type',
-            'is_read' => 'Is Read',
-            'is_edite' => 'Is Edite',
-            'is_starred' => 'Is Starred',
+            'is_read' => 'Read',
+            'is_edite' => 'Edite',
+            'is_starred' => 'Starred',
         ];
     }
 }

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Http\Requests\PostRequest;
+use App\Http\Resources\PostResource;
+use App\Models\Post;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
 
 class PostController extends Controller
 {
@@ -12,54 +15,82 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        // Get all posts
+        $posts = Post::paginate();
+
+        return ($posts->count() == 1)
+            ? new PostResource($posts->first())
+            : PostResource::collection($posts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        // Validate the request
+        $valid_date = $request->validated();
+
+        // Create the post
+        $post = Post::create($valid_date);
+
+        return new PostResource($post);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $post_category)
+    public function show(string $id)
     {
-        //
+        // Get Post by id and check if exist
+        try {
+            $data = getAndCheckModelById(Post::class, $id);
+
+            return new PostResource($data);
+
+        } catch (NotFoundResourceException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        }
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $post_category)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $post_category)
+    public function update(PostRequest $request, string $id)
     {
-        //
+        // Get the post by id and check if exists
+        try {
+            $data = getAndCheckModelById(Post::class, $id);
+        } catch (NotFoundResourceException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        }
+        // Validate the request
+        $valid_date = $request->validated();
+
+        // Update the post
+        $data->update($valid_date);
+
+        return new PostResource($data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $post_category)
+    public function destroy(string $id)
     {
-        //
+        // Get the post by id and check if exists
+        try {
+            $data = getAndCheckModelById(Post::class, $id);
+        } catch (NotFoundResourceException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        }
+
+        // Delete the post
+        $data->delete();
+
+        return response()->json(['message' => 'Post deleted successfully']);
     }
 }

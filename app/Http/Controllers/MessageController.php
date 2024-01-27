@@ -49,10 +49,10 @@ class MessageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $message_id)
+    public function show(string $id)
     {
         // Get the message by message ID
-        $message = Message::find($message_id);
+        $message = Message::find($id);
 
         return (!$message) ?
             response()->json(['message' => 'Message not found'], 404) :

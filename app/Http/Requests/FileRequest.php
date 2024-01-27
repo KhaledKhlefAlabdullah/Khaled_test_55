@@ -53,9 +53,8 @@ class FileRequest extends BaseRequest
     public function attributes()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'category_id' => 'Category ID',
+            'user_id' => 'User',
+            'category_id' => 'Category',
             'file_type' => 'File Type',
             'title' => 'Title',
             'description' => 'Description',

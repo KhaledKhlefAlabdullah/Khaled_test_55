@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class PortalSettingRequest extends BaseRequest
 {
     /**
@@ -15,13 +17,19 @@ class PortalSettingRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
+        if ($this->method() === 'PUT') {
+            return [
+                'key' => ['sometimes', 'required', 'string', 'max:255'],
+                'value' => ['sometimes', 'required',]
+            ];
+        }
         return [
             'user_id' => ['required', 'string', 'max:100', 'exists:users,id',],
-            'key' => ['required', 'string',],
+            'key' => ['required', 'string', 'max:255',],
             'value' => ['required',]
         ];
     }
@@ -35,7 +43,7 @@ class PortalSettingRequest extends BaseRequest
     public function attributes()
     {
         return [
-            'user_id' => 'User ID',
+            'user_id' => 'User',
             'key' => 'Key',
             'value' => 'Value',
         ];

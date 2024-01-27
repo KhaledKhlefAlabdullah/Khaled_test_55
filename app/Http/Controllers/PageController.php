@@ -16,9 +16,10 @@ class PageController extends Controller
      */
     public function index()
     {
-        // Get all pages paginated
-        $pages = Page::paginate();
+        // Get all pages by auth user id
+        $pages = Page::where('user_id', auth()->user()->id)->paginate();
 
+        
         // If there is only one page, return it
         return $pages->count() == 1 ?
             new PageResource($pages->first()) :

@@ -60,8 +60,7 @@ class MonitoringPointRequest extends BaseRequest
     public function attributes()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
+            'user_id' => 'User',
             'name' => 'Name',
             'location' => 'Location',
             'point_type' => 'Point Type',

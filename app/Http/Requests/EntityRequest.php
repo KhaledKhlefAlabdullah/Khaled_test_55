@@ -82,9 +82,8 @@ class EntityRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'id' => 'ID',
-            'stakeholder_id' => 'Stakeholder ID',
-            'category_id' => 'Category ID',
+            'stakeholder_id' => 'Stakeholder',
+            'category_id' => 'Category',
             'name' => 'Name',
             'slug' => 'Slug',
             'public_id' => 'Public ID',
@@ -94,7 +93,7 @@ class EntityRequest extends FormRequest
             'to' => 'To',
             'usage' => 'Usage',
             'quantity' => 'Quantity',
-            'is_available' => 'Is Available',
+            'is_available' => 'Available',
             'available_quantity' => 'Available Quantity',
             'note' => 'Note',
             'description' => 'Description',

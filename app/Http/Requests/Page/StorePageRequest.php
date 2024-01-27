@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Page;
 
 use App\Http\Requests\BaseRequest;
+use Illuminate\Contracts\Validation\ValidationRule;
 
 class StorePageRequest extends BaseRequest
 {
@@ -17,7 +18,7 @@ class StorePageRequest extends BaseRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -42,7 +43,7 @@ class StorePageRequest extends BaseRequest
     public function attributes()
     {
         return [
-            'user_id' => 'User ID',
+            'user_id' => 'User',
             'title' => 'Title',
             'type' => 'Type',
             'description' => 'Description',

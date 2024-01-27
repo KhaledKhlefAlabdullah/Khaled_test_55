@@ -46,7 +46,6 @@ class NaturalDisasterRequest extends FormRequest
     public function attributes()
     {
         return [
-            'id' => 'ID',
             'name' => 'Name',
             'disaster_type' => 'Disaster Type',
             'disaster_date' => 'Disaster Date',

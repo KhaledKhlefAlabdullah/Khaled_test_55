@@ -48,14 +48,13 @@ class NotificationSettingRequest extends BaseRequest
     public function attributes()
     {
         return [
-            'id' => 'ID',
-            'user_id' => 'User ID',
-            'main_category_id' => 'Main Category ID',
-            'sub_category_id' => 'Sub Category ID',
+            'user_id' => 'User',
+            'main_category_id' => 'Main Category',
+            'sub_category_id' => 'Sub Category',
             'notification_state' => 'Notification State',
             'notification_level' => 'Notification Level',
             'notification_priorities' => 'Notification Priorities',
-            'is_on' => 'Is On',
+            'is_on' => 'On',
             'note' => 'Note'
         ];
     }

@@ -6,6 +6,9 @@ use App\Http\Requests\EmployeeRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use App\Models\Stakeholder;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\transformCollection;
 
 class EmployeeController extends Controller
 {
@@ -18,9 +21,7 @@ class EmployeeController extends Controller
         $employees = Stakeholder::with('employees')->get();
 
 
-        return ($employees->count() == 1)
-            ? new EmployeeResource($employees->first)
-            : EmployeeResource::collection($employees);
+        return transformCollection($employees, EmployeeResource::class);
     }
 
 
@@ -43,11 +44,11 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        // Get the employee by ID
-        $employee = Employee::find($id);
-
-        if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+        // Get the employee by ID and check if it exists
+        try {
+            $employee = getAndCheckModelById(Employee::class, $id);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
         return new EmployeeResource($employee);
@@ -59,12 +60,11 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $request, string $id)
     {
-        // Get the employee by ID
-        $employee = Employee::find($id);
-
-        // Check if the employee exists
-        if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+        // Get the employee by ID and check if it exists
+        try {
+            $employee = getAndCheckModelById(Employee::class, $id);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
         // Validate the request
@@ -81,12 +81,11 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        // Get the employee by ID
-        $employee = Employee::find($id);
-
-        // Check if the employee exists
-        if (!$employee) {
-            return response()->json(['message' => 'Employee not found'], 404);
+        // Get the employee by ID and check if it exists
+        try {
+            $employee = getAndCheckModelById(Employee::class, $id);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
         // Delete the employee

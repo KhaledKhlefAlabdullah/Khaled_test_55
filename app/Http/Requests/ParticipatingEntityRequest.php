@@ -45,7 +45,7 @@ class ParticipatingEntityRequest extends FormRequest
     public function attributes()
     {
         return [
-            'user_id' => 'User ID',
+            'user_id' => 'User',
             'title' => 'Title',
             'media_url' => 'Media URL',
             'media_type' => 'Media Type'

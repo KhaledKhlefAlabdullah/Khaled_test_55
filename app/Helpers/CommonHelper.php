@@ -3,17 +3,29 @@
 namespace App\Helpers;
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
+
+/**
+ * Get an Eloquent model instance by its ID and perform a existence check.
+ *
+ * This helper function retrieves an instance of the specified Eloquent model
+ * by its ID. If the instance is not found, a NotFoundResourceException is thrown.
+ *
+ * @param string $model The fully qualified class name of the Eloquent model.
+ * @param mixed $id The ID of the model to retrieve.
+ * @return Model  The retrieved Eloquent model instance.
+ * @throws NotFoundResourceException  If the model instance is not found.
+ */
 if (!function_exists('getAndCheckModelById')) {
-    /*
-     * This function is used to get and check if a model exists by ID
-     * @param string $model
-     * @param string $id
-     *
-     * @throws NotFoundResourceException
-     */
     function getAndCheckModelById($model, $id)
     {
         $instance = $model::find($id);
@@ -22,9 +34,30 @@ if (!function_exists('getAndCheckModelById')) {
             throw new NotFoundResourceException($model . " not found", 404);
         }
 
-        return $instance;
+        return $instance->first();
     }
 }
+
+/**
+ * Transform a collection of Eloquent models using a specified resource class.
+ *
+ * This helper function checks if the collection contains a single item,
+ * and then either creates a resource instance for that item or returns
+ * a collection of resource instances for the entire collection.
+ *
+ * @param Collection $collection
+ * @param string $resourceClass
+ * @return JsonResource|AnonymousResourceCollection
+ */
+if (!function_exists('transformCollection')) {
+    function transformCollection(Collection $collection, $resourceClass): JsonResource|AnonymousResourceCollection
+    {
+        return ($collection->count() == 1)
+            ? new $resourceClass($collection->first())
+            : $resourceClass::collection($collection);
+    }
+}
+
 
 if (!function_exists('fake_register_request')) {
     /*
@@ -34,7 +67,7 @@ if (!function_exists('fake_register_request')) {
      *
      * @throws NotFoundResourceException
      */
-     function fake_register_request(
+    function fake_register_request(
         $industrial_area_id = null,
         $name = null,
         $email = null,
@@ -46,8 +79,8 @@ if (!function_exists('fake_register_request')) {
         $location = null,
         $representative_name = null,
         $job_title = null
-    ): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
-     {
+    ): Response|JsonResponse|RedirectResponse
+    {
         $requestData = [
             'industrial_area_id' => $industrial_area_id,
             'name' => $name,

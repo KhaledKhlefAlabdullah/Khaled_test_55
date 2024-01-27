@@ -59,7 +59,7 @@ class User extends Authenticatable
         return $this->hasOne(User_profile::class, 'user_id');
     }
 
-    public function portal_settings()
+    public function portal_settings(): HasMany
     {
         return $this->hasMany(Portal_setting::Class, 'user_id');
     }

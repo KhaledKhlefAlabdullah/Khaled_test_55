@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Notification;
 
-use App\Http\Requests\NotificationSettingRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Notification\NotificationSettingRequest;
 use App\Http\Resources\Notification\NotificationSettingResource;
-use App\Models\Notifications_setting;
+use App\Models\Notifications\Notifications_setting;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 

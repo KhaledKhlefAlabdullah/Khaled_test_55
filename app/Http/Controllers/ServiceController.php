@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Service_validation_request;
+use App\Http\Requests\ServiceValidationRequest;
 use App\Models\Service;
 use App\Models\Stakeholder;
-use Illuminate\Http\Request;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
@@ -17,7 +17,7 @@ class ServiceController extends Controller
 
             $industrial_area_id = Auth::user()->industrial_area_id;
 
-            $stakeholders = Stakeholder::where('industrial_area_id',$industrial_area_id)->with('services')->get();
+            $stakeholders = Stakeholder::where('industrial_area_id', $industrial_area_id)->with('services')->get();
 
             $services = Service::all();
 
@@ -25,14 +25,13 @@ class ServiceController extends Controller
                 'services' => $services,
                 '$stakeholders' => $stakeholders,
                 'message' => __('Successfully fetching the services')
-            ],200);
-        }
-        catch (\Exception $e){
+            ], 200);
+        } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in server side')
-            ],500);
+            ], 500);
 
         }
     }
@@ -40,7 +39,7 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Service_validation_request $request)
+    public function store(ServiceValidationRequest $request)
     {
         try {
 
@@ -51,10 +50,9 @@ class ServiceController extends Controller
             return response()->json([
                 'service' => $service,
                 'message' => __('Successfully create new service')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -75,7 +73,7 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Service_validation_request $request)
+    public function update(ServiceValidationRequest $request)
     {
         try {
 
@@ -88,10 +86,9 @@ class ServiceController extends Controller
             return response()->json([
                 'service after update' => $service,
                 'message' => __('Successfully update service')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),

@@ -1,25 +1,26 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Timelines;
 
+use App\Models\Category;
+use App\Models\Stakeholder;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Timeline_event extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $keyType='string';
+    protected $keyType = 'string';
 
-    protected $primaryKey='id';
+    protected $primaryKey = 'id';
 
     public $incrementing = false;
 
 
-
-
-    protected $fillable=[
+    protected $fillable = [
         'timeline_id',
         'stakeholder_id',
         'category_id',
@@ -33,21 +34,21 @@ class Timeline_event extends Model
 
     public function timeline()
     {
-        return $this->belongsTo(Timeline::class,'timeline_id');
+        return $this->belongsTo(Timeline::class, 'timeline_id');
     }
 
     public function stakeholder()
     {
-        return $this->belongsTo(Stakeholder::class,'stakeholder_id');
+        return $this->belongsTo(Stakeholder::class, 'stakeholder_id');
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class,'category_is');
+        return $this->belongsTo(Category::class, 'category_is');
     }
 
     public function timeline_quires()
     {
-        return $this->hasMany(Timeline_quiry::class,'timeline_event_id');
+        return $this->hasMany(Timeline_quiry::class, 'timeline_event_id');
     }
 }

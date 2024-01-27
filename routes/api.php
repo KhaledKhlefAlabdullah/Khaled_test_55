@@ -12,8 +12,8 @@ use App\Http\Controllers\IndustrialAreaController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MonitoringPointController;
 use App\Http\Controllers\NaturalDisasterController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\NotificationsSettingController;
+use App\Http\Controllers\Notification\NotificationController;
+use App\Http\Controllers\Notification\NotificationsSettingController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ParticipatingEntityController;
 use App\Http\Controllers\PortalSettingsController;
@@ -23,12 +23,12 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\TimelineController;
-use App\Http\Controllers\TimelineEventController;
-use App\Http\Controllers\TimelineQuirieController;
-use App\Http\Controllers\TimelineSharesRequestController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\Timelines\TimelineController;
+use App\Http\Controllers\Timelines\TimelineEventController;
+use App\Http\Controllers\Timelines\TimelineQuiresController;
+use App\Http\Controllers\Timelines\TimelineSharesRequestController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserProfileController;
 use App\Http\Middleware\Api\Allow_all_users_expect_portal_manager_middleware;
 use App\Http\Middleware\Api\Government_representative_middleware;
 use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
@@ -134,15 +134,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('employees', EmployeeController::class);
 
     // Timelines
-    Route::apiResource('timelines', TimelineController::class);
+    Route::apiResource('timelines', TimelineController::class)->except(['update', 'show']);
 
-    // Timeline Events
+    // Timelines Events
     Route::apiResource('timeline-events', TimelineEventController::class);
 
-    // Timeline Queries
-    Route::apiResource('timeline-queries', TimelineQuirieController::class);
+    // Timelines Queries
+    Route::apiResource('timeline-queries', TimelineQuiresController::class)->except(['update']);
 
-    // Timeline Shares Requests
+    // Timelines Shares Requests
     Route::apiResource('timeline-shares-requests', TimelineSharesRequestController::class);
 
     // User Profiles

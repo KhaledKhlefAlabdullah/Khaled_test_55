@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Chat;
 
-use App\Http\Resources\User\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ChatResource extends JsonResource
+class ChatMemberResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +16,8 @@ class ChatResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'chat_name' => $this->chat_name,
-            'users' => UserResource::collection($this->whenLoaded('users')),
-            'messages' => MessageResource::collection($this->whenLoaded('messages')),
+            'chat_id' => $this->chat_id,
+            'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
 

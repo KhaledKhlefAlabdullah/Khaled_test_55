@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\User_profile;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class UserProfileController extends Controller
             $user_id = $user->id;
 
             // make switch to check user type to get the data by user
-            switch ($user_type){
+            switch ($user_type) {
 
                 case 'Industrial_area_representative':
 
@@ -41,9 +42,9 @@ class UserProfileController extends Controller
                     // profile image from user_profiles
 
                     $user_profile = DB::table('users')
-                        ->join('user_profiles','users.id','=','user_profiles.user_id')
-                        ->select('user_profiles.name as name','users.email as email','user_profiles.contact_person  as contact_person',
-                            'user_profiles.location as location','user_profiles.avatar_URL  as profile_image')->where('users.id','=',$user_id)->get();
+                        ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                        ->select('user_profiles.name as name', 'users.email as email', 'user_profiles.contact_person  as contact_person',
+                            'user_profiles.location as location', 'user_profiles.avatar_URL  as profile_image')->where('users.id', '=', $user_id)->get();
                     break;
                 case 'Tenant_company':
 
@@ -57,11 +58,11 @@ class UserProfileController extends Controller
                     // job title from stakeholders
 
                     $user_profile = DB::table('users')
-                        ->join('user_profiles','users.id','=','user_profiles.user_id')
-                        ->join('stakeholders','users.id','=','stakeholders.user_id')
-                        ->select('user_profiles.name as name','users.email as email','user_profiles.phone_number as phone',
-                            'user_profiles.location as location','user_profiles.avatar_URL  as profile_image','stakeholders.company_representative_name as company_representative_name',
-                            'stakeholders.job_title as job_title')->where('users.id','=',$user_id)->get();
+                        ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                        ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
+                        ->select('user_profiles.name as name', 'users.email as email', 'user_profiles.phone_number as phone',
+                            'user_profiles.location as location', 'user_profiles.avatar_URL  as profile_image', 'stakeholders.company_representative_name as company_representative_name',
+                            'stakeholders.job_title as job_title')->where('users.id', '=', $user_id)->get();
                     break;
                 case 'Infrastructure_provider':
 
@@ -75,11 +76,11 @@ class UserProfileController extends Controller
                     // profile image from user_profiles
 
                     $user_profile = DB::table('users')
-                        ->join('user_profiles','users.id','=','user_profiles.user_id')
-                        ->join('stakeholders','users.id','=','stakeholders.user_id')
-                        ->select('user_profiles.name as name','users.email as email','stakeholders.infrastructure_type as infrastructure_type',
-                            'user_profiles.phone_number as phone','user_profiles.avatar_URL  as profile_image','user_profiles.location as location','user_profiles.contact_person as contact_person')
-                        ->where('users.id','=',$user_id)->get();
+                        ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                        ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
+                        ->select('user_profiles.name as name', 'users.email as email', 'stakeholders.infrastructure_type as infrastructure_type',
+                            'user_profiles.phone_number as phone', 'user_profiles.avatar_URL  as profile_image', 'user_profiles.location as location', 'user_profiles.contact_person as contact_person')
+                        ->where('users.id', '=', $user_id)->get();
 
                     break;
                 case 'Government_representative':
@@ -93,11 +94,11 @@ class UserProfileController extends Controller
                     // profile image from user_profiles
 
                     $user_profile = DB::table('users')
-                        ->join('user_profiles','users.id','=','user_profiles.user_id')
-                        ->join('stakeholders','users.id','=','stakeholders.user_id')
-                        ->select('user_profiles.name as name','users.email as email','user_profiles.phone_number as phone',
-                            'user_profiles.location as location','user_profiles.avatar_URL  as profile_image','stakeholders.representative_government_agency as representative_government_agency')
-                        ->where('users.id','=',$user_id)->get();
+                        ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                        ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
+                        ->select('user_profiles.name as name', 'users.email as email', 'user_profiles.phone_number as phone',
+                            'user_profiles.location as location', 'user_profiles.avatar_URL  as profile_image', 'stakeholders.representative_government_agency as representative_government_agency')
+                        ->where('users.id', '=', $user_id)->get();
 
                     break;
                 default:
@@ -109,18 +110,17 @@ class UserProfileController extends Controller
             return response()->json([
                 'user_profile' => $user_profile,
                 'message' => __('successfully get user profile')
-            ],200);
+            ], 200);
 
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
 
                 'error' => __($e->getMessage()),
                 'message' => __('There are error in server side')
 
-            ],500);
+            ], 500);
 
         }
     }
@@ -168,7 +168,7 @@ class UserProfileController extends Controller
             ]);
 
             // check user type to update the user profile details because every user type has different details
-            switch ($user_type){
+            switch ($user_type) {
 
                 case 'Industrial_area_representative':
 
@@ -235,7 +235,6 @@ class UserProfileController extends Controller
                     ]);
 
 
-
                     $user->user_profile()->update([
                         'phone_number' => $request->input('phone_number'),
                         'contact_person' => $request->input('contact_person'),
@@ -262,7 +261,6 @@ class UserProfileController extends Controller
                     ]);
 
 
-
                     $user->user_profile()->update([
                         'phone_number' => $request->input('phone_number'),
                     ]);
@@ -281,18 +279,17 @@ class UserProfileController extends Controller
 
             return response()->json([
                 'message' => __('successfully editing user profile')
-            ],200);
+            ], 200);
 
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
 
                 'error' => __($e->getMessage()),
                 'message' => __('There are error in server side')
 
-            ],500);
+            ], 500);
 
         }
     }

@@ -2,20 +2,23 @@
 
 namespace App\Models;
 
+use App\Models\Notifications\Notifications_setting;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Dam extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
-    protected $keyType='string';
 
-    protected $primaryKey='id';
+    protected $keyType = 'string';
 
-    public $incrementing=false;
+    protected $primaryKey = 'id';
 
-    protected $fillable=[
+    public $incrementing = false;
+
+    protected $fillable = [
         'user_id',
         'name',
         'location',
@@ -26,11 +29,11 @@ class Dam extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function notifications_settings()
     {
-        return $this->belongsToMany(Notifications_setting::class,'dams_notification_settings','dam_id','notification_setting_id');
+        return $this->belongsToMany(Notifications_setting::class, 'dams_notification_settings', 'dam_id', 'notification_setting_id');
     }
 }

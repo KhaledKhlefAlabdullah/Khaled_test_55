@@ -1,32 +1,31 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use function App\Helpers\fake_register_request;
 
 class UserController extends Controller
 {
     public function index()
     {
-        try{
+        try {
 
-            $users = User::with(['user_profile','stakeholder'])->get();
+            $users = User::with(['user_profile', 'stakeholder'])->get();
 
             return response()->json([
                 'users' => $users
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There are error try another time')
-            ],500);
+            ], 500);
 
         }
 
@@ -41,20 +40,19 @@ class UserController extends Controller
         try {
 
             // get all stakeholders belong to industrial area
-            $subdomain_users = Auth::user()->industrial_area()->with(['stakeholders','user'])->get();
+            $subdomain_users = Auth::user()->industrial_area()->with(['stakeholders', 'user'])->get();
 
             // return the result
             return response()->json([
                 'subdomain_users' => $subdomain_users
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There are problem in server side try another time')
-            ],500);
+            ], 500);
         }
 
     }
@@ -65,7 +63,7 @@ class UserController extends Controller
      */
     public function subdomain_user_details(Request $request)
     {
-        try{
+        try {
 
             $request->validate([
                 'user_id' => 'required|string|exists:users,id'
@@ -75,15 +73,14 @@ class UserController extends Controller
                 ->findOrFail($request->input('user_id'));
             return response()->json([
                 'user_details' => $user_details
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There are error try another time')
-            ],500);
+            ], 500);
 
         }
 
@@ -95,7 +92,7 @@ class UserController extends Controller
      */
     public function store_new_subdomain_user(Request $request)
     {
-        try{
+        try {
 
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
@@ -122,8 +119,7 @@ class UserController extends Controller
 
             return $response;
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -137,7 +133,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,User $user)
+    public function update(Request $request, User $user)
     {
         //
     }

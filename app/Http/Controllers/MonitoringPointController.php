@@ -7,6 +7,7 @@ use App\Http\Resources\MonitoringPointResource;
 use App\Models\Monitoring_point;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\transformCollection;
 
 class MonitoringPointController extends Controller
 {
@@ -18,9 +19,7 @@ class MonitoringPointController extends Controller
         // Get all monitoring points
         $monitoring_points = Monitoring_point::all();
 
-        return ($monitoring_points->count() == 1)
-            ? new MonitoringPointResource($monitoring_points->first())
-            : MonitoringPointResource::collection($monitoring_points);
+        return transformCollection($monitoring_points, MonitoringPointResource::class);
     }
 
 

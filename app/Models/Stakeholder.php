@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Timelines\Timeline;
+use App\Models\Timelines\Timeline_event;
+use App\Models\Timelines\Timeline_quiry;
+use App\Models\Timelines\Timeline_shares_request;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

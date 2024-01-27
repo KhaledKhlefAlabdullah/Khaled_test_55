@@ -29,6 +29,7 @@ use App\Http\Controllers\TimelineQuirieController;
 use App\Http\Controllers\TimelineSharesRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Middleware\Api\Allow_all_users_expect_portal_manager_middleware;
 use App\Http\Middleware\Api\Government_representative_middleware;
 use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
 use App\Http\Middleware\Api\Industrial_area_representative_middleware;
@@ -208,7 +209,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Ifrastructar_provider_middleware::class])->group(function (){
+    Route::middleware([Ifrastructar_provider_middleware::class])->group(function () {
 
 
     });
@@ -226,14 +227,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for all users expect Portal manager role
-    Route::middleware([Allow_all_users_expect_portal_manager_middleware::class])->group(function (){
+    Route::middleware([Allow_all_users_expect_portal_manager_middleware::class])->group(function () {
 
         // For profile functions
-        Route::group(['prefix'=>'profile'],function (){
+        Route::group(['prefix' => 'profile'], function () {
 
-            Route::get('/',[UserProfileController::class,'show']);
+            Route::get('/', [UserProfileController::class, 'show']);
 
-            Route::post('/edite',[UserProfileController::class,'update']);
+            Route::post('/edite', [UserProfileController::class, 'update']);
 
         });
 

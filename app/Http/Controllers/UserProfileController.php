@@ -7,6 +7,7 @@ use App\Models\User_profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function App\Helpers\store_files;
 
 class UserProfileController extends Controller
 {
@@ -18,31 +19,35 @@ class UserProfileController extends Controller
     {
         try {
 
+            // get the auth user
             $user = Auth::user();
 
+            // get the auth user type
             $user_type = $user->stakeholder_type;
 
+            // get user id
             $user_id = $user->id;
 
-            $user_profile = null;
-
-
+            // make switch to check user type to get the data by user
             switch ($user_type){
 
                 case 'Industrial_area_representative':
 
+                    // get the profile details for user with:
                     // name from user_profiles
                     // email from users
+                    // location from user_profiles
                     // contact person from user_profiles
                     // profile image from user_profiles
 
                     $user_profile = DB::table('users')
                         ->join('user_profiles','users.id','=','user_profiles.user_id')
                         ->select('user_profiles.name as name','users.email as email','user_profiles.contact_person  as contact_person',
-                            'user_profiles.avatar_URL  as profile_image')->where('users.id','=',$user_id)->get();
+                            'user_profiles.location as location','user_profiles.avatar_URL  as profile_image')->where('users.id','=',$user_id)->get();
                     break;
                 case 'Tenant_company':
 
+                    // get the profile details for user with:
                     // name from user_profiles
                     // email from users
                     // phone from user_profiles
@@ -60,6 +65,7 @@ class UserProfileController extends Controller
                     break;
                 case 'Infrastructure_provider':
 
+                    // get the profile details for user with:
                     // name from user_profiles
                     // email from users
                     // infrastructure_type from stakeholders
@@ -78,6 +84,7 @@ class UserProfileController extends Controller
                     break;
                 case 'Government_representative':
 
+                    // get the profile details for user with:
                     // name from user_profiles
                     // email from users
                     // phone from user_profiles
@@ -125,23 +132,50 @@ class UserProfileController extends Controller
     {
         try {
 
+            // validate input data the data in every user profile
             $request->validate([
                 'name' => 'required|string|min:3',
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
-                'profile_image' => 'required|string '
-                    //'image|mimes:jpeg,png,gif,bmp'
+                'location' => 'required|string',
+                'profile_image' => 'required|image|mimes:jpeg,png,gif,bmp'
             ]);
 
+            // get auth user
             $user = Auth::user();
 
+            // get auth user type
             $user_type = $user->stakeholder_type;
 
+            // get the image from request
+            $profile_image = $request->profile_image;
+
+            // chose the path where image will store
+            $path = 'images/profile_images';
+
+            // coll store_files function to store the profile image
+            $file_path = store_files($profile_image, $path);
+
+            // update user email
+            $user->update([
+                'email' => $request->input('email')
+            ]);
+
+            // update user profile
+            $user->user_profile()->update([
+                'name' => $request->input('name'),
+                'location' => $request->input('location'),
+                'avatar_URL' => $file_path
+            ]);
+
+            // check user type to update the user profile details because every user type has different details
             switch ($user_type){
 
                 case 'Industrial_area_representative':
 
+                    // edite user data with:
                     // name to user_profiles
                     // email to users
+                    // location from user_profiles
                     // contact person to user_profiles
                     // profile image to user_profiles
 
@@ -149,19 +183,14 @@ class UserProfileController extends Controller
                         'contact_person' => 'required|string|min:3'
                     ]);
 
-                    $user->update([
-                        'email' => $request->input('email')
-                    ]);
-
                     $user->user_profile()->update([
-                        'name' => $request->input('name'),
-                        'contact_person' => $request->input('contact_person'),
-                        'avatar_URL' => $request->input('profile_image'),
+                        'contact_person' => $request->input('contact_person')
                     ]);
 
                     break;
                 case 'Tenant_company':
 
+                    // edite user data with:
                     // name to user_profiles
                     // email to users
                     // phone to user_profiles
@@ -173,21 +202,13 @@ class UserProfileController extends Controller
                     $request->validate([
                         'phone_number' => 'required|string|regex:/^[0-9]{9,20}$/',
                         'contact_person' => 'required|string|min:3|max:50',
-                        'location' => 'required|string',
                         'company_representative_name' => 'required|string|min:3',
                         'job_title' => 'required|string|min:3'
                     ]);
 
-                    $user->update([
-                        'email' => $request->input('email')
-                    ]);
-
                     $user->user_profile()->update([
-                        'name' => $request->input('name'),
                         'phone_number' => $request->input('phone_number'),
-                        'contact_person' => $request->input('contact_person'),
-                        'location' => $request->input('location'),
-                        'avatar_URL' => $request->input('profile_image'),
+                        'contact_person' => $request->input('contact_person')
                     ]);
 
                     $user->stakeholder()->update([
@@ -198,6 +219,7 @@ class UserProfileController extends Controller
                     break;
                 case 'Infrastructure_provider':
 
+                    // edite user data with:
                     // name to user_profiles
                     // email to users
                     // infrastructure_type to stakeholders
@@ -209,20 +231,14 @@ class UserProfileController extends Controller
                     $request->validate([
                         'phone_number' => 'required|string|regex:/^[0-9]{9,20}$/',
                         'contact_person' => 'required|string|min:3|max:50',
-                        'location' => 'required|string',
                         'infrastructure_type' => 'required|string|min:3',
                     ]);
 
-                    $user->update([
-                        'email' => $request->input('email')
-                    ]);
+
 
                     $user->user_profile()->update([
-                        'name' => $request->input('name'),
                         'phone_number' => $request->input('phone_number'),
                         'contact_person' => $request->input('contact_person'),
-                        'location' => $request->input('location'),
-                        'avatar_URL' => $request->input('profile_image'),
                     ]);
 
                     $user->stakeholder()->update([
@@ -232,6 +248,7 @@ class UserProfileController extends Controller
                     break;
                 case 'Government_representative':
 
+                    // edite user data with:
                     // name to user_profiles
                     // email to users
                     // phone to user_profiles
@@ -241,19 +258,13 @@ class UserProfileController extends Controller
 
                     $request->validate([
                         'phone_number' => 'required|string|regex:/^[0-9]{9,20}$/',
-                        'location' => 'required|string',
                         'representative_government_agency' => 'required|string|min:3',
                     ]);
 
-                    $user->update([
-                        'email' => $request->input('email')
-                    ]);
+
 
                     $user->user_profile()->update([
-                        'name' => $request->input('name'),
                         'phone_number' => $request->input('phone_number'),
-                        'location' => $request->input('location'),
-                        'avatar_URL' => $request->input('profile_image'),
                     ]);
 
                     $user->stakeholder()->update([

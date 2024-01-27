@@ -71,3 +71,28 @@ if (!function_exists('fake_register_request')) {
     }
 }
 
+if (!function_exists('store_files')) {
+    /*
+     * This function is used to get and check if a model exists by ID
+     * @param string $model
+     * @param string $id
+     *
+     * @throws NotFoundResourceException
+     */
+     function store_files($file,$path): string
+     {
+         // get file extension
+         $file_extension = $file->getClientOriginalExtension();
+
+         // rename the file
+         $file_name = time().'.'.$file_extension;
+
+         // store the in public directory
+         $file->move($path, $file_name);
+
+         // return the path and file name
+         return $path.'/'.$file_name;
+
+    }
+}
+

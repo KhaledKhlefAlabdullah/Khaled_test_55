@@ -34,6 +34,7 @@ use App\Http\Middleware\Api\Portal_manager_middleware;
 use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
 use App\Http\Middleware\Api\Tenant_company_middleware;
 use App\Http\Middleware\Api\Government_representative_middleware;
+use App\Http\Middleware\Api\Allow_all_users_expect_portal_manager_middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -221,7 +222,21 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 
-    Route::get('profile',[UserProfileController::class,'show']);
+    // Routes for all users expect Portal manager role
+    Route::middleware([Allow_all_users_expect_portal_manager_middleware::class])->group(function (){
+
+        // For profile functions
+        Route::group(['prefix'=>'profile'],function (){
+
+            Route::get('/',[UserProfileController::class,'show']);
+
+            Route::post('/edite',[UserProfileController::class,'update']);
+
+        });
+
+
+    });
+
 
 });
 
@@ -237,7 +252,6 @@ Route::group(['prefix' => 'stakeholders'], function () {
     Route::post('/delete', [StakeholderController::class, 'destroy']);
 
 });
-
 
 
 Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);

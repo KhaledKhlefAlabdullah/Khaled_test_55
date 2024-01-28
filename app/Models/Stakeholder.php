@@ -26,7 +26,7 @@ class Stakeholder extends Model
         'user_id',
         'representative_government_agency',
         'industrial_area_id',
-        'tent_company_state',
+        'tenant_company_state',
         'company_representative_name',
         'job_title',
         'infrastructures_state',

@@ -19,7 +19,7 @@ class StakeholderResource extends JsonResource
             'user_id' => $this->user_id,
             'industrial_area_id' => $this->industrial_area_id,
             'representative_government_agency' => $this->representative_government_agency,
-            'tent_company_state' => $this->tent_company_state,
+            'tenant_company_state' => $this->tenant_company_state,
             'company_representative_name' => $this->company_representative_name,
             'job_title' => $this->job_title,
             'infrastructures_state' => $this->infrastructures_state,

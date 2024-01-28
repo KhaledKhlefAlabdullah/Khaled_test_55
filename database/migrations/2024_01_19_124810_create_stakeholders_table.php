@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('industrial_area_id');
             $table->string('representative_government_agency')->nullable();
-            $table->enum('tent_company_state',['operating','evacuating','trapped','evacuated'])->nullable();
+            $table->enum('tenant_company_state',['operating','evacuating','trapped','evacuated'])->nullable();
             $table->string('company_representative_name')->nullable();
             $table->string('job_title')->nullable();
             $table->enum('infrastructures_state',['available','partially','interrupted'])->nullable();

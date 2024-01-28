@@ -168,6 +168,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         });
 
+        // for add new general news
+        Route::group(['prefix' => 'general-news'],function (){
+
+            Route::post('/add',[PostController::class,'new_general_news']);
+
+        });
+
     });
 
     // Routes for industrial area representative role
@@ -200,6 +207,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             Route::get('/', [RegistrationRequestController::class, 'index']);
 
+            Route::get('/details', [RegistrationRequestController::class, 'show']);
+
             Route::post('/accept_or_failed', [RegistrationRequestController::class, 'accept_or_failed']);
 
             Route::post('/delete', [RegistrationRequestController::class, 'destroy']);
@@ -217,7 +226,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes for industrial area representative role
     Route::middleware([Tenant_company_middleware::class])->group(function () {
 
-        Route::post('change-status',[StakeholderController::class,'edite-status']);
+        Route::post('change-status',[StakeholderController::class,'edit_company_state']);
 
     });
 
@@ -245,24 +254,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
-
-Route::group(['prefix' => 'stakeholders'], function () {
-
-    Route::get('/', [StakeholderController::class, 'index']);
-
-    Route::post('/add', [StakeholderController::class, 'store']);
-
-    Route::post('/edit', [StakeholderController::class, 'update']);
-
-    Route::post('/delete', [StakeholderController::class, 'destroy']);
-
-});
-
-
+//Route::group(['prefix' => 'stakeholders'], function () {
+//
+//    Route::get('/', [StakeholderController::class, 'index']);
+//
+//    Route::post('/add', [StakeholderController::class, 'store']);
+//
+//    Route::post('/edit', [StakeholderController::class, 'update']);
+//
+//    Route::post('/delete', [StakeholderController::class, 'destroy']);
+//
+//});
+// public routes
+// send registration request
 Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);
 
-
-Route::get('users', [UserController::class, 'index']);
-
+// get all general news
+Route::get('general-news',[PostController::class,'view_general_news']);
 
 require __DIR__ . '/auth.php';

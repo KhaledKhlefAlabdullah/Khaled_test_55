@@ -23,7 +23,7 @@ class Timeline_shares_request extends Model
         'user_id',
         'parent_id',
         'representative_government_agency',
-        'tent_company_state',
+        'tenant_company_state',
         'company_representative_name',
         'job_title',
         'infrastructures_state',

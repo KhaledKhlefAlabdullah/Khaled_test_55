@@ -61,6 +61,22 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
+     * Change password
+     */
+    public function change_password()
+    {
+        try{
+
+        }
+        catch (Exception $e){
+            return \response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There are')
+            ]);
+        }
+    }
+
+    /**
      * Destroy an authenticated session.
      */
     public function destroy(Request $request): \Illuminate\Http\JsonResponse

@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('name');
-            $table->enum('type',['post','news','file','notification','report','timeline_event','entity'])->unique();
+            $table->enum('type',['post','news','file','notification','report','timeline_event',
+                'normal_production_rate','extra_production_Rate','low _Production_Rate','halted_Production',
+                'evacuating','maintenance','relocation','entity','products','materials','stations','suppliers',
+                'waste_disposal_site'])->unique();
             $table->uuid('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

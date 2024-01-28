@@ -35,6 +35,7 @@ use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
 use App\Http\Middleware\Api\Industrial_area_representative_middleware;
 use App\Http\Middleware\Api\Portal_manager_middleware;
 use App\Http\Middleware\Api\Tenant_company_middleware;
+use \App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -251,6 +252,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 
+    Route::post('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'store'])
+        ->name('password.email');
+
+    Route::post('change-password',[AuthenticatedSessionController::class,'change_password']);
 
 });
 

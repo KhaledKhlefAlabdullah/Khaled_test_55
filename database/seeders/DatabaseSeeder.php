@@ -3,14 +3,6 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Category;
-use App\Models\Chat;
-use App\Models\Contact_us_message;
-use App\Models\Message;
-use App\Models\Page;
-use App\Models\Post;
-use App\Models\User;
-use Database\Factories\ChatMemberFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,13 +12,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(10)->create();
-        Page::factory()->count(10)->create();
-        Contact_us_message::factory()->count(10)->create();
-        Category::factory()->count(10)->create();
-        Post::factory()->count(10)->create();
-        Chat::factory()->count(10)->create();
-        Message::factory()->count(10)->create();
+        // Seeders
+        $this->call([
+            IndustrialAreaSeeder::class,
+            UserSeeder::class,
+            UserProfileSeeder::class,
+            CategorySeeder::class,
+            DamSeeder::class,
+            StakeholderSeeder::class,
+            RegistrationRequestSeeder::class,
+            PortalSettingSeeder::class,
+            ParticipatingEntitiesSeeder::class,
+            PageSeeder::class,
+            ContactUsMessageSeeder::class,
+            EntitiesSeeder::class,
+            FileSeeder::class,
+            NotificationSeeder::class,
+            NotificationSettingSeeder::class,
+
+
+        ]);
+
+        // Factory
+//        User::factory()->count(10)->create();
+//        Page::factory()->count(10)->create();
+//        Contact_us_message::factory()->count(10)->create();
+//        Category::factory()->count(10)->create();
+//        Post::factory()->count(10)->create();
+//        Chat::factory()->count(10)->create();
+//        Message::factory()->count(10)->create();
 
     }
 }

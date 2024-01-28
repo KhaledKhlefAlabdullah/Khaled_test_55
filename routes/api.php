@@ -146,7 +146,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('timeline-shares-requests', TimelineSharesRequestController::class);
 
     // User Profiles
-    Route::apiResource('user-profiles', UserProfileController::class);
+//    Route::apiResource('user-profiles', UserProfileController::class);
 
 });
 

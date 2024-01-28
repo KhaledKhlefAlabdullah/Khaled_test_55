@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,7 +13,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('name');
-            $table->enum('type',['Post','News','File','Notification','Report','Timeline_event','entity']);
+            $table->enum('type', ['Page', 'Post', 'News', 'File', 'Notification', 'Report', 'Timeline_event', 'Entity']);
             $table->uuid('parent_id')->nullable(); // Make parent_id nullable
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

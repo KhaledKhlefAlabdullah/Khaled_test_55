@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Timelines;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Timelines\TimelineShareRequest;
 use App\Http\Resources\Timeline\TimelineShareRequestResource;
-use App\Models\Timelines\Timeline_shares_request;
+use App\Models\Timelines\TimelineSharesRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,7 @@ class TimelineSharesRequestController extends Controller
         $currentUserId = Auth::id();
 
         // Retrieve timeline share requests for the authenticated user
-        $timelineShareRequests = Timeline_shares_request::
+        $timelineShareRequests = TimelineSharesRequest::
         where(function ($query) use ($currentUserId) {
             // Filter requests based on sender or receiver stakeholder ID matching the user's ID
             $query->where('send_stakeholder_id', $currentUserId)
@@ -51,7 +51,7 @@ class TimelineSharesRequestController extends Controller
         $valid_data = $request->validated();
 
         // Create the timeline share request
-        $timelineShare = Timeline_shares_request::create($valid_data);
+        $timelineShare = TimelineSharesRequest::create($valid_data);
 
         return new TimelineShareRequestResource($timelineShare);
     }
@@ -63,7 +63,7 @@ class TimelineSharesRequestController extends Controller
     {
         // Get timeline share by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_shares_request::class, $id);
+            $data = getAndCheckModelById(TimelineSharesRequest::class, $id);
 
             return new TimelineShareRequestResource($data);
         } catch (NotFoundResourceException $e) {
@@ -79,7 +79,7 @@ class TimelineSharesRequestController extends Controller
     {
         // Get timeline share by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_shares_request::class, $id);
+            $data = getAndCheckModelById(TimelineSharesRequest::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
@@ -100,7 +100,7 @@ class TimelineSharesRequestController extends Controller
     {
         // Get timeline share by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_shares_request::class, $id);
+            $data = getAndCheckModelById(TimelineSharesRequest::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }

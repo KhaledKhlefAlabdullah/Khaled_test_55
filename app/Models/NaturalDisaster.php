@@ -6,18 +6,17 @@ use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Natural_disaster extends Model
+
+class NaturalDisaster extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
-    protected $keyType='string';
-    protected $primaryKey='id';
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
     public $incrementing = false;
 
 
-
-
-    protected $fillable=[
+    protected $fillable = [
         'name',
         'disaster_type',
         'disaster_date',
@@ -27,7 +26,7 @@ class Natural_disaster extends Model
 
     public function disaster_reports()
     {
-        return $this->hasMany(Disaster_report::class,'natural_disaster_id');
+        return $this->hasMany(DisasterReport::class, 'natural_disaster_id');
     }
 
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUsMessageRequest;
 use App\Http\Resources\ContactUsMessagesResource;
-use App\Models\Contact_us_message;
+use App\Models\ContactUsMessage;
 use Illuminate\Http\Request;
 
 class ContactUsMessageController extends Controller
@@ -15,7 +15,7 @@ class ContactUsMessageController extends Controller
      */
     public function index()
     {
-        $messages = Contact_us_message::paginate();
+        $messages = ContactUsMessage::paginate();
 
         return $messages->count() == 1
             ? new ContactUsMessagesResource($messages->first())
@@ -34,7 +34,7 @@ class ContactUsMessageController extends Controller
     {
         $valid_data = $request->validated();
 
-        $contact_us_message = Contact_us_message::create($valid_data);
+        $contact_us_message = ContactUsMessage::create($valid_data);
 
         return new ContactUsMessagesResource($contact_us_message);
     }
@@ -44,7 +44,7 @@ class ContactUsMessageController extends Controller
      */
     public function show(string $id)
     {
-        $contact_us_message = Contact_us_message::find($id);
+        $contact_us_message = ContactUsMessage::find($id);
 
         if (!$contact_us_message) {
             return response()->json(['message' => 'Contact us message ID not found'], 404);
@@ -62,7 +62,7 @@ class ContactUsMessageController extends Controller
     public function update(Request $request, string $id)
     {
 
-        $contact_us_message = Contact_us_message::find($id);
+        $contact_us_message = ContactUsMessage::find($id);
 
         if (!$contact_us_message) {
             return response()->json(['message' => 'Contact us message ID not found'], 404);
@@ -85,7 +85,7 @@ class ContactUsMessageController extends Controller
     public function destroy(string $id)
     {
 
-        $contact_us_message = Contact_us_message::find($id);
+        $contact_us_message = ContactUsMessage::find($id);
 
         if (!$contact_us_message) {
             return response()->json(['message' => 'Contact us message ID not found'], 404);

@@ -30,11 +30,11 @@ class Timeline extends Model
 
     public function timeline_shares_requests()
     {
-        return $this->hasMany(Timeline_shares_request::class, 'timeline_id');
+        return $this->hasMany(TimelineSharesRequest::class, 'timeline_id');
     }
 
     public function timeline_events()
     {
-        return $this->hasMany(Timeline_event::class, 'timeline_id');
+        return $this->hasMany(TimelineEvent::class, 'timeline_id');
     }
 }

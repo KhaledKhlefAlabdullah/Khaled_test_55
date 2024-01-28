@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Notification;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Notification\NotificationSettingRequest;
 use App\Http\Resources\Notification\NotificationSettingResource;
-use App\Models\Notifications\Notifications_setting;
+use App\Models\Notifications\NotificationsSetting;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 
@@ -17,7 +17,7 @@ class NotificationsSettingController extends Controller
     public function index()
     {
         // Get all notifications settings by auth user
-        $data = Notifications_setting::where('user_id', auth()->user()->id)->get();
+        $data = NotificationsSetting::where('user_id', auth()->user()->id)->get();
 
         return ($data->count() == 1)
             ? new NotificationSettingResource($data)
@@ -34,7 +34,7 @@ class NotificationsSettingController extends Controller
         $valid_data = $request->validated();
 
         // Create new notification setting
-        $data = Notifications_setting::create($valid_data);
+        $data = NotificationsSetting::create($valid_data);
 
         return new NotificationSettingResource($data);
     }
@@ -46,7 +46,7 @@ class NotificationsSettingController extends Controller
     {
         // Get the notification setting by id and check if existing
         try {
-            $data = getAndCheckModelById(Notifications_setting::class, $id);
+            $data = getAndCheckModelById(NotificationsSetting::class, $id);
 
             return new NotificationSettingResource($data);
 
@@ -63,7 +63,7 @@ class NotificationsSettingController extends Controller
     {
         try {
             // Get the notification setting by id and check if existing
-            $data = getAndCheckModelById(Notifications_setting::class, $id);
+            $data = getAndCheckModelById(NotificationsSetting::class, $id);
 
             $valid_data = $request->validated();
 
@@ -82,7 +82,7 @@ class NotificationsSettingController extends Controller
     {
         // Get the notification setting by id and check if existing
         try {
-            $data = getAndCheckModelById(Notifications_setting::class, $id);
+            $data = getAndCheckModelById(NotificationsSetting::class, $id);
 
             return new NotificationSettingResource($data);
 

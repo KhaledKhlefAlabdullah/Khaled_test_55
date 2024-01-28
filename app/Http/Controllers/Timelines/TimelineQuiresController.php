@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Timelines;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Timelines\TimelineQuiresRequest;
 use App\Http\Resources\Timeline\TimelineQuireResource;
-use App\Models\Timelines\Timeline_quiry;
+use App\Models\Timelines\TimelineQuire;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\transformCollection;
@@ -18,7 +18,7 @@ class TimelineQuiresController extends Controller
     public function index()
     {
         // Get the timelines quires by auth id
-        $data = Timeline_quiry::where('stakeholder_id', auth()->user()->id)->paginate();
+        $data = TimelineQuire::where('stakeholder_id', auth()->user()->id)->paginate();
 
         return transformCollection($data, TimelineQuireResource::class);
     }
@@ -33,7 +33,7 @@ class TimelineQuiresController extends Controller
         $valid_data = $request->validated();
 
         // create the timeline quire
-        $timeline_quire = Timeline_quiry::create($valid_data);
+        $timeline_quire = TimelineQuire::create($valid_data);
 
         return new TimelineQuireResource($timeline_quire);
     }
@@ -45,7 +45,7 @@ class TimelineQuiresController extends Controller
     {
         // Get timeline event by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_quiry::class, $id);
+            $data = getAndCheckModelById(TimelineQuire::class, $id);
 
             return new TimelineQuireResource($data);
         } catch (NotFoundResourceException $e) {
@@ -61,7 +61,7 @@ class TimelineQuiresController extends Controller
     {
         // Get timeline event by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_quiry::class, $id);
+            $data = getAndCheckModelById(TimelineQuire::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }

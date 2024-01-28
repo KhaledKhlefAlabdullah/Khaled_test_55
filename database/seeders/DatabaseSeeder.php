@@ -29,8 +29,22 @@ class DatabaseSeeder extends Seeder
             FileSeeder::class,
             NotificationSeeder::class,
             NotificationSettingSeeder::class,
+            TimelineSeeder::class,
+            TimelineEventSeeder::class,
+            TimelineQuireSeeder::class,
+            TimelineShareRequestSeeder::class,
+            WasteSeeder::class,
 
-
+            PostSeeder::class,
+            SupplierSeeder::class,
+            ShipmentSeeder::class,
+            ServiceSeeder::class,
+            NaturalDisasterSeeder::class,
+            MonitoringPointSeeder::class,
+            MessageSeeder::class,
+            EmployeeSeeder::class,
+            DisasterReportSeeder::class,
+            ChatSeeder::class,
         ]);
 
         // Factory

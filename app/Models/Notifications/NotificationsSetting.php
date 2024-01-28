@@ -4,14 +4,14 @@ namespace App\Models\Notifications;
 
 use App\Models\Category;
 use App\Models\Dam;
-use App\Models\Monitoring_point;
+use App\Models\MonitoringPoint;
 use App\Models\Traits\HasUuid;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Notifications_setting extends Model
+class NotificationsSetting extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
@@ -56,6 +56,6 @@ class Notifications_setting extends Model
 
     public function monitoring_points()
     {
-        return $this->belongsToMany(Monitoring_point::class, 'monitoring_points_notification_settings', 'notifications_setting_id', 'monitoring_point_id');
+        return $this->belongsToMany(MonitoringPoint::class, 'monitoring_points_notification_settings', 'notifications_setting_id', 'monitoring_point_id');
     }
 }

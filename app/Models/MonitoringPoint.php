@@ -6,16 +6,18 @@ use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Monitoring_point extends Model
+
+class MonitoringPoint extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
-    protected $keyType='string';
 
-    protected $primaryKey='id';
+    protected $keyType = 'string';
 
-    public $incrementing=false;
+    protected $primaryKey = 'id';
 
-    protected $fillable=[
+    public $incrementing = false;
+
+    protected $fillable = [
         'user_id',
         'name',
         'location',
@@ -30,11 +32,11 @@ class Monitoring_point extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function  notifications_settings()
+    public function notifications_settings()
     {
-        return $this->hasMany('App\Models\Monitoring_points_notification_setting','monitoring_point_id');
+        return $this->hasMany('App\Models\Monitoring_points_notification_setting', 'monitoring_point_id');
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ParticipatingEntityRequest;
 use App\Http\Resources\ParticipatingEntityResource;
-use App\Models\Participating_entity;
+use App\Models\ParticipatingEntity;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 
@@ -15,7 +15,7 @@ class ParticipatingEntityController extends Controller
      */
     public function index()
     {
-        $data = Participating_entity::paginate();
+        $data = ParticipatingEntity::paginate();
 
         return ($data->count() == 1)
             ? new ParticipatingEntityResource($data->first())
@@ -34,7 +34,7 @@ class ParticipatingEntityController extends Controller
         $valid_data = $request->validated();
 
         // Create the entity
-        $entity = Participating_entity::create($valid_data);
+        $entity = ParticipatingEntity::create($valid_data);
 
         return new ParticipatingEntityResource($entity);
     }
@@ -48,7 +48,7 @@ class ParticipatingEntityController extends Controller
     {
         // Get the data by id and check if it exists
         try {
-            $data = getAndCheckModelById(Participating_entity::class, $id);
+            $data = getAndCheckModelById(ParticipatingEntity::class, $id);
 
             return new ParticipatingEntityResource($data);
         } catch (NotFoundResourceException $e) {
@@ -66,7 +66,7 @@ class ParticipatingEntityController extends Controller
     {
         // Get the data by id and check if it exists
         try {
-            $data = getAndCheckModelById(Participating_entity::class, $id);
+            $data = getAndCheckModelById(ParticipatingEntity::class, $id);
 
             // Validate the request
             $valid_data = $request->validated();
@@ -89,7 +89,7 @@ class ParticipatingEntityController extends Controller
     {
         // Get the data by id and check if it exists
         try {
-            $data = getAndCheckModelById(Participating_entity::class, $id);
+            $data = getAndCheckModelById(ParticipatingEntity::class, $id);
 
             // Delete the entity
             $data->delete();

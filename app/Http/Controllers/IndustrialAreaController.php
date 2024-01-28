@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Industrial_area;
+use App\Models\IndustrialArea;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use function App\Helpers\fake_register_request;
 
@@ -17,31 +18,30 @@ class IndustrialAreaController extends Controller
         try {
 
             // get all industrial areas in database
-            $industrial_areas = Industrial_area::all();
+            $industrial_areas = IndustrialArea::all();
 
             // check if their industrial areas in database
-            if($industrial_areas->isNotEmpty()){
+            if ($industrial_areas->isNotEmpty()) {
 
                 // return the data
                 return response()->json([
                     'industrial_areas' => $industrial_areas,
                     'message' => __('Successfully request')
-                ],201);
+                ], 201);
 
             }
 
             return response()->json([
                 'message' => __('Successfully request but there now industrial areas in database yeet')
-            ],402);
+            ], 402);
 
-        }
-        // handling the exceptions
-        catch (\Exception $e){
+        } // handling the exceptions
+        catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message'=> __('Failed to get any thing')
-            ],501);
+                'message' => __('Failed to get any thing')
+            ], 501);
 
         }
     }
@@ -51,18 +51,18 @@ class IndustrialAreaController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
 
             // validate the inputs data
             $request->validate([
-                'name' => ['required','string','min:5'],
-                'address' => ['required','string'],
-                'representative_name' => ['required','string'],
+                'name' => ['required', 'string', 'min:5'],
+                'address' => ['required', 'string'],
+                'representative_name' => ['required', 'string'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
             ]);
 
             // create new industrial area
-            $industrial_area = Industrial_area::create([
+            $industrial_area = IndustrialArea::create([
                 'name' => $request->input('name'),
                 'address' => $request->input('address'),
             ]);
@@ -80,8 +80,7 @@ class IndustrialAreaController extends Controller
             );
 
             return $response;
-        }
-        catch (\Exception $e){
+        } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -103,31 +102,30 @@ class IndustrialAreaController extends Controller
             ]);
 
             // get all industrial areas in database
-            $industrial_area = Industrial_area::findOrFail($request->input('id'))->with('user')->get();
+            $industrial_area = IndustrialArea::findOrFail($request->input('id'))->with('user')->get();
 
             // check if their industrial areas in database
-            if(!empty($industrial_area)){
+            if (!empty($industrial_area)) {
 
                 // return the data
                 return response()->json([
                     'industrial_area' => $industrial_area,
                     'message' => __('Successfully request')
-                ],201);
+                ], 201);
 
             }
 
             return response()->json([
                 'message' => __('Successfully request but there now industrial areas in database yeet')
-            ],402);
+            ], 402);
 
-        }
-            // handling the exceptions
-        catch (\Exception $e){
+        } // handling the exceptions
+        catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message'=> __('Failed to get any thing')
-            ],501);
+                'message' => __('Failed to get any thing')
+            ], 501);
 
         }
     }
@@ -137,19 +135,19 @@ class IndustrialAreaController extends Controller
      */
     public function update(Request $request)
     {
-        try{
+        try {
 
             // validate the inputs data
             $request->validate([
                 'id' => 'required|string|exists:industrial_areas,id',
-                'name' => ['required','string','min:5'],
-                'address' => ['required','string'],
+                'name' => ['required', 'string', 'min:5'],
+                'address' => ['required', 'string'],
                 //'representative_name' => ['required','string'],
                 //'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
             ]);
 
             // get the industrial area want to edite
-            $industrial_area = Industrial_area::findOrFail($request->input('id'));
+            $industrial_area = IndustrialArea::findOrFail($request->input('id'));
 
             // create new industrial area
             $industrial_area->update([
@@ -160,10 +158,9 @@ class IndustrialAreaController extends Controller
             return response()->json([
                 'industrial_area' => $industrial_area,
                 'message' => __('successfully editing industrial area details')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -176,7 +173,7 @@ class IndustrialAreaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Industrial_area $industrial_area)
+    public function destroy(IndustrialArea $industrial_area)
     {
         //
     }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NaturalDisasterRequest;
 use App\Http\Resources\NaturalDisasterResource;
-use App\Models\Natural_disaster;
+use App\Models\NaturalDisaster;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 
@@ -16,7 +16,7 @@ class NaturalDisasterController extends Controller
     public function index()
     {
         // Get all Natural Disasters
-        $data = Natural_disaster::paginate();
+        $data = NaturalDisaster::paginate();
 
         return ($data->count() == 1)
             ? new NaturalDisasterResource($data->first())
@@ -32,7 +32,7 @@ class NaturalDisasterController extends Controller
         $valid_data = $request->validated();
 
         // Create the Natural Disaster
-        $natural_disaster = Natural_disaster::create($valid_data);
+        $natural_disaster = NaturalDisaster::create($valid_data);
 
         return new NaturalDisasterResource($natural_disaster);
     }
@@ -44,7 +44,7 @@ class NaturalDisasterController extends Controller
     {
         try {
             // Get the Natural Disaster by ID and check if the Natural Disaster exists
-            $natural_disaster = getAndCheckModelById(Natural_disaster::class, $id);
+            $natural_disaster = getAndCheckModelById(NaturalDisaster::class, $id);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
@@ -60,7 +60,7 @@ class NaturalDisasterController extends Controller
     {
         try {
             // Get the Natural Disaster by ID and check if the Natural Disaster exists
-            $natural_disaster = getAndCheckModelById(Natural_disaster::class, $id);
+            $natural_disaster = getAndCheckModelById(NaturalDisaster::class, $id);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
@@ -83,7 +83,7 @@ class NaturalDisasterController extends Controller
     {
         try {
             // Get the Natural Disaster by ID and check if the Natural Disaster exists
-            $natural_disaster = getAndCheckModelById(Natural_disaster::class, $id);
+            $natural_disaster = getAndCheckModelById(NaturalDisaster::class, $id);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());

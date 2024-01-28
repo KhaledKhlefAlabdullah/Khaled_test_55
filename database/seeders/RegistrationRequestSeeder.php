@@ -16,7 +16,7 @@ class RegistrationRequestSeeder extends Seeder
         // First registration request
         DB::table('registration_requests')->insert([
             'id' => '1b97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'industrial_area_id' => '45c97a6d-7b19-4fa9-a77f-2a76172f5b97',
             'name' => 'First Tenant Company',
             'representative_name' => 'John Doe',
             'email' => 'tenant.company.first@example.com',
@@ -31,7 +31,7 @@ class RegistrationRequestSeeder extends Seeder
         // Second registration request
         DB::table('registration_requests')->insert([
             'id' => '2b97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '15c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'industrial_area_id' => '46c97a6d-7b19-4fa9-a77f-2a76172f5b97',
             'name' => 'Second Tenant Company',
             'representative_name' => 'Ali Jane Doe',
             'email' => 'tenant.company.second@example.com',

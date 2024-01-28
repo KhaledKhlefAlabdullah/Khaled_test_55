@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Disaster_report;
+use App\Models\DisasterReport;
 use App\Models\Employee;
 use App\Models\Entity;
-use App\Models\Natural_disaster;
+use App\Models\NaturalDisaster;
 use App\Models\Shipment;
 use App\Models\Supplier;
 use App\Models\Waste;
@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
 
 class Disaster_reportFactory extends Factory
 {
-    protected $model = Disaster_report::class;
+    protected $model = DisasterReport::class;
 
     public function definition(): array
     {
@@ -26,7 +26,7 @@ class Disaster_reportFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 
-            'natural_disaster_id' => Natural_disaster::factory(),
+            'natural_disaster_id' => NaturalDisaster::factory(),
             'entity_id' => Entity::factory(),
             'shipment_id' => Shipment::factory(),
             'supplier_id' => Supplier::factory(),

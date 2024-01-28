@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Monitoring_point;
+use App\Models\MonitoringPoint;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
 class Monitoring_pointFactory extends Factory
 {
-    protected $model = Monitoring_point::class;
+    protected $model = MonitoringPoint::class;
 
     public function definition(): array
     {

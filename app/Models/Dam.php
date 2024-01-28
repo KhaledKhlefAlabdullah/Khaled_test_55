@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Notifications\Notifications_setting;
+use App\Models\Notifications\NotificationsSetting;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +34,6 @@ class Dam extends Model
 
     public function notifications_settings()
     {
-        return $this->belongsToMany(Notifications_setting::class, 'dams_notification_settings', 'dam_id', 'notification_setting_id');
+        return $this->belongsToMany(NotificationsSetting::class, 'dams_notification_settings', 'dam_id', 'notification_setting_id');
     }
 }

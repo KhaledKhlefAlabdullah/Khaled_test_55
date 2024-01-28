@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Timeline_shares_request extends Model
+class TimelineSharesRequest extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 

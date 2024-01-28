@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Timelines;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Timelines\TimelineEventRequest;
 use App\Http\Resources\Timeline\TimelineEventResource;
-use App\Models\Timelines\Timeline_event;
+use App\Models\Timelines\TimelineEvent;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\transformCollection;
@@ -17,7 +17,7 @@ class TimelineEventController extends Controller
      */
     public function index()
     {
-        $data = Timeline_event::where('stakeholder_id', auth()->user()->id)
+        $data = TimelineEvent::where('stakeholder_id', auth()->user()->id)
             ->where('is_active', true)
             ->get();
 
@@ -34,7 +34,7 @@ class TimelineEventController extends Controller
         $valid_data = $request->validated();
 
         // Create the resource
-        $data = Timeline_event::create($valid_data);
+        $data = TimelineEvent::create($valid_data);
 
         return new TimelineEventResource($data);
     }
@@ -46,7 +46,7 @@ class TimelineEventController extends Controller
     {
         // Get timeline event by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_event::class, $id);
+            $data = getAndCheckModelById(TimelineEvent::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
@@ -62,7 +62,7 @@ class TimelineEventController extends Controller
     {
         // Get timeline event by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_event::class, $id);
+            $data = getAndCheckModelById(TimelineEvent::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
@@ -83,7 +83,7 @@ class TimelineEventController extends Controller
     {
         // Get timeline event by ID and check if existing
         try {
-            $data = getAndCheckModelById(Timeline_event::class, $id);
+            $data = getAndCheckModelById(TimelineEvent::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }

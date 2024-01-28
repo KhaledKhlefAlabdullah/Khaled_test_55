@@ -6,25 +6,23 @@ use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Portal_setting extends Model
+
+class ContactUsMessage extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
-    protected $keyType='string';
 
-    protected $primaryKey='id';
+    protected $keyType = 'string';
+    protected $primaryKey = 'id';
     public $incrementing = false;
 
-
-
-    protected $fillable=[
+    protected $fillable = [
         'user_id',
-        'key',
-        'value'
+        'message',
+        'is_read',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
-
 }

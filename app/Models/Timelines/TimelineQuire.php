@@ -2,14 +2,13 @@
 
 namespace App\Models\Timelines;
 
-use App\Models\Category;
 use App\Models\Stakeholder;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Timeline_event extends Model
+class TimelineQuire extends Model
 {
     use HasFactory, HasUuid, SoftDeletes;
 
@@ -21,34 +20,18 @@ class Timeline_event extends Model
 
 
     protected $fillable = [
-        'timeline_id',
+        'timeline_event_id',
         'stakeholder_id',
-        'category_id',
-        'title',
-        'start_date',
-        'end_date',
-        'description',
-        'production_percentage',
-        'is_active'
+        'inquiry'
     ];
 
-    public function timeline()
+    public function timeline_event()
     {
-        return $this->belongsTo(Timeline::class, 'timeline_id');
+        return $this->belongsTo(TimelineEvent::class, 'timeline_event_id');
     }
 
     public function stakeholder()
     {
         return $this->belongsTo(Stakeholder::class, 'stakeholder_id');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_is');
-    }
-
-    public function timeline_quires()
-    {
-        return $this->hasMany(Timeline_quiry::class, 'timeline_event_id');
     }
 }

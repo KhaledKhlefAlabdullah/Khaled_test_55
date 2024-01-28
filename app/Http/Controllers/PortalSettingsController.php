@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PortalSettingRequest;
 use App\Http\Resources\PortalSettingResource;
-use App\Models\Portal_setting;
+use App\Models\PortalSetting;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 
@@ -33,7 +33,7 @@ class PortalSettingsController extends Controller
         $valid_data = $request->validated();
 
         // Create the portal setting
-        $portal_setting = Portal_setting::create($valid_data);
+        $portal_setting = PortalSetting::create($valid_data);
 
         return new PortalSettingResource($portal_setting);
 
@@ -46,7 +46,7 @@ class PortalSettingsController extends Controller
     {
         // Get the portal setting by id and check if exists
         try {
-            $data = getAndCheckModelById(Portal_setting::class, $id);
+            $data = getAndCheckModelById(PortalSetting::class, $id);
 
             return new PortalSettingResource($data);
         } catch (NotFoundResourceException $e) {
@@ -61,7 +61,7 @@ class PortalSettingsController extends Controller
     {
         // Get the portal setting by id and check if exists
         try {
-            $data = getAndCheckModelById(Portal_setting::class, $id);
+            $data = getAndCheckModelById(PortalSetting::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json([$e->getMessage()], $e->getCode());
         }
@@ -82,7 +82,7 @@ class PortalSettingsController extends Controller
     {
         // Get the portal setting by id and check if exists
         try {
-            $data = getAndCheckModelById(Portal_setting::class, $id);
+            $data = getAndCheckModelById(PortalSetting::class, $id);
         } catch (NotFoundResourceException $e) {
             return response()->json([$e->getMessage()], $e->getCode());
         }

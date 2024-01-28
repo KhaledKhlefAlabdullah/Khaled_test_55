@@ -4,7 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\User_profile;
+use App\Models\UserProfile;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -103,7 +104,7 @@ class UserProfileController extends Controller
                     break;
                 default:
 
-                    throw new \Exception("You dont have user profile");
+                    throw new Exception("You dont have user profile");
 
             }
 
@@ -113,7 +114,7 @@ class UserProfileController extends Controller
             ], 200);
 
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             return response()->json([
 
@@ -273,7 +274,7 @@ class UserProfileController extends Controller
                     break;
                 default:
 
-                    throw new \Exception("You dont have user profile");
+                    throw new Exception("You dont have user profile");
 
             }
 
@@ -282,7 +283,7 @@ class UserProfileController extends Controller
             ], 200);
 
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             return response()->json([
 
@@ -297,7 +298,7 @@ class UserProfileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User_profile $userProfile)
+    public function destroy(UserProfile $userProfile)
     {
         //
     }

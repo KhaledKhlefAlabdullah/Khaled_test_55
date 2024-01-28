@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MonitoringPointRequest;
 use App\Http\Resources\MonitoringPointResource;
-use App\Models\Monitoring_point;
+use App\Models\MonitoringPoint;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\transformCollection;
@@ -17,7 +17,7 @@ class MonitoringPointController extends Controller
     public function index()
     {
         // Get all monitoring points
-        $monitoring_points = Monitoring_point::all();
+        $monitoring_points = MonitoringPoint::all();
 
         return transformCollection($monitoring_points, MonitoringPointResource::class);
     }
@@ -32,7 +32,7 @@ class MonitoringPointController extends Controller
         $valid_data = $request->validated();
 
         // Create the monitoring point
-        $monitoring_point = Monitoring_point::create($valid_data);
+        $monitoring_point = MonitoringPoint::create($valid_data);
 
         return new MonitoringPointResource($monitoring_point);
     }
@@ -43,7 +43,7 @@ class MonitoringPointController extends Controller
     public function show(string $id)
     {
         try {
-            $data = getAndCheckModelById(Monitoring_point::class, $id);
+            $data = getAndCheckModelById(MonitoringPoint::class, $id);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
@@ -60,7 +60,7 @@ class MonitoringPointController extends Controller
     {
         // Get the monitoring point by ID
         try {
-            $monitoring_point = getAndCheckModelById(Monitoring_point::class, $id);
+            $monitoring_point = getAndCheckModelById(MonitoringPoint::class, $id);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
@@ -81,7 +81,7 @@ class MonitoringPointController extends Controller
     public function destroy(string $id)
     {
         try {
-            $monitoring_point = getAndCheckModelById(Monitoring_point::class, $id);
+            $monitoring_point = getAndCheckModelById(MonitoringPoint::class, $id);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());

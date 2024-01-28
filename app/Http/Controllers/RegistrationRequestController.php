@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Industrial_area;
-use App\Models\Registration_request;
-use App\Models\User;
+use App\Models\IndustrialArea;
+use App\Models\RegistrationRequest;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use function App\Helpers\fake_register_request;
@@ -17,13 +17,13 @@ class RegistrationRequestController extends Controller
      */
     public function index()
     {
-        try{
+        try {
 
             // get authenticated user id
             $industrial_area_id = Auth::user()->industrial_area_id;
 
             // get all registration for industrial area representative
-            $registration_requests = Industrial_area::findOrFail($industrial_area_id)->registration_requests;
+            $registration_requests = IndustrialArea::findOrFail($industrial_area_id)->registration_requests;
 
             // return the data
             return response()->json([
@@ -31,7 +31,7 @@ class RegistrationRequestController extends Controller
                 'message' => __('Get all registration requests successfully'),
             ], 200);
 
-        }catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return an error response if an exception occurs
             return response()->json([
                 'error' => __('Error in get all registration requests'),
@@ -45,7 +45,7 @@ class RegistrationRequestController extends Controller
      */
     public function show(Request $request)
     {
-        try{
+        try {
 
             // get authenticated user id
             $industrial_area_id = Auth::user()->industrial_area_id;
@@ -54,7 +54,7 @@ class RegistrationRequestController extends Controller
             $registration_id = $request->registration_id;
 
             // get all registration for industrial area representative
-            $registration_request = Registration_request::where(['id' => $registration_id, 'industrial_area_id' => $industrial_area_id])->first();
+            $registration_request = RegistrationRequest::where(['id' => $registration_id, 'industrial_area_id' => $industrial_area_id])->first();
 
             // return the data
             return response()->json([
@@ -62,7 +62,7 @@ class RegistrationRequestController extends Controller
                 'message' => __('Get registration request details successfully'),
             ], 200);
 
-        }catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return an error response if an exception occurs
             return response()->json([
                 'error' => __('Error in get registration request details'),
@@ -78,7 +78,7 @@ class RegistrationRequestController extends Controller
     {
         try {
             // Validate the incoming request data
-            $validatedData=$request->validate([
+            $validatedData = $request->validate([
                 'industrial_area_id' => 'required|string|exists:industrial_areas,id',
                 'name' => 'required|string',
                 'representative_name' => 'required|string',
@@ -92,14 +92,14 @@ class RegistrationRequestController extends Controller
             ]);
 
             // Create a new stakeholder using Eloquent
-            $registration_request = Registration_request::create($validatedData);
+            $registration_request = RegistrationRequest::create($validatedData);
 
             // Return a success response
             return response()->json([
                 'request' => $registration_request,
                 'message' => __('Registration request added successfully'),
             ], 201); // 201 Created status code
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return an error response if an exception occurs
             return response()->json([
                 'error' => __('Error adding Registration request'),
@@ -128,14 +128,14 @@ class RegistrationRequestController extends Controller
             $state = $request->state;
 
             // fetch the registration request
-            $registration_request = Registration_request::findOrFail($registration_id);
+            $registration_request = RegistrationRequest::findOrFail($registration_id);
 
             // check state
-            if($state){
+            if ($state) {
 
                 // update request state to accept and message to your request accepted
                 $registration_request->update([
-                    'request_state' => __('accepted') ,
+                    'request_state' => __('accepted'),
                     'failed_message' => __('your request accepted')
                 ]);
 
@@ -154,11 +154,11 @@ class RegistrationRequestController extends Controller
 
                 return $response;
 
-            }else{
+            } else {
 
                 // update the request state to failed if state is not true, and message to your request failed
                 $registration_request->update([
-                    'request_state' => __('failed') ,
+                    'request_state' => __('failed'),
                     'failed_message' => __('your request failed')
                 ]);
 
@@ -169,7 +169,7 @@ class RegistrationRequestController extends Controller
 
             }
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Return an error response if an exception occurs
             return response()->json([
                 'error' => __('Error adding Registration request'),
@@ -190,12 +190,12 @@ class RegistrationRequestController extends Controller
             $registration_id = $request->input('registration_id');
 
             // Delete the stakeholder
-            Registration_request::findOrFail($registration_id)->delete();
+            RegistrationRequest::findOrFail($registration_id)->delete();
 
             return response()->json([
                 'message' => __('Registration request deleted successfully')
             ], 200);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __('Registration request deletion failed'),
                 'message' => __($e->getMessage())

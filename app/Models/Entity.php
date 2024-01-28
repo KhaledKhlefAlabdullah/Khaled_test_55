@@ -96,6 +96,6 @@ class Entity extends Model
 
     public function disaster_report()
     {
-        return $this->hasMany(Disaster_report::class, 'entity_id');
+        return $this->hasMany(DisasterReport::class, 'entity_id');
     }
 }

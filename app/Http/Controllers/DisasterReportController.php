@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DisasterReportRequest;
 use App\Http\Resources\DisasterReportResource;
-use App\Models\Disaster_report;
+use App\Models\DisasterReport;
 
 class DisasterReportController extends Controller
 {
@@ -14,7 +14,7 @@ class DisasterReportController extends Controller
     public function index()
     {
         // Get all the disaster reports
-        $disaster_reports = Disaster_report::paginate();
+        $disaster_reports = DisasterReport::paginate();
 
 
         return $disaster_reports->count() == 1 ?
@@ -32,7 +32,7 @@ class DisasterReportController extends Controller
         $valid_data = $request->validated();
 
         // Create the disaster report
-        $disaster_report = Disaster_report::create($valid_data);
+        $disaster_report = DisasterReport::create($valid_data);
 
         return new DisasterReportResource($disaster_report);
     }
@@ -43,7 +43,7 @@ class DisasterReportController extends Controller
     public function show(string $id)
     {
         // Get Report by ID
-        $disaster_report = Disaster_report::find($id);
+        $disaster_report = DisasterReport::find($id);
 
         // Check if the report exists
         if (!$disaster_report) {
@@ -63,7 +63,7 @@ class DisasterReportController extends Controller
     public function update(DisasterReportRequest $request, string $id)
     {
         // Get Disaster Report by ID
-        $disaster_report = Disaster_report::find($id);
+        $disaster_report = DisasterReport::find($id);
 
         // Check if the report exists
         if (!$disaster_report) {
@@ -87,7 +87,7 @@ class DisasterReportController extends Controller
     public function destroy(string $id)
     {
         // Get Disaster Report by ID
-        $disaster_report = Disaster_report::find($id);
+        $disaster_report = DisasterReport::find($id);
 
         // Check if the report exists
         if (!$disaster_report) {

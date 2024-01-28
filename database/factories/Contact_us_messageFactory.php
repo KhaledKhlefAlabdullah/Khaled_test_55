@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Contact_us_message;
+use App\Models\ContactUsMessage;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class Contact_us_messageFactory extends Factory
 {
-    protected $model = Contact_us_message::class;
+    protected $model = ContactUsMessage::class;
 
     public function definition(): array
     {

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Notifications\Notifications_setting;
+use App\Models\Notifications\NotificationsSetting;
 use Illuminate\Database\Seeder;
 
 class NotificationSettingSeeder extends Seeder
@@ -13,7 +13,7 @@ class NotificationSettingSeeder extends Seeder
     public function run(): void
     {
         // Notification Settings for Portal Manager
-        Notifications_setting::create([
+        NotificationsSetting::create([
             'id' => '00p17a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
             'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
@@ -26,7 +26,7 @@ class NotificationSettingSeeder extends Seeder
         ]);
 
         // Notification Settings for Tenant Company (First)
-        Notifications_setting::create([
+        NotificationsSetting::create([
             'id' => '00p27a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Tenant Company (First)
             'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
@@ -39,7 +39,7 @@ class NotificationSettingSeeder extends Seeder
         ]);
 
         // Notification Settings for Tenant Company (Second)
-        Notifications_setting::create([
+        NotificationsSetting::create([
             'id' => '00p37a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '19997a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Tenant Company (Second)
             'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
@@ -52,7 +52,7 @@ class NotificationSettingSeeder extends Seeder
         ]);
 
         // Notification Settings for Industrial Area Representative (First)
-        Notifications_setting::create([
+        NotificationsSetting::create([
             'id' => '00p47a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Industrial Area Representative (First)
             'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
@@ -65,7 +65,7 @@ class NotificationSettingSeeder extends Seeder
         ]);
 
         // Notification Settings for Industrial Area Representative (Second)
-        Notifications_setting::create([
+        NotificationsSetting::create([
             'id' => '00p57a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '15c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Industrial Area Representative (Second)
             'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
@@ -78,7 +78,7 @@ class NotificationSettingSeeder extends Seeder
         ]);
 
         // Notification Settings for Infrastructure Provider
-        Notifications_setting::create([
+        NotificationsSetting::create([
             'id' => '00p67a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '16c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Infrastructure Provider
             'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
@@ -91,7 +91,7 @@ class NotificationSettingSeeder extends Seeder
         ]);
 
         // Notification Settings for Government Representative
-        Notifications_setting::create([
+        NotificationsSetting::create([
             'id' => '00p77a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '17c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Government Representative
             'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",

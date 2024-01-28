@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\Industrial_area;
-use App\Models\Registration_request;
 use App\Models\User;
-use App\Policies\Portal_manager_policy;
 use App\Policies\Industrial_area_representative_policy;
+use App\Policies\Portal_manager_policy;
 use App\Policies\User_policies;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -33,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         ResetPassword::createUrlUsing(function (object $notifiable, string $token) {
-            return config('app.frontend_url')."/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
+            return config('app.frontend_url') . "/password-reset/$token?email={$notifiable->getEmailForPasswordReset()}";
         });
 
         //

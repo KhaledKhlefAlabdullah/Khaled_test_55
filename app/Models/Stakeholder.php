@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Models\Timelines\Timeline;
-use App\Models\Timelines\Timeline_event;
-use App\Models\Timelines\Timeline_quiry;
-use App\Models\Timelines\Timeline_shares_request;
+use App\Models\Timelines\TimelineEvent;
+use App\Models\Timelines\TimelineQuire;
+use App\Models\Timelines\TimelineSharesRequest;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -61,22 +61,22 @@ class Stakeholder extends Model
 
     public function sent_time_line_share_requests()
     {
-        return $this->hasMany(Timeline_shares_request::class, 'send_stakeholder_id');
+        return $this->hasMany(TimelineSharesRequest::class, 'send_stakeholder_id');
     }
 
     public function reciver_time_line_share_requests()
     {
-        return $this->hasMany(Timeline_shares_request::class, 'receive_stakeholder_id');
+        return $this->hasMany(TimelineSharesRequest::class, 'receive_stakeholder_id');
     }
 
     public function timeline_events()
     {
-        return $this->hasMany(Timeline_event::class, 'stakeholder_id');
+        return $this->hasMany(TimelineEvent::class, 'stakeholder_id');
     }
 
     public function timeline_quires()
     {
-        return $this->hasMany(Timeline_quiry::class, 'stakeholder_id');
+        return $this->hasMany(TimelineQuire::class, 'stakeholder_id');
     }
 
     public function entities()
@@ -106,6 +106,6 @@ class Stakeholder extends Model
 
     public function industrial_area()
     {
-        return $this->belongsTo(Industrial_area::class, 'industrial_area_id');
+        return $this->belongsTo(IndustrialArea::class, 'industrial_area_id');
     }
 }

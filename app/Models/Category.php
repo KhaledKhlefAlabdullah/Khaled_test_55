@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Notifications\Notifications_setting;
-use App\Models\Timelines\Timeline_event;
+use App\Models\Notifications\NotificationsSetting;
+use App\Models\Timelines\TimelineEvent;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,12 +51,12 @@ class Category extends Model
 
     public function main_category_notifications_settings()
     {
-        return $this->hasMany(Notifications_setting::class, 'main_category_id');
+        return $this->hasMany(NotificationsSetting::class, 'main_category_id');
     }
 
     public function sub_category_notifications_settings()
     {
-        return $this->hasMany(Notifications_setting::class, 'sub_category_id');
+        return $this->hasMany(NotificationsSetting::class, 'sub_category_id');
     }
 
     public function services()
@@ -66,7 +66,7 @@ class Category extends Model
 
     public function timeline_events()
     {
-        return $this->hasMany(Timeline_event::class, 'category_id');
+        return $this->hasMany(TimelineEvent::class, 'category_id');
     }
 
     public function entities()

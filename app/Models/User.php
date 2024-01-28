@@ -57,12 +57,12 @@ class User extends Authenticatable
 
     public function user_profile()
     {
-        return $this->hasOne(User_profile::class, 'user_id');
+        return $this->hasOne(UserProfile::class, 'user_id');
     }
 
     public function portal_settings(): HasMany
     {
-        return $this->hasMany(Portal_setting::Class, 'user_id');
+        return $this->hasMany(PortalSetting::Class, 'user_id');
     }
 
     public function pages()
@@ -72,12 +72,12 @@ class User extends Authenticatable
 
     public function participating_entities()
     {
-        return $this->hasMany(Participating_entity::class, 'user_id');
+        return $this->hasMany(ParticipatingEntity::class, 'user_id');
     }
 
     public function contact_us_messages()
     {
-        return $this->hasMany(Contact_us_message::class, 'user_id');
+        return $this->hasMany(ContactUsMessage::class, 'user_id');
     }
 
     public function chats()
@@ -107,7 +107,7 @@ class User extends Authenticatable
 
     public function monitoring_points(): HasMany
     {
-        return $this->hasMany(Monitoring_point::class, 'user_id');
+        return $this->hasMany(MonitoringPoint::class, 'user_id');
     }
 
     public function stakeholder()
@@ -117,6 +117,6 @@ class User extends Authenticatable
 
     public function industrial_area()
     {
-        return $this->belongsTo(Industrial_area::class, 'industrial_area_id');
+        return $this->belongsTo(IndustrialArea::class, 'industrial_area_id');
     }
 }

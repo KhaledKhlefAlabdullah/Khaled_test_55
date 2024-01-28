@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('tenant_company_state',['operating','evacuating','trapped','evacuated'])->nullable();
             $table->string('company_representative_name')->nullable();
             $table->string('job_title')->nullable();
-            $table->enum('infrastructures_state',['available','partially','interrupted'])->nullable();
+            $table->enum('infrastructures_state', ['available', 'partially', 'interrupted'])->nullable();
             $table->string('infrastructure_type')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('industrial_area_id')->references('id')->on('industrial_areas')->onDelete('cascade');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('staheholders');
+        Schema::dropIfExists('stakeholders');
     }
 };

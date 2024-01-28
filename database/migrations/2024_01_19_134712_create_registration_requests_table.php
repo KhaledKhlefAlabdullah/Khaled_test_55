@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('registration_requests', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->string('user_id');
+            $table->string('industrial_area_id');
             $table->string('name');
             $table->string('representative_name');
             $table->string('email')->unique();
@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('job_title');
             $table->enum('request_state', ['accepted', 'failed', 'pending'])->default('pending');
             $table->string('failed_message')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('industrial_area_id')->references('id')->on('industrial_areas')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
 

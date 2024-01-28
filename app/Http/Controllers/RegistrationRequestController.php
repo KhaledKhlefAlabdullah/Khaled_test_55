@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Industrial_area;
 use App\Models\Registration_request;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,14 +19,11 @@ class RegistrationRequestController extends Controller
     {
         try{
 
-            // authorize the user if can use this function
-            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
-
             // get authenticated user id
-            $user_id = Auth::id();
+            $industrial_area_id = Auth::user()->industrial_area_id;
 
             // get all registration for industrial area representative
-            $registration_requests = User::findOrFail($user_id)->registration_requests;
+            $registration_requests = Industrial_area::findOrFail($industrial_area_id)->registration_requests;
 
             // return the data
             return response()->json([
@@ -49,17 +47,14 @@ class RegistrationRequestController extends Controller
     {
         try{
 
-            // authorize the user if can use this function
-            $this->authorize('view_or_details_or_accept_denied',Registration_request::class);
-
             // get authenticated user id
-            $user_id = Auth::id();
+            $industrial_area_id = Auth::user()->industrial_area_id;
 
             // get registration request id from api request
             $registration_id = $request->registration_id;
 
             // get all registration for industrial area representative
-            $registration_request = Registration_request::where(['id' => $registration_id, 'user_id' => $user_id])->first();
+            $registration_request = Registration_request::where(['id' => $registration_id, 'industrial_area_id' => $industrial_area_id])->first();
 
             // return the data
             return response()->json([
@@ -84,7 +79,7 @@ class RegistrationRequestController extends Controller
         try {
             // Validate the incoming request data
             $validatedData=$request->validate([
-                'user_id' => 'required|string|exists:users,id',
+                'industrial_area_id' => 'required|string|exists:industrial_areas,id',
                 'name' => 'required|string',
                 'representative_name' => 'required|string',
                 'email' => 'required|email|unique:registration_requests',

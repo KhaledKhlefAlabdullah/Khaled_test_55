@@ -16,7 +16,7 @@ class Registration_request extends Model
     public $incrementing = false;
 
     protected $fillable=[
-        'user_id',
+        'industrial_area_id',
         'name',
         'representative_name',
         'email',
@@ -28,8 +28,8 @@ class Registration_request extends Model
         'failed_message'
     ];
 
-    public function user()
+    public function industrial_area()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(Industrial_area::class,'industrial_area_id');
     }
 }

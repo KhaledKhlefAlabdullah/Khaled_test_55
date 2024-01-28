@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stakeholder;
 use Dflydev\DotAccessData\Exception\DataException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Exception;
 use Spatie\FlareClient\Http\Exceptions\NotFound;
@@ -44,7 +45,7 @@ class StakeholderController extends Controller
                 'industrial_area_id' => 'required|string',
                 'parent_id' => 'nullable|string',
                 'representative_government_agency' => 'nullable|string',
-                'tent_company_state' => 'nullable|in:operating,evacuating,trapped,evacuated',
+                'tenant_company_state' => 'nullable|in:operating,evacuating,trapped,evacuated',
                 'company_representative_name' => 'nullable|string',
                 'job_title' => 'nullable|string',
                 'infrastructures_state' => 'nullable|in:available,partially,interrupted',
@@ -57,7 +58,7 @@ class StakeholderController extends Controller
                 'industrial_area_id' => $request->input('industrial_area_id'),
                 'parent_id' => $request->input('parent_id'),
                 'representative_government_agency' => $request->input('representative_government_agency'),
-                'tent_company_state' => $request->input('tent_company_state'),
+                'tenant_company_state' => $request->input('tenant_company_state'),
                 'company_representative_name' => $request->input('company_representative_name'),
                 'job_title' => $request->input('job_title'),
                 'infrastructures_state' => $request->input('infrastructures_state'),
@@ -95,11 +96,42 @@ class StakeholderController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Edite company status.
      */
-    public function edit(Stakeholder $staheholder)
+    public function edit_company_state(Request $request)
     {
-        //
+        try {
+            // validate the new company state
+            $request->validate([
+                'new_company_status' => 'required|string|in:operating,evacuating,trapped,evacuated'
+            ]);
+
+            // get auth user to get company details (stakeholder)
+            $user = Auth::user();
+
+            // get the stakeholder and update company state
+            $user->stakeholder()->update([
+                'tenant_company_state' => $request->input('new_company_status')
+            ]);
+
+            // store the new state to return it
+            $new_company_state = $user->stakeholder()->get();
+
+            // return json response with new company state
+            return response()->json([
+                'new_tenant_company_state' => $new_company_state,
+                'message' => __('Successfully editing company state')
+            ]);
+
+        }
+        catch(\Exception $e){
+
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in server side try another time')
+            ],500);
+
+        }
     }
 
     /**
@@ -113,7 +145,7 @@ class StakeholderController extends Controller
                 'user_id' => 'required|string',
                 'parent_id' => 'nullable|string',
                 'representative_government_agency' => 'nullable|string',
-                'tent_company_state' => 'nullable|in:operating,evacuating,trapped,evacuated',
+                'tenant_company_state' => 'nullable|in:operating,evacuating,trapped,evacuated',
                 'company_representative_name' => 'nullable|string',
                 'job_title' => 'nullable|string',
                 'infrastructures_state' => 'nullable|in:available,partially,interrupted',

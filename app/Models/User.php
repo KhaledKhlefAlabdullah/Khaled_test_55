@@ -115,11 +115,6 @@ class User extends Authenticatable
         return $this->hasOne(Stakeholder::class, 'user_id');
     }
 
-    public function registration_requests(): HasMany
-    {
-        return $this->hasMany(Registration_request::class, 'user_id');
-    }
-
     public function industrial_area()
     {
         return $this->belongsTo(Industrial_area::class, 'industrial_area_id');

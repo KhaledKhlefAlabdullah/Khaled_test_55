@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary()->unique();
             $table->string('name');
             $table->enum('type',['post','news','file','notification','report','timeline_event',
-                'normal_production_rate','extra_production_Rate','low _Production_Rate','halted_Production',
+                'normal_production_rate','extra_production_Rate','low_Production_Rate','halted_Production',
                 'evacuating','maintenance','relocation','entity','products','materials','stations','suppliers',
                 'waste_disposal_site'])->unique();
             $table->uuid('parent_id')->nullable();

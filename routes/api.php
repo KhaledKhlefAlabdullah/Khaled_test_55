@@ -217,6 +217,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes for industrial area representative role
     Route::middleware([Tenant_company_middleware::class])->group(function () {
 
+        Route::post('change-status',[StakeholderController::class,'edite-status']);
 
     });
 

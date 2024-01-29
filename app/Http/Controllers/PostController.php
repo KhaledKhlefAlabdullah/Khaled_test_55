@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\store_files;
 
@@ -44,6 +45,62 @@ class PostController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        // Get Post by id and check if exist
+        try {
+            $data = getAndCheckModelById(Post::class, $id);
+
+            return new PostResource($data);
+
+        } catch (NotFoundResourceException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        }
+
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(PostRequest $request, string $id)
+    {
+        // Get the post by id and check if exists
+        try {
+            $data = getAndCheckModelById(Post::class, $id);
+        } catch (NotFoundResourceException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        }
+        // Validate the request
+        $valid_date = $request->validated();
+
+        // Update the post
+        $data->update($valid_date);
+
+        return new PostResource($data);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        // Get the post by id and check if exists
+        try {
+            $data = getAndCheckModelById(Post::class, $id);
+        } catch (NotFoundResourceException $e) {
+            return response()->json([$e->getMessage()], $e->getCode());
+        }
+
+        // Delete the post
+        $data->delete();
+
+        return response()->json(['message' => 'Post deleted successfully']);
+    }
+
+    /**
      * Get all general news posts by category news
      */
 
@@ -54,8 +111,8 @@ class PostController extends Controller
 
             // Get general news by get all posts with category news and posts is general news equal true
             $news = DB::table('categories')
-                    ->join('posts','categories.id','=','posts.category_id')
-                    ->select('posts.*')->where(['categories.type'=>'news','posts.is_general_news'=> true])->get();
+                ->join('posts','categories.id','=','posts.category_id')
+                ->select('posts.*')->where(['categories.type'=>'news','posts.is_general_news'=> true])->get();
 
             // Return json response with the result
             return response()->json([
@@ -127,65 +184,203 @@ class PostController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('Successfully adding new general news')
+                'message' => __('There an error in server side')
             ],500);
 
         }
     }
 
     /**
-     * Display the specified resource.
+     * Edite general news
      */
-    public function show(string $id)
+    public function edite_general_news(Request $request)
     {
-        // Get Post by id and check if exist
+
         try {
-            $data = getAndCheckModelById(Post::class, $id);
+            // validate the inputs
+            $request->validate([
+                'general_news_id'=> 'required|string|exists:posts,id',
+                'title' => 'required|string|max:255',
+                'slug' => 'required|string|unique:posts,slug|max:255',
+                'body' => 'required|string',
+                'media_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            ]);
 
-            return new PostResource($data);
+            // get category id where category is news
+            $category_id = Category::where('type','news')->first()->id;
 
-        } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
+            // get general news id from request
+            $general_news_id = $request->input('general_news_id');
+
+            // get the general news will editing
+            $general_news = Post::findOrFail($general_news_id);
+
+            // get image from request
+            $new_image = $request->media_file;
+
+            // put path to store image
+            $path = 'images/general_news_images';
+
+            // get old file path
+            $old_file_path = $general_news->media_url;
+
+            // coll store function to store the image
+            $image_path = edit_file($old_file_path, $new_image, $path);
+
+            // create new post as general news
+            $general_news->update([
+                'category_id' => $category_id,
+                'title' => $request->input('title'),
+                'slug' => $request->input('slug'),
+                'body' => $request->input('body'),
+                'media_url' => $image_path,
+                'media_type' => 'image'
+            ]);
+
+            // return response with created data
+            return response()->json([
+                'new_general_news' => $general_news,
+                'message' => __('Successfully editing general news')
+            ],200);
+
         }
+        catch (\Exception $e){
 
-    }
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There an error in server side')
+            ],500);
 
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(PostRequest $request, string $id)
-    {
-        // Get the post by id and check if exists
-        try {
-            $data = getAndCheckModelById(Post::class, $id);
-        } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
         }
-        // Validate the request
-        $valid_date = $request->validated();
-
-        // Update the post
-        $data->update($valid_date);
-
-        return new PostResource($data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function delete_general_news(Request $request)
     {
         // Get the post by id and check if exists
         try {
+
+            $request->validate([
+                'id' => 'required|string|exists:posts,id'
+            ]);
+
+            // get the id from request
+            $id = $request->input('id');
+
+            // get the news object
             $data = getAndCheckModelById(Post::class, $id);
+
+            // store the is general state to check on it
+            $is_general = $data->is_general_news;
+
+            // general message
+            $message = 'general news deleted successfully';
+
+            // Delete the post if it general news else put another message
+            $is_general? $data->delete() : $message = 'is not general news you can\'t delete it';
+
+            return response()->json([
+                'message' => __($message)
+            ],200);
+
         } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
+
+            return response()->json([__($e->getMessage())], $e->getCode());
+
         }
-
-        // Delete the post
-        $data->delete();
-
-        return response()->json(['message' => 'Post deleted successfully']);
     }
+
+    /**
+     * Get project description
+     */
+    public function view_project_description()
+    {
+        try {
+
+            // get posts by category
+            $project_description = Category::where('type','project_description')->with('posts')->get();
+
+            return response()->json([
+                'project_description' => $project_description[0]['posts'],
+                'message' => __('Successfully get project description')
+            ],200);
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('filed to get project description, there an problem')
+            ],200);
+
+        }
+    }
+
+    /**
+     * Add project description
+     */
+    public function edite_project_description(Request $request)
+    {
+        try{
+
+            // validate the input data
+            $request->validate([
+                "title" => 'required|string|min:3',
+                "slug" => 'required|string|min:3',
+                "body" => 'required|string|min:10'
+            ]);
+
+            // get the project description category
+            $category_id = Category::where('type','project_description')->first()->id;
+
+            // get the posts (project description) with category id
+            $posts = Post::where('category_id', $category_id)->first();
+
+            // get auth user id
+            $user_id = Auth::id();
+
+            // initial message variable
+            $message = '';
+
+            // if there no post with category id create one or update the exists on
+            if(empty($posts)){
+
+                $posts = Post::create([
+                    "user_id" => $user_id,
+                    "category_id" => $category_id,
+                    "title" => $request->input('title'),
+                    "slug" => $request->input('slug'),
+                    "body" => $request->input('body')
+                ]);
+
+                $message = 'Successfully creating project description';
+
+            }
+            else{
+
+                $posts->update([
+                    "user_id" => $user_id,
+                    "title" => $request->input('title'),
+                    "slug" => $request->input('slug'),
+                    "body" => $request->input('body')
+                ]);
+
+                $message = 'Successfully editing project description';
+
+            }
+
+            return response()->json([
+                'project_description' => $posts,
+                'message' => __($message)
+            ]);
+
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in server side try another time')
+            ],500);
+        }
+    }
+
 }

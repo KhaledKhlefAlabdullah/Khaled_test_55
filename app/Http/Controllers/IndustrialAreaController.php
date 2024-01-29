@@ -17,7 +17,7 @@ class IndustrialAreaController extends Controller
         try {
 
             // get all industrial areas in database
-            $industrial_areas = Industrial_area::all();
+            $industrial_areas = Industrial_area::with('user')->get();
 
             // check if their industrial areas in database
             if($industrial_areas->isNotEmpty()){

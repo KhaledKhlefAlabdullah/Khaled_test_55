@@ -16,8 +16,7 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
                 ->name('login');
 
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
-                ->middleware('guest')
-                ->name('password.store');
+                ->middleware('guest');
 
 Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
                 ->middleware(['auth', 'signed', 'throttle:6,1'])

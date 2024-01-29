@@ -151,11 +151,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
+
 Route::middleware(['auth:sanctum'])->group(function () {
 
 
     // Routes for portal manager role
     Route::middleware([Portal_manager_middleware::class])->group(function () {
+
+        Route::post('edite-project-description',[PostController::class,'edite_project_description']);
 
         Route::group(['prefix' => 'industrial-areas'], function () {
 
@@ -163,7 +166,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             Route::get('/details', [IndustrialAreaController::class, 'show']);
 
-            Route::post('/add', [IndustrialAreaController::class, 'store']);
+            Route::post('/add',[IndustrialAreaController::class,'store']);
 
             Route::post('/edite', [IndustrialAreaController::class, 'update']);
 
@@ -173,6 +176,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::group(['prefix' => 'general-news'],function (){
 
             Route::post('/add',[PostController::class,'new_general_news']);
+
+            Route::post('/edite',[PostController::class,'edite_general_news']);
+
+            Route::post('/delete',[PostController::class,'delete_general_news']);
 
         });
 
@@ -252,8 +259,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 
-    Route::post('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'store'])
-        ->name('password.email');
+    Route::post('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'store']);
 
     Route::post('change-password',[AuthenticatedSessionController::class,'change_password']);
 
@@ -276,5 +282,8 @@ Route::post('registration_requests/add-register', [RegistrationRequestController
 
 // get all general news
 Route::get('general-news',[PostController::class,'view_general_news']);
+
+// project description
+Route::get('project-description',[PostController::class,'view_project_description']);
 
 require __DIR__ . '/auth.php';

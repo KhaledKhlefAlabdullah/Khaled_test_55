@@ -34,7 +34,7 @@ if (!function_exists('getAndCheckModelById')) {
             throw new NotFoundResourceException($model . " not found", 404);
         }
 
-        return $instance->first();
+        return $instance;
     }
 }
 
@@ -127,5 +127,28 @@ if (!function_exists('store_files')) {
          return $path.'/'.$file_name;
 
     }
+}
+
+if (!function_exists('edit_file')) {
+    /*
+     * This function is used to get and check if a model exists by ID
+     * @param string $model
+     * @param string $id
+     *
+     * @throws NotFoundResourceException
+     */
+    function edit_file($old_file_path, $new_file, $path): string
+    {
+        // Delete the old file from storage
+        if (file_exists($old_file_path)) {
+            unlink($old_file_path);
+        }
+
+        // Store the new file
+        $new_file_path = store_files($new_file, $path);
+
+        return $new_file_path;
+    }
+
 }
 

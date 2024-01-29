@@ -6,6 +6,7 @@ use App\Models\IndustrialArea;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function App\Helpers\fake_register_request;
 
 class IndustrialAreaController extends Controller
@@ -18,22 +19,17 @@ class IndustrialAreaController extends Controller
         try {
 
             // get all industrial areas in database
-            $industrial_areas = IndustrialArea::with('user')->get();
+            $industrial_areas = DB::table('user_profiles')
+            ->join('users','user_profiles.user_id','=','users.id')
+            ->join('industrial_areas','users.industrial_area_id','=','industrial_areas.id')
+            ->select('industrial_areas.name as industrial_area_name','industrial_areas.address','users.email','user_profiles.name as user_name')->get();
 
-            // check if their industrial areas in database
-            if ($industrial_areas->isNotEmpty()) {
-
-                // return the data
-                return response()->json([
-                    'industrial_areas' => $industrial_areas,
-                    'message' => __('Successfully request')
-                ], 201);
-
-            }
-
+            // return the data
             return response()->json([
-                'message' => __('Successfully request but there now industrial areas in database yeet')
-            ], 402);
+                'industrial_areas' => $industrial_areas,
+                'message' => __('Successfully request')
+            ], 201);
+
 
         } // handling the exceptions
         catch (Exception $e) {

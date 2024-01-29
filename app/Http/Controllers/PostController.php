@@ -331,7 +331,7 @@ class PostController extends Controller
             ]);
 
             // get the project description category
-            $category_id = Category::where('type','project_description')->first()->id;
+            $category_id = Category::where('name','Project description')->first()->id;
 
             // get the posts (project description) with category id
             $posts = Post::where('category_id', $category_id)->first();

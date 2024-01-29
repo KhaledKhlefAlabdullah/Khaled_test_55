@@ -6,6 +6,7 @@ use App\Http\Requests\ServiceValidationRequest;
 use App\Models\Service;
 use App\Models\Stakeholder;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ServiceController extends Controller
@@ -39,11 +40,19 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ServiceValidationRequest $request)
+    public function store(Request $request)
     {
         try {
 
-            $validatedData = $request->validate();
+            $validatedData = $request->validate([
+                'stakeholder_id' => 'required|string|exists:stakeholders,id',
+                'category_id' => 'required|string|exists:categories,id',
+                'infrastructures_state' => 'required|in:available,partially,interrupted',
+                'slug' => 'required|string',
+                'description' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after:start_date'
+            ]);
 
             $service = Service::create($validatedData);
 
@@ -73,11 +82,18 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ServiceValidationRequest $request)
+    public function update(Request $request)
     {
         try {
 
-            $validatedData = $request->validated();
+            $validatedData = $request->validate([
+                'infrastructures_state' => 'required|in:available,partially,interrupted',
+                'slug' => 'required|string',
+                'description' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after:start_date'
+            ]);
+
 
             $service = Service::findOrFail($request->input('id'));
 

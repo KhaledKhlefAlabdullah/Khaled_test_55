@@ -15,28 +15,35 @@ class CategorySeeder extends Seeder
         DB::table('categories')->insert([
             'id' => '31c97a6d-7b19-4fa9-a77f-2a76172f5b22',
             'name' => 'Post',
-            'type' => 'Post',
+            'type' => 'post',
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '32c97a6d-7b19-4fa9-a77f-2a76172f5b22',
             'name' => 'News',
-            'type' => 'News',
+            'type' => 'news',
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '44c97a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'name' => 'General News',
+            'type' => 'general_news',
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '33c97a6d-7b19-4fa9-a77f-2a76172f5b22',
             'name' => 'File',
-            'type' => 'File',
+            'type' => 'file',
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '34c97a6d-7b19-4fa9-a77f-2a76172f5b22',
             'name' => 'Notification',
-            'type' => 'Notification',
+            'type' => 'notification',
             'created_at' => now(),
         ]);
 
@@ -113,13 +120,34 @@ class CategorySeeder extends Seeder
             'created_at' => now(),
         ]);
 
+
         DB::table('categories')->insert([
-            'id' => '03597a6d-7b19-4fa9-a77f-2a76172f5b22',
-            'name' => 'Suppliers',
-            'type' => 'suppliers',
+            'id' => '03897a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'name' => 'Customer ',
+            'type' => 'customer',
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '04877a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'name' => 'Water',
+            'type' => 'services',
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '04899a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'name' => 'Energy',
+            'type' => 'services',
             'created_at' => now(),
         ]);
 
 
+        DB::table('categories')->insert([
+            'id' => '0oo99a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'name' => 'Department',
+            'type' => 'department',
+            'created_at' => now(),
+        ]);
     }
 }

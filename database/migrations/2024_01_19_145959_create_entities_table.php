@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('stakeholder_id');
             $table->string('category_id');
             $table->string('name');
-            $table->integer('public_id')->unique();
+            $table->string('public_id')->unique();
             $table->string('slug');
             $table->string('phone_number')->nullable();
             $table->text('location')->nullable();

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Category;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -18,13 +18,13 @@ class StoreCategoryRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'name' => ['string', 'max:255', 'required',],
-            'type' => ['required', 'in:Post,News,File,Notification,Report,Timeline_event,entity'],
+            'type' => ['required', 'string',],
             'parent_id' => ['nullable', 'uuid', 'different:id', 'exists:categories,id', ''],
 
         ];

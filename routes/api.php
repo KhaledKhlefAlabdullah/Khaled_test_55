@@ -53,13 +53,12 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::middleware(['auth:sanctum'])->group(function () {
     // Pages
     Route::apiResource('pages', PageController::class);
-//    Route::prefix('pages')->group(function () {
-//        Route::get('/', 'index')->name('pages.index');
-//    });
+    //    Route::prefix('pages')->group(function () {
+    //        Route::get('/', 'index')->name('pages.index');
+    //    });
 
     // Contact Us Messages
     Route::apiResource('contact-us-messages', ContactUsMessageController::class);
@@ -71,7 +70,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('chats', ChatController::class);
 
     // Messages
-//    Route::apiResource('messages', MessageController::class)->except(['index']);
+    //    Route::apiResource('messages', MessageController::class)->except(['index']);
 
     // Messages
     Route::prefix('messages')->controller(MessageController::class)->group(function () {
@@ -82,13 +81,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('/{id}', 'destroy')->name('messages.destroy');
     });
 
-
     // Dams
     Route::apiResource('dams', DamController::class);
 
     // Disaster Reports
     Route::apiResource('disaster-reports', DisasterReportController::class);
-
 
     // Entities
     Route::apiResource('entities', EntityController::class);
@@ -96,9 +93,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Files
     Route::apiResource('files', FileController::class);
 
-
     // Industrial Areas
-//    Route::apiResource('industrial-areas', IndustrialAreaController::class);
+    //    Route::apiResource('industrial-areas', IndustrialAreaController::class);
 
     // Monitoring Points
     Route::apiResource('monitoring-points', MonitoringPointController::class);
@@ -122,7 +118,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('posts', PostController::class);
 
     // Services
-//    Route::apiResource('services', ServiceController::class);
+    //    Route::apiResource('services', ServiceController::class);
 
     // Shipments
     Route::apiResource('shipments', ShipmentController::class);
@@ -146,12 +142,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('timeline-shares-requests', TimelineSharesRequestController::class);
 
     // User Profiles
-//    Route::apiResource('user-profiles', UserProfileController::class);
+    //    Route::apiResource('user-profiles', UserProfileController::class);
 
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {
-
 
     // Routes for portal manager role
     Route::middleware([Portal_manager_middleware::class])->group(function () {
@@ -169,9 +164,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         // for add new general news
-        Route::group(['prefix' => 'general-news'],function (){
+        Route::group(['prefix' => 'general-news'], function () {
 
-            Route::post('/add',[PostController::class,'new_general_news']);
+            Route::post('/add', [PostController::class, 'new_general_news']);
 
         });
 
@@ -202,7 +197,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         });
 
-
         Route::group(['prefix' => 'registration_requests'], function () {
 
             Route::get('/', [RegistrationRequestController::class, 'index']);
@@ -220,19 +214,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes for industrial area representative role
     Route::middleware([Ifrastructar_provider_middleware::class])->group(function () {
 
-
     });
 
     // Routes for industrial area representative role
     Route::middleware([Tenant_company_middleware::class])->group(function () {
 
-        Route::post('change-status',[StakeholderController::class,'edit_company_state']);
+        Route::post('change-status', [StakeholderController::class, 'edit_company_state']);
 
     });
 
     // Routes for industrial area representative role
     Route::middleware([Government_representative_middleware::class])->group(function () {
-
 
     });
 
@@ -248,9 +240,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         });
 
-
     });
-
 
 });
 
@@ -270,6 +260,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);
 
 // get all general news
-Route::get('general-news',[PostController::class,'view_general_news']);
+Route::get('general-news', [PostController::class, 'view_general_news']);
 
 require __DIR__ . '/auth.php';

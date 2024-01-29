@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,7 +15,7 @@ return new class extends Migration
             $table->string('route_id');
             $table->string('material_id');
             $table->string('stakeholder_id');
-            $table->integer('public_id')->unique();
+            $table->string('public_id')->unique();
             $table->text('location');
             $table->text('contact_info');
             $table->string('slug')->nullable();

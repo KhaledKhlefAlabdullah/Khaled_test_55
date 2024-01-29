@@ -17,7 +17,7 @@ class EntityFactory extends Factory
         return [
             'name' => fake()->name(),
             'slug' => fake()->slug(),
-            'public_id' => fake()->randomNumber(),
+            'public_id' => fake()->word(),
             'phone_number' => fake()->phoneNumber(),
             'location' => fake()->word(),
             'from' => fake()->word(),

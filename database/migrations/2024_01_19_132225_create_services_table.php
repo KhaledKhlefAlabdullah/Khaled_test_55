@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary()->unique();
             $table->string('stakeholder_id');
             $table->string('category_id');
-            $table->enum('infrastructures_state',['available','partially','interrupted']);
+            $table->enum('infrastructures_state', ['available', 'partially', 'interrupted']);
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
             $table->date('start_date')->nullable();

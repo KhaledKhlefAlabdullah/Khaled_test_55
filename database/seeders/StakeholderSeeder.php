@@ -21,7 +21,7 @@ class StakeholderSeeder extends Seeder
             'tenant_company_state' => 'operating',
             'company_representative_name' => 'John Smith',
             'job_title' => 'Manager',
-            'created_at' => now()
+            'created_at' => now(),
         ]);
 
         // Second stakeholder record
@@ -33,7 +33,7 @@ class StakeholderSeeder extends Seeder
             'tenant_company_state' => 'evacuating',
             'company_representative_name' => 'Jane Doe',
             'job_title' => 'Director',
-            'created_at' => now()
+            'created_at' => now(),
         ]);
 
         // infrastructure provider
@@ -47,7 +47,7 @@ class StakeholderSeeder extends Seeder
             'job_title' => 'Director',
             'infrastructures_state' => 'partially',
             'infrastructure_type' => 'Water Treatment Plant',
-            'created_at' => now()
+            'created_at' => now(),
 
         ]);
 
@@ -61,7 +61,7 @@ class StakeholderSeeder extends Seeder
             'job_title' => 'Director',
             'infrastructures_state' => 'interrupted',
             'infrastructure_type' => 'Water Treatment Plant',
-            'created_at' => now()
+            'created_at' => now(),
 
         ]);
 

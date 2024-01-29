@@ -18,7 +18,7 @@ class IndustrialAreaController extends Controller
         try {
 
             // get all industrial areas in database
-            $industrial_areas = IndustrialArea::all();
+            $industrial_areas = IndustrialArea::with('user')->get();
 
             // check if their industrial areas in database
             if ($industrial_areas->isNotEmpty()) {
@@ -105,27 +105,28 @@ class IndustrialAreaController extends Controller
             $industrial_area = IndustrialArea::findOrFail($request->input('id'))->with('user')->get();
 
             // check if their industrial areas in database
-            if (!empty($industrial_area)) {
+            if(!empty($industrial_area)){
 
                 // return the data
                 return response()->json([
                     'industrial_area' => $industrial_area,
                     'message' => __('Successfully request')
-                ], 201);
+                ],201);
 
             }
 
             return response()->json([
                 'message' => __('Successfully request but there now industrial areas in database yeet')
-            ], 402);
+            ],402);
 
-        } // handling the exceptions
-        catch (Exception $e) {
+        }
+            // handling the exceptions
+        catch (\Exception $e){
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('Failed to get any thing')
-            ], 501);
+                'message'=> __('Failed to get any thing')
+            ],501);
 
         }
     }
@@ -135,7 +136,7 @@ class IndustrialAreaController extends Controller
      */
     public function update(Request $request)
     {
-        try {
+        try{
 
             // validate the inputs data
             $request->validate([

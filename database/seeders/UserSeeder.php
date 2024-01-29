@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         // Insert sample data into the 'users' table
         // First
         DB::table('users')->insert([
-            'id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'email' => 'porta.manager.first@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345'),
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
 
         // Second
         DB::table('users')->insert([
-            'id' => "12c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'email' => 'tenant.company.first@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345'),
@@ -39,9 +39,8 @@ class UserSeeder extends Seeder
             'created_at' => now(),
         ]);
 
-
         DB::table('users')->insert([
-            'id' => "19997a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'id' => '19997a6d-7b19-4fa9-a77f-2a76172f5b58',
             'email' => 'tenant.company.second@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345'),
@@ -53,7 +52,7 @@ class UserSeeder extends Seeder
 
         // Third
         DB::table('users')->insert([
-            'id' => "14c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'industrial_area_id' => '45c97a6d-7b19-4fa9-a77f-2a76172f5b97',
             'email' => 'iar.first@example.com',
             'email_verified_at' => now(),
@@ -64,10 +63,9 @@ class UserSeeder extends Seeder
             'created_at' => now(),
         ]);
 
-
         // Forth
         DB::table('users')->insert([
-            'id' => "15c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'id' => '15c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'industrial_area_id' => '46c97a6d-7b19-4fa9-a77f-2a76172f5b97',
             'email' => 'iar.second@example.com',
             'email_verified_at' => now(),
@@ -78,10 +76,9 @@ class UserSeeder extends Seeder
             'created_at' => now(),
         ]);
 
-
         // Fifth
         DB::table('users')->insert([
-            'id' => "16c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'id' => '16c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'email' => 'infrastructure.provider.first@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345'),
@@ -91,10 +88,9 @@ class UserSeeder extends Seeder
             'created_at' => now(),
         ]);
 
-
         // Sixth
         DB::table('users')->insert([
-            'id' => "17c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'id' => '17c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'email' => 'government.representative.first@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('12345'),
@@ -103,7 +99,6 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => now(),
         ]);
-
 
     }
 }

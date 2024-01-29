@@ -34,27 +34,26 @@ class DatabaseSeeder extends Seeder
             TimelineQuireSeeder::class,
             TimelineShareRequestSeeder::class,
             WasteSeeder::class,
-
             PostSeeder::class,
             SupplierSeeder::class,
             ShipmentSeeder::class,
             ServiceSeeder::class,
             NaturalDisasterSeeder::class,
             MonitoringPointSeeder::class,
-            MessageSeeder::class,
             EmployeeSeeder::class,
-            DisasterReportSeeder::class,
             ChatSeeder::class,
+            MessageSeeder::class,
+            DisasterReportSeeder::class,
         ]);
 
         // Factory
-//        User::factory()->count(10)->create();
-//        Page::factory()->count(10)->create();
-//        Contact_us_message::factory()->count(10)->create();
-//        Category::factory()->count(10)->create();
-//        Post::factory()->count(10)->create();
-//        Chat::factory()->count(10)->create();
-//        Message::factory()->count(10)->create();
+        //        User::factory()->count(10)->create();
+        //        Page::factory()->count(10)->create();
+        //        Contact_us_message::factory()->count(10)->create();
+        //        Category::factory()->count(10)->create();
+        //        Post::factory()->count(10)->create();
+        //        Chat::factory()->count(10)->create();
+        //        Message::factory()->count(10)->create();
 
     }
 }

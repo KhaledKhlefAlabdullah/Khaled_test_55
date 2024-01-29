@@ -48,7 +48,7 @@ class ShipmentRequest extends FormRequest
             'route_id' => ['required', 'uuid', 'exists:entities,id'],
             'product_id' => ['required', 'uuid', 'exists:entities,id'],
             'customer_id' => ['required', 'uuid', 'exists:entities,id'],
-            'public_id' => ['required', 'unique', 'integer'],
+            'public_id' => ['required', 'unique', 'string'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'location' => ['required', 'string'],

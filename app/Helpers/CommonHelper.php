@@ -13,7 +13,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
-
 /**
  * Get an Eloquent model instance by its ID and perform a existence check.
  *
@@ -22,8 +21,9 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
  *
  * @param string $model The fully qualified class name of the Eloquent model.
  * @param mixed $id The ID of the model to retrieve.
- * @return Model  The retrieved Eloquent model instance.
- * @throws NotFoundResourceException  If the model instance is not found.
+ * @return Model The retrieved Eloquent model instance.
+ *
+ * @throws NotFoundResourceException If the model instance is not found.
  */
 if (!function_exists('getAndCheckModelById')) {
     function getAndCheckModelById($model, $id)
@@ -31,7 +31,7 @@ if (!function_exists('getAndCheckModelById')) {
         $instance = $model::find($id);
 
         if (!$instance) {
-            throw new NotFoundResourceException($model . " not found", 404);
+            throw new NotFoundResourceException($model . ' not found', 404);
         }
 
         return $instance;
@@ -57,7 +57,6 @@ if (!function_exists('transformCollection')) {
             : $resourceClass::collection($collection);
     }
 }
-
 
 if (!function_exists('fake_register_request')) {
     /*
@@ -112,19 +111,19 @@ if (!function_exists('store_files')) {
      *
      * @throws NotFoundResourceException
      */
-     function store_files($file,$path): string
-     {
-         // get file extension
-         $file_extension = $file->getClientOriginalExtension();
+    function store_files($file, $path): string
+    {
+        // get file extension
+        $file_extension = $file->getClientOriginalExtension();
 
-         // rename the file
-         $file_name = time().'.'.$file_extension;
+        // rename the file
+        $file_name = time() . '.' . $file_extension;
 
-         // store the in public directory
-         $file->move($path, $file_name);
+        // store the in public directory
+        $file->move($path, $file_name);
 
-         // return the path and file name
-         return $path.'/'.$file_name;
+        // return the path and file name
+        return $path . '/' . $file_name;
 
     }
 }

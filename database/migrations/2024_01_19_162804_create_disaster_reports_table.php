@@ -13,11 +13,11 @@ return new class extends Migration {
         Schema::create('disaster_reports', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('natural_disaster_id');
-            $table->string('entity_id');
-            $table->string('shipment_id');
-            $table->string('supplier_id');
-            $table->string('employee_id');
-            $table->string('waste_id');
+            $table->string('entity_id')->nullable();
+            $table->string('shipment_id')->nullable();
+            $table->string('supplier_id')->nullable();
+            $table->string('employee_id')->nullable();
+            $table->string('waste_id')->nullable();
             $table->boolean('is_safe')->default(false);
             $table->date('impact_date')->nullable();
             $table->date('start_date')->nullable();

@@ -6,6 +6,8 @@ use App\Http\Requests\Dam\StoreDamRequest;
 use App\Http\Requests\Dam\UpdateDamRequest;
 use App\Http\Resources\DamResource;
 use App\Models\Dam;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
 
 class DamController extends Controller
 {
@@ -22,7 +24,6 @@ class DamController extends Controller
             ? new DamResource($dams->first())
             : DamResource::collection($dams);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -44,39 +45,39 @@ class DamController extends Controller
      */
     public function show(string $id)
     {
-        // Get Dam by ID
-        $dam = Dam::find($id);
+        try {
+            // Get Dam by ID and check if it exists
+            $dam = getAndCheckModelById(Dam::class, $id);
 
-        // Check dam exists
-        if (!$dam) {
-            return response()->json(['message' => 'Dam not found'], 404);
+            // Return DamResource
+            return new DamResource($dam);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        return new DamResource($dam);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateDamRequest $request, string $id)
     {
-        // Get Dam by ID
-        $dam = Dam::find($id);
+        try {
+            // Get Dam by ID and check if it exists
+            $dam = getAndCheckModelById(Dam::class, $id);
 
-        // Check dam exists
-        if (!$dam) {
-            return response()->json(['message' => 'Dam not found'], 404);
+            // Validate the Dam
+            $valid_data = $request->validated();
+
+            // Update Dam
+            $dam->update($valid_data);
+
+            // Return DamResource
+            return new DamResource($dam);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        // Validate the Dam
-        $valid_data = $request->validated();
-
-        // Update Dam
-        $dam->update($valid_data);
-
-        // Return DamResource
-        return new DamResource($dam);
     }
 
     /**
@@ -84,16 +85,17 @@ class DamController extends Controller
      */
     public function destroy(string $id)
     {
-        // Get Dam by ID
-        $dam = Dam::find($id);
+        try {
+            // Get Dam by ID and check if it exists
+            $dam = getAndCheckModelById(Dam::class, $id);
 
-        // Check dam exists
-        if (!$dam) {
-            return response()->json(['message' => 'Dam not found'], 404);
+            // Delete Dam
+            $dam->delete();
+
+            return response()->json(['message' => 'Dam deleted successfully']);
+
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
-        // Delete Dam
-        $dam->delete();
-
-        return response()->json(['message' => 'Dam deleted successfully'],);
     }
 }

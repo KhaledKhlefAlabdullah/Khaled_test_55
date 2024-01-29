@@ -7,6 +7,8 @@ use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Spatie\FlareClient\Http\Exceptions\BadResponseCode;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
 
 class CategoriesController extends Controller
 {
@@ -43,16 +45,15 @@ class CategoriesController extends Controller
      */
     public function show(string $id)
     {
-        // Get the specified category
-        $category = Category::find($id);
-
-        // Check if the category exists
-        if (!$category) {
-            return response()->json(['message' => 'Category ID not found'], 404);
+        // Get the category by ID and check if it exists
+        try {
+            $category = getAndCheckModelById(Category::class, $id);
+            // Return the specified category
+            return new CategoryResource($category);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        // Return the specified category
-        return new CategoryResource($category);
     }
 
 
@@ -62,16 +63,10 @@ class CategoriesController extends Controller
     public function update(UpdateCategoryRequest $request, string $id)
     {
 
-        // Get the category
-        $category = Category::find($id);
-
-        // Check if the category exists
-        if (!$category) {
-            return response()->json(['message' => 'Category ID not found'], 404);
-        }
-
+        // Get the category by ID and check if it exists
         try {
-            // Validate the request
+            $category = getAndCheckModelById(Category::class, $id);
+
             $valid_data = $request->validated();
 
             // Update the category
@@ -82,6 +77,8 @@ class CategoriesController extends Controller
         } catch (BadResponseCode $e) {
             // Return the error message if category id equals parent id
             return response()->json(['error' => $e->getMessage()], 422);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
     }
@@ -91,18 +88,19 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-        // Get the category
-        $category = Category::find($id);
+        // Get the category by ID and check if it exists
+        try {
+            $category = getAndCheckModelById(Category::class, $id);
+            // Delete the category
+            $category->delete();
 
-        // Check if the category exists
-        if (!$category) {
-            return response()->json(['message' => 'Category ID not found'], 404);
+            // Return message success
+            return response()->json(['message' => 'Deleted successfully']);
+
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        // Delete the category
-        $category->delete();
 
-        // Return message success
-        return response()->json(['message' => 'Deleted successfully']);
     }
 }

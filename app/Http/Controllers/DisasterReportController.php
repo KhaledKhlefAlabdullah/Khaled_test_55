@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\DisasterReportRequest;
 use App\Http\Resources\DisasterReportResource;
 use App\Models\DisasterReport;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\getAndCheckModelById;
 
 class DisasterReportController extends Controller
 {
@@ -16,12 +18,10 @@ class DisasterReportController extends Controller
         // Get all the disaster reports
         $disaster_reports = DisasterReport::paginate();
 
-
         return $disaster_reports->count() == 1 ?
             new DisasterReportResource($disaster_reports->first()) : // return only one disaster report
             DisasterReportResource::collection($disaster_reports); // return all disaster reports
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -42,43 +42,38 @@ class DisasterReportController extends Controller
      */
     public function show(string $id)
     {
-        // Get Report by ID
-        $disaster_report = DisasterReport::find($id);
+        // Get the category by ID and check if it exists
+        try {
+            $disaster_report = getAndCheckModelById(DisasterReport::class, $id);
 
-        // Check if the report exists
-        if (!$disaster_report) {
-            return response()->json([
-                'message' => 'Report not found'
-            ], 404);
+            // Return the report
+            return new DisasterReportResource($disaster_report);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        // Return the report
-        return new DisasterReportResource($disaster_report);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
     public function update(DisasterReportRequest $request, string $id)
     {
-        // Get Disaster Report by ID
-        $disaster_report = DisasterReport::find($id);
+        // Get the category by ID and check if it exists
+        try {
+            $disaster_report = getAndCheckModelById(DisasterReport::class, $id);
 
-        // Check if the report exists
-        if (!$disaster_report) {
-            return response()->json([
-                'message' => 'Report not found'
-            ], 404);
+            // Validate the request
+            $valid_data = $request->validated();
+
+            // Update the disaster report
+            $disaster_report->update($valid_data);
+
+            return new DisasterReportResource($disaster_report);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        // Validate the request
-        $valid_data = $request->validated();
-
-        // Update the disaster report
-        $disaster_report->update($valid_data);
-
-        return new DisasterReportResource($disaster_report);
     }
 
     /**
@@ -86,21 +81,20 @@ class DisasterReportController extends Controller
      */
     public function destroy(string $id)
     {
-        // Get Disaster Report by ID
-        $disaster_report = DisasterReport::find($id);
+        // Get the category by ID and check if it exists
+        try {
+            $disaster_report = getAndCheckModelById(DisasterReport::class, $id);
 
-        // Check if the report exists
-        if (!$disaster_report) {
+            // Delete the disaster report
+            $disaster_report->delete();
+
             return response()->json([
-                'message' => 'Report not found'
-            ], 404);
+                'message' => 'Report deleted successfully',
+            ]);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        // Delete the disaster report
-        $disaster_report->delete();
 
-        return response()->json([
-            'message' => 'Report deleted successfully'
-        ]);
     }
 }

@@ -47,7 +47,7 @@ class SupplierRequest extends FormRequest
             'route_id' => ['required', 'uuid', 'exists:entities,id'],
             'material_id' => ['required', 'uuid', 'exists:entities,id'],
             'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
-            'public_id' => ['required', 'unique', 'integer'],
+            'public_id' => ['required', 'unique', 'string'],
             'slug' => ['nullable', 'string', 'unique'],
             'location' => ['required', 'string'],
             'contact_info' => ['required', 'string'],

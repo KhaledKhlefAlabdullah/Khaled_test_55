@@ -43,7 +43,7 @@ class ServiceController extends Controller
     {
         try {
 
-            $validatedData = $request->validate();
+            $validatedData = $request->validated();
 
             $service = Service::create($validatedData);
 
@@ -62,13 +62,6 @@ class ServiceController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Service $service)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

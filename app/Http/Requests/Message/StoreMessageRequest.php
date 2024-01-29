@@ -37,7 +37,7 @@ class StoreMessageRequest extends FormRequest
             'receiver_id' => ['required', 'uuid', 'exists:users,id'],
             'chat_id' => ['required', 'uuid', 'exists:chats,id'],
             'message' => ['required', 'string', 'max:255'],
-            'media_url' => ['nullable', 'string', 'url', 'max:255'],
+            'media_url' => ['nullable', 'string', 'max:255'],
             'message_type' => ['nullable', 'in:text,image,video'],
             'is_read' => ['nullable', 'boolean'],
             'is_edite' => ['nullable', 'boolean'],

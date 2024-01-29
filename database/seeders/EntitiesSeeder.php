@@ -68,7 +68,7 @@ class EntitiesSeeder extends Seeder
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
             'category_id' => '01c97a6d-7b19-4fa9-a77f-2a76172f5b22',
             'name' => 'Oil',
-            'public_id' => 'M01',
+            'public_id' => 'M02',
             'slug' => 'material',
             'created_at' => now(),
         ]);
@@ -86,7 +86,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '3a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '03597a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'category_id' => '02c97a6d-7b19-4fa9-a77f-2a76172f5b22',
             'name' => 'First Station',
             'public_id' => 'S01',
             'slug' => 'station',

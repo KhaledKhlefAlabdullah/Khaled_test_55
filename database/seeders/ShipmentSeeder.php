@@ -32,7 +32,7 @@ class ShipmentSeeder extends Seeder
                 'product_id' => '8a01a6d-7b19-4fa9-a77f-2a76172f5b58',
                 'customer_id' => '9a05a6d-7b19-4fa9-a77f-2a76172f5b58',
                 'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-                'public_id' => 'SL01',
+                'public_id' => 'SL02',
                 'name' => 'Shipment Name 2',
                 'location' => 'Shipment Location 2',
                 'contact_info' => 'Shipment Contact Info 2',

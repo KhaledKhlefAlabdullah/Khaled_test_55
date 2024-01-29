@@ -44,7 +44,7 @@ class MessageSeeder extends Seeder
                 'receiver_id' => '19997a6d-7b19-4fa9-a77f-2a76172f5b58',
                 'chat_id' => '14ppa6d-a77f-4fa9-a77f-2a76172f5b58',
                 'message' => 'Check out this funny cat video!',
-                'media_url' => 'http://example.com/cat-video.mp4',
+//                'media_url' => 'http://example.com/cat-video.mp4',
                 'message_type' => 'video',
                 'is_read' => true,
                 'is_edite' => false,

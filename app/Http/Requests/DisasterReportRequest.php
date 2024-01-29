@@ -26,11 +26,11 @@ class DisasterReportRequest extends FormRequest
         if ($this->method() == 'PUT') {
             return [
                 'natural_disaster_id' => ['sometimes', 'required', 'uuid', 'exists:natural_disasters,id'],
-                'entity_id' => ['sometimes', 'required', 'uuid', 'exists:entities,id'],
-                'shipment_id' => ['sometimes', 'required', 'uuid', 'exists:shipments,id'],
-                'supplier_id' => ['sometimes', 'required', 'uuid', 'exists:suppliers,id'],
-                'employee_id' => ['sometimes', 'required', 'uuid', 'exists:employees,id'],
-                'waste_id' => ['sometimes', 'required', 'uuid', 'exists:wastes,id'],
+                'entity_id' => ['nullable', 'uuid', 'exists:entities,id'],
+                'shipment_id' => ['nullable', 'uuid', 'exists:shipments,id'],
+                'supplier_id' => ['nullable', 'uuid', 'exists:suppliers,id'],
+                'employee_id' => ['nullable', 'uuid', 'exists:employees,id'],
+                'waste_id' => ['nullable', 'uuid', 'exists:wastes,id'],
                 'is_safe' => ['sometimes', 'required', 'boolean'],
                 'impact_date' => ['nullable', 'date'],
                 'start_date' => ['nullable', 'date'],
@@ -41,11 +41,11 @@ class DisasterReportRequest extends FormRequest
 
         return [
             'natural_disaster_id' => ['required', 'uuid', 'exists:natural_disasters,id'],
-            'entity_id' => ['sometimes', 'required', 'uuid', 'exists:entities,id'],
-            'shipment_id' => ['sometimes', 'required', 'uuid', 'exists:shipments,id'],
-            'supplier_id' => ['sometimes', 'required', 'uuid', 'exists:suppliers,id'],
-            'employee_id' => ['sometimes', 'required', 'uuid', 'exists:employees,id'],
-            'waste_id' => ['sometimes', 'required', 'uuid', 'exists:wastes,id'],
+            'entity_id' => ['nullable', 'uuid', 'exists:entities,id'],
+            'shipment_id' => ['nullable', 'uuid', 'exists:shipments,id'],
+            'supplier_id' => ['nullable', 'uuid', 'exists:suppliers,id'],
+            'employee_id' => ['nullable', 'uuid', 'exists:employees,id'],
+            'waste_id' => ['nullable', 'uuid', 'exists:wastes,id'],
             'is_safe' => ['sometimes', 'required', 'boolean'],
             'impact_date' => ['nullable', 'date'],
             'start_date' => ['nullable', 'date'],

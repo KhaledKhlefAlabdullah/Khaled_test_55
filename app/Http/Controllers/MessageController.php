@@ -7,7 +7,6 @@ use App\Http\Requests\Message\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 
-
 class MessageController extends Controller
 {
     /**
@@ -29,7 +28,6 @@ class MessageController extends Controller
             new MessageResource($messages->first()) : // return only one message
             MessageResource::collection($messages); // return all messages
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -58,7 +56,6 @@ class MessageController extends Controller
             response()->json(['message' => 'Message not found'], 404) :
             new MessageResource($message);
     }
-
 
     /**
      * Update the specified resource in storage.

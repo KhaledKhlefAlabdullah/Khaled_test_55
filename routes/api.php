@@ -277,4 +277,7 @@ Route::get('general-news', [PostController::class, 'view_general_news']);
 // project description
 Route::get('project-description',[PostController::class,'view_project_description']);
 
+// View contact us details
+Route::get('contact-us-details',[PageController::class,'contact_us_details']);
+
 require __DIR__ . '/auth.php';

@@ -19,13 +19,37 @@ class PageController extends Controller
         // Get all pages by auth user id
         $pages = Page::where('user_id', auth()->user()->id)->paginate();
 
-        
+
         // If there is only one page, return it
         return $pages->count() == 1 ?
             new PageResource($pages->first()) :
             PageResource::collection($pages); // Otherwise, return the List of pages
     }
 
+    /**
+     * Get contact us page
+     */
+    public function contact_us_details()
+    {
+        try{
+
+            $contact_us = Page::where('type','Contact us')->get();
+
+            return response()->json([
+                'contact_us_details' => $contact_us,
+                'message' => __('Successfully getting contact us details')
+            ],200);
+
+        }
+        catch (\Exception $e){
+
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in getting the contact us details')
+            ],500);
+
+        }
+    }
 
     /**
      * Store a newly created resource in storage.

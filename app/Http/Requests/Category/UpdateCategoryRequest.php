@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Category;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+
 class UpdateCategoryRequest extends StoreCategoryRequest
 {
     /**
@@ -20,7 +22,7 @@ class UpdateCategoryRequest extends StoreCategoryRequest
      * The 'name' field is set to be sometimes required, of string type, and with a maximum length of 255 characters.
      * The 'type' field is also set to be sometimes required and should have a value from the specified enum options ('Post', 'News', 'File', 'Notification', 'Report', 'Timeline_event', 'entity').
      * These rules are merged with the parent class rules and returned.
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      *
      */
     public function rules(): array
@@ -29,8 +31,7 @@ class UpdateCategoryRequest extends StoreCategoryRequest
         $parentRules = parent::rules();
 
         $customRules = [
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'type' => ['sometimes', 'required', 'in:Post,News,File,Notification,Report,Timeline_event,entity'],
+            'name' => ['sometimes', 'required', 'string', 'unique:categories,name', 'max:255'],
         ];
 
         return array_merge($parentRules, $customRules);
@@ -47,7 +48,6 @@ class UpdateCategoryRequest extends StoreCategoryRequest
     {
         return [
             'name' => 'Name',
-            'type' => 'Type',
             'parent_id' => 'Parent ID',
         ];
     }

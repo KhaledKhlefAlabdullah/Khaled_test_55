@@ -16,7 +16,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '37c97a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'category_id' => '018e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Route 1',
             'public_id' => 'R01',
             'slug' => 'route-1',
@@ -35,7 +35,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '1ara6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '37c97a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'category_id' => '018e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Route 5',
             'public_id' => 'R02',
             'slug' => 'route-5',
@@ -55,7 +55,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '2a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '01c97a6d-7b19-4fa9-a77f-2a76172f5b22', // material
+            'category_id' => '019e8400-e29b-41d4-a716-446655440000', // material
             'name' => 'Diamond',
             'public_id' => 'M01',
             'slug' => 'diamond',
@@ -66,17 +66,17 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '8a87a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '01c97a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'category_id' => '019e8400-e29b-41d4-a716-446655440000', // material
             'name' => 'Oil',
             'public_id' => 'M02',
-            'slug' => 'material',
+            'slug' => 'oil',
             'created_at' => now(),
         ]);
 
         DB::table('entities')->insert([
             'id' => 'vv97a6d-7b19-4fa9-a7vf-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '35c97a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'category_id' => '048e8400-e29b-41d4-a716-446655440000', // waste disposal site
             'name' => 'Waste disposal site',
             'public_id' => 'WDS01',
             'slug' => 'waste-disposal-site',
@@ -86,7 +86,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '3a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '02c97a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'category_id' => '020e8400-e29b-41d4-a716-446655440000', // station
             'name' => 'First Station',
             'public_id' => 'S01',
             'slug' => 'station',
@@ -98,7 +98,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '8a00a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '00c97a6d-7b19-4fa9-a77f-2a76172f5b22', // product
+            'category_id' => '017e8400-e29b-41d4-a716-446655440000', // product
             'name' => 'Salty',
             'public_id' => 'P01',
             'slug' => 'salty',
@@ -109,17 +109,17 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '8a01a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '00c97a6d-7b19-4fa9-a77f-2a76172f5b22', // product
+            'category_id' => '017e8400-e29b-41d4-a716-446655440000', // product
             'name' => 'Apple',
             'public_id' => 'P02',
-            'slug' => 'product',
+            'slug' => 'apple',
             'created_at' => now(),
         ]);
 
         DB::table('entities')->insert([
             'id' => '9a05a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '03897a6d-7b19-4fa9-a77f-2a76172f5b22', // customer
+            'category_id' => '037e8400-e29b-41d4-a716-446655440000', // customer
             'name' => 'Ali',
             'public_id' => 'SUP01',
             'slug' => 'ali-55',
@@ -129,7 +129,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '1n05a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '0oo99a6d-7b19-4fa9-a77f-2a76172f5b22', // department
+            'category_id' => '038e8400-e29b-41d4-a716-446655440000', // department
             'name' => 'IT',
             'public_id' => "IT01",
             'slug' => 'it',

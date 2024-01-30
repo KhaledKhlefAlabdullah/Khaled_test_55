@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-
 use Illuminate\Contracts\Validation\ValidationRule;
 
 class FileRequest extends BaseRequest
@@ -24,7 +23,6 @@ class FileRequest extends BaseRequest
     {
         if ($this->method() == 'PUT') {
             return [
-                'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
                 'file_type' => ['sometimes', 'required', 'in:Education,Manuals,Plans'],
                 'title' => ['sometimes', 'required', 'string', 'max:255'],
                 'description' => ['sometimes', 'required', 'string', 'max:255'],
@@ -35,9 +33,9 @@ class FileRequest extends BaseRequest
             ];
 
         }
+
         return [
             'user_id' => ['required', 'uuid', 'exists:users,id'],
-            'category_id' => ['required', 'uuid', 'exists:categories,id'],
             'file_type' => ['required', 'in:Education,Manuals,Plans'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
@@ -49,23 +47,17 @@ class FileRequest extends BaseRequest
 
     }
 
-
     public function attributes()
     {
         return [
             'user_id' => 'User',
-            'category_id' => 'Category',
             'file_type' => 'File Type',
             'title' => 'Title',
             'description' => 'Description',
             'version' => 'Version',
             'media_url' => 'Media URL',
             'media_type' => 'Media Type',
-            'update_frequency' => 'Update Frequency'
+            'update_frequency' => 'Update Frequency',
         ];
     }
 }
-
-
-
-

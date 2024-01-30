@@ -16,8 +16,8 @@ class NotificationSettingSeeder extends Seeder
         NotificationsSetting::create([
             'id' => '00p17a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
-            'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
-            'sub_category_id' => "11197a6d-7b19-4fa9-a77f-2a76172f5b22",
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "022e8400-e29b-41d4-a716-446655440000", // rain
             'notification_state' => 'none',
             'notification_level' => 'high',
             'notification_priorities' => 'high',
@@ -29,8 +29,8 @@ class NotificationSettingSeeder extends Seeder
         NotificationsSetting::create([
             'id' => '00p27a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Tenant Company (First)
-            'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
-            'sub_category_id' => "11197a6d-7b19-4fa9-a77f-2a76172f5b22",
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "023e8400-e29b-41d4-a716-446655440000", // wind
             'notification_state' => 'none',
             'notification_level' => 'none',
             'notification_priorities' => 'none',
@@ -42,8 +42,8 @@ class NotificationSettingSeeder extends Seeder
         NotificationsSetting::create([
             'id' => '00p37a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '19997a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Tenant Company (Second)
-            'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
-            'sub_category_id' => "11197a6d-7b19-4fa9-a77f-2a76172f5b22",
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "024e8400-e29b-41d4-a716-446655440000", // report
             'notification_state' => 'none',
             'notification_level' => 'none',
             'notification_priorities' => 'none',
@@ -55,8 +55,8 @@ class NotificationSettingSeeder extends Seeder
         NotificationsSetting::create([
             'id' => '00p47a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Industrial Area Representative (First)
-            'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
-            'sub_category_id' => "11197a6d-7b19-4fa9-a77f-2a76172f5b22",
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "024e8400-e29b-41d4-a716-446655440000", // report
             'notification_state' => 'none',
             'notification_level' => 'none',
             'notification_priorities' => 'none',
@@ -68,8 +68,8 @@ class NotificationSettingSeeder extends Seeder
         NotificationsSetting::create([
             'id' => '00p57a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '15c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Industrial Area Representative (Second)
-            'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
-            'sub_category_id' => "11197a6d-7b19-4fa9-a77f-2a76172f5b22",
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "024e8400-e29b-41d4-a716-446655440000", // report
             'notification_state' => 'none',
             'notification_level' => 'none',
             'notification_priorities' => 'none',
@@ -81,8 +81,8 @@ class NotificationSettingSeeder extends Seeder
         NotificationsSetting::create([
             'id' => '00p67a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '16c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Infrastructure Provider
-            'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
-            'sub_category_id' => "23237a6d-7b19-4fa9-a77f-2a76172f5b22",
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "024e8400-e29b-41d4-a716-446655440000", // report
             'notification_state' => 'observation',
             'notification_level' => 'normal',
             'notification_priorities' => 'top',
@@ -94,8 +94,8 @@ class NotificationSettingSeeder extends Seeder
         NotificationsSetting::create([
             'id' => '00p77a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
             'user_id' => '17c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Government Representative
-            'main_category_id' => "34c97a6d-7b19-4fa9-a77f-2a76172f5b22",
-            'sub_category_id' => "23237a6d-7b19-4fa9-a77f-2a76172f5b22",
+            'main_category_id' => "025e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "028e8400-e29b-41d4-a716-446655440000", // report
             'notification_state' => 'forecasting',
             'notification_level' => 'none',
             'notification_priorities' => 'high',

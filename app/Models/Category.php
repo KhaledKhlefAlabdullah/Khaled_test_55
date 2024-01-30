@@ -15,15 +15,15 @@ class Category extends Model
     use HasFactory, HasUuid, SoftDeletes;
 
     protected $keyType = 'string';
+
     protected $primaryKey = 'id';
+
     public $incrementing = false;
 
     protected $fillable = [
         'name',
-        'type',
-        'parent_id'
+        'parent_id',
     ];
-
 
     public static function boot()
     {
@@ -34,10 +34,10 @@ class Category extends Model
                 throw new BadResponseCode('The parent ID must not be the same as the class ID itself.',
                     422);
             }
+
             return true;
         });
     }
-
 
     public function posts()
     {

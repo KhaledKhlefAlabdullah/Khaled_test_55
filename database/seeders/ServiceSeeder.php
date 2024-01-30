@@ -17,7 +17,7 @@ class ServiceSeeder extends Seeder
             [
                 'id' => '4r97a6d-5238-4fa9-a77f-2a76172f5b22',
                 'stakeholder_id' => '4r97a6d-5238-4fa9-a77f-2a76172f5b58',
-                'category_id' => '04877a6d-7b19-4fa9-a77f-2a76172f5b22', // water service
+                'category_id' => '046e8400-e29b-41d4-a716-446655440000', //  service
                 'infrastructures_state' => 'available',
                 'description' => 'Service Description 2',
                 'start_date' => '2024-02-01',
@@ -28,7 +28,7 @@ class ServiceSeeder extends Seeder
             [
                 'id' => '7797a6d-5238-4fa9-a77f-2a76172f5b22',
                 'stakeholder_id' => '4r97a6d-5238-4fa9-a77f-2a76172f5b58',
-                'category_id' => '04899a6d-7b19-4fa9-a77f-2a76172f5b22', // energy service
+                'category_id' => '045e8400-e29b-41d4-a716-446655440000', //  service
                 'infrastructures_state' => 'partially',
                 'slug' => 'service-2',
                 'description' => 'Service Description 2',

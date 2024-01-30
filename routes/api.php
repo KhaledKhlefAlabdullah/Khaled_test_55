@@ -29,12 +29,7 @@ use App\Http\Controllers\Timelines\TimelineQuiresController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
-use App\Http\Middleware\Api\Allow_all_users_expect_portal_manager_middleware;
-use App\Http\Middleware\Api\Government_representative_middleware;
-use App\Http\Middleware\Api\Ifrastructar_provider_middleware;
-use App\Http\Middleware\Api\Industrial_area_representative_middleware;
-use App\Http\Middleware\Api\Portal_manager_middleware;
-use App\Http\Middleware\Api\Tenant_company_middleware;
+use \App\Http\Controllers\Auth\PasswordResetLinkController;
 use \App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -151,7 +146,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // Routes for portal manager role
-    Route::middleware([Portal_manager_middleware::class])->group(function () {
+    Route::middleware(['portal-manger'])->group(function () {
+
+        Route::post('edite-about-us-details',[PageController::class,'edite_about_us_page_details']);
+
+        Route::post('edite-contact-us-details',[PageController::class,'edite_contact_us_details']);
 
         Route::post('edite-project-description',[PostController::class,'edite_project_description']);
 
@@ -181,7 +180,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Industrial_area_representative_middleware::class])->group(function () {
+    Route::middleware(['industrial-area-representative'])->group(function () {
 
         Route::group(['prefix' => 'subdomain-users'], function () {
 
@@ -220,24 +219,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Ifrastructar_provider_middleware::class])->group(function () {
+    Route::middleware(['infrastructure-provider'])->group(function () {
 
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Tenant_company_middleware::class])->group(function () {
+    Route::middleware(['tenant-company'])->group(function () {
 
         Route::post('change-status', [StakeholderController::class, 'edit_company_state']);
 
     });
 
     // Routes for industrial area representative role
-    Route::middleware([Government_representative_middleware::class])->group(function () {
+    Route::middleware(['government-representative'])->group(function () {
 
     });
 
     // Routes for all users expect Portal manager role
-    Route::middleware([Allow_all_users_expect_portal_manager_middleware::class])->group(function () {
+    Route::middleware(['all-users-expect-portal-manager'])->group(function () {
 
         // For profile functions
         Route::group(['prefix' => 'profile'], function () {
@@ -250,7 +249,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 
-    Route::post('/forgot-password', [\App\Http\Controllers\Auth\PasswordResetLinkController::class, 'store']);
+    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
     Route::post('change-password',[AuthenticatedSessionController::class,'change_password']);
 
@@ -279,5 +278,13 @@ Route::get('project-description',[PostController::class,'view_project_descriptio
 
 // View contact us details
 Route::get('contact-us-details',[PageController::class,'contact_us_details']);
+
+// View about us details
+Route::get('about-us-details',[PageController::class,'about_us_page_details']);
+
+// todo i have to edite it later 1
+// Fill contact us form
+Route::post('contact-us',[ContactUsMessageController::class,'store']);
+
 
 require __DIR__ . '/auth.php';

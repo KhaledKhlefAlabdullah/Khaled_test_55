@@ -46,4 +46,5 @@ class User_policies
     {
         return $user->stakeholder_type != $this::PORTAL_MANAGER;
     }
+
 }

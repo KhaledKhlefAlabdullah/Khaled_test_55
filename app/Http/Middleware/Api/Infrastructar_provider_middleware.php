@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Response;
 
-class Ifrastructar_provider_middleware
+class Infrastructar_provider_middleware
 {
     /**
      * Handle an incoming request.

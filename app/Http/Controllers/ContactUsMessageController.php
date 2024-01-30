@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContactUsMessageRequest;
 use App\Http\Resources\ContactUsMessagesResource;
 use App\Models\ContactUsMessage;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactUsMessageController extends Controller
 {
@@ -30,13 +32,57 @@ class ContactUsMessageController extends Controller
      * @param ContactUsMessageRequest $request
      *
      */
-    public function store(ContactUsMessageRequest $request)
+    public function store(Request $request)
     {
-        $valid_data = $request->validated();
 
-        $contact_us_message = ContactUsMessage::create($valid_data);
+        // todo i have to edite it later 1
+        $valid_data = $request->validate([
+            'subject' => 'required|string|',
+            'message' => 'required|string|',
+        ]);
 
-        return new ContactUsMessagesResource($contact_us_message);
+        $user_id = User::where('stakeholder_type', 'Portal_manager')->first()->id;
+
+        $user_auth = Auth::user();
+
+        if ($user_auth){
+
+            //
+            if(Auth::user()->stakeholder_type == 'Portal_manager'){
+
+                return response()->json([
+                    'message' => __('your portal manager, you dont have to sent an contact us message to your self')
+                ],405);
+
+            }
+
+            $user_email = $user_auth->email;
+
+            ContactUsMessage::create([
+                'user_id' => $user_id,
+                'email' => $user_email,
+                'subject' => $request->input('subject'),
+                'message' => $request->input('message')
+            ]);
+
+        }else{
+
+            $request->validate([
+                'email' => 'required|string|email|max:255'
+            ]);
+
+            ContactUsMessage::create([
+                'user_id' => $user_id,
+                'email' => $request->input('email'),
+                'subject' => $request->input('subject'),
+                'message' => $request->input('message')
+            ]);
+
+        }
+
+        return response()->json([
+            'message' => __('Successfully sending the contact us message')
+        ],200);
     }
 
     /**

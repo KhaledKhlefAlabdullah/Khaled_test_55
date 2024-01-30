@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Models\Page;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
@@ -73,7 +75,7 @@ if (!function_exists('fake_register_request')) {
         $password = null,
         $password_confirmation = null,
         $phone_number = null,
-        $contact_person = null,
+        $page_person = null,
         $stakeholder_type = null,
         $location = null,
         $representative_name = null,
@@ -87,7 +89,7 @@ if (!function_exists('fake_register_request')) {
             'password' => $password,
             'password_confirmation' => $password_confirmation,
             'phone_number' => $phone_number,
-            'contact_person' => $contact_person,
+            'page_person' => $page_person,
             'stakeholder_type' => $stakeholder_type,
             'location' => $location,
             'representative_name' => $representative_name,
@@ -147,6 +149,78 @@ if (!function_exists('edit_file')) {
         $new_file_path = store_files($new_file, $path);
 
         return $new_file_path;
+    }
+
+}
+
+if (!function_exists('edite_page_details')) {
+    /*
+     * This function is used to get and check if a model exists by ID
+     * @param string $model
+     * @param string $id
+     *
+     * @throws NotFoundResourceException
+     */
+    function edit_page_details($request,$page_type): Response|JsonResponse
+    {
+        try{
+            // validate the input data
+            $request->validate([
+                'title' => 'required|string',
+                'description' => 'required|string',
+                'phone_number' =>  'required|string|regex:/^[0-9]{9,20}$/',
+                'location' => 'required|string',
+                'start_time' => 'required|date',
+                'end_time' => 'required|date|after:start_time'
+            ]);
+
+            // check if there page us page already in database
+            $page = Page::where('type',$page_type)->first();
+
+            if(empty($page)){
+
+                // if it's empty get the auth user id
+                $user_id = Auth::id();
+
+                // create the page us page with user id and validated data
+                $page = Page::create([
+                    'user_id' => $user_id,
+                    'title' => $request->input('title'),
+                    'type' => $page_type,
+                    'description' => $request->input('description'),
+                    'phone_number' => $request->input('phone_number'),
+                    'location' => $request->input('location'),
+                    'start_time' => $request->input('start_time'),
+                    'end_time' => $request->input('end_time')
+                ]);
+
+            }else{
+
+                // if it's not empty and there already page in database update the page with the validated data
+                $page->update([
+                    'title' => $request->input('title'),
+                    'description' => $request->input('description'),
+                    'phone_number' => $request->input('phone_number'),
+                    'location' => $request->input('location'),
+                    'start_time' => $request->input('start_time'),
+                    'end_time' => $request->input('end_time')
+                ]);
+
+            }
+
+            return response()->json([
+                'page' => $page,
+                'message' => __('Successfully editing page us details')
+            ],200);
+
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in adding the page details')
+            ],500);
+
+        }
     }
 
 }

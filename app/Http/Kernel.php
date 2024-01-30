@@ -2,6 +2,12 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Api\Allow_all_users_expect_portal_manager_middleware;
+use App\Http\Middleware\Api\Government_representative_middleware;
+use App\Http\Middleware\Api\Industrial_area_representative_middleware;
+use App\Http\Middleware\Api\Infrastructar_provider_middleware;
+use App\Http\Middleware\Api\Portal_manager_middleware;
+use App\Http\Middleware\Api\Tenant_company_middleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -64,5 +70,11 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
+        'portal-manger' => Portal_manager_middleware::class,
+        'industrial-area-representative' => Industrial_area_representative_middleware::class,
+        'infrastructure-provider' => Infrastructar_provider_middleware::class,
+        'tenant-company' => Tenant_company_middleware::class,
+        'government-representative' => Government_representative_middleware::class,
+        'all-users-expect-portal-manager' => Allow_all_users_expect_portal_manager_middleware::class
     ];
 }

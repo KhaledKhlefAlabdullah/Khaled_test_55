@@ -122,8 +122,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Suppliers
     Route::apiResource('suppliers', SupplierController::class);
 
-    // Employees
-    Route::apiResource('employees', EmployeeController::class);
 
     // Timelines
     Route::apiResource('timelines', TimelineController::class)->except(['update', 'show']);
@@ -252,7 +250,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Routes for just infrastructure provider and tenant company
     Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function (){
 
+        // Employees
+        Route::group(['prefix'=> 'employees'],function (){
 
+            Route::get('/', [EmployeeController::class,'index']);
+
+            Route::post('add-employee',[EmployeeController::class,'store']);
+
+        });
 
     });
 

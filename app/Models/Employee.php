@@ -21,11 +21,9 @@ class Employee extends Model
         'station_id',
         'stakeholder_id',
         'residential_area_id',
-        'public_id',
-        'is_leader_shop',
+        'employee_number',
+        'is_leadership',
         'slug',
-        'employee_name',
-        'phone_number'
     ];
 
     public function stakeholder()

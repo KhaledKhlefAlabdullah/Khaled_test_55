@@ -38,6 +38,7 @@ class PortalMails extends Mailable
      */
     public function content(): Content
     {
+        // todo we have to customize maile view
         return new Content(
             view: 'maile_view',
         );

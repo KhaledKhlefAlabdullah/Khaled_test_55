@@ -49,7 +49,7 @@ class User_policies
 
     public function infrastructure_provider_or_tenant_company(User $user)
     {
-        return $user->stakeholder_type == $this::INFRASTRUCTURE_PROVIDER or $user->stakeholder_type == $this::TENANT_COMPANY;
+        return $user->stakeholder_type == $this::INFRASTRUCTURE_PROVIDER || $user->stakeholder_type == $this::TENANT_COMPANY;
     }
 
 }

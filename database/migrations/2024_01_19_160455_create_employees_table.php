@@ -17,11 +17,9 @@ return new class extends Migration {
             $table->string('department_id');
             $table->string('station_id');
             $table->string('residential_area_id');
-            $table->string('public_id')->unique();
-            $table->boolean('is_leader_shop');
+            $table->integer('employee_number')->unique();
+            $table->boolean('is_leadership');
             $table->string('slug')->nullable();
-            $table->string('employee_name');
-            $table->string('phone_number');
             $table->foreign('route_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('department_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('station_id')->references('id')->on('entities')->onDelete('cascade');

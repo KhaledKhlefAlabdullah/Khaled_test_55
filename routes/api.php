@@ -249,23 +249,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     });
 
+    // Routes for just infrastructure provider and tenant company
+    Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function (){
+
+
+
+    });
+
     Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
     Route::post('change-password',[AuthenticatedSessionController::class,'change_password']);
 
 });
 
-//Route::group(['prefix' => 'stakeholders'], function () {
-//
-//    Route::get('/', [StakeholderController::class, 'index']);
-//
-//    Route::post('/add', [StakeholderController::class, 'store']);
-//
-//    Route::post('/edit', [StakeholderController::class, 'update']);
-//
-//    Route::post('/delete', [StakeholderController::class, 'destroy']);
-//
-//});
 // public routes
 // send registration request
 Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);
@@ -286,6 +282,16 @@ Route::get('about-us-details',[PageController::class,'about_us_page_details']);
 // Fill contact us form
 Route::post('contact-us',[ContactUsMessageController::class,'store']);
 
-// tests mail
-
 require __DIR__ . '/auth.php';
+
+//Route::group(['prefix' => 'stakeholders'], function () {
+//
+//    Route::get('/', [StakeholderController::class, 'index']);
+//
+//    Route::post('/add', [StakeholderController::class, 'store']);
+//
+//    Route::post('/edit', [StakeholderController::class, 'update']);
+//
+//    Route::post('/delete', [StakeholderController::class, 'destroy']);
+//
+//});

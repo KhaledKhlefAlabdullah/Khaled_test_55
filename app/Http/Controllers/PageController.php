@@ -7,7 +7,6 @@ use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
 use \Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use function App\Helpers\edit_page_details;
 
 class PageController extends Controller

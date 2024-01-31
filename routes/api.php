@@ -286,5 +286,6 @@ Route::get('about-us-details',[PageController::class,'about_us_page_details']);
 // Fill contact us form
 Route::post('contact-us',[ContactUsMessageController::class,'store']);
 
+// tests mail
 
 require __DIR__ . '/auth.php';

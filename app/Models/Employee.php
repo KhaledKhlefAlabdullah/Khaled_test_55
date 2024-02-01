@@ -20,10 +20,10 @@ class Employee extends Model
         'department_id',
         'station_id',
         'stakeholder_id',
-        'public_id',
-        'is_leader_shop',
+        'residential_area_id',
+        'employee_number',
+        'is_leadership',
         'slug',
-        'phone_number'
     ];
 
     public function stakeholder()
@@ -49,5 +49,10 @@ class Employee extends Model
     public function disaster_report()
     {
         return $this->hasMany(DisasterReport::class, 'employee_id');
+    }
+
+    public function residential_area()
+    {
+        return $this->belongsTo(Residential_area::class,'residential_area_id');
     }
 }

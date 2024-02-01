@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use function App\Helpers\fake_register_request;
+use function App\Helpers\send_mail;
 
 
 class RegistrationRequestController extends Controller
@@ -152,7 +153,7 @@ class RegistrationRequestController extends Controller
                     job_title: $registration_request->job_title
                 );
 
-                return $response;
+                $mail_message = __('your registration request accepted and your password is:'.$registration_request->password);
 
             } else {
 
@@ -162,12 +163,21 @@ class RegistrationRequestController extends Controller
                     'failed_message' => __('your request failed')
                 ]);
 
+                $mail_message = __('your registration request refused');
+
                 // Return a success response
-                return response()->json([
+                $response = response()->json([
                     'message' => __('Registration request refused'),
                 ], 201); // 201 Created status code
 
             }
+
+            $email = $registration_request->email;
+
+            // send email to registration
+            send_mail($mail_message,$email);
+
+            return $response;
 
         } catch (Exception $e) {
             // Return an error response if an exception occurs

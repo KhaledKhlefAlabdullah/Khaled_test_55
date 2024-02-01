@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Mail\PortalMails;
 use App\Models\Page;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
@@ -75,7 +77,7 @@ if (!function_exists('fake_register_request')) {
         $password = null,
         $password_confirmation = null,
         $phone_number = null,
-        $page_person = null,
+        $contact_person = null,
         $stakeholder_type = null,
         $location = null,
         $representative_name = null,
@@ -89,7 +91,7 @@ if (!function_exists('fake_register_request')) {
             'password' => $password,
             'password_confirmation' => $password_confirmation,
             'phone_number' => $phone_number,
-            'page_person' => $page_person,
+            'contact_person' => $contact_person,
             'stakeholder_type' => $stakeholder_type,
             'location' => $location,
             'representative_name' => $representative_name,
@@ -218,6 +220,31 @@ if (!function_exists('edite_page_details')) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in adding the page details')
+            ],500);
+
+        }
+    }
+
+}
+
+if (!function_exists('send_mail')) {
+    /*
+     * This function is used to get and check if a model exists by ID
+     * @param string $model
+     * @param string $id
+     *
+     * @throws NotFoundResourceException
+     */
+    function send_mail($mail_message,$receiver)
+    {
+        try{
+
+            return Mail::to($receiver)->send(new PortalMails($mail_message));
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('Cold not sending the email')
             ],500);
 
         }

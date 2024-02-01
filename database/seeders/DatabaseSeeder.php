@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             ServiceSeeder::class,
             NaturalDisasterSeeder::class,
             MonitoringPointSeeder::class,
+            ResidentialAreaSeeder::class,
             EmployeeSeeder::class,
             ChatSeeder::class,
             MessageSeeder::class,

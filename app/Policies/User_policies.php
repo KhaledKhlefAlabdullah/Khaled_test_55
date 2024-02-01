@@ -47,4 +47,9 @@ class User_policies
         return $user->stakeholder_type != $this::PORTAL_MANAGER;
     }
 
+    public function infrastructure_provider_or_tenant_company(User $user)
+    {
+        return $user->stakeholder_type == $this::INFRASTRUCTURE_PROVIDER || $user->stakeholder_type == $this::TENANT_COMPANY;
+    }
+
 }

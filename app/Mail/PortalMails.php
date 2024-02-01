@@ -13,12 +13,14 @@ class PortalMails extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $customMessage;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($customMessage)
     {
-        //
+        $this->customMessage = $customMessage;
     }
 
     /**
@@ -36,8 +38,9 @@ class PortalMails extends Mailable
      */
     public function content(): Content
     {
+        // todo we have to customize maile view
         return new Content(
-            view: 'view.name',
+            view: 'maile_view',
         );
     }
 

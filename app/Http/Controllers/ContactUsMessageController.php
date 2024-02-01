@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUsMessageRequest;
 use App\Http\Resources\ContactUsMessagesResource;
+use App\Mail\PortalMails;
 use App\Models\ContactUsMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ContactUsMessageController extends Controller
 {
@@ -79,7 +81,6 @@ class ContactUsMessageController extends Controller
             ]);
 
         }
-
         return response()->json([
             'message' => __('Successfully sending the contact us message')
         ],200);

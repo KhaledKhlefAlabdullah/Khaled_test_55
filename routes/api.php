@@ -255,7 +255,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             Route::get('/', [EmployeeController::class,'index']);
 
-            Route::post('add-employee',[EmployeeController::class,'store']);
+            Route::get('/get-csv', [EmployeeController::class,'export_csv_employees_file']);
+
+            Route::post('/upload-csv', [EmployeeController::class,'import_csv_employees_file']);
+
+            Route::post('add',[EmployeeController::class,'store']);
+
+            Route::put('edite',[EmployeeController::class,'update']);
+
+            Route::delete('delete',[EmployeeController::class,'destroy']);
 
         });
 

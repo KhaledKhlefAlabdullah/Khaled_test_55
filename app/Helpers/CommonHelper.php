@@ -42,6 +42,19 @@ if (!function_exists('getAndCheckModelById')) {
     }
 }
 
+if (!function_exists('getIdByName')) {
+    function getIdByName($model, $name)
+    {
+        $instance_id = $model::where('name',$name)->first()->id;
+
+        if (!$instance_id) {
+            throw new NotFoundResourceException($model . ' not found', 404);
+        }
+
+        return $instance_id;
+    }
+}
+
 /**
  * Transform a collection of Eloquent models using a specified resource class.
  *

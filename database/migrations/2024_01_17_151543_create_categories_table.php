@@ -17,7 +17,6 @@ return new class extends Migration {
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-
             $table->unique(['id', 'parent_id']);
         });
 
@@ -41,6 +40,13 @@ return new class extends Migration {
             'name' => 'Contact Us',
             'parent_id' => null,
             'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+                'id' => '005e8400-e29b-4154-a716-446655440000',
+                'name' => 'Project Description',
+                'parent_id' => null,
+                'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([

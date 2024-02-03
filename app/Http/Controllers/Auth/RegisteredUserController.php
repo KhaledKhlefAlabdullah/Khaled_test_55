@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
                 'name' => $validatedData['name'],
                 'contact_person' => is_null($validatedData['contact_person']) ? '' : $validatedData['contact_person'],
                 'location' => $validatedData['location'],
-                'phone_number' => is_null($validatedData['phone_number']) ? $validatedData['phone_number'] : '0000000000'
+                'phone_number' => is_null($validatedData['phone_number']) ? '0000000000' : $validatedData['phone_number']
             ]);
 
             // check if this fields is is_null return response with user and user profile because this user is not stakeholder

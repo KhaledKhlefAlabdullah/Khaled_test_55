@@ -102,7 +102,11 @@ class PageController extends Controller
     {
         try {
 
+<<<<<<< HEAD
             $contact_us = Page::where('type', 'Contact us')->first();
+=======
+            $contact_us = Page::where('type','Contact-Us')->first();
+>>>>>>> bffd03ab72a3c26ecadacc4492b986780acc8c89
 
             return response()->json([
                 'contact_us_details' => $contact_us,

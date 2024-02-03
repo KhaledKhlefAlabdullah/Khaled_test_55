@@ -112,7 +112,7 @@ class PostController extends Controller
             // Get general news by get all posts with category news and posts is general news equal true
             $news = DB::table('categories')
                 ->join('posts','categories.id','=','posts.category_id')
-                ->select('posts.*')->where(['categories.type'=>'news','posts.is_general_news'=> true])->get();
+                ->select('posts.*')->where(['categories.name'=>'news','posts.is_general_news'=> true])->get();
 
             // Return json response with the result
             return response()->json([
@@ -147,7 +147,7 @@ class PostController extends Controller
             ]);
 
             // get category id where category is news
-            $category_id = Category::where('type','news')->first()->id;
+            $category_id = Category::where('name','news')->first()->id;
 
             // get auth user id as author
             $user_id = Auth::id();
@@ -206,9 +206,6 @@ class PostController extends Controller
                 'media_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             ]);
 
-            // get category id where category is news
-            $category_id = Category::where('type','news')->first()->id;
-
             // get general news id from request
             $general_news_id = $request->input('general_news_id');
 
@@ -229,7 +226,6 @@ class PostController extends Controller
 
             // create new post as general news
             $general_news->update([
-                'category_id' => $category_id,
                 'title' => $request->input('title'),
                 'slug' => $request->input('slug'),
                 'body' => $request->input('body'),
@@ -300,10 +296,13 @@ class PostController extends Controller
         try {
 
             // get posts by category
-            $project_description = Category::where('type','project_description')->with('posts')->get();
+            $category_id = Category::where('name','Project Description')->first()->id;
+
+            // get the posts (project description) with category id
+            $posts = Post::where('category_id', $category_id)->first();
 
             return response()->json([
-                'project_description' => $project_description[0]['posts'],
+                'project_description' => $posts,
                 'message' => __('Successfully get project description')
             ],200);
         }
@@ -339,10 +338,7 @@ class PostController extends Controller
             // get auth user id
             $user_id = Auth::id();
 
-            // initial message variable
-            $message = '';
-
-            // if there no post with category id create one or update the exists on
+            // if their no post with category id create one or update the exists on
             if(empty($posts)){
 
                 $posts = Post::create([

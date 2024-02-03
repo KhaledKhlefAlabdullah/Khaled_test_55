@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
+
+
+
 /**
  * Get an Eloquent model instance by its ID and perform a existence check.
  *
@@ -39,6 +42,19 @@ if (!function_exists('getAndCheckModelById')) {
         }
 
         return $instance;
+    }
+}
+
+if (!function_exists('getIdByName')) {
+    function getIdByName($model, $name)
+    {
+        $instance_id = $model::where('name',$name)->first()->id;
+
+        if (!$instance_id) {
+            throw new NotFoundResourceException($model . ' not found or there no '.$name, 404);
+        }
+
+        return $instance_id;
     }
 }
 
@@ -249,6 +265,21 @@ if (!function_exists('send_mail')) {
 
         }
     }
-
 }
 
+if(!function_exists('stakeholder_id')){
+
+    function stakeholder_id()
+    {
+        try{
+            return Auth::user()->stakeholder()->first()->id;
+        }
+        catch (\Exception $e){
+            return \response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There no stake holder')
+            ],500);
+        }
+    }
+
+}

@@ -31,6 +31,13 @@ class CategorySeeder extends Seeder
         ]);
 
         DB::table('categories')->insert([
+            'id' => '005e8400-e29b-4154-a716-446655440000',
+            'name' => 'Project Description',
+            'parent_id' => null,
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
             'id' => '33c97a6d-7b19-4fa9-a77f-2a76172f5b22',
             'name' => 'File',
             'created_at' => now(),

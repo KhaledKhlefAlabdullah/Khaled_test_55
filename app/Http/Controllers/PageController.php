@@ -100,22 +100,21 @@ class PageController extends Controller
      */
     public function contact_us_details()
     {
-        try{
+        try {
 
-            $contact_us = Page::where('type','Contact us')->first();
+            $contact_us = Page::where('type', 'Contact us')->first();
 
             return response()->json([
                 'contact_us_details' => $contact_us,
                 'message' => __('Successfully getting contact us details')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in getting the contact us details')
-            ],500);
+            ], 500);
 
         }
     }
@@ -127,7 +126,7 @@ class PageController extends Controller
     {
         $page = 'Contact us';
 
-        return edit_page_details($request,'Contact us');
+        return edit_page_details($request, 'Contact us');
     }
 
     /**
@@ -135,21 +134,20 @@ class PageController extends Controller
      */
     public function about_us_page_details()
     {
-        try{
+        try {
 
-            $about_au = Page::where('type','About')->first();
+            $about_au = Page::where('type', 'About')->first();
 
             return response()->json([
                 'about_us_details' => $about_au,
                 'message' => __('successfully getting about us page details')
             ]);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in getting  the about us details')
-            ],500);
+            ], 500);
         }
     }
 
@@ -158,8 +156,8 @@ class PageController extends Controller
      */
     public function edite_about_us_page_details(Request $request)
     {
-       $page = 'About';
+        $page = 'About';
 
-       return edit_page_details($request,$page);
+        return edit_page_details($request, $page);
     }
 }

@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SupplierRequest;
 use App\Http\Resources\SupplierResource;
 use App\Models\Supplier;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\stakeholder_id;
 use function App\Helpers\transformCollection;
 
 class SupplierController extends Controller
@@ -16,26 +20,74 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        // Get suppliers by auth user
-        $suppliers = Supplier::whereStakeholderId(auth()->user()->id)->paginate();
+        try {
 
-        // Return data
-        return transformCollection($suppliers, SupplierResource::class);
+            $stakeholder_id = stakeholder_id();
+
+            $suppliers = DB::table('stakeholders')
+                ->join('suppliers','stakeholders.id','=','suppliers.stakeholder_id')
+                ->join('entities as routes','suppliers.route_id','=','routes.id')
+                ->join('entities as materials','suppliers.material_id','=','materials.id')
+                ->select('suppliers.public_id as supplier_number','materials.name as material','suppliers.location as location','routes.name as route')->where('stakeholders.id','=',$stakeholder_id)->get();
+
+
+            return response()->json([
+                'suppliers' => $suppliers,
+                'message' => __('Successfully getting suppliers')
+            ],200);
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in server side try another time')
+            ]);
+        }
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SupplierRequest $request)
+    public function store(Request $request)
     {
-        // Validate the data
-        $valid_data = $request->validated();
+        try {
 
-        // Create the supplier
-        $supplier = Supplier::create($valid_data);
+            $request->validate([
+                'route_id' => 'sometimes|required|string|exists:entities,id',
+                'material_id' => 'required|string|exists:entities,id',
+                'public_id' => 'sometimes|required|string|max:255',
+                'slug' => 'nullable|string',
+                'location' => 'sometimes|required|string',
+                'contact_info' => 'sometimes|required|string',
+                'is_available' => 'sometimes|required|boolean'
+            ]);
 
-        // Return data
-        return new SupplierResource($supplier);
+            $stakeholder_id = stakeholder_id();
+
+            // Create the supplier
+            $supplier = Supplier::create([
+                'stakeholder_id' => $stakeholder_id,
+                'route_id' => $request->input('route_id'),
+                'material_id' => $request->input('material_id'),
+                'public_id' => $request->input('name'),
+                'slug' => $request->input('slug'),
+                'location' => $request->input('location'),
+                'contact_info' => $request->input('contact_info'),
+                'is_available' => $request->input('is_available')
+            ]);
+
+            // Return data
+            return response()->json([
+                'supplier' => $supplier,
+                'message' => __('Successfully adding new supplier')
+            ],200);
+
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in server side try another time')
+            ],500);
+        }
     }
 
     /**
@@ -47,7 +99,7 @@ class SupplierController extends Controller
         try {
             $supplier = getAndCheckModelById(Supplier::class, $id);
         } catch (NotFoundResourceException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+            return response()->json(['message' => __($e->getMessage())], $e->getCode());
         }
 
         return new SupplierResource($supplier);

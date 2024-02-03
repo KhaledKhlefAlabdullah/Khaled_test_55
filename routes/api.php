@@ -119,10 +119,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     // Shipments
     Route::apiResource('shipments', ShipmentController::class);
 
-    // Suppliers
-    Route::apiResource('suppliers', SupplierController::class);
-
-
     // Timelines
     Route::apiResource('timelines', TimelineController::class)->except(['update', 'show']);
 
@@ -266,6 +262,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('delete',[EmployeeController::class,'destroy']);
 
         });
+
+        // Suppliers
+        Route::apiResource('suppliers', SupplierController::class);
 
     });
 

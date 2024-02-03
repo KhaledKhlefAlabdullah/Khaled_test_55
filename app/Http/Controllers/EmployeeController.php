@@ -6,6 +6,7 @@ use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 
 use App\Models\Entity;
+use App\Models\Residential_area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use PHPUnit\Util\Exception;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
+use function App\Helpers\stakeholder_id;
 
 class EmployeeController extends Controller
 {
@@ -64,7 +66,7 @@ class EmployeeController extends Controller
     {
         try{
 
-            $stakeholder_id = Auth::user()->stakeholder()->first()->id;
+            $stakeholder_id = stakeholder_id();
 
             // Create the employee
             $employee = Employee::create([
@@ -302,32 +304,38 @@ class EmployeeController extends Controller
 
             $request->validate([
                 'file' => 'required|file|mimes:csv,txt,xlsx|max:10048'
-             ],[
-                'file.required' => 'Please choose a file.',
-                'file.file' => 'The uploaded file is not valid.',
-                'file.mimes' => 'The file must be in CSV,XLSX or TXT file.',
-                'file.max' => 'The file size must not exceed 10MB.',
-            ]);
+                 ],[
+                    'file.required' => 'Please choose a file.',
+                    'file.file' => 'The uploaded file is not valid.',
+                    'file.mimes' => 'The file must be in CSV,XLSX or TXT file.',
+                    'file.max' => 'The file size must not exceed 10MB.',
+                ]);
 
             $file = $request->file('file');
 
             $data = array_map('str_getcsv', file($file));
 
+            $counter = 0;
             foreach ($data as $row) {
+                // Skip the first row
+                if ($counter == 0) {
+                    $counter++;
+                    continue;
+                }
+
                 $this->create_emplyee(
                     employee_number: $row[0],
                     department_id: getIdByName(Entity::class,$row[4]),
                     station_id: getIdByName(Entity::class,$row[5]),
                     route_id: getIdByName(Entity::class,$row[6]),
-                    residential_area_id: getIdByName(Entity::class,$row[2]),
+                    residential_area_id: getIdByName(Residential_area::class,$row[2]),
                     is_leadership: $row[1] == '1' ? true : false
-
                 );
+
             }
 
             // return response with the data
             return response()->json([
-                'data' => $data,
                 'message' => __('Successfully adding data to database')
             ],200);
 
@@ -342,3 +350,4 @@ class EmployeeController extends Controller
 
     }
 }
+

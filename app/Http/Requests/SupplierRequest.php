@@ -34,8 +34,8 @@ class SupplierRequest extends FormRequest
     {
         if ($this->method() === 'PUT') {
             return [
-                'route_id' => ['sometimes', 'required', 'uuid', 'exists:entities,id'],
-                'material_id' => ['required', 'uuid', 'exists:entities,id'],
+                'route_id' => ['sometimes', 'required', 'string', 'exists:entities,id'],
+                'material_id' => ['required', 'string', 'exists:entities,id'],
                 'name' => ['sometimes', 'required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'unique'],
                 'location' => ['sometimes', 'required', 'string'],

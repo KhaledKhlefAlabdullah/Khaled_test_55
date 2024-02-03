@@ -102,7 +102,7 @@ class PageController extends Controller
     {
         try{
 
-            $contact_us = Page::where('type','Contact us')->first();
+            $contact_us = Page::where('type','Contact-Us')->first();
 
             return response()->json([
                 'contact_us_details' => $contact_us,

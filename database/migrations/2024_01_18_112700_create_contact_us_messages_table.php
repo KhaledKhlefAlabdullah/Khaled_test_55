@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('contact_us_messages', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('user_id');
+            $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->string('subject');
             $table->text('message');

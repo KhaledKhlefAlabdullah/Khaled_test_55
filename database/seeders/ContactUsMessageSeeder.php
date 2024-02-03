@@ -49,7 +49,7 @@ class ContactUsMessageSeeder extends Seeder
         DB::table('contact_us_messages')->insert([
             'id' => '4a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'user_id' => '15c97a6d-7b19-4fa9-a77f-2a76172f5b58',
-                        'subject' => 'hello',
+            'subject' => 'hello',
             'message' => 'Could you provide pricing details for your services?',
             'is_read' => false,
             'created_at' => now()
@@ -60,7 +60,7 @@ class ContactUsMessageSeeder extends Seeder
         DB::table('contact_us_messages')->insert([
             'id' => '5a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'user_id' => '16c97a6d-7b19-4fa9-a77f-2a76172f5b58',
-                        'subject' => 'hello',
+            'subject' => 'hello',
             'message' => 'I encountered an issue with your website. Can you assist?',
             'is_read' => false,
             'created_at' => now()

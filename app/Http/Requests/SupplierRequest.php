@@ -36,7 +36,7 @@ class SupplierRequest extends FormRequest
             return [
                 'route_id' => ['sometimes', 'required', 'string', 'exists:entities,id'],
                 'material_id' => ['required', 'string', 'exists:entities,id'],
-                'name' => ['sometimes', 'required', 'string', 'max:255'],
+                'public_id' => ['sometimes', 'required', 'string', 'max:255'],
                 'slug' => ['nullable', 'string', 'unique'],
                 'location' => ['sometimes', 'required', 'string'],
                 'contact_info' => ['sometimes', 'required', 'string'],

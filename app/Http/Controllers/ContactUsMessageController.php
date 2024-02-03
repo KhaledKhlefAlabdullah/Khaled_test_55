@@ -54,7 +54,7 @@ class ContactUsMessageController extends Controller
 
                 return response()->json([
                     'message' => __('your portal manager, you dont have to sent an contact us message to your self')
-                ],405);
+                ],404);
 
             }
 
@@ -70,11 +70,13 @@ class ContactUsMessageController extends Controller
         }else{
 
             $request->validate([
+                'name' => 'required|string|min:3',
                 'email' => 'required|string|email|max:255'
             ]);
 
             ContactUsMessage::create([
                 'user_id' => $user_id,
+                'name' => $request->input('name'),
                 'email' => $request->input('email'),
                 'subject' => $request->input('subject'),
                 'message' => $request->input('message')

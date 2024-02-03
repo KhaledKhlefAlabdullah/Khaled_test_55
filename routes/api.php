@@ -262,7 +262,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         // Suppliers
-        Route::apiResource('suppliers', SupplierController::class);
+        Route::group(['prefix' => 'suppliers'],function (){
+
+            Route::get('/', [SupplierController::class,'index']);
+
+            Route::post('/add-supplier', [SupplierController::class,'store']);
+
+            Route::post('/edite-supplier', [SupplierController::class,'update']);
+
+            Route::delete('/delete-supplier', [SupplierController::class,'update']);
+
+        });
+
 
     });
 

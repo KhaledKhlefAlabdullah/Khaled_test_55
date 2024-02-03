@@ -45,13 +45,13 @@ Follow the instructions below to set up and run the project locally using Docker
 2. Generate an application key:
 
    ```bash
-   docker-compose exec app php artisan key:generate
+   php artisan key:generate
    ```
 
 3. Run database migrations and seeders:
 
    ```bash
-   docker-compose exec app php artisan migrate --seed
+   php artisan migrate --seed
    ```
 
 4. The Laravel application should now be running at [http://localhost:8080](http://localhost:8080).

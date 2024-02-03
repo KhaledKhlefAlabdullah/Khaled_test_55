@@ -108,35 +108,68 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(SupplierRequest $request, string $id)
+    public function update(Request $request)
     {
         // Get the supplier by ID and check if it exists
         try {
+
+            $request->validate([
+                'supplier_id' => 'required|string|exists:suppliers,id',
+                'route_id' => 'sometimes|required|string|exists:entities,id',
+                'material_id' => 'required|string|exists:entities,id',
+                'public_id' => 'sometimes|required|string|max:255',
+                'slug' => 'nullable|string',
+                'location' => 'sometimes|required|string',
+                'contact_info' => 'sometimes|required|string',
+                'is_available' => 'sometimes|required|boolean'
+            ]);
+
+            $id = $request->input('supplier_id');
+
             $supplier = getAndCheckModelById(Supplier::class, $id);
+
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
 
-        // Validate the data
-        $valid_data = $request->validated();
-
         // Update the supplier
-        $supplier->update($valid_data);
+        $supplier->update([
+            'route_id' => $request->input('route_id'),
+            'material_id' => $request->input('material_id'),
+            'public_id' => $request->input('public_id'),
+            'slug' => $request->input('slug'),
+            'location' => $request->input('location'),
+            'contact_info' => $request->input('contact_info'),
+            'is_available' => $request->input('is_available')
+        ]);
 
         // Return data
-        return new SupplierResource($supplier);
+        return response()->json([
+            'data' => $supplier,
+            'message' => __('Successfully editing supplier data')
+        ],200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
         // Get the supplier by ID and check if it exists
         try {
+
+            $request->validate([
+                'supplier_id' => 'required|string|exists:suppliers,id'
+            ]);
+
+            $id = $request->input('supplier_is');
+
             $supplier = getAndCheckModelById(Supplier::class, $id);
+
         } catch (NotFoundResourceException $e) {
+
             return response()->json(['message' => $e->getMessage()], $e->getCode());
+            
         }
 
         // Delete the supplier

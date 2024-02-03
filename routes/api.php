@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
@@ -29,9 +31,6 @@ use App\Http\Controllers\Timelines\TimelineQuiresController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
-use \App\Http\Controllers\Auth\PasswordResetLinkController;
-use \App\Http\Controllers\Auth\AuthenticatedSessionController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -136,17 +135,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 });
 
-
 Route::middleware(['auth:sanctum'])->group(function () {
 
     // Routes for portal manager role
     Route::middleware(['portal-manger'])->group(function () {
 
-        Route::post('edite-about-us-details',[PageController::class,'edite_about_us_page_details']);
+        Route::post('edite-about-us-details', [PageController::class, 'edite_about_us_page_details']);
 
-        Route::post('edite-contact-us-details',[PageController::class,'edite_contact_us_details']);
+        Route::post('edite-contact-us-details', [PageController::class, 'edite_contact_us_details']);
 
-        Route::post('edite-project-description',[PostController::class,'edite_project_description']);
+        Route::post('edite-project-description', [PostController::class, 'edite_project_description']);
 
         Route::group(['prefix' => 'industrial-areas'], function () {
 
@@ -154,7 +152,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             Route::get('/details', [IndustrialAreaController::class, 'show']);
 
-            Route::post('/add',[IndustrialAreaController::class,'store']);
+            Route::post('/add', [IndustrialAreaController::class, 'store']);
 
             Route::post('/edite', [IndustrialAreaController::class, 'update']);
 
@@ -165,9 +163,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
             Route::post('/add', [PostController::class, 'new_general_news']);
 
-            Route::post('/edite',[PostController::class,'edite_general_news']);
+            Route::post('/edite', [PostController::class, 'edite_general_news']);
 
-            Route::post('/delete',[PostController::class,'delete_general_news']);
+            Route::post('/delete', [PostController::class, 'delete_general_news']);
 
         });
 
@@ -244,22 +242,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // Routes for just infrastructure provider and tenant company
-    Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function (){
+    Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function () {
 
         // Employees
-        Route::group(['prefix'=> 'employees'],function (){
+        Route::group(['prefix' => 'employees'], function () {
 
-            Route::get('/', [EmployeeController::class,'index']);
+            Route::get('/', [EmployeeController::class, 'index']);
 
-            Route::get('/get-csv', [EmployeeController::class,'export_csv_employees_file']);
+            Route::get('/get-csv', [EmployeeController::class, 'export_csv_employees_file']);
 
-            Route::post('/upload-csv', [EmployeeController::class,'import_csv_employees_file']);
+            Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
 
-            Route::post('add',[EmployeeController::class,'store']);
+            Route::post('add', [EmployeeController::class, 'store']);
 
-            Route::put('edite',[EmployeeController::class,'update']);
+            Route::put('edite', [EmployeeController::class, 'update']);
 
-            Route::delete('delete',[EmployeeController::class,'destroy']);
+            Route::delete('delete', [EmployeeController::class, 'destroy']);
 
         });
 
@@ -270,7 +268,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
-    Route::post('change-password',[AuthenticatedSessionController::class,'change_password']);
+    Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
 
 });
 
@@ -282,17 +280,17 @@ Route::post('registration_requests/add-register', [RegistrationRequestController
 Route::get('general-news', [PostController::class, 'view_general_news']);
 
 // project description
-Route::get('project-description',[PostController::class,'view_project_description']);
+Route::get('project-description', [PostController::class, 'view_project_description']);
 
 // View contact us details
-Route::get('contact-us-details',[PageController::class,'contact_us_details']);
+Route::get('contact-us-details', [PageController::class, 'contact_us_details']);
 
 // View about us details
-Route::get('about-us-details',[PageController::class,'about_us_page_details']);
+Route::get('about-us-details', [PageController::class, 'about_us_page_details']);
 
 // todo i have to edite it later 1
 // Fill contact us form
-Route::post('contact-us',[ContactUsMessageController::class,'store']);
+Route::post('contact-us', [ContactUsMessageController::class, 'store']);
 
 require __DIR__ . '/auth.php';
 

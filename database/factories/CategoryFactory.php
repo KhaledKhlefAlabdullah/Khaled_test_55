@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class CategoryFactory extends Factory
@@ -16,9 +15,9 @@ class CategoryFactory extends Factory
         return [
             'id' => Str::uuid(),
             'name' => fake()->name(),
-            'type' => fake()->randomElement(['post','news','file','notification','report','timeline_event',
-                'normal_production_rate','extra_production_Rate','low_Production_Rate','halted_Production',
-                'evacuating','maintenance','relocation','entity','products','materials','stations','suppliers',
+            'type' => fake()->randomElement(['post', 'news', 'file', 'notification', 'report', 'timeline_event',
+                'normal_production_rate', 'extra_production_Rate', 'low_Production_Rate', 'halted_Production',
+                'evacuating', 'maintenance', 'relocation', 'entity', 'products', 'materials', 'stations', 'suppliers',
                 'waste_disposal_site']),
             'parent_id' => null,
             'created_at' => now(),

@@ -188,6 +188,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         });
 
+        // Services
         Route::group(['prefix' => 'services'], function () {
 
             Route::get('/', [ServiceController::class, 'index']);
@@ -276,6 +277,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         });
 
+        Route::group(['prefix' => 'routes'],function (){
+
+            Route::get('/',[EntityController::class,'get_routes']);
+
+        });
 
     });
 

@@ -6,6 +6,8 @@ use App\Http\Requests\EntityRequest;
 use App\Http\Resources\EntityResource;
 use App\Models\Entity;
 use App\Models\Stakeholder;
+use Illuminate\Support\Facades\DB;
+use function App\Helpers\stakeholder_id;
 
 
 class EntityController extends Controller
@@ -91,5 +93,33 @@ class EntityController extends Controller
         $entity->delete();
 
         return response()->json(['message' => 'Entity deleted successfully']);
+    }
+
+    /**
+     * Get all routes in database with route usage
+     */
+    public function get_routes()
+    {
+        try {
+
+            $stakeholder_id = stakeholder_id();
+
+            $routes = DB::table('categories')
+                ->join('entities','categories.id','=','entities.category_id')
+                ->select('entities.id as id','entities.from as from','entities.to as to','entities.usage as usage')
+                ->where(['entities.stakeholder_id'=>$stakeholder_id,'categories.name'=>'Route'])->get();
+
+            return response()->json([
+                'routes' => $routes,
+                'message' => __('Successfully getting routes')
+            ],200);
+
+        }
+        catch(\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('there error in server side try another time')
+            ],500);
+        }
     }
 }

@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
             IndustrialAreaSeeder::class,
             UserSeeder::class,
             UserProfileSeeder::class,
-            //  CategorySeeder::class,
+            //CategorySeeder::class,
             DamSeeder::class,
             StakeholderSeeder::class,
             RegistrationRequestSeeder::class,

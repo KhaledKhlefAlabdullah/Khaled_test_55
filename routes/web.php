@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return ['Laravel' => app()->version()];
+    return "hello";
 });
 
 //Route::get('/get-csv', [\App\Http\Controllers\EmployeeController::class,'export_csv_employees_file']);

@@ -139,13 +139,14 @@ class IndustrialAreaController extends Controller
                 'id' => 'required|string|exists:industrial_areas,id',
                 'name' => ['required', 'string', 'min:5'],
                 'address' => ['required', 'string'],
-                //'representative_name' => ['required','string'],
-                //'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
+                'representative_name' => ['required','string'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
             ]);
 
             // get the industrial area want to edite
             $industrial_area = IndustrialArea::findOrFail($request->input('id'));
 
+            // todo edite this function to update email and name for industrial area representative
             // create new industrial area
             $industrial_area->update([
                 'name' => $request->input('name'),

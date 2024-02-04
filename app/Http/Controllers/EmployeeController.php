@@ -315,21 +315,17 @@ class EmployeeController extends Controller
 
             $data = array_map('str_getcsv', file($file));
 
-            $counter = 0;
-            foreach ($data as $row) {
-                // Skip the first row
-                if ($counter == 0) {
-                    $counter++;
-                    continue;
-                }
+            $header = array_map('strtolower', $data[0]); // Convert header to lowercase for case-insensitive comparison
+
+            foreach (array_slice($data, 1) as $row) { // Skip the first row
 
                 $this->create_emplyee(
-                    employee_number: $row[0],
-                    department_id: getIdByName(Entity::class,$row[4]),
-                    station_id: getIdByName(Entity::class,$row[5]),
-                    route_id: getIdByName(Entity::class,$row[6]),
-                    residential_area_id: getIdByName(Residential_area::class,$row[2]),
-                    is_leadership: $row[1] == '1' ? true : false
+                    employee_number: $row[array_search('number', $header)],
+                    department_id: getIdByName(Entity::class,$row[array_search('department_name', $header)]),
+                    station_id: getIdByName(Entity::class,$row[array_search('station_name', $header)]),
+                    route_id: getIdByName(Entity::class,$row[array_search('route_name', $header)]),
+                    residential_area_id: getIdByName(Residential_area::class,$row[array_search('residential_area_name', $header)]),
+                    is_leadership: $row[array_search('leadership', $header)] == '1' ? true : false
                 );
 
             }

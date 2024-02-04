@@ -77,6 +77,11 @@ class Kernel extends HttpKernel
         'tenant-company' => Tenant_company_middleware::class,
         'government-representative' => Government_representative_middleware::class,
         'all-users-expect-portal-manager' => Allow_all_users_expect_portal_manager_middleware::class,
-        'infrastructure-provider-or-tenant-company' => Infrastructure_provider_and_tenant_company_middleware::class
-    ];
+        'infrastructure-provider-or-tenant-company' => Infrastructure_provider_and_tenant_company_middleware::class,
+        'localize'                => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
+        'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
+        'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,
+        'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
+        'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class
+        ];
 }

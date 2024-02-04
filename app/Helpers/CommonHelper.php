@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Mail\PortalMails;
 use App\Models\Page;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -13,12 +14,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
-
-
-
 
 /**
  * Get an Eloquent model instance by its ID and perform a existence check.
@@ -48,10 +47,10 @@ if (!function_exists('getAndCheckModelById')) {
 if (!function_exists('getIdByName')) {
     function getIdByName($model, $name)
     {
-        $instance_id = $model::where('name',$name)->first()->id;
+        $instance_id = $model::where('name', $name)->first()->id;
 
         if (!$instance_id) {
-            throw new NotFoundResourceException($model . ' not found or there no '.$name, 404);
+            throw new NotFoundResourceException($model . ' not found or there no ' . $name, 404);
         }
 
         return $instance_id;
@@ -70,8 +69,21 @@ if (!function_exists('getIdByName')) {
  * @return JsonResource|AnonymousResourceCollection
  */
 if (!function_exists('transformCollection')) {
-    function transformCollection(Collection $collection, $resourceClass): JsonResource|AnonymousResourceCollection
+    function transformCollection($collection, $resourceClass): LengthAwarePaginator
     {
+        // Check if $collection is an instance of LengthAwarePaginator
+        if ($collection instanceof LengthAwarePaginator) {
+            // Transform the items and return the paginator
+            return new LengthAwarePaginator(
+                $resourceClass::collection($collection->getCollection()),
+                $collection->total(),
+                $collection->perPage(),
+                $collection->currentPage(),
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+        }
+
+        // Otherwise, assume it's an instance of Illuminate\Database\Eloquent\Collection
         return ($collection->count() == 1)
             ? new $resourceClass($collection->first())
             : $resourceClass::collection($collection);
@@ -179,23 +191,23 @@ if (!function_exists('edite_page_details')) {
      *
      * @throws NotFoundResourceException
      */
-    function edit_page_details($request,$page_type): Response|JsonResponse
+    function edit_page_details($request, $page_type): Response|JsonResponse
     {
-        try{
+        try {
             // validate the input data
             $request->validate([
                 'title' => 'required|string',
                 'description' => 'required|string',
-                'phone_number' =>  'required|string|regex:/^[0-9]{9,20}$/',
+                'phone_number' => 'required|string|regex:/^[0-9]{9,20}$/',
                 'location' => 'required|string',
                 'start_time' => 'required|date',
-                'end_time' => 'required|date|after:start_time'
+                'end_time' => 'required|date|after:start_time',
             ]);
 
             // check if there page us page already in database
-            $page = Page::where('type',$page_type)->first();
+            $page = Page::where('type', $page_type)->first();
 
-            if(empty($page)){
+            if (empty($page)) {
 
                 // if it's empty get the auth user id
                 $user_id = Auth::id();
@@ -209,10 +221,10 @@ if (!function_exists('edite_page_details')) {
                     'phone_number' => $request->input('phone_number'),
                     'location' => $request->input('location'),
                     'start_time' => $request->input('start_time'),
-                    'end_time' => $request->input('end_time')
+                    'end_time' => $request->input('end_time'),
                 ]);
 
-            }else{
+            } else {
 
                 // if it's not empty and there already page in database update the page with the validated data
                 $page->update([
@@ -221,22 +233,21 @@ if (!function_exists('edite_page_details')) {
                     'phone_number' => $request->input('phone_number'),
                     'location' => $request->input('location'),
                     'start_time' => $request->input('start_time'),
-                    'end_time' => $request->input('end_time')
+                    'end_time' => $request->input('end_time'),
                 ]);
 
             }
 
             return response()->json([
                 'page' => $page,
-                'message' => __('Successfully editing page us details')
-            ],200);
+                'message' => __('Successfully editing page us details'),
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There error in adding the page details')
-            ],500);
+                'message' => __('There error in adding the page details'),
+            ], 500);
 
         }
     }
@@ -251,34 +262,32 @@ if (!function_exists('send_mail')) {
      *
      * @throws NotFoundResourceException
      */
-    function send_mail($mail_message,$receiver)
+    function send_mail($mail_message, $receiver)
     {
-        try{
+        try {
 
             return Mail::to($receiver)->send(new PortalMails($mail_message));
-        }
-        catch (\Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('Cold not sending the email')
-            ],500);
+                'message' => __('Cold not sending the email'),
+            ], 500);
 
         }
     }
 }
 
-if(!function_exists('stakeholder_id')){
+if (!function_exists('stakeholder_id')) {
 
     function stakeholder_id()
     {
-        try{
+        try {
             return Auth::user()->stakeholder()->first()->id;
-        }
-        catch (\Exception $e){
+        } catch (Exception $e) {
             return \response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There no stake holder')
-            ],500);
+                'message' => __('There no stake holder'),
+            ], 500);
         }
     }
 

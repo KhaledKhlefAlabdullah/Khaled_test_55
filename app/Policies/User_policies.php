@@ -16,40 +16,43 @@ class User_policies
 
     const GOVERNMENT_REPRESENTATIVE = 'Government_representative';
 
-
     public function portal_manager_policy(User $user): bool
     {
         return $user->stakeholder_type == $this::PORTAL_MANAGER;
     }
 
-    public function industrial_area_policy(User $user)
+    public function industrial_area_policy(User $user): bool
     {
         return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE && !empty($user->industrial_area_id);
     }
 
-    public function tenant_company_policy(User $user)
+    public function tenant_company_policy(User $user): bool
     {
         return $user->stakeholder_type == $this::TENANT_COMPANY;
     }
 
-    public function infrastructure_provider_policy(User $user)
+    public function infrastructure_provider_policy(User $user): bool
     {
         return $user->stakeholder_type == $this::INFRASTRUCTURE_PROVIDER;
     }
 
-    public function government_representative_policy(User $user)
+    public function government_representative_policy(User $user): bool
     {
         return $user->stakeholder_type == $this::GOVERNMENT_REPRESENTATIVE;
     }
 
-    public function all_users_expect_portal_manager(User $user)
+    public function all_users_expect_portal_manager(User $user): bool
     {
         return $user->stakeholder_type != $this::PORTAL_MANAGER;
     }
 
-    public function infrastructure_provider_or_tenant_company(User $user)
+    public function infrastructure_provider_or_tenant_company(User $user): bool
     {
         return $user->stakeholder_type == $this::INFRASTRUCTURE_PROVIDER || $user->stakeholder_type == $this::TENANT_COMPANY;
     }
 
+    public function Industrial_area_representative_or_government_representative(User $user): bool
+    {
+        return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE || $user->stakeholder_type == $this::GOVERNMENT_REPRESENTATIVE;
+    }
 }

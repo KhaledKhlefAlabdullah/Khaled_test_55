@@ -20,7 +20,8 @@ class PortalSetting extends Model
     protected $fillable = [
         'user_id',
         'key',
-        'value'
+        'value',
+//        'icon'
     ];
 
     public function user()

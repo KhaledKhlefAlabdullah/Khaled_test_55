@@ -3,11 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FileRequest;
+use App\Http\Requests\ManualAndPlanRequest;
 use App\Http\Resources\FileResource;
 use App\Models\File;
+use Illuminate\Pagination\LengthAwarePaginator;
+use function App\Helpers\transformCollection;
 
 class FileController extends Controller
 {
+    /**
+     * Retrieve and paginate manuals and plans files.
+     *
+     * This function fetches files of type 'Manuals & Plans' from the database,
+     * paginates the results, and transforms the file data using the specified
+     * resource class before returning it.
+     *
+     * @return LengthAwarePaginator
+     */
+    public function view_manuals_and_plans()
+    {
+        $files = File::where('file_type', '=', 'Manuals & Plans')->paginate();
+
+        // Using a custom transformCollection function to format the response
+        return transformCollection($files, FileResource::class);
+    }
+
+    public function add_manuals_and_plans(ManualAndPlanRequest $request)
+    {
+        $valid_data = $request->validated();
+
+        $data = File::create($valid_data);
+
+        return new FileResource($data);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -50,7 +79,6 @@ class FileController extends Controller
 
         return new FileResource($file);
     }
-
 
     /**
      * Update the specified resource in storage.

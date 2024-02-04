@@ -86,7 +86,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('entities', EntityController::class);
 
     // Files
-    Route::apiResource('files', FileController::class);
+//    Route::apiResource('files', FileController::class);
 
     // Industrial Areas
     //    Route::apiResource('industrial-areas', IndustrialAreaController::class);
@@ -221,6 +221,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         Route::post('change-status', [StakeholderController::class, 'edit_company_state']);
 
+        // View list of Manuals and plans
+        Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
+    });
+
+    Route::middleware(['Industrial-area-representative-or-government-representative'])->group(function () {
+
+        // Add Manuals & Plans
+        Route::post('/manuals-and-plans/add', [FileController::class, 'add_manuals_and_plans'])->name('file.add_manuals_and_plans');
+
     });
 
     // Routes for industrial area representative role
@@ -263,21 +272,21 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 
         // Suppliers
-        Route::group(['prefix' => 'suppliers'],function (){
+        Route::group(['prefix' => 'suppliers'], function () {
 
-            Route::get('/', [SupplierController::class,'index']);
+            Route::get('/', [SupplierController::class, 'index']);
 
-            Route::post('/add-supplier', [SupplierController::class,'store']);
+            Route::post('/add-supplier', [SupplierController::class, 'store']);
 
-            Route::post('/edite-supplier', [SupplierController::class,'update']);
+            Route::post('/edite-supplier', [SupplierController::class, 'update']);
 
-            Route::delete('/delete-supplier', [SupplierController::class,'update']);
+            Route::delete('/delete-supplier', [SupplierController::class, 'update']);
 
         });
 
-        Route::group(['prefix' => 'routes'],function (){
+        Route::group(['prefix' => 'routes'], function () {
 
-            Route::get('/',[EntityController::class,'get_routes']);
+            Route::get('/', [EntityController::class, 'get_routes']);
 
         });
 

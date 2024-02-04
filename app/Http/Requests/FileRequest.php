@@ -23,7 +23,7 @@ class FileRequest extends BaseRequest
     {
         if ($this->method() == 'PUT') {
             return [
-                'file_type' => ['sometimes', 'required', 'in:Education,Manuals,Plans'],
+                'file_type' => ['sometimes', 'required', 'in:Education,Manuals & Plans,Other'],
                 'title' => ['sometimes', 'required', 'string', 'max:255'],
                 'description' => ['sometimes', 'required', 'string', 'max:255'],
                 'version' => ['nullable', 'string', 'max:100'],

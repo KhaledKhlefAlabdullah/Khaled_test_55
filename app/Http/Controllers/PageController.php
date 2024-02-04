@@ -6,7 +6,8 @@ use App\Http\Requests\Page\StorePageRequest;
 use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
-use \Illuminate\Http\Request;
+use Exception;
+use Illuminate\Http\Request;
 use function App\Helpers\edit_page_details;
 
 class PageController extends Controller
@@ -102,18 +103,15 @@ class PageController extends Controller
     {
         try {
 
-<<<<<<< HEAD
-            $contact_us = Page::where('type', 'Contact us')->first();
-=======
-            $contact_us = Page::where('type','Contact-Us')->first();
->>>>>>> bffd03ab72a3c26ecadacc4492b986780acc8c89
+
+            $contact_us = Page::where('type', 'Contact-Us')->first();
 
             return response()->json([
                 'contact_us_details' => $contact_us,
                 'message' => __('Successfully getting contact us details')
             ], 200);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -147,7 +145,7 @@ class PageController extends Controller
                 'message' => __('successfully getting about us page details')
             ]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in getting  the about us details')

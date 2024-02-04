@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\IndustrialArea;
 use App\Models\User;
+use App\Models\UserProfile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -146,7 +147,18 @@ class IndustrialAreaController extends Controller
             // get the industrial area want to edite
             $industrial_area = IndustrialArea::findOrFail($request->input('id'));
 
-            // todo edite this function to update email and name for industrial area representative
+            $user = User::where('industrial_area_id',$industrial_area->id)->first();
+
+            $user->update([
+                'email' => $request->input('email')
+            ]);
+
+            $user_profile = UserProfile::where('user_id',$user->id)->first();
+
+            $user_profile->update([
+                'name' => $request->input('representative_name')
+            ]);
+
             // create new industrial area
             $industrial_area->update([
                 'name' => $request->input('name'),

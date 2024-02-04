@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\fake_register_request;
+use function App\Helpers\find_and_update;
+use function App\Helpers\getAndCheckModelById;
 
 class IndustrialAreaController extends Controller
 {
@@ -147,19 +149,15 @@ class IndustrialAreaController extends Controller
             // get the industrial area want to edite
             $industrial_area = IndustrialArea::findOrFail($request->input('id'));
 
-            $user = User::where('industrial_area_id',$industrial_area->id)->first();
+            $user = find_and_update(User::class,$industrial_area->id,['email'],[$request->input('email')]);
 
-            $user->update([
-                'email' => $request->input('email')
-            ]);
-
-            $user_profile = UserProfile::where('user_id',$user->id)->first();
+            $user_profile = find_and_update(UserProfile::class,$user->id,['name'],[$request->input('representative_name')]);
 
             $user_profile->update([
                 'name' => $request->input('representative_name')
             ]);
 
-            // create new industrial area
+            // update industrial area details
             $industrial_area->update([
                 'name' => $request->input('name'),
                 'address' => $request->input('address'),
@@ -167,6 +165,8 @@ class IndustrialAreaController extends Controller
 
             return response()->json([
                 'industrial_area' => $industrial_area,
+                'user_email' => $user->email,
+                'user_name' => $user_profile->name,
                 'message' => __('successfully editing industrial area details')
             ], 200);
 

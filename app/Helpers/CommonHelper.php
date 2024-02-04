@@ -266,7 +266,9 @@ if (!function_exists('send_mail')) {
         }
     }
 }
-
+/*
+ * This function  return stakeholder id because it used many times in defirents places
+ */
 if(!function_exists('stakeholder_id')){
 
     function stakeholder_id()
@@ -283,3 +285,53 @@ if(!function_exists('stakeholder_id')){
     }
 
 }
+/**
+ * This Function it get the instance by any value inside it
+ */
+if(!function_exists('get_instances_with_value'))
+{
+    function get_instances_with_value($model,$value)
+    {
+        // Query the database to retrieve instances where any attribute has the specified value
+        $instances = $model::where(function ($query) use ($model,$value) {
+            $modelInstance = new $model(); // Create an instance of the model
+            $attributes = $modelInstance->getFillable(); // Get fillable attributes of the model
+            foreach ($attributes as $attribute) {
+                $query->orWhere($attribute, $value); // Add OR condition for each attribute
+            }
+        })->first();
+
+        return $instances;
+    }
+
+}
+
+
+/**
+ * This function is update the instance with keys and values passed to it
+ */
+if(!function_exists('find_and_update')){
+     function find_and_update($model, $search_param, $keys, $values)
+    {
+
+        // Ensure the number of keys and values match
+        if (count($keys) !== count($values)) {
+            throw new \InvalidArgumentException('Number of keys and values must be equal');
+        }
+
+        // Retrieve the model instance by searching for the value in any attribute
+        $instances = get_instances_with_value($model, $search_param);
+
+        // Create an associative array of keys and values
+        $data = [];
+        foreach ($keys as $index => $key) {
+            $data[$key] = $values[$index];
+        }
+
+        // Update the model attributes with the provided data
+        $instances->update($data);
+
+        return $instances; // Return the updated instances
+    }
+}
+

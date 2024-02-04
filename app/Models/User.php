@@ -30,7 +30,7 @@ class User extends Authenticatable
         'email',
         'stakeholder_type',
         'password',
-        'isActive',
+        'is_active',
         'deleted_at'
     ];
 

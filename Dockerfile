@@ -1,12 +1,15 @@
-FROM php:8.2-fpm-alpine
+FROM php:8.2-fpm
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    vim \
+    zip
 
-RUN set -ex \
-    	&& apk --no-cache add mysql-client nodejs yarn npm \
-    	&& docker-php-ext-install pdo pdo_mysql
+WORKDIR /var/www
 
-RUN apk --no-cache add mysql-client nodejs yarn npm
+COPY . /var/www
 
+RUN composer install
 
-WORKDIR /var/www/html
+EXPOSE 81

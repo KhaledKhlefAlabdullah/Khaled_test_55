@@ -1,68 +1,23 @@
 version: '3'
 
-networks:
-    webapp:
-
 services:
-    apache2:
-        image: httpd:2.4
-        container_name: satreps_apache2
+    app:
+        build: .
+        volumes:
+            - .:/var/www
         ports:
             - "81:80"
-        links:
-            - php
-        volumes:
-            - ./satreps:/usr/local/apache2/htdocs
-            - ./docker/apache2/satreps.conf:/usr/local/apache2/conf/satreps.conf:rw
-            - ./docker/logs/apache2:/usr/local/apache2/logs:rw
-            - ./docker/apache2/satreps.conf:/etc/apache2/sites-available/000-default.conf
-
         depends_on:
-            - php
-            - mysql
-        networks:
-            - webapp
+            - db
 
-    php:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: satreps_php
-        volumes:
-            - ./satreps:/var/www/html
-        ports:
-            - "9002:9000"
-        networks:
-            - webapp
-
-    mysql: # Change 'postgres' to 'mysql'
+    db:
         image: mysql:8.0
-        container_name: satreps_mysql
-        restart: unless-stopped
-        ports:
-            - "3312:3306"
         volumes:
-            - ./docker/mysql:/var/lib/mysql  # Corrected volume path
-            - ./run/dump/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - db-data:/var/lib/mysql
         environment:
-            MYSQL_ROOT_PASSWORD: secure0Root0Password
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
             MYSQL_PASSWORD: ${DB_PASSWORD}
-        networks:
-            - webapp
 
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: satreps_phpmyadmin
-        restart: unless-stopped
-        ports:
-            - "8083:80"
-        environment:
-            PMA_HOST: mysql  # Change to 'mysql' to match the service name
-            PMA_USER: ${DB_USERNAME}
-            PMA_PASSWORD: ${DB_PASSWORD}
-        depends_on:
-            - mysql  # Make sure phpMyAdmin starts after MySQL
-        networks:
-            - webapp
+volumes:
+    db-data:

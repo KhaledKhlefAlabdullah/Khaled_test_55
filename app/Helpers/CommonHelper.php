@@ -184,12 +184,12 @@ if (!function_exists('edite_page_details')) {
         try{
             // validate the input data
             $request->validate([
-                'title' => 'required|string',
-                'description' => 'required|string',
-                'phone_number' =>  'required|string|regex:/^[0-9]{9,20}$/',
-                'location' => 'required|string',
-                'start_time' => 'required|date',
-                'end_time' => 'required|date|after:start_time'
+                'title' => 'nullable|string',
+                'description' => 'nullable|string',
+                'phone_number' => 'nullable|string|regex:/^\+?[0-9]{9,20}$/',
+                'location' => 'nullable|string',
+                'start_time' => 'nullable|date',
+                'end_time' => 'nullable|date|after:start_time'
             ]);
 
             // check if there page us page already in database
@@ -216,12 +216,12 @@ if (!function_exists('edite_page_details')) {
 
                 // if it's not empty and there already page in database update the page with the validated data
                 $page->update([
-                    'title' => $request->input('title'),
-                    'description' => $request->input('description'),
-                    'phone_number' => $request->input('phone_number'),
-                    'location' => $request->input('location'),
-                    'start_time' => $request->input('start_time'),
-                    'end_time' => $request->input('end_time')
+                    'title' => is_null($request->input('title')) ? $page->title : $request->input('title'),
+                    'description' => is_null($request->input('description')) ? $page->description : $request->input('description'),
+                    'phone_number' => is_null($request->input('phone_number')) ? $page->phone_number : $request->input('phone_number'),
+                    'location' => is_null($request->input('location')) ? $page->location : $request->input('location'),
+                    'start_time' => is_null($request->input('start_time')) ? $page->start_time : $request->input('start_time'),
+                    'end_time' => is_null($request->input('end_time')) ? $page->end_time : $request->input('end_time')
                 ]);
 
             }

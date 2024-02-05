@@ -36,8 +36,6 @@ class ContactUsMessageController extends Controller
      */
     public function store(Request $request)
     {
-
-        // todo i have to edite it later 1
         $valid_data = $request->validate([
             'subject' => 'required|string|',
             'message' => 'required|string|',

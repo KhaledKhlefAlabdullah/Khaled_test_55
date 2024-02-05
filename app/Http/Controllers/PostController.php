@@ -209,7 +209,7 @@ class PostController extends Controller
             // get general news id from request
             $general_news_id = $request->input('general_news_id');
 
-            // get the general news will editing
+            // get the general news will be editing
             $general_news = Post::findOrFail($general_news_id);
 
             // get image from request
@@ -295,14 +295,12 @@ class PostController extends Controller
     {
         try {
 
-            // get posts by category
-            $category_id = Category::where('name','Project Description')->first()->id;
-
-            // get the posts (project description) with category id
-            $posts = Post::where('category_id', $category_id)->first();
+            $description = DB::table('categories')
+                ->join('posts', 'categories.id', '=', 'posts.category_id')
+                ->select('posts.id', 'posts.body', 'posts.media_url')->where('categories.name', '=', 'Project Description')->first();
 
             return response()->json([
-                'project_description' => $posts,
+                'data' => $description,
                 'message' => __('Successfully get project description')
             ],200);
         }
@@ -318,35 +316,43 @@ class PostController extends Controller
     /**
      * Add project description
      */
-    public function edite_project_description(Request $request)
+    public function edite_project_description(Request $request, string $id)
     {
         try{
 
             // validate the input data
             $request->validate([
-                "title" => 'required|string|min:3',
-                "slug" => 'required|string|min:3',
-                "body" => 'required|string|min:10'
+                'body' => 'required|string|min:10',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif'
             ]);
 
-            // get the project description category
-            $category_id = Category::where('name','Project description')->first()->id;
-
             // get the posts (project description) with category id
-            $posts = Post::where('category_id', $category_id)->first();
+            $posts = Post::find($id);
 
-            // get auth user id
-            $user_id = Auth::id();
+            // get image from request
+            $image = $request->image;
+
+            // put path to store image
+            $path = 'images/about_us_images';
+
+            // coll store function to store the image
+            $image_path = store_files($image, $path);
 
             // if their no post with category id create one or update the exists on
             if(empty($posts)){
 
+                // get auth user id
+                $user_id = Auth::id();
+
+                // get the project description category
+                $category_id = Category::where('name', 'Project description')->first()->id;
+
                 $posts = Post::create([
                     "user_id" => $user_id,
                     "category_id" => $category_id,
-                    "title" => $request->input('title'),
-                    "slug" => $request->input('slug'),
-                    "body" => $request->input('body')
+                    "body" => $request->input('body'),
+                    "media_url" => $image_path
+
                 ]);
 
                 $message = 'Successfully creating project description';
@@ -355,10 +361,8 @@ class PostController extends Controller
             else{
 
                 $posts->update([
-                    "user_id" => $user_id,
-                    "title" => $request->input('title'),
-                    "slug" => $request->input('slug'),
-                    "body" => $request->input('body')
+                    "body" => $request->input('body'),
+                    "media_url" => $image_path
                 ]);
 
                 $message = 'Successfully editing project description';

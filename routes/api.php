@@ -33,6 +33,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -44,10 +45,10 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 |
 */
 
-Route::group(['prefix' => 'api'],function (){
+Route::group(['prefix' => 'api'], function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
-            // Pages
+        // Pages
         Route::apiResource('pages', PageController::class);
         //    Route::prefix('pages')->group(function () {
         //        Route::get('/', 'index')->name('pages.index');
@@ -74,17 +75,17 @@ Route::group(['prefix' => 'api'],function (){
         Route::delete('/{id}', 'destroy')->name('messages.destroy');
     });
 
-    // Dams
-    Route::apiResource('dams', DamController::class);
+        // Dams
+        Route::apiResource('dams', DamController::class);
 
-    // Disaster Reports
-    Route::apiResource('disaster-reports', DisasterReportController::class);
+        // Disaster Reports
+        Route::apiResource('disaster-reports', DisasterReportController::class);
 
-    // Entities
-    Route::apiResource('entities', EntityController::class);
+        // Entities
+        Route::apiResource('entities', EntityController::class);
 
-    // Files
-//    Route::apiResource('files', FileController::class);
+        // Files
+        Route::apiResource('files', FileController::class);
 
         // Industrial Areas
         //    Route::apiResource('industrial-areas', IndustrialAreaController::class);
@@ -122,8 +123,8 @@ Route::group(['prefix' => 'api'],function (){
         // Timelines Events
         Route::apiResource('timeline-events', TimelineEventController::class);
 
-    // Timelines Queries
-    Route::apiResource('timeline-queries', TimelineQuiresController::class)->except(['update']);
+        // Timelines Queries
+        Route::apiResource('timeline-queries', TimelineQuiresController::class)->except(['update']);
 
         // Timelines Shares Requests
         Route::apiResource('timeline-shares-requests', TimelineSharesRequestController::class);
@@ -139,11 +140,11 @@ Route::group(['prefix' => 'api'],function (){
         // Routes for portal manager role
         Route::middleware(['portal-manger'])->group(function () {
 
-            Route::post('edite-about-us-details',[PageController::class,'edite_about_us_page_details']);
+            Route::post('edite-about-us-details', [PageController::class, 'edite_about_us_page_details']);
 
-            Route::post('edite-contact-us-details',[PageController::class,'edite_contact_us_details']);
+            Route::post('edite-contact-us-details', [PageController::class, 'edite_contact_us_details']);
 
-            Route::post('edite-project-description',[PostController::class,'edite_project_description']);
+            Route::post('edite-project-description/{id}', [PostController::class, 'edite_project_description']);
 
             Route::group(['prefix' => 'industrial-areas'], function () {
 
@@ -151,7 +152,7 @@ Route::group(['prefix' => 'api'],function (){
 
                 Route::get('/details', [IndustrialAreaController::class, 'show']);
 
-                Route::post('/add',[IndustrialAreaController::class,'store']);
+                Route::post('/add', [IndustrialAreaController::class, 'store']);
 
                 Route::post('/edite', [IndustrialAreaController::class, 'update']);
 
@@ -162,9 +163,9 @@ Route::group(['prefix' => 'api'],function (){
 
                 Route::post('/add', [PostController::class, 'new_general_news']);
 
-                Route::post('/edite',[PostController::class,'edite_general_news']);
+                Route::post('/edite', [PostController::class, 'edite_general_news']);
 
-                Route::post('/delete',[PostController::class,'delete_general_news']);
+                Route::post('/delete', [PostController::class, 'delete_general_news']);
 
             });
 
@@ -173,13 +174,13 @@ Route::group(['prefix' => 'api'],function (){
         // Routes for industrial area representative role
         Route::middleware(['industrial-area-representative'])->group(function () {
 
-        Route::group(['prefix' => 'subdomain-users'], function () {
+            Route::group(['prefix' => 'subdomain-users'], function () {
 
                 Route::get('/', [UserController::class, 'subdomain_users']);
 
-            Route::post('/add', [UserController::class, 'store_new_subdomain_user']);
+                Route::post('/add', [UserController::class, 'store_new_subdomain_user']);
 
-            Route::get('/details', [UserController::class, 'subdomain_user_details']);
+                Route::get('/details', [UserController::class, 'subdomain_user_details']);
 
                 Route::post('/delete', [UserController::class, 'destroy']);
 
@@ -196,7 +197,7 @@ Route::group(['prefix' => 'api'],function (){
 
             });
 
-        Route::group(['prefix' => 'registration_requests'], function () {
+            Route::group(['prefix' => 'registration_requests'], function () {
 
                 Route::get('/', [RegistrationRequestController::class, 'index']);
 
@@ -220,16 +221,16 @@ Route::group(['prefix' => 'api'],function (){
 
             Route::post('change-status', [StakeholderController::class, 'edit_company_state']);
 
-        // View list of Manuals and plans
-        Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
-    });
+            // View list of Manuals and plans
+            Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
+        });
 
-    Route::middleware(['Industrial-area-representative-or-government-representative'])->group(function () {
+        Route::middleware(['Industrial-area-representative-or-government-representative'])->group(function () {
 
-        // Add Manuals & Plans
-        Route::post('/manuals-and-plans/add', [FileController::class, 'add_manuals_and_plans'])->name('file.add_manuals_and_plans');
+            // Add Manuals & Plans
+            Route::post('/manuals-and-plans/add', [FileController::class, 'add_manuals_and_plans'])->name('file.add_manuals_and_plans');
 
-    });
+        });
 
         // Routes for industrial area representative role
         Route::middleware(['government-representative'])->group(function () {
@@ -248,50 +249,51 @@ Route::group(['prefix' => 'api'],function (){
 
             });
 
-    });
+        });
 
         // Routes for just infrastructure provider and tenant company
-        Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function (){
+        Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function () {
 
             // Employees
-            Route::group(['prefix'=> 'employees'],function (){
+            Route::group(['prefix' => 'employees'], function () {
 
-                Route::get('/', [EmployeeController::class,'index']);
+                Route::get('/', [EmployeeController::class, 'index']);
 
-                Route::get('/get-csv', [EmployeeController::class,'export_csv_employees_file']);
+                Route::get('/get-csv', [EmployeeController::class, 'export_csv_employees_file']);
 
-                Route::post('/upload-csv', [EmployeeController::class,'import_csv_employees_file']);
+                Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
 
-                Route::post('add',[EmployeeController::class,'store']);
+                Route::post('add', [EmployeeController::class, 'store']);
 
-                Route::put('edite',[EmployeeController::class,'update']);
+                Route::put('edite', [EmployeeController::class, 'update']);
 
-                Route::delete('delete',[EmployeeController::class,'destroy']);
-
-            });
-
-        // Suppliers
-        Route::group(['prefix' => 'suppliers'], function () {
-
-            Route::get('/', [SupplierController::class,'index']);
-
-            Route::post('/add-supplier', [SupplierController::class, 'store']);
-
-            Route::post('/edite-supplier', [SupplierController::class, 'update']);
-
-            Route::delete('/delete-supplier', [SupplierController::class, 'update']);
+                Route::delete('delete', [EmployeeController::class, 'destroy']);
 
             });
 
-        Route::group(['prefix' => 'routes'],function (){
+            // Suppliers
+            Route::group(['prefix' => 'suppliers'], function () {
 
-            Route::get('/',[EntityController::class,'get_routes']);
+                Route::get('/', [SupplierController::class, 'index']);
 
-                Route::post('/add',[EntityController::class,'add_new_route']);
+                Route::post('/add-supplier', [SupplierController::class, 'store']);
 
-                Route::post('/edite',[EntityController::class,'edite_route_details']);
+                Route::post('/edite-supplier', [SupplierController::class, 'update']);
 
-                Route::post('/delete',[EntityController::class,'delete_route']);
+                Route::delete('/delete-supplier', [SupplierController::class, 'update']);
+
+            });
+
+            // Routes
+            Route::group(['prefix' => 'routes'], function () {
+
+                Route::get('/', [EntityController::class, 'get_routes']);
+
+                Route::post('/add', [EntityController::class, 'add_new_route']);
+
+                Route::post('/edite', [EntityController::class, 'edite_route_details']);
+
+                Route::post('/delete', [EntityController::class, 'delete_route']);
 
             });
 
@@ -299,7 +301,7 @@ Route::group(['prefix' => 'api'],function (){
 
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
-        Route::post('change-password',[AuthenticatedSessionController::class,'change_password']);
+        Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
 
     });
 
@@ -311,17 +313,16 @@ Route::group(['prefix' => 'api'],function (){
     Route::get('general-news', [PostController::class, 'view_general_news']);
 
     // project description
-    Route::get('project-description',[PostController::class,'view_project_description']);
+    Route::get('project-description', [PostController::class, 'view_project_description']);
 
     // View contact us details
-    Route::get('contact-us-details',[PageController::class,'contact_us_details']);
+    Route::get('contact-us-details', [PageController::class, 'contact_us_details']);
 
     // View about us details
-    Route::get('about-us-details',[PageController::class,'about_us_page_details']);
+    Route::get('about-us-details', [PageController::class, 'about_us_page_details']);
 
-    // todo i have to edite it later 1
     // Fill contact us form
-    Route::post('contact-us',[ContactUsMessageController::class,'store']);
+    Route::post('contact-us', [ContactUsMessageController::class, 'store']);
 
     require __DIR__ . '/auth.php';
 });
@@ -336,3 +337,5 @@ Route::group(['prefix' => 'api'],function (){
 //    Route::post('/delete', [StakeholderController::class, 'destroy']);
 //
 //});
+
+// todo we have to use the functions to shortest the code

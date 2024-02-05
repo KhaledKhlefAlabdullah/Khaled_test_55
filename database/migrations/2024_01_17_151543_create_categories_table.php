@@ -50,6 +50,13 @@ return new class extends Migration {
         ]);
 
         DB::table('categories')->insert([
+            'id' => '005e8400-e29b-4154-a716-446655445600',
+            'name' => 'Production Site',
+            'parent_id' => null,
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
             'id' => '006e8400-e29b-41d4-a716-446655440000',
             'name' => 'Notification',
             'parent_id' => null,

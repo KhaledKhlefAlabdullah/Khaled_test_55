@@ -6,4 +6,7 @@ RUN set -ex \
     	&& apk --no-cache add mysql-client nodejs yarn npm \
     	&& docker-php-ext-install pdo pdo_mysql
 
+RUN apk --no-cache add mysql-client nodejs yarn npm
+
+
 WORKDIR /var/www/html

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
@@ -29,10 +31,7 @@ use App\Http\Controllers\Timelines\TimelineQuiresController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,14 +65,14 @@ Route::group(['prefix' => 'api'], function () {
         // Messages
         //    Route::apiResource('messages', MessageController::class)->except(['index']);
 
-    // Messages
-    Route::prefix('messages')->controller(MessageController::class)->group(function () {
-        Route::get('/get/{chat_id}', 'showMessagesByChatId')->name('messages.showMessagesByChatId');
-        Route::post('/', 'store')->name('messages.store');
-        Route::get('/{id}', 'show')->name('messages.show');
-        Route::put('/{message}', 'update')->name('messages.update');
-        Route::delete('/{id}', 'destroy')->name('messages.destroy');
-    });
+        // Messages
+        Route::prefix('messages')->controller(MessageController::class)->group(function () {
+            Route::get('/get/{chat_id}', 'showMessagesByChatId')->name('messages.showMessagesByChatId');
+            Route::post('/', 'store')->name('messages.store');
+            Route::get('/{id}', 'show')->name('messages.show');
+            Route::put('/{message}', 'update')->name('messages.update');
+            Route::delete('/{id}', 'destroy')->name('messages.destroy');
+        });
 
         // Dams
         Route::apiResource('dams', DamController::class);
@@ -85,7 +84,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::apiResource('entities', EntityController::class);
 
         // Files
-        Route::apiResource('files', FileController::class);
+        //    Route::apiResource('files', FileController::class);
 
         // Industrial Areas
         //    Route::apiResource('industrial-areas', IndustrialAreaController::class);
@@ -133,7 +132,6 @@ Route::group(['prefix' => 'api'], function () {
         //    Route::apiResource('user-profiles', UserProfileController::class);
 
     });
-
 
     Route::middleware(['auth:sanctum'])->group(function () {
 

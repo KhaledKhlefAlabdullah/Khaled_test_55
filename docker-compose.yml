@@ -1,23 +1,57 @@
 version: '3'
-
 services:
     app:
-        build: .
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: satreps-app
+        container_name: satreps-app
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: satreps-app
+            SERVICE_TAGS: dev
+        working_dir: /var/www/html/satreps
         volumes:
-            - .:/var/www
-        ports:
-            - "81:80"
-        depends_on:
-            - db
+            - ./:/var/www/html/satreps
+        networks:
+            - app-network
 
     db:
-        image: mysql:8.0
-        volumes:
-            - db-data:/var/lib/mysql
+        image: mysql:8
+        container_name: satreps-app
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "13306:3306"
         environment:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
             MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: Pass0@WordSatreps01
+            SERVICE_TAGS: dev
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - app-network
+
+    # Nginx Service
+    web:
+        image: 'nginx:alpine'
+        ports:
+            - "8000:80"
+        volumes:
+            - ./:/var/www/html/satreps
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            - app
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge
 
 volumes:
-    db-data:
+    dbdata:
+        driver: local

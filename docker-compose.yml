@@ -16,8 +16,6 @@ services:
             - 8000:80
         networks:
             - backend
-        aliases:
-            - satreps-app
 
     mysql-db:
         image: mysql:5.7
@@ -31,8 +29,6 @@ services:
             MYSQL_ROOT_PASSWORD: Pass0@WordSatreps01
         networks:
             - backend
-        aliases:
-            - db
 
 networks:
     backend:

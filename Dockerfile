@@ -6,13 +6,16 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install necessary dependencies using apt
 RUN set -ex \
     && apt-get install -y --no-install-recommends \
-        default-mysql-client \
+        mysql-client \
         nodejs \
-        yarn \
-        npm \
         git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install pdo pdo_mysql
+
+# Install yarn and npm
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g yarn
 
 WORKDIR /var/www/html

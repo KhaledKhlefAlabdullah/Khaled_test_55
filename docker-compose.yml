@@ -15,9 +15,9 @@ services:
         ports:
             - 8000:80
         networks:
-            backend:
-                aliases:
-                    - satreps-app
+            - backend
+        aliases:
+            - satreps-app
 
     mysql-db:
         image: mysql:5.7
@@ -30,9 +30,9 @@ services:
             MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_ROOT_PASSWORD: Pass0@WordSatreps01
         networks:
-            backend:
-                aliases:
-                    - db
+            - backend
+        aliases:
+            - db
 
 networks:
     backend:

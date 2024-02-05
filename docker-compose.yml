@@ -4,6 +4,23 @@ networks:
     webapp:
 
 services:
+    app:
+        build:
+            context: '.'
+            args:
+                uid: ${UID}
+        container_name: satreps-app
+        environment:
+            - APACHE_RUN_USER=#${UID}
+            - APACHE_RUN_GROUP=#${UID}
+        volumes:
+            - .:/var/www/html
+        ports:
+            - 81:80
+        networks:
+            backend:
+                aliases:
+                    - laravel-app
     apache2:
         image: httpd:2.4
         container_name: satreps_apache2

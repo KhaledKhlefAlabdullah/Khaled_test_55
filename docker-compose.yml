@@ -29,7 +29,3 @@ services:
             MYSQL_ROOT_PASSWORD: Pass0@WordSatreps01
         networks:
             - backend
-
-networks:
-    backend:
-        name: backend-network

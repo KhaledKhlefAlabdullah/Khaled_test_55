@@ -28,6 +28,51 @@ class PostSeeder extends Seeder
         ]);
 
         DB::table('posts')->insert([
+            'id' => '0009776d-7b19-55a9-k77f-2a76173f5822',
+            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58', // About us Page
+            'category_id' => '004e8400-e29b-41d4-a716-446655440000', // About Category
+            'title' => 'Our Vision',
+            'slug' => 'our-vision',
+            'body' => 'I am body for our vision',
+            'media_url' => null,
+            'media_type' => null,
+            'is_general_news' => false,
+            'is_publish' => false,
+            'created_at' => now(),
+        ]);
+
+        DB::table('posts')->insert([
+            'id' => '0005796g-7B19-55a9-k77f-2a76173f5822',
+            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'category_id' => '004e8400-e29b-41d4-a716-446655440000',
+            'title' => 'Our Approach',
+            'slug' => 'our-approach',
+            'body' => 'I am body for our approach',
+            'media_url' => null,
+            'media_type' => null,
+            'is_general_news' => false,
+            'is_publish' => false,
+            'created_at' => now(),
+        ]);
+
+        DB::table('posts')->insert([
+            'id' => '0005796g-7B6c-8J39-k77f-2a76173f5822',
+            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58', // About us Page
+            'category_id' => '004e8400-e29b-41d4-a716-446655440000', // About Category
+            'title' => 'Our Process',
+            'slug' => 'our-process',
+            'body' => 'I am body for our process',
+            'media_url' => null,
+            'media_type' => null,
+            'is_general_news' => false,
+            'is_publish' => false,
+            'created_at' => now(),
+        ]);
+
+        DB::table('posts')->insert([
             'id' => '109776d-7b19-55a9-a77f-2a76172f5222',
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58', // IAR 1
             'page_id' => '5a97a6d-7b19-4fa9-a77f-2a76172f5b58', // News Page

@@ -247,6 +247,9 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // Fill contact us form
+            Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
+
         });
 
         // Routes for just infrastructure provider and tenant company
@@ -296,9 +299,6 @@ Route::group(['prefix' => 'api'], function () {
             });
 
         });
-
-        // Fill contact us form
-        Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 

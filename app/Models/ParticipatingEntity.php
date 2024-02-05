@@ -14,14 +14,15 @@ class ParticipatingEntity extends Model
     protected $keyType = 'string';
 
     protected $primaryKey = 'id';
+
     public $incrementing = false;
 
 
     protected $fillable = [
         'user_id',
         'title',
-        'media_url',
-        'media_type'
+        'logo_url',
+        'link'
     ];
 
     public function user()

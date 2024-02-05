@@ -333,7 +333,7 @@ class PostController extends Controller
             $image = $request->image;
 
             // put path to store image
-            $path = 'images/about_us_images';
+            $path = 'images/project_description_images';
 
             // coll store function to store the image
             $image_path = store_files($image, $path);

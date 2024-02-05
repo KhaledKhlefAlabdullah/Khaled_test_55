@@ -138,7 +138,7 @@ Route::group(['prefix' => 'api'], function () {
         // Routes for portal manager role
         Route::middleware(['portal-manger'])->group(function () {
 
-            Route::post('edite-about-us-details', [PageController::class, 'edite_about_us_page_details']);
+            Route::post('edite-about-us-details', [PageController::class, 'edite_about_us_post_details']);
 
             Route::post('edite-contact-us-details', [PageController::class, 'edite_contact_us_details']);
 
@@ -247,6 +247,9 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // Fill contact us form
+            Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
+
         });
 
         // Routes for just infrastructure provider and tenant company
@@ -296,9 +299,6 @@ Route::group(['prefix' => 'api'], function () {
             });
 
         });
-
-        // Fill contact us form
-        Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 

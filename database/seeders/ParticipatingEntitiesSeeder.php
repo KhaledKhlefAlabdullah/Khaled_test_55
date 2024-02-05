@@ -16,8 +16,8 @@ class ParticipatingEntitiesSeeder extends Seeder
             'id' => "1dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
             'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "First Title",
-            'media_url' => "images/participating1.jpg",
-            'media_type' => "image",
+            'logo_url' => "images/participating1.jpg",
+            'link' => null,
             'created_at' => now()
         ]);
 
@@ -25,8 +25,8 @@ class ParticipatingEntitiesSeeder extends Seeder
             'id' => "2dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
             'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "Second Title",
-            'media_url' => "video/temp.mp4",
-            'media_type' => "video",
+            'logo_url' => "video/temp.mp4",
+            'link' => null,
             'created_at' => now()
 
         ]);
@@ -35,8 +35,8 @@ class ParticipatingEntitiesSeeder extends Seeder
             'id' => "3dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
             'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "Third Title",
-            'media_url' => "https://google.com",
-            'media_type' => "website_URL",
+            'logo_url' => "https://google.com",
+            'link' => null,
             'created_at' => now()
 
         ]);
@@ -45,8 +45,8 @@ class ParticipatingEntitiesSeeder extends Seeder
             'id' => "4dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
             'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "Forth Title",
-            'media_url' => "file/temp.pdf",
-            'media_type' => "file",
+            'logo_url' => "file/temp.pdf",
+            'link' => null,
             'created_at' => now()
         ]);
     }

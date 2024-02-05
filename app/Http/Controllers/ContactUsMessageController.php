@@ -47,15 +47,6 @@ class ContactUsMessageController extends Controller
 
         if ($user_auth){
 
-            //
-            if(Auth::user()->stakeholder_type == 'Portal_manager'){
-
-                return response()->json([
-                    'message' => __('your portal manager, you dont have to sent an contact us message to your self')
-                ],404);
-
-            }
-
             $user_email = $user_auth->email;
             $user_name = $user_auth->user_profile()->first()->name;
 

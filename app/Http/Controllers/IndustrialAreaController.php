@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\fake_register_request;
 use function App\Helpers\find_and_update;
-use function App\Helpers\getAndCheckModelById;
+
 
 class IndustrialAreaController extends Controller
 {
@@ -72,8 +72,8 @@ class IndustrialAreaController extends Controller
                 industrial_area_id: $industrial_area->id,
                 name: $request->input('representative_name'),
                 email: $request->input('email'),
-                password: 'P@ssword',
-                password_confirmation: 'P@ssword',
+                password: '12345',
+                password_confirmation: '12345',
                 stakeholder_type: 'Industrial_area_representative',
                 location: $industrial_area->address
             );

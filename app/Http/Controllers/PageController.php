@@ -6,10 +6,13 @@ use App\Http\Requests\Page\StorePageRequest;
 use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
+use App\Models\Post;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\edit_page_details;
+use function App\Helpers\find_and_update;
+use function App\Helpers\store_files;
 
 class PageController extends Controller
 {
@@ -145,12 +148,26 @@ class PageController extends Controller
     {
         try{
 
-            $about_us = DB::table('pages')
-                ->join('posts', 'pages.id', '=', 'posts.id')
-                ->select()->where('type' . '=', 'About')->first();
+            // get the about us details
+            $about_us = Page::where('type', 'About')->with('posts')->first();
+
+            // return the page id and title and return the posts belong to about us page
+            if ($about_us) {
+                $responseData = [
+                    'page_id' => $about_us->id,
+                    'page_title' => $about_us->title,
+                    'posts' => $about_us->posts->map(function ($post) {
+                        return [
+                            'post_id' => $post->id,
+                            'post_body' => $post->body,
+                            'post_image' => $post->media_url
+                        ];
+                    })
+                ];
+            }
 
             return response()->json([
-                'data' => $about_us,
+                'data' => $responseData,
                 'message' => __('successfully getting about us page details')
             ]);
 
@@ -166,10 +183,42 @@ class PageController extends Controller
     /**
      * Edite about us page details
      */
-    public function edite_about_us_page_details(Request $request)
+    public function edite_about_us_post_details(Request $request, string $id)
     {
-       $page = 'About';
+        try {
 
-       return edit_page_details($request,$page);
+            $request->validate([
+                'post_body' => 'required|string|min:10',
+                'post_image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            ]);
+
+            $post = Post::find($id);
+
+            if (!$post) {
+
+                $file_path = store_files(
+                    $request->post_image,
+                    'images/about_us_images'
+                );
+
+                $post = Post::create([
+
+                ]);
+
+            }
+
+
+            $post = find_and_update(Post::class, $id, ['body', 'media_url', 'media_type'], []);
+
+            return response()->json([
+                'data' => $post,
+                'message' => __('Successfully editing the data')
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in editing the data')
+            ], 500);
+        }
     }
 }

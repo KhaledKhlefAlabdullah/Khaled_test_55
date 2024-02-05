@@ -2,8 +2,7 @@
 FROM php:8.2-fpm
 
 # Install dependencies
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
+RUN libpng-dev \
     libonig-dev \
     libxml2-dev \
     zip \

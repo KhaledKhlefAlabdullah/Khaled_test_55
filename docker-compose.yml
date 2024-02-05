@@ -4,12 +4,12 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        image: satreps-app
-        container_name: satreps-app
+        image: new-satreps-app
+        container_name: new-satreps-app
         restart: unless-stopped
         tty: true
         environment:
-            SERVICE_NAME: satreps-app
+            SERVICE_NAME: new-satreps-app
             SERVICE_TAGS: dev
         working_dir: /var/www/html/satreps
         volumes:
@@ -19,7 +19,7 @@ services:
 
     db:
         image: mysql:8
-        container_name: satreps-app
+        container_name: new-satreps-app
         restart: unless-stopped
         tty: true
         ports:

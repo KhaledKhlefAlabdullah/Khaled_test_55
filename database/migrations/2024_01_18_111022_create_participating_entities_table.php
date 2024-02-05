@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->uuid('id')->primary()->unique();
             $table->string('user_id');
             $table->string('title')->nullable();
-            $table->string('media_url');
-            $table->enum('media_type', ['image', 'video', 'file', 'website_URL'])->nullable();
+            $table->string('logo_url');
+            $table->string('link')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

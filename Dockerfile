@@ -5,12 +5,12 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Install necessary dependencies using apt
 RUN set -ex \
-    && apt-get update \
     && apt-get install -y --no-install-recommends \
-        mysql-client \
+        default-mysql-client \
         nodejs \
         yarn \
         npm \
+        git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install pdo pdo_mysql

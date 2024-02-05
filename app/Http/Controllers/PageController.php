@@ -8,6 +8,7 @@ use App\Http\Resources\PageResource;
 use App\Models\Page;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function App\Helpers\edit_page_details;
 
 class PageController extends Controller
@@ -101,22 +102,22 @@ class PageController extends Controller
      */
     public function contact_us_details()
     {
-        try {
+        try{
 
-
-            $contact_us = Page::where('type', 'Contact-Us')->first();
+            $contact_us = Page::where('type','Contact-Us')->first();
 
             return response()->json([
-                'contact_us_details' => $contact_us,
+                'data' => $contact_us,
                 'message' => __('Successfully getting contact us details')
-            ], 200);
+            ],200);
 
-        } catch (Exception $e) {
+        }
+        catch (\Exception $e){
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in getting the contact us details')
-            ], 500);
+            ],500);
 
         }
     }
@@ -126,9 +127,15 @@ class PageController extends Controller
      */
     public function edite_contact_us_details(Request $request)
     {
-        $page = 'Contact us';
+        // validate the inputs
+        $request->validate([
+            'phone_number' => 'required',
+            'location' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required'
+        ]);
 
-        return edit_page_details($request, 'Contact us');
+        return edit_page_details($request,'Contact us');
     }
 
     /**
@@ -136,20 +143,23 @@ class PageController extends Controller
      */
     public function about_us_page_details()
     {
-        try {
+        try{
 
-            $about_au = Page::where('type', 'About')->first();
+            $about_us = DB::table('pages')
+                ->join('posts', 'pages.id', '=', 'posts.id')
+                ->select()->where('type' . '=', 'About')->first();
 
             return response()->json([
-                'about_us_details' => $about_au,
+                'data' => $about_us,
                 'message' => __('successfully getting about us page details')
             ]);
 
-        } catch (Exception $e) {
+        }
+        catch (\Exception $e){
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in getting  the about us details')
-            ], 500);
+            ],500);
         }
     }
 
@@ -158,8 +168,8 @@ class PageController extends Controller
      */
     public function edite_about_us_page_details(Request $request)
     {
-        $page = 'About';
+       $page = 'About';
 
-        return edit_page_details($request, $page);
+       return edit_page_details($request,$page);
     }
 }

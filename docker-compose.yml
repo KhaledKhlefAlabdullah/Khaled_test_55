@@ -4,25 +4,22 @@ networks:
     webapp:
 
 services:
-    apache2:
-        image: httpd:2.4
-        container_name: satreps_apache2
+    nginx:
+        image: nginx:latest
+        container_name: satreps_nginx
         ports:
             - "81:80"
         links:
             - php
         volumes:
-            - ./satreps:/usr/local/apache2/htdocs
-            - ./docker/apache2/satreps.conf:/usr/local/apache2/conf/satreps.conf:rw
-            - ./docker/logs/apache2:/usr/local/apache2/logs:rw
-            - ./docker/apache2/satreps.conf:/etc/apache2/sites-available/000-default.conf
-
+            - ./satreps:/usr/share/nginx/html
+            - ./docker/nginx/satreps.conf:/etc/nginx/conf.d/satreps.conf:ro
+            - ./docker/logs/nginx:/var/log/nginx:rw
         depends_on:
             - php
             - mysql
         networks:
             - webapp
-
 
     php:
         build:

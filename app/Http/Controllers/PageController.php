@@ -145,12 +145,26 @@ class PageController extends Controller
     {
         try{
 
-            $about_us = DB::table('pages')
-                ->join('posts', 'pages.id', '=', 'posts.id')
-                ->select()->where('type' . '=', 'About')->first();
+            // get the about us details
+            $about_us = Page::where('type', 'About')->with('posts')->first();
+
+            // return the page id and title and return the posts belong to about us page
+            if ($about_us) {
+                $responseData = [
+                    'page_id' => $about_us->id,
+                    'page_title' => $about_us->title,
+                    'posts' => $about_us->posts->map(function ($post) {
+                        return [
+                            'post_id' => $post->id,
+                            'post_body' => $post->body,
+                            'post_image' => $post->media_url
+                        ];
+                    })
+                ];
+            }
 
             return response()->json([
-                'data' => $about_us,
+                'data' => $responseData,
                 'message' => __('successfully getting about us page details')
             ]);
 
@@ -168,8 +182,6 @@ class PageController extends Controller
      */
     public function edite_about_us_page_details(Request $request)
     {
-       $page = 'About';
 
-       return edit_page_details($request,$page);
     }
 }

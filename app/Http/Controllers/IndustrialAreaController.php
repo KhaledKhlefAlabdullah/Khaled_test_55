@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\fake_register_request;
 use function App\Helpers\find_and_update;
-use function App\Helpers\getAndCheckModelById;
+
 
 class IndustrialAreaController extends Controller
 {

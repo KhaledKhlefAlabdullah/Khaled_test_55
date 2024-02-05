@@ -6,14 +6,14 @@ networks:
 services:
     apache2:
         image: httpd:2.4
-        container_name: ${APP_NAME}_apache2
+        container_name: satreps_apache2
         ports:
             - "81:80"
         links:
             - php
         volumes:
             - ./satreps:/usr/local/apache2/htdocs
-            - ./docker/apache2/httpd.conf:/usr/local/apache2/conf/httpd.conf:rw
+            - ./docker/apache2/satreps.conf:/usr/local/apache2/conf/satreps.conf:rw
             - ./docker/logs/apache2:/usr/local/apache2/logs:rw
         depends_on:
             - php
@@ -26,7 +26,7 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: ${APP_NAME}_php
+        container_name: satreps_php
         volumes:
             - ./satreps:/var/www/html
         ports:
@@ -36,7 +36,7 @@ services:
 
     mysql: # Change 'postgres' to 'mysql'
         image: mysql:8.0
-        container_name: ${APP_NAME}_mysql
+        container_name: satreps_mysql
         restart: unless-stopped
         ports:
             - "3312:3306"
@@ -52,7 +52,7 @@ services:
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: ${APP_NAME}_phpmyadmin
+        container_name: satreps_phpmyadmin
         restart: unless-stopped
         ports:
             - "8083:80"

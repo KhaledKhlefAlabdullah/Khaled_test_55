@@ -138,7 +138,7 @@ Route::group(['prefix' => 'api'], function () {
         // Routes for portal manager role
         Route::middleware(['portal-manger'])->group(function () {
 
-            Route::post('edite-about-us-details', [PageController::class, 'edite_about_us_page_details']);
+            Route::post('edite-about-us-details', [PageController::class, 'edite_about_us_post_details']);
 
             Route::post('edite-contact-us-details', [PageController::class, 'edite_contact_us_details']);
 

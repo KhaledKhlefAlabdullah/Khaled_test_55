@@ -6,10 +6,13 @@ use App\Http\Requests\Page\StorePageRequest;
 use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
+use App\Models\Post;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\edit_page_details;
+use function App\Helpers\find_and_update;
+use function App\Helpers\store_files;
 
 class PageController extends Controller
 {
@@ -180,8 +183,42 @@ class PageController extends Controller
     /**
      * Edite about us page details
      */
-    public function edite_about_us_page_details(Request $request)
+    public function edite_about_us_post_details(Request $request, string $id)
     {
+        try {
 
+            $request->validate([
+                'post_body' => 'required|string|min:10',
+                'post_image' => 'required|image|mimes:jpeg,png,jpg,gif',
+            ]);
+
+            $post = Post::find($id);
+
+            if (!$post) {
+
+                $file_path = store_files(
+                    $request->post_image,
+                    'images/about_us_images'
+                );
+
+                $post = Post::create([
+
+                ]);
+
+            }
+
+
+            $post = find_and_update(Post::class, $id, ['body', 'media_url', 'media_type'], []);
+
+            return response()->json([
+                'data' => $post,
+                'message' => __('Successfully editing the data')
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in editing the data')
+            ], 500);
+        }
     }
 }

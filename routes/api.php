@@ -299,6 +299,9 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
+        // Fill contact us form
+        Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
+
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
         Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
@@ -322,7 +325,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('about-us-details', [PageController::class, 'about_us_page_details']);
 
     // Fill contact us form
-    Route::post('contact-us', [ContactUsMessageController::class, 'store']);
+    Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'store_unregistered']);
 
     require __DIR__ . '/auth.php';
 });
@@ -337,5 +340,6 @@ Route::group(['prefix' => 'api'], function () {
 //    Route::post('/delete', [StakeholderController::class, 'destroy']);
 //
 //});
+
 
 // todo we have to use the functions to shortest the code

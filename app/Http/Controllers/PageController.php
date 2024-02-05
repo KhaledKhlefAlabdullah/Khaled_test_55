@@ -154,10 +154,12 @@ class PageController extends Controller
     {
         try{
 
-            $about_au = Page::where('type','About')->first();
+            $about_us = DB::table('pages')
+                ->join('posts', 'pages.id', '=', 'posts.id')
+                ->select()->where('type' . '=', 'About')->first();
 
             return response()->json([
-                'about_us_details' => $about_au,
+                'data' => $about_us,
                 'message' => __('successfully getting about us page details')
             ]);
 

@@ -17,6 +17,7 @@ class ContactUsMessage extends Model
 
     protected $fillable = [
         'user_id',
+        'name',
         'email',
         'subject',
         'message',

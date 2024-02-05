@@ -34,7 +34,7 @@ class ContactUsMessageController extends Controller
      * @param ContactUsMessageRequest $request
      *
      */
-    public function store(Request $request)
+    public function store_unregistered(Request $request)
     {
         $valid_data = $request->validate([
             'subject' => 'required|string|',
@@ -57,9 +57,11 @@ class ContactUsMessageController extends Controller
             }
 
             $user_email = $user_auth->email;
+            $user_name = $user_auth->user_profile()->first()->name;
 
             ContactUsMessage::create([
                 'user_id' => $user_id,
+                'name' => $user_name,
                 'email' => $user_email,
                 'subject' => $request->input('subject'),
                 'message' => $request->input('message')
@@ -84,6 +86,17 @@ class ContactUsMessageController extends Controller
         return response()->json([
             'message' => __('Successfully sending the contact us message')
         ],200);
+    }
+
+
+    /**
+     * Store the regired user contact us message
+     * @param ContactUsMessageRequest $request
+     *
+     */
+    public function store_registered(Request $request)
+    {
+        return $this->store_unregistered($request);
     }
 
     /**

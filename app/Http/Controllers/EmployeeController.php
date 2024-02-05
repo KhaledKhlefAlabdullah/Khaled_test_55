@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
+
 use App\Models\Entity;
 use App\Models\Residential_area;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Util\Exception;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
@@ -16,6 +18,7 @@ use function App\Helpers\stakeholder_id;
 
 class EmployeeController extends Controller
 {
+
     /**
      * Get employees data fot tenant company or infrastructure provider
      */
@@ -34,15 +37,16 @@ class EmployeeController extends Controller
                 ->join('entities as route', 'employees.route_id', '=', 'route.id')
                 ->select('employees.id', 'employees.employee_number as number', 'employees.is_leadership as leadership',
                     'residential_areas.name as residential_area_name', 'residential_areas.location as residential_area_location',
-                    'department.name as department_name', 'station.name as station_name', 'route.name as route_name')->where('users.id', '=', '12c97a6d-7b19-4fa9-a77f-2a76172f5b58')
+                    'department.name as department_name', 'station.name as station_name', 'route.name as route_name')->where('users.id','=','12c97a6d-7b19-4fa9-a77f-2a76172f5b58')
                 ->get();
 
             return $employees;
-        } catch (Exception $e) {
+        }
+        catch (Exception $e){
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('there are error in server side try another time'),
+                'message' => __('there are error in server side try another time')
             ]);
         }
 
@@ -58,9 +62,9 @@ class EmployeeController extends Controller
         $route_id,
         $residential_area_id,
         $is_leadership
-    )
+        )
     {
-        try {
+        try{
 
             $stakeholder_id = stakeholder_id();
 
@@ -72,14 +76,15 @@ class EmployeeController extends Controller
                 'station_id' => $station_id,
                 'route_id' => $route_id,
                 'residential_area_id' => $residential_area_id,
-                'is_leadership' => $is_leadership,
+                'is_leadership' => $is_leadership
             ]);
 
             return $employee;
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e){
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('there are error in server side try another time'),
+                'message' => __('there are error in server side try another time')
             ]);
         }
     }
@@ -95,33 +100,35 @@ class EmployeeController extends Controller
 
             return response()->json([
                 'employees' => $employees,
-                'message' => __('Successfully getting employees details'),
-            ], 200);
+                'message' => __('Successfully getting employees details')
+            ],200);
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e){
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('there are error in server side try another time'),
+                'message' => __('there are error in server side try another time')
             ]);
 
         }
     }
+
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        try {
+        try{
             // Validate the request
             $request->validate([
-                'employee_number' => 'required|integer|unique:' . Employee::class,
+                'employee_number' => 'required|integer|unique:'.Employee::class,
                 'department_id' => 'required|string|exists:entities,id',
                 'station_id' => 'required|string|exists:entities,id',
                 'route_id' => 'required|string|exists:entities,id',
                 'residential_area_id' => 'required|string|exists:residential_areas,id',
-                'is_leadership' => 'required|boolean',
+                'is_leadership' => 'required|boolean'
             ]);
 
             // Create the employee
@@ -136,12 +143,13 @@ class EmployeeController extends Controller
 
             return response()->json([
                 'employee_data' => $employee,
-                'message' => __('Successfully adding new employee'),
-            ], 200);
-        } catch (\Exception $e) {
+                'message' => __('Successfully adding new employee')
+            ],200);
+        }
+        catch (\Exception $e){
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There are problem in server side try another time'),
+                'message' => __('There are problem in server side try another time')
             ]);
         }
     }
@@ -155,7 +163,7 @@ class EmployeeController extends Controller
         try {
 
             $request->validate([
-                'id' => 'required|string|exists:employees,id',
+                'id' => 'required|string|exists:employees,id'
             ]);
 
             $id = $request->input('id');
@@ -168,24 +176,25 @@ class EmployeeController extends Controller
         return new EmployeeResource($employee);
     }
 
+
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request)
     {
-        try {
+        try{
             // Validate the request
             $request->validate([
                 'employee_id' => 'required|string|exists:employees,id',
-                'employee_number' => 'required|integer|unique:' . Employee::class,
+                'employee_number' => 'required|integer|unique:'.Employee::class,
                 'department_id' => 'required|string|exists:entities,id',
                 'station_id' => 'required|string|exists:entities,id',
                 'route_id' => 'required|string|exists:entities,id',
                 'residential_area_id' => 'required|string|exists:residential_areas,id',
-                'is_leadership' => 'required|boolean',
+                'is_leadership' => 'required|boolean'
             ]);
 
-            $employee = getAndCheckModelById(Employee::class, $request->input('employee_id'));
+            $employee = getAndCheckModelById(Employee::class,$request->input('employee_id'));
 
             // Create the employee
             $employee->update([
@@ -194,17 +203,18 @@ class EmployeeController extends Controller
                 'station_id' => $request->input('station_id'),
                 'route_id' => $request->input('route_id'),
                 'residential_area_id' => $request->input('residential_area_id'),
-                'is_leadership' => $request->input('is_leadership'),
+                'is_leadership' => $request->input('is_leadership')
             ]);
 
             return response()->json([
                 'employee_data' => $employee,
-                'message' => __('Successfully adding new employee'),
-            ], 200);
-        } catch (\Exception $e) {
+                'message' => __('Successfully adding new employee')
+            ],200);
+        }
+        catch (\Exception $e){
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There are problem in server side try another time'),
+                'message' => __('There are problem in server side try another time')
             ]);
         }
     }
@@ -218,7 +228,7 @@ class EmployeeController extends Controller
         try {
 
             $request->validate([
-                'id' => 'required|string|exists:employees,id',
+                'id' => 'required|string|exists:employees,id'
             ]);
 
             $id = $request->input('id');
@@ -249,14 +259,14 @@ class EmployeeController extends Controller
             // store every employee in data array
             foreach ($employees as $employee) {
                 $data[] = [
-                    'id' => $employee->id,
-                    'number' => $employee->number,
-                    'leadership' => $employee->leadership,
-                    'residential_area_name' => $employee->residential_area_name,
-                    'residential_area_location' => $employee->residential_area_location,
-                    'department_name' => $employee->department_name,
-                    'station_name' => $employee->station_name,
-                    'route_name' => $employee->route_name,
+                    "id" => $employee->id,
+                    "number" => $employee->number,
+                    "leadership" => $employee->leadership,
+                    "residential_area_name" => $employee->residential_area_name,
+                    "residential_area_location" => $employee->residential_area_location,
+                    "department_name" => $employee->department_name,
+                    "station_name" => $employee->station_name,
+                    "route_name" => $employee->route_name
                 ];
             }
 
@@ -274,11 +284,12 @@ class EmployeeController extends Controller
 
             // return response with the data
             return response()->download('employees.csv')->deleteFileAfterSend(true);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e){
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('there are error in server side try another time'),
+                'message' => __('there are error in server side try another time')
             ]);
         }
     }
@@ -292,13 +303,13 @@ class EmployeeController extends Controller
         try {
 
             $request->validate([
-                'file' => 'required|file|mimes:csv,txt,xlsx|max:10048',
-            ], [
-                'file.required' => 'Please choose a file.',
-                'file.file' => 'The uploaded file is not valid.',
-                'file.mimes' => 'The file must be in CSV,XLSX or TXT file.',
-                'file.max' => 'The file size must not exceed 10MB.',
-            ]);
+                'file' => 'required|file|mimes:csv,txt,xlsx|max:10048'
+                 ],[
+                    'file.required' => 'Please choose a file.',
+                    'file.file' => 'The uploaded file is not valid.',
+                    'file.mimes' => 'The file must be in CSV,XLSX or TXT file.',
+                    'file.max' => 'The file size must not exceed 10MB.',
+                ]);
 
             $file = $request->file('file');
 
@@ -309,16 +320,15 @@ class EmployeeController extends Controller
                 // Skip the first row
                 if ($counter == 0) {
                     $counter++;
-
                     continue;
                 }
 
                 $this->create_emplyee(
                     employee_number: $row[0],
-                    department_id: getIdByName(Entity::class, $row[4]),
-                    station_id: getIdByName(Entity::class, $row[5]),
-                    route_id: getIdByName(Entity::class, $row[6]),
-                    residential_area_id: getIdByName(Residential_area::class, $row[2]),
+                    department_id: getIdByName(Entity::class,$row[4]),
+                    station_id: getIdByName(Entity::class,$row[5]),
+                    route_id: getIdByName(Entity::class,$row[6]),
+                    residential_area_id: getIdByName(Residential_area::class,$row[2]),
                     is_leadership: $row[1] == '1' ? true : false
                 );
 
@@ -326,16 +336,18 @@ class EmployeeController extends Controller
 
             // return response with the data
             return response()->json([
-                'message' => __('Successfully adding data to database'),
-            ], 200);
+                'message' => __('Successfully adding data to database')
+            ],200);
 
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e){
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('there are error in server side try another time'),
+                'message' => __('there are error in server side try another time')
             ]);
         }
 
     }
 }
+

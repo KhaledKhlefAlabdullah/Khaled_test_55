@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EntityRequest;
 use App\Http\Resources\EntityResource;
+use App\Models\Category;
 use App\Models\Entity;
 use App\Models\Stakeholder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
 
 
@@ -106,7 +110,7 @@ class EntityController extends Controller
 
             $routes = DB::table('categories')
                 ->join('entities','categories.id','=','entities.category_id')
-                ->select('entities.id as id','entities.from as from','entities.to as to','entities.usage as usage')
+                ->select('entities.public_id as id','entities.from as from','entities.to as to','entities.usage as usage')
                 ->where(['entities.stakeholder_id'=>$stakeholder_id,'categories.name'=>'Route'])->get();
 
             return response()->json([
@@ -119,6 +123,111 @@ class EntityController extends Controller
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('there error in server side try another time')
+            ],500);
+        }
+    }
+
+    /**
+     * Add new route details
+     */
+    public function add_new_route(Request $request)
+    {
+        try{
+
+            $request->validate([
+                'id' => 'required|string|unique:entities,public_id',
+                'from' => 'required|string',
+                'to' => 'required|string',
+                'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
+            ]);
+
+            $entity = Entity::create([
+                'stakeholder_id' =>  stakeholder_id(),
+                'category_id' =>  getIdByName(Category::class,'Route'),
+                'public_id' => $request->input('id'),
+                'from' => $request->input('from'),
+                'to' => $request->input('to'),
+                'usage' => $request->input('usage'),
+                'is_available' => true
+            ]);
+
+            return response()->json([
+                'data' => $entity,
+                'message' => __('Successfully adding new route')
+            ],200);
+
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in adding rout try again')
+            ],500);
+        }
+    }
+
+    /**
+     * Edite route details
+     */
+    public function edite_route_details(Request $request)
+    {
+        try{
+
+            $request->validate([
+                'id' => 'required|string|exists:entities,id',
+                'from' => 'required|string',
+                'to' => 'required|string',
+                'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
+            ]);
+
+            $id = $request->input('id');
+
+            $entity = getAndCheckModelById(Entity::class,$id);
+
+            $entity->update([
+             'from' => $request->input('from'),
+             'to' => $request->input('to'),
+             'usage' => $request->input('usage')
+            ]);
+
+            return response()->json([
+                'data' => $entity,
+                'message' => __('Successfully adding new route')
+            ],200);
+
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in editing rout details try again')
+            ],500);
+        }
+    }
+
+    /**
+     * Delete Route
+     */
+    public function delete_route(Request $request)
+    {
+        try {
+
+            $request->validate([
+               'id' => 'required|string|exists:entities,id'
+            ]);
+
+            $id = $request->input('id');
+
+            $entity = getAndCheckModelById(Entity::class, $id);
+
+            $entity->delete();
+
+            return response()->json([
+                'message' => __('The route deleted successfully')
+            ],200);
+        }
+        catch (\Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in deleting rout details try again')
             ],500);
         }
     }

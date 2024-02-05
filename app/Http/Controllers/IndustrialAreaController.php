@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\IndustrialArea;
 use App\Models\User;
+use App\Models\UserProfile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\fake_register_request;
+use function App\Helpers\find_and_update;
+use function App\Helpers\getAndCheckModelById;
 
 class IndustrialAreaController extends Controller
 {
@@ -139,14 +142,22 @@ class IndustrialAreaController extends Controller
                 'id' => 'required|string|exists:industrial_areas,id',
                 'name' => ['required', 'string', 'min:5'],
                 'address' => ['required', 'string'],
-                //'representative_name' => ['required','string'],
-                //'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
+                'representative_name' => ['required','string'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
             ]);
 
             // get the industrial area want to edite
             $industrial_area = IndustrialArea::findOrFail($request->input('id'));
 
-            // create new industrial area
+            $user = find_and_update(User::class,$industrial_area->id,['email'],[$request->input('email')]);
+
+            $user_profile = find_and_update(UserProfile::class,$user->id,['name'],[$request->input('representative_name')]);
+
+            $user_profile->update([
+                'name' => $request->input('representative_name')
+            ]);
+
+            // update industrial area details
             $industrial_area->update([
                 'name' => $request->input('name'),
                 'address' => $request->input('address'),
@@ -154,6 +165,8 @@ class IndustrialAreaController extends Controller
 
             return response()->json([
                 'industrial_area' => $industrial_area,
+                'user_email' => $user->email,
+                'user_name' => $user_profile->name,
                 'message' => __('successfully editing industrial area details')
             ], 200);
 

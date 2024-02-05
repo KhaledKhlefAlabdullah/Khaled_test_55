@@ -112,7 +112,9 @@ class PostController extends Controller
             // Get general news by get all posts with category news and posts is general news equal true
             $news = DB::table('categories')
                 ->join('posts','categories.id','=','posts.category_id')
-                ->select('posts.*')->where(['categories.name'=>'news','posts.is_general_news'=> true])->get();
+                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title', 'posts.slug', 'posts.body')->where(['categories.name' => 'news', 'posts.is_general_news' => true])->get();
 
             // Return json response with the result
             return response()->json([

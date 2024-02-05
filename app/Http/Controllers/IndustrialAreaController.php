@@ -133,13 +133,12 @@ class IndustrialAreaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, string $id)
     {
         try{
 
             // validate the inputs data
             $request->validate([
-                'id' => 'required|string|exists:industrial_areas,id',
                 'name' => ['required', 'string', 'min:5'],
                 'address' => ['required', 'string'],
                 'representative_name' => ['required','string'],
@@ -147,15 +146,11 @@ class IndustrialAreaController extends Controller
             ]);
 
             // get the industrial area want to edite
-            $industrial_area = IndustrialArea::findOrFail($request->input('id'));
+            $industrial_area = IndustrialArea::findOrFail($id);
 
             $user = find_and_update(User::class,$industrial_area->id,['email'],[$request->input('email')]);
 
             $user_profile = find_and_update(UserProfile::class,$user->id,['name'],[$request->input('representative_name')]);
-
-            $user_profile->update([
-                'name' => $request->input('representative_name')
-            ]);
 
             // update industrial area details
             $industrial_area->update([

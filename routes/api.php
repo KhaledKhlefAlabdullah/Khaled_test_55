@@ -138,7 +138,7 @@ Route::group(['prefix' => 'api'], function () {
         // Routes for portal manager role
         Route::middleware(['portal-manger'])->group(function () {
 
-            Route::post('edite-about-us-details', [PageController::class, 'edite_about_us_post_details']);
+            Route::post('edite-about-us-posts-details/{id}', [PageController::class, 'edite_about_us_post_details']);
 
             Route::post('edite-contact-us-details', [PageController::class, 'edite_contact_us_details']);
 
@@ -146,13 +146,11 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::group(['prefix' => 'industrial-areas'], function () {
 
-                Route::get('/', [IndustrialAreaController::class, 'index']);
-
                 Route::get('/details', [IndustrialAreaController::class, 'show']);
 
                 Route::post('/add', [IndustrialAreaController::class, 'store']);
 
-                Route::post('/edite', [IndustrialAreaController::class, 'update']);
+                Route::post('/edite/{id}', [IndustrialAreaController::class, 'update']);
 
             });
 
@@ -307,6 +305,10 @@ Route::group(['prefix' => 'api'], function () {
     });
 
     // public routes
+
+    // get al industrial areas
+    Route::get('industrial-areas', [IndustrialAreaController::class, 'index']);
+
     // send registration request
     Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);
 

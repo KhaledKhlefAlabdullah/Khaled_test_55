@@ -4,23 +4,6 @@ networks:
     webapp:
 
 services:
-    app:
-        build:
-            context: '.'
-            args:
-                uid: ${UID}
-        container_name: satreps-app
-        environment:
-            - APACHE_RUN_USER=#${UID}
-            - APACHE_RUN_GROUP=#${UID}
-        volumes:
-            - .:/var/www/html
-        ports:
-            - 81:80
-        networks:
-            backend:
-                aliases:
-                    - laravel-app
     apache2:
         image: httpd:2.4
         container_name: satreps_apache2
@@ -32,6 +15,8 @@ services:
             - ./satreps:/usr/local/apache2/htdocs
             - ./docker/apache2/satreps.conf:/usr/local/apache2/conf/satreps.conf:rw
             - ./docker/logs/apache2:/usr/local/apache2/logs:rw
+            - ./docker/apache2/satreps.conf:/etc/apache2/sites-available/000-default.conf
+
         depends_on:
             - php
             - mysql
@@ -59,8 +44,9 @@ services:
             - "3312:3306"
         volumes:
             - ./docker/mysql:/var/lib/mysql  # Corrected volume path
+            - ./run/dump/init.sql:/docker-entrypoint-initdb.d/init.sql
         environment:
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: secure0Root0Password
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
             MYSQL_PASSWORD: ${DB_PASSWORD}

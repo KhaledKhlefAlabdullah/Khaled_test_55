@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Page\StorePageRequest;
 use App\Http\Requests\Page\UpdatePageRequest;
 use App\Http\Resources\PageResource;
+use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use function App\Helpers\edit_file;
 use function App\Helpers\edit_page_details;
-use function App\Helpers\find_and_update;
+use function App\Helpers\get_instances_with_value;
+use function App\Helpers\getIdByName;
 use function App\Helpers\store_files;
+use function App\Helpers\update_instance;
 
 class PageController extends Controller
 {
@@ -24,7 +28,7 @@ class PageController extends Controller
     public function index()
     {
         // Get all pages by auth user id
-        $pages = Page::where('user_id', auth()->user()->id)->paginate();
+        $pages = Page::where('user_id', Auth::id())->paginate();
 
 
         // If there is only one page, return it
@@ -107,7 +111,8 @@ class PageController extends Controller
     {
         try{
 
-            $contact_us = Page::where('type','Contact-Us')->first();
+            $contact_us = Page::where('type', 'Contact-Us')->select('pages.id', 'pages.phone_number',
+                'pages.location', 'pages.start_time', 'pages.end_time')->first();
 
             return response()->json([
                 'data' => $contact_us,
@@ -159,6 +164,7 @@ class PageController extends Controller
                     'posts' => $about_us->posts->map(function ($post) {
                         return [
                             'post_id' => $post->id,
+                            'post_title' => $post->title,
                             'post_body' => $post->body,
                             'post_image' => $post->media_url
                         ];
@@ -188,27 +194,48 @@ class PageController extends Controller
         try {
 
             $request->validate([
-                'post_body' => 'required|string|min:10',
-                'post_image' => 'required|image|mimes:jpeg,png,jpg,gif',
+                'title' => 'required|string',
+                'body' => 'required|string|min:10',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif',
             ]);
 
             $post = Post::find($id);
 
+            $file = $request->image;
+
+            $path = 'images/about_us_images';
+
             if (!$post) {
 
-                $file_path = store_files(
-                    $request->post_image,
-                    'images/about_us_images'
-                );
+                $file_path = store_files($file, $path);
+
+                $user_id = Auth::id();
+
+                $page_id = get_instances_with_value(Page::class, 'About')->id;
+
+                $category_id = getIdByName(Category::class, 'About')->id;
 
                 $post = Post::create([
-
+                    'user_id' => $user_id,
+                    'page_id' => $page_id,
+                    'category_id' => $category_id,
+                    'title' => $request->input('title'),
+                    'body' => $request->input('body'),
+                    'media_url' => $file_path,
+                    'media_type' => 'image'
                 ]);
 
+            } else {
+
+                $image_path = edit_file(
+                    $post->media_url,
+                    $file,
+                    $path
+                );
+
+                $post = update_instance($post, ['body', 'media_url', 'media_type'], [$request->input('body'), $image_path, 'image']);
+
             }
-
-
-            $post = find_and_update(Post::class, $id, ['body', 'media_url', 'media_type'], []);
 
             return response()->json([
                 'data' => $post,

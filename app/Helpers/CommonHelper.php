@@ -300,10 +300,10 @@ if(!function_exists('stakeholder_id')){
  */
 if(!function_exists('get_instances_with_value'))
 {
-    function get_instances_with_value($model,$value)
+    function get_instances_with_value($model, $value)
     {
         // Query the database to retrieve instances where any attribute has the specified value
-        $instances = $model::where(function ($query) use ($model,$value) {
+        $instance = $model::where(function ($query) use ($model, $value) {
             $modelInstance = new $model(); // Create an instance of the model
             $attributes = $modelInstance->getFillable(); // Get fillable attributes of the model
             foreach ($attributes as $attribute) {
@@ -311,8 +311,9 @@ if(!function_exists('get_instances_with_value'))
             }
         })->first();
 
-        return $instances;
+        return $instance;
     }
+
 
 }
 
@@ -342,6 +343,29 @@ if(!function_exists('find_and_update')){
         $instances->update($data);
 
         return $instances; // Return the updated instances
+    }
+}
+
+
+if (!function_exists('update_instance')) {
+    function update_instance($instance, $keys, $values)
+    {
+
+        // Ensure the number of keys and values match
+        if (count($keys) !== count($values)) {
+            throw new \InvalidArgumentException('Number of keys and values must be equal');
+        }
+
+        // Create an associative array of keys and values
+        $data = [];
+        foreach ($keys as $index => $key) {
+            $data[$key] = $values[$index];
+        }
+
+        // Update the model attributes with the provided data
+        $instance->update($data);
+
+        return $instance; // Return the updated instances
     }
 }
 

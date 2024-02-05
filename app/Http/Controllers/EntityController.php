@@ -9,6 +9,7 @@ use App\Models\Entity;
 use App\Models\Stakeholder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Exception;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
@@ -58,7 +59,6 @@ class EntityController extends Controller
         // Return the entity
         return new EntityResource($entity);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -229,6 +229,23 @@ class EntityController extends Controller
                 'error' => __($e->getMessage()),
                 'message' => __('There error in deleting rout details try again')
             ],500);
+        }
+    }
+
+    /**
+     * View production sites list
+     */
+    public function production_sites()
+    {
+        try {
+            // todo continue here
+            $production_sites = '';
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in getting the production sites try again')
+            ], 500);
         }
     }
 }

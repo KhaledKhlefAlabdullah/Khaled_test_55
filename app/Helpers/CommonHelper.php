@@ -238,8 +238,15 @@ if (!function_exists('edite_page_details')) {
 
             }
 
+            $data = [
+                'phone_number' => $page->phone_number,
+                'location' => $page->location,
+                'start_time' => $page->start_time,
+                'end_time' => $page->end_time
+            ];
+
             return response()->json([
-                'page' => $page,
+                'data' => $data,
                 'message' => __('Successfully editing page us details'),
             ], 200);
 

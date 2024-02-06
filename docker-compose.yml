@@ -1,66 +1,31 @@
-version: '3'
-
-networks:
-    webapp:
+version: '3.5'
 
 services:
-    apache2:
-        image: httpd:2.4
-        container_name: satreps_apache2
-        ports:
-            - "81:80"
-        links:
-            - php
-        volumes:
-            - ./satreps:/usr/local/apache2/htdocs
-            - ./docker/apache2/satreps.conf:/usr/local/apache2/conf/satreps.conf:rw
-            - ./docker/logs/apache2:/usr/local/apache2/logs:rw
-        depends_on:
-            - php
-            - mysql
-        networks:
-            - webapp
-
-
-    php:
+    laravel-app:
         build:
-            context: .
-            dockerfile: Dockerfile
-        container_name: satreps_php
-        volumes:
-            - ./satreps:/var/www/html
-        ports:
-            - "9002:9000"
-        networks:
-            - webapp
-
-    mysql: # Change 'postgres' to 'mysql'
-        image: mysql:8.0
-        container_name: satreps_mysql
-        restart: unless-stopped
-        ports:
-            - "3312:3306"
-        volumes:
-            - ./docker/mysql:/var/lib/mysql  # Corrected volume path
+            context: '.'
+            args:
+                uid: ${UID}
+        container_name: satreps-app
         environment:
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            - APACHE_RUN_USER=#${UID}
+            - APACHE_RUN_GROUP=#${UID}
+        volumes:
+            - .:/var/www/html/satreps
+        ports:
+            - 8000:80
+        networks:
+            - backend
+
+    mysql-db:
+        image: mysql:8.0
+        container_name: mysql-db
+        volumes:
+            - ./run/var:/var/lib/mysql
+        environment:
             MYSQL_DATABASE: ${DB_DATABASE}
             MYSQL_USER: ${DB_USERNAME}
             MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: Pass0@WordSatreps01
         networks:
-            - webapp
-
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: satreps_phpmyadmin
-        restart: unless-stopped
-        ports:
-            - "8083:80"
-        environment:
-            PMA_HOST: mysql  # Change to 'mysql' to match the service name
-            PMA_USER: ${DB_USERNAME}
-            PMA_PASSWORD: ${DB_PASSWORD}
-        depends_on:
-            - mysql  # Make sure phpMyAdmin starts after MySQL
-        networks:
-            - webapp
+            - backend

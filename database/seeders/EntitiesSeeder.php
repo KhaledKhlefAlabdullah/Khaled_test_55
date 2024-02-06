@@ -51,6 +51,30 @@ class EntitiesSeeder extends Seeder
 
         ]);
 
+        DB::table('entities')->insert([
+            'id' => '1araf3-7d17-4fa9-a77f-2a76172f5b58',
+            'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
+            'category_id' => '005e8400-e29b-4154-a716-446655445600', // route
+            'name' => 'Production Site 1',
+            'public_id' => 'PS 1',
+            'slug' => 'site 1',
+            'location' => 'Location F',
+            'is_available' => true,
+            'created_at' => now(),
+        ]);
+
+        DB::table('entities')->insert([
+            'id' => '1ard6q-7b19-4fa9-p77f-2a76172f5b58',
+            'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
+            'category_id' => '005e8400-e29b-4154-a716-446655445600', // route
+            'name' => 'Production Site 2',
+            'public_id' => 'PS 2',
+            'slug' => 'site 2',
+            'location' => 'Location 5TY',
+            'is_available' => true,
+            'created_at' => now(),
+        ]);
+
         // Second seed
         DB::table('entities')->insert([
             'id' => '2a97a6d-7b19-4fa9-a77f-2a76172f5b58',

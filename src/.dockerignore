@@ -23,9 +23,8 @@
 /.idea
 /.vscode
 /docker/mysql
-**.env*
+**.env
 **.editorconfig
 **.gitattributes
 **.gitignore
 **.md
-run/var

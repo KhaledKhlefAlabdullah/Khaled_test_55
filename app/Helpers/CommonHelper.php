@@ -345,27 +345,3 @@ if(!function_exists('find_and_update')){
         return $instances; // Return the updated instances
     }
 }
-
-
-if (!function_exists('update_instance')) {
-    function update_instance($instance, $keys, $values)
-    {
-
-        // Ensure the number of keys and values match
-        if (count($keys) !== count($values)) {
-            throw new \InvalidArgumentException('Number of keys and values must be equal');
-        }
-
-        // Create an associative array of keys and values
-        $data = [];
-        foreach ($keys as $index => $key) {
-            $data[$key] = $values[$index];
-        }
-
-        // Update the model attributes with the provided data
-        $instance->update($data);
-
-        return $instance; // Return the updated instances
-    }
-}
-

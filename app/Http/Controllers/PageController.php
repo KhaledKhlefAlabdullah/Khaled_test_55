@@ -16,7 +16,6 @@ use function App\Helpers\edit_page_details;
 use function App\Helpers\get_instances_with_value;
 use function App\Helpers\getIdByName;
 use function App\Helpers\store_files;
-use function App\Helpers\update_instance;
 
 class PageController extends Controller
 {
@@ -233,7 +232,11 @@ class PageController extends Controller
                     $path
                 );
 
-                $post = update_instance($post, ['body', 'media_url', 'media_type'], [$request->input('body'), $image_path, 'image']);
+                $post->update([
+                    'body' => $request->input('body'),
+                    'media_url' => $image_path,
+                    'media_type' => 'image'
+                ]);
 
             }
 

@@ -296,6 +296,13 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // Production Sites
+            Route::group(['prefix' => 'production-sites'], function () {
+
+                Route::get('/', [EntityController::class, 'production_sites']);
+
+            });
+
         });
 
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);

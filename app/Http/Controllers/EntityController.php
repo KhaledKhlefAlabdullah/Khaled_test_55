@@ -238,8 +238,16 @@ class EntityController extends Controller
     public function production_sites()
     {
         try {
-            // todo continue here
-            $production_sites = '';
+
+            $category_id = getIdByName(Category::class, 'Production Site');
+
+            $production_sites = Entity::where(['category_id' => $category_id, 'stakeholder_id' => stakeholder_id()])
+                ->select('entities.id', 'entities.name as production site name', 'entities.location')->get();
+
+            return response()->json([
+                'data' => $production_sites,
+                'message' => __('Successfully getting the production sites')
+            ], 200);
 
         } catch (Exception $e) {
             return response()->json([

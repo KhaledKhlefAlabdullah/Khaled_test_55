@@ -65,7 +65,6 @@ class PageController extends Controller
         return (new PageResource($page))->load('posts');
     }
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -142,7 +141,7 @@ class PageController extends Controller
             'end_time' => 'required'
         ]);
 
-        return edit_page_details($request,'Contact us');
+        return edit_page_details($request, 'Contact-Us');
     }
 
     /**

@@ -58,7 +58,7 @@ services:
     environment:
       - PMA_HOST=mysql
       - PMA_USER=rootP
-      - PMA_PASSWORD=secret
+      - PMA_PASSWORD=secretP
     networks:
       - laravel_enviroment
   redis:
@@ -87,7 +87,7 @@ services:
       dockerfile: dockerfiles/php.dockerfile
     volumes:
       - ./src:/var/www/html/satreps
-    entrypoint: [ "php", "/var/www/html/satreps/artisan" ]
+    entrypoint: [ "php", "/var/www/html/satreps/src/artisan" ]
     #depends_on:
     #- mysql
     networks:

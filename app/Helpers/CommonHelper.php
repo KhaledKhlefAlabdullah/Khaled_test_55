@@ -246,7 +246,7 @@ if (!function_exists('edite_page_details')) {
             //            ];
 
             return response()->json([
-                'message' => __('Successfully editing page us details'),
+                'message' => __('Successfully editing contact us page details'),
             ], 200);
 
         } catch (Exception $e) {
@@ -311,7 +311,12 @@ if(!function_exists('get_instances_with_value'))
         // Query the database to retrieve instances where any attribute has the specified value
         $instance = $model::where(function ($query) use ($model, $value) {
             $modelInstance = new $model(); // Create an instance of the model
-            $attributes = $modelInstance->getFillable(); // Get fillable attributes of the model
+            $fillableAttributes = $modelInstance->getFillable(); // Get fillable attributes of the model
+            $primaryKey = $modelInstance->getKeyName(); // Get the primary key name
+
+            // Combine fillable attributes with primary key
+            $attributes = array_merge($fillableAttributes, [$primaryKey]);
+
             foreach ($attributes as $attribute) {
                 $query->orWhere($attribute, $value); // Add OR condition for each attribute
             }

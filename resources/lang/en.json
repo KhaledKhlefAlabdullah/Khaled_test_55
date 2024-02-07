@@ -2,5 +2,8 @@
 {
     "Successfully getting routes": "Successfully getting routes",
     "Successfully getting the production sites": "Successfully getting the production sites",
-    "There error in getting the production sites try again": "There error in getting the production sites try again"
+    "There error in getting the production sites try again": "There error in getting the production sites try again",
+    "add-production-site": "Successfully adding new production site",
+    "c-g-e": "There error in getting the customers details",
+    "c-g-s": "Successfully getting the customers details"
 }

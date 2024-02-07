@@ -10,6 +10,7 @@ use App\Models\Stakeholder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Exception;
+use function App\Helpers\find_and_update;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
@@ -87,8 +88,7 @@ class EntityController extends Controller
     public function destroy(string $id)
     {
         // Get the entity by ID
-        $entity = Entity::fined($id);
-
+        $entity = Entity::find($id);
         if (!$entity) {
             return response()->json(['message' => 'Entity not found'], 404);
         }
@@ -110,7 +110,7 @@ class EntityController extends Controller
 
             $routes = DB::table('categories')
                 ->join('entities','categories.id','=','entities.category_id')
-                ->select('entities.public_id as id','entities.from as from','entities.to as to','entities.usage as usage')
+                ->select('entities.id as route_id', 'entities.public_id as id', 'entities.from as from', 'entities.to as to', 'entities.usage as usage')
                 ->where(['entities.stakeholder_id'=>$stakeholder_id,'categories.name'=>'Route'])->get();
 
             return response()->json([
@@ -168,26 +168,18 @@ class EntityController extends Controller
     /**
      * Edite route details
      */
-    public function edite_route_details(Request $request)
+    public function edite_route_details(Request $request, string $id)
     {
         try{
 
             $request->validate([
-                'id' => 'required|string|exists:entities,id',
                 'from' => 'required|string',
                 'to' => 'required|string',
                 'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
             ]);
 
-            $id = $request->input('id');
-
-            $entity = getAndCheckModelById(Entity::class,$id);
-
-            $entity->update([
-             'from' => $request->input('from'),
-             'to' => $request->input('to'),
-             'usage' => $request->input('usage')
-            ]);
+            $entity = find_and_update(Entity::class, $id, ['from', 'to', 'usage'],
+                [$request->input('from'), $request->input('to'), $request->input('usage')]);
 
             return response()->json([
                 'data' => $entity,
@@ -199,35 +191,6 @@ class EntityController extends Controller
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in editing rout details try again')
-            ],500);
-        }
-    }
-
-    /**
-     * Delete Route
-     */
-    public function delete_route(Request $request)
-    {
-        try {
-
-            $request->validate([
-               'id' => 'required|string|exists:entities,id'
-            ]);
-
-            $id = $request->input('id');
-
-            $entity = getAndCheckModelById(Entity::class, $id);
-
-            $entity->delete();
-
-            return response()->json([
-                'message' => __('The route deleted successfully')
-            ],200);
-        }
-        catch (\Exception $e){
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('There error in deleting rout details try again')
             ],500);
         }
     }
@@ -255,5 +218,93 @@ class EntityController extends Controller
                 'message' => __('There error in getting the production sites try again')
             ], 500);
         }
+    }
+
+    /**
+     * Add new production site
+     */
+    public function add_new_production_site(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'name' => 'required|string|min:5',
+                'location' => 'required|string|min:5'
+            ]);
+
+            $category_id = getIdByName(Category::class, 'Production Site');
+
+            Entity::create([
+                'stakeholder_id' => stakeholder_id(),
+                'category_id' => $category_id,
+                'public_id' => now(),
+                'name' => $request->input('name'),
+                'location' => $request->input('location'),
+                'is_available' => true
+            ]);
+
+            return response()->json([
+                'message' => __('add-production-site')
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in adding the production sites try again')
+            ], 500);
+        }
+    }
+
+    /**
+     * Edite production site details
+     */
+    public function edite_production_site(Request $request, string $id)
+    {
+        try {
+
+            $request->validate([
+                'name' => 'required|string|min:5',
+                'location' => 'required|string'
+            ]);
+
+            $production_site = find_and_update(Entity::class, $id, ['name', 'location'], [$request->input('name'), $request->input('location')]);
+
+            return response()->json([
+                'data' => $production_site,
+                'message' => __('Successfully editing the production site details')
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in editing production site details')
+            ], 500);
+        }
+    }
+
+    /**
+     * View list of customers details
+     */
+    public function get_Customers()
+    {
+        try {
+
+            $customers = DB::table('entities as customers')
+                ->join('shipments', 'customers.id', '=', 'shipments.customer_id')
+                ->join('entities as products', 'shipments.product_id', '=', 'products.id')
+                ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
+                ->select('customers.id as entity_id', 'customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'routes.name as route')
+                ->where('customers.stakeholder_id', stakeholder_id())->get();
+
+            return response()->json([
+                'data' => $customers,
+                'message' => __('c-g-s')
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('c-g-e')
+            ], 500);
+        }
+
     }
 }

@@ -290,9 +290,9 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [EntityController::class, 'add_new_route']);
 
-                Route::post('/edite', [EntityController::class, 'edite_route_details']);
+                Route::put('/edite/{id}', [EntityController::class, 'edite_route_details']);
 
-                Route::post('/delete', [EntityController::class, 'delete_route']);
+                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
 
             });
 
@@ -300,6 +300,19 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'production-sites'], function () {
 
                 Route::get('/', [EntityController::class, 'production_sites']);
+
+                Route::post('/add', [EntityController::class, 'add_new_production_site']);
+
+                Route::put('/edite/{id}', [EntityController::class, 'edite_production_site']);
+
+                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
+
+            });
+
+            // Customers routes
+            Route::group(['prefix' => 'customers'], function () {
+
+                Route::get('/', [EntityController::class, 'get_Customers']);
 
             });
 

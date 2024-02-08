@@ -16,12 +16,11 @@ return new class extends Migration {
             $table->string('waste_disposal_location_id');
             $table->string('stakeholder_id');
             $table->string('waste_name');
-            $table->text('location');
-            $table->text('contact_info');
             $table->foreign('route_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('waste_disposal_location_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

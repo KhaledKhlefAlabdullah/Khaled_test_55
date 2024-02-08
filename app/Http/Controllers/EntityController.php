@@ -115,7 +115,7 @@ class EntityController extends Controller
 
             return response()->json([
                 'routes' => $routes,
-                'message' => __('Successfully getting routes')
+                'message' => __('routes-getting-success')
             ],200);
 
         }
@@ -209,13 +209,13 @@ class EntityController extends Controller
 
             return response()->json([
                 'data' => $production_sites,
-                'message' => __('Successfully getting the production sites')
+                'message' => __('production-s-getting-success')
             ], 200);
 
         } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There error in getting the production sites try again')
+                'message' => __('production-s-getting-error')
             ], 500);
         }
     }
@@ -297,12 +297,12 @@ class EntityController extends Controller
 
             return response()->json([
                 'data' => $customers,
-                'message' => __('c-g-s')
+                'message' => __('customer-getting-success')
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('c-g-e')
+                'message' => __('customer-getting-error')
             ], 500);
         }
 

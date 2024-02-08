@@ -32,6 +32,7 @@ use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WasteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -221,10 +222,23 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
         });
 
-        Route::middleware(['Industrial-area-representative-or-government-representative'])->group(function () {
+        Route::middleware(['Industrial-area-or-government-representative'])->group(function () {
 
             // Add Manuals & Plans
             Route::post('/manuals-and-plans/add', [FileController::class, 'add_manuals_and_plans'])->name('file.add_manuals_and_plans');
+
+            // for main monitoring points
+            Route::group(['prefix' => 'main-monitoring-points'], function () {
+
+                Route::get('/', [MonitoringPointController::class, 'view_monitoring_points']);
+
+                Route::post('/add', [MonitoringPointController::class, 'add_main_monitoring_point']);
+
+                Route::put('/edite/{id}', [MonitoringPointController::class, 'edite_monitoring_point_details']);
+
+                Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
+
+            });
 
         });
 
@@ -313,6 +327,19 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'customers'], function () {
 
                 Route::get('/', [EntityController::class, 'get_Customers']);
+
+            });
+
+            // Wastes Routes
+            Route::group(['prefix' => 'wastes'], function () {
+
+                Route::get('/', [WasteController::class, 'index']);
+
+                Route::post('/add', [WasteController::class, 'store']);
+
+                Route::put('/edite/{id}', [WasteController::class, 'update']);
+
+                Route::delete('/delete/{id}', [WasteController::class, 'destroy']);
 
             });
 

@@ -151,6 +151,16 @@ class EntitiesSeeder extends Seeder
         ]);
 
         DB::table('entities')->insert([
+            'id' => '9aRC46d-7b19-4fa9-a77f-2a76172f5b58',
+            'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
+            'category_id' => '037e8400-e29b-41d4-a716-446655440000', // customer
+            'name' => 'Muhannad',
+            'public_id' => 'SUP02',
+            'slug' => 'ali-55',
+            'created_at' => now(),
+        ]);
+
+        DB::table('entities')->insert([
             'id' => '1n05a6d-7b19-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
             'category_id' => '038e8400-e29b-41d4-a716-446655440000', // department

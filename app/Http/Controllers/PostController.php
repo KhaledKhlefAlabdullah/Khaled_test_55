@@ -329,19 +329,20 @@ class PostController extends Controller
             ]);
 
             // get the posts (project description) with category id
-            $posts = Post::find($id);
+            $post = Post::find($id);
 
-            // get image from request
-            $image = $request->image;
-
-            // put path to store image
-            $path = 'images/project_description_images';
-
-            // coll store function to store the image
-            $image_path = store_files($image, $path);
 
             // if their no post with category id create one or update the exists on
-            if(empty($posts)){
+            if (empty($post)) {
+
+                // get image from request
+                $image = $request->image;
+
+                // put path to store image
+                $path = 'images/project_description_images';
+
+                // coll store function to store the image
+                $image_path = store_files($image, $path);
 
                 // get auth user id
                 $user_id = Auth::id();
@@ -349,9 +350,10 @@ class PostController extends Controller
                 // get the project description category
                 $category_id = Category::where('name', 'Project description')->first()->id;
 
-                $posts = Post::create([
+                $post = Post::create([
                     "user_id" => $user_id,
                     "category_id" => $category_id,
+                    "title" => now(),
                     "body" => $request->input('body'),
                     "media_url" => $image_path
 
@@ -362,7 +364,17 @@ class PostController extends Controller
             }
             else{
 
-                $posts->update([
+                // get image from request
+                $image = $request->image;
+
+                // put path to store image
+                $path = 'images/project_description_images';
+
+                // coll store function to store the image
+                $image_path = edit_file($post->media_url, $image, $path);
+
+
+                $post->update([
                     "body" => $request->input('body'),
                     "media_url" => $image_path
                 ]);
@@ -372,7 +384,7 @@ class PostController extends Controller
             }
 
             return response()->json([
-                'project_description' => $posts,
+                'project_description' => $post,
                 'message' => __($message)
             ]);
 

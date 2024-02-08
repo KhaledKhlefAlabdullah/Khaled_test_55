@@ -350,7 +350,7 @@ class PostController extends Controller
                 // get the project description category
                 $category_id = Category::where('name', 'Project description')->first()->id;
 
-                $post = Post::create([
+                Post::create([
                     "user_id" => $user_id,
                     "category_id" => $category_id,
                     "title" => now(),
@@ -384,7 +384,6 @@ class PostController extends Controller
             }
 
             return response()->json([
-                'project_description' => $post,
                 'message' => __($message)
             ]);
 

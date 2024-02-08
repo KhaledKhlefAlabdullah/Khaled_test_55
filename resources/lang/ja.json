@@ -1,7 +1,7 @@
 {
-    "Successfully getting routes": "",
-    "Successfully getting the production sites": "",
-    "There error in getting the production sites try again": "",
-    "c-g-e": "",
-    "c-g-s": ""
+    "routes-getting-success": "",
+    "production-s-getting-success": "",
+    "production-s-getting-error": "",
+    "customer-getting-error": "",
+    "customer-getting-success": ""
 }

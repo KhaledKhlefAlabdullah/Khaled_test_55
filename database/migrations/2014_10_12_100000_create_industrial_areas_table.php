@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary()->unique();
             $table->string('name');
             $table->text('address');
+            $table->string('image_url')->default('/images/industrial_areas_images/default_industrial_area.png');
             $table->timestamps();
             $table->softDeletes();
         });

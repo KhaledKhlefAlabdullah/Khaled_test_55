@@ -16,8 +16,9 @@ class IndustrialArea extends Model
     protected $keyType = 'string';
     public $incrementing = false;
     protected $fillable = [
-        "name",
-        "address"
+        'name',
+        'address',
+        'image_url'
     ];
 
 

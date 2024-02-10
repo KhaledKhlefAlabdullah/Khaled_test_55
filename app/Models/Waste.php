@@ -19,9 +19,7 @@ class Waste extends Model
         'route_id',
         'waste_disposal_location_id',
         'stakeholder_id',
-        'waste_name',
-        'location',
-        'contact_info'
+        'waste_name'
     ];
 
     public function stakeholder()

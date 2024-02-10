@@ -170,5 +170,16 @@ class EntitiesSeeder extends Seeder
             'created_at' => now(),
         ]);
 
+        DB::table('entities')->insert([
+            'id' => '1n05A64-8n19-7fG9-a77f-2a76172f5b58',
+            'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
+            'category_id' => '048e8400-e29b-41d4-a716-446655440000',
+            'name' => 'Wastes Disposal site 2',
+            'public_id' => "WA 01",
+            'slug' => 'wast',
+            'location' => 'location-disposal-A',
+            'created_at' => now(),
+        ]);
+
     }
 }

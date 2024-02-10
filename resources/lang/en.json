@@ -28,5 +28,12 @@
     "general-news-create-success": "Successfully add new general news",
     "general-news-create-error": "There an error in adding new general news",
     "general-news-getting-success": "Successfully getting new general news from database",
-    "general-news-getting-error": "There an error in getting general news from database"
+    "general-news-getting-error": "There an error in getting general news from database",
+    "industrial-areas-getting-success": "Successfully getting all industrial areas details",
+    "industrial-areas-getting-error": "There error in getting the industrial areas details",
+    "industrial-areas-creating-error": "There error in creating new industrial area",
+    "industrial-areas-showing-success": "Successfully getting industrial area details with id",
+    "industrial-areas-showing-error": "There error in getting industrial area details",
+    "industrial-areas-editing-success": "Successfully editing industrial area details",
+    "industrial-areas-editing-error": "There ara error in editing industrial area details"
 }

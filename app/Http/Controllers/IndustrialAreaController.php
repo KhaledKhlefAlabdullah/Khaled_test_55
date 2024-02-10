@@ -34,7 +34,7 @@ class IndustrialAreaController extends Controller
             // return the data
             return response()->json([
                 'industrial_areas' => $industrial_areas,
-                'message' => __('Successfully request')
+                'message' => __('industrial-areas-getting-success')
             ], 201);
 
 
@@ -43,7 +43,7 @@ class IndustrialAreaController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('Failed to get any thing')
+                'message' => __('industrial-areas-getting-error')
             ], 501);
 
         }
@@ -95,7 +95,7 @@ class IndustrialAreaController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('there ara problem, some thing went wrong')
+                'message' => __('industrial-areas-creating-error')
             ]);
 
         }
@@ -108,23 +108,19 @@ class IndustrialAreaController extends Controller
     {
         try {
 
-            // get all industrial areas in database
-            $industrial_area = IndustrialArea::findOrFail($id)->with('user')->get();
+            // get industrial area database
+            $industrial_area = DB::table('user_profiles')
+                ->join('users', 'user_profiles.user_id', '=', 'users.id')
+                ->join('industrial_areas', 'users.industrial_area_id', '=', 'industrial_areas.id')
+                ->select('industrial_areas.id as id', 'industrial_areas.name as industrial_area_name',
+                    'industrial_areas.address', 'industrial_areas.image_url', 'users.email', 'user_profiles.name as user_name')
+                ->where('industrial_areas.id', '=', $id)->get();
 
-            // check if their industrial areas in database
-            if(!empty($industrial_area)){
-
-                // return the data
-                return response()->json([
-                    'industrial_area' => $industrial_area,
-                    'message' => __('Successfully request')
-                ],201);
-
-            }
-
+            // return the data
             return response()->json([
-                'message' => __('Successfully request but there now industrial areas in database yeet')
-            ],402);
+                'industrial_area' => $industrial_area,
+                'message' => __('industrial-areas-showing-success')
+            ], 201);
 
         }
             // handling the exceptions
@@ -132,7 +128,7 @@ class IndustrialAreaController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message'=> __('Failed to get any thing')
+                'message' => __('industrial-areas-showing-error')
             ],501);
 
         }
@@ -179,14 +175,14 @@ class IndustrialAreaController extends Controller
                 'industrial_area' => $industrial_area,
                 'user_email' => $user->email,
                 'user_name' => $user_profile->name,
-                'message' => __('successfully editing industrial area details')
+                'message' => __('industrial-areas-editing-success')
             ], 200);
 
         } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('there ara problem, some thing went wrong')
+                'message' => __('industrial-areas-editing-error')
             ]);
 
         }

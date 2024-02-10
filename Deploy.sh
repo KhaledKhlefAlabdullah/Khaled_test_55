@@ -10,13 +10,13 @@ ENV_FILE=".env" # Change this to match your production environment file
 cd $APP_DIR
 
 # Fetch latest changes from the repository
-sudo git pull http://Muhmad-Omar:RRxSiXspTx4WJVmpsxsf@vmi33328.contaboserver.net:1000/root/satreps-dev-back-end.git master
+git fetch origin $BRANCH
 
 # Reset the working directory to the latest commit
 git reset --hard origin/$BRANCH
 
 # Install/update dependencies
-composer install --optimize-autoloader --no-dev --no-interaction
+# composer install --optimize-autoloader --no-dev --no-interaction
 
 # Update database schema and run migrations
 php artisan migrate --force

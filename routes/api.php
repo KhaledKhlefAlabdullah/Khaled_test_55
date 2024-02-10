@@ -91,7 +91,7 @@ Route::group(['prefix' => 'api'], function () {
         //    Route::apiResource('industrial-areas', IndustrialAreaController::class);
 
         // Monitoring Points
-        Route::apiResource('monitoring-points', MonitoringPointController::class);
+        //Route::apiResource('monitoring-points', MonitoringPointController::class);
 
         // Natural Disasters
         Route::apiResource('natural-disasters', NaturalDisasterController::class);
@@ -233,13 +233,14 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [MonitoringPointController::class, 'view_monitoring_points']);
 
-                Route::post('/add', [MonitoringPointController::class, 'add_main_monitoring_point']);
+                Route::post('/add', [MonitoringPointController::class, 'add_monitoring_point']);
 
                 Route::put('/edite/{id}', [MonitoringPointController::class, 'edite_monitoring_point_details']);
 
                 Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
 
             });
+
 
         });
 
@@ -343,6 +344,18 @@ Route::group(['prefix' => 'api'], function () {
                 Route::delete('/delete/{id}', [WasteController::class, 'destroy']);
 
             });
+
+            // for custom monitoring points
+            Route::group(['prefix' => 'custom-monitoring-points'], function () {
+
+                Route::post('/add', [MonitoringPointController::class, 'add_monitoring_point']);
+
+                Route::put('/edite/{id}', [MonitoringPointController::class, 'edite_monitoring_point_details']);
+
+                Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
+
+            });
+
 
         });
 

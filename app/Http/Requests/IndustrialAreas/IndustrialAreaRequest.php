@@ -23,6 +23,7 @@ class IndustrialAreaRequest extends FormRequest
     public function rules(): array
     {
 
+
         $industrial_area_id = $this->route('id');
 
         return [

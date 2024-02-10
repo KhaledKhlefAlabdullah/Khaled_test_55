@@ -28,7 +28,7 @@ class RegistrationRequestController extends Controller
 
             // return the data
             return response()->json([
-                'registration requests' => $registration_requests,
+                'data' => $registration_requests,
                 'message' => __('Get all registration requests successfully'),
             ], 200);
 
@@ -59,7 +59,7 @@ class RegistrationRequestController extends Controller
 
             // return the data
             return response()->json([
-                'registration request details' => $registration_request,
+                'data' => $registration_request,
                 'message' => __('Get registration request details successfully'),
             ], 200);
 
@@ -112,24 +112,20 @@ class RegistrationRequestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function accept_or_failed(Request $request)
+    public function accept_or_failed(Request $request, string $id)
     {
         try {
 
             // validate request inputs
             $request->validate([
-                'registration_id' => 'required|string|exists:registration_requests,id',
                 'state' => 'required|boolean'
             ]);
-
-            // store registration id to fetch the registration request to handle it (Accept or Refuse)
-            $registration_id = $request->registration_id;
 
             // if state is 'true' accept the registration request, or refuse it
             $state = $request->state;
 
             // fetch the registration request
-            $registration_request = RegistrationRequest::findOrFail($registration_id);
+            $registration_request = RegistrationRequest::findOrFail($id);
 
             // check state
             if ($state) {

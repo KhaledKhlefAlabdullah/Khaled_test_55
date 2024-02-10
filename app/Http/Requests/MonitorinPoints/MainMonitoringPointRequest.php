@@ -24,9 +24,9 @@ class MainMonitoringPointRequest extends FormRequest
         return [
             'name' => 'required|string|min:5',
             'location' => 'required|string|min:5',
-            'level' => 'required|string|in:Normal,High,Dangerous',
-            'is_custom' => 'nullable|boolean|default:false',
-            'api_link' => 'required|url'
+            'level' => 'nullable|string|in:normal,high,dangerous',
+            'is_custom' => 'nullable|boolean',
+            'api_link' => 'nullable|url'
         ];
     }
 }

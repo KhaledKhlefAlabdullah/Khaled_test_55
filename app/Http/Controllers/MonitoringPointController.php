@@ -7,6 +7,7 @@ use App\Http\Requests\MonitorinPoints\MainMonitoringPointRequest;
 use App\Http\Resources\MonitoringPointResource;
 use App\Models\MonitoringPoint;
 use App\Models\User;
+use App\Policies\User_policies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -86,6 +87,7 @@ class MonitoringPointController extends Controller
     public function destroy(string $id)
     {
         try {
+
             $monitoring_point = getAndCheckModelById(MonitoringPoint::class, $id);
 
         } catch (NotFoundResourceException $e) {
@@ -128,12 +130,14 @@ class MonitoringPointController extends Controller
      *
      * Add main monitoring point
      */
-    public function add_main_monitoring_point(MainMonitoringPointRequest $request)
+    public function add_monitoring_point(MainMonitoringPointRequest $request)
     {
         try {
 
             // get auth user is
             $user_id = Auth::id();
+
+            $policy = new User_policies();
 
             // create new main monitoring point
             MonitoringPoint::create([
@@ -142,7 +146,7 @@ class MonitoringPointController extends Controller
                 'location' => $request->input('location'),
                 'point_type' => $request->input('level'),
                 'API_link' => $request->input('api_link'),
-                'is_custom' => Gate::authorize('infrastructure_provider_or_tenant_company',User::class)
+                'is_custom' => $policy->infrastructure_provider_or_tenant_company(Auth::user())
             ]);
 
             // return response with success message

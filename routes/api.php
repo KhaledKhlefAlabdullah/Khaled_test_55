@@ -147,11 +147,12 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::group(['prefix' => 'industrial-areas'], function () {
 
-                Route::get('/details', [IndustrialAreaController::class, 'show']);
-
                 Route::post('/add', [IndustrialAreaController::class, 'store']);
 
-                Route::post('/edite/{id}', [IndustrialAreaController::class, 'update']);
+                Route::get('/details/{id}', [IndustrialAreaController::class, 'show']);
+
+
+                Route::put('/edite/{id}', [IndustrialAreaController::class, 'update']);
 
             });
 

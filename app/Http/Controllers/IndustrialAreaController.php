@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndustrialAreas\IndustrialAreaRequest;
 use App\Models\IndustrialArea;
 use App\Models\User;
 use App\Models\UserProfile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\In;
+use function App\Helpers\edit_file;
 use function App\Helpers\fake_register_request;
 use function App\Helpers\find_and_update;
+use function App\Helpers\store_files;
 
 
 class IndustrialAreaController extends Controller
@@ -25,7 +29,7 @@ class IndustrialAreaController extends Controller
             $industrial_areas = DB::table('user_profiles')
             ->join('users','user_profiles.user_id','=','users.id')
             ->join('industrial_areas','users.industrial_area_id','=','industrial_areas.id')
-            ->select('industrial_areas.id as id','industrial_areas.name as industrial_area_name','industrial_areas.address','users.email','user_profiles.name as user_name')->get();
+                ->select('industrial_areas.id as id', 'industrial_areas.name as industrial_area_name', 'industrial_areas.address', 'industrial_areas.image_url', 'users.email', 'user_profiles.name as user_name')->get();
 
             // return the data
             return response()->json([
@@ -48,22 +52,29 @@ class IndustrialAreaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(IndustrialAreaRequest $request)
     {
         try {
 
-            // validate the inputs data
-            $request->validate([
-                'name' => ['required', 'string', 'min:5'],
-                'address' => ['required', 'string'],
-                'representative_name' => ['required', 'string'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
-            ]);
+            $image = $request->image;
+
+            if (!is_null($image)) {
+
+                $path = 'images/industrial_areas_images';
+
+                $image_path = store_files($image, $path);
+
+            } else {
+
+                $image_path = '/images/industrial_areas_images/default_industrial_area.png';
+
+            }
 
             // create new industrial area
             $industrial_area = IndustrialArea::create([
                 'name' => $request->input('name'),
                 'address' => $request->input('address'),
+                'image_url' => $image_path,
             ]);
 
             // create industrial area representative (user)
@@ -79,6 +90,7 @@ class IndustrialAreaController extends Controller
             );
 
             return $response;
+
         } catch (Exception $e) {
 
             return response()->json([
@@ -92,16 +104,12 @@ class IndustrialAreaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(string $id)
     {
         try {
 
-            $request->validate([
-                'id' => 'required|string|exists:industrial_areas,id'
-            ]);
-
             // get all industrial areas in database
-            $industrial_area = IndustrialArea::findOrFail($request->input('id'))->with('user')->get();
+            $industrial_area = IndustrialArea::findOrFail($id)->with('user')->get();
 
             // check if their industrial areas in database
             if(!empty($industrial_area)){
@@ -133,17 +141,9 @@ class IndustrialAreaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(IndustrialAreaRequest $request, string $id)
     {
         try{
-
-            // validate the inputs data
-            $request->validate([
-                'name' => ['required', 'string', 'min:5'],
-                'address' => ['required', 'string'],
-                'representative_name' => ['required','string'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class]
-            ]);
 
             // get the industrial area want to edite
             $industrial_area = IndustrialArea::findOrFail($id);
@@ -152,10 +152,27 @@ class IndustrialAreaController extends Controller
 
             $user_profile = find_and_update(UserProfile::class,$user->id,['name'],[$request->input('representative_name')]);
 
+            $image = $request->image;
+
+            $old_path = $industrial_area->image_url;
+
+            if (!is_null($image)) {
+
+                $path = 'images/industrial_areas_images';
+
+                $image_url = edit_file($old_path, $image, $path);
+
+            } else {
+
+                $image_url = $old_path;
+
+            }
+
             // update industrial area details
             $industrial_area->update([
                 'name' => $request->input('name'),
                 'address' => $request->input('address'),
+                'image_url' => $image_url
             ]);
 
             return response()->json([

@@ -10,7 +10,7 @@ ENV_FILE=".env" # Change this to match your production environment file
 cd $APP_DIR
 
 # Fetch latest changes from the repository
-git fetch origin $BRANCH
+sudo git pull http://Muhmad-Omar:RRxSiXspTx4WJVmpsxsf@vmi33328.contaboserver.net:1000/root/satreps-dev-back-end.git master
 
 # Reset the working directory to the latest commit
 git reset --hard origin/$BRANCH

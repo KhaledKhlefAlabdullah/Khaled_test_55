@@ -3,6 +3,7 @@
 namespace App\Http\Requests\IndustrialAreas;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class IndustrialAreaRequest extends FormRequest
 {
@@ -21,12 +22,23 @@ class IndustrialAreaRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        $industrial_area_id = $this->route('id');
+
         return [
             'name' => 'required|string|min:5',
             'address' => 'required', 'string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
             'representative_name' => 'required|string',
-            'email' => 'required|string|email|max:255|unique:users,email'
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users')->where(function ($query) use ($industrial_area_id) {
+                    return $query->where('industrial_area_id', '!=', $industrial_area_id);
+                }),
+            ]
         ];
     }
 }

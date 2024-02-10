@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return "hello";
-});
+Route::view('/', 'welcome')->name('home');
 
 //Route::get('/get-csv', [\App\Http\Controllers\EmployeeController::class,'export_csv_employees_file']);
 

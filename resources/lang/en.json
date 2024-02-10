@@ -19,5 +19,14 @@
     "waste-add-error": "There error in adding new waste details",
     "waste-add-success": "Successfully adding new waste details",
     "waste-delete-error": "There error in deleting the waste details",
-    "waste-delete-success": "Successfully deleting the waste details"
+    "waste-delete-success": "Successfully deleting the waste details",
+    "general-news-delete-success": "Successfully deleting the general news",
+    "general-news-delete-error": "There error in deleting the general news",
+    "not-general-news-delete-error": "is not general news you can\\'t delete it",
+    "general-news-edite-success": "Successfully editing general news",
+    "general-news-edite-error": "There an error in editing general news",
+    "general-news-create-success": "Successfully add new general news",
+    "general-news-create-error": "There an error in adding new general news",
+    "general-news-getting-success": "Successfully getting new general news from database",
+    "general-news-getting-error": "There an error in getting general news from database"
 }

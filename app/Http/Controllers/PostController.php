@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Post;
@@ -119,7 +120,7 @@ class PostController extends Controller
             // Return json response with the result
             return response()->json([
                 'news' => $news,
-                'message' => __('Successfully getting news from database')
+                'message' => __('general-news-getting-success')
             ]);
 
         }
@@ -127,7 +128,7 @@ class PostController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There error in server side try another time')
+                'message' => __('general-news-getting-error')
             ],500);
 
         }
@@ -136,17 +137,10 @@ class PostController extends Controller
     /**
      * Add new general news
      */
-    public function new_general_news(Request $request)
+    public function new_general_news(GeneralNewsRequest $request)
     {
 
         try {
-            // validate the inputs
-            $request->validate([
-                'title' => 'required|string|max:255',
-                'slug' => 'required|string|unique:posts,slug|max:255',
-                'body' => 'required|string',
-                'media_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            ]);
 
             // get category id where category is news
             $category_id = Category::where('name','news')->first()->id;
@@ -164,7 +158,7 @@ class PostController extends Controller
             $image_path = store_files($image,$path);
 
             // create new post as general news
-            $new_general_news = Post::create([
+            Post::create([
                 'user_id' => $user_id,
                 'category_id' => $category_id,
                 'title' => $request->input('title'),
@@ -177,8 +171,7 @@ class PostController extends Controller
 
             // return response with created data
             return response()->json([
-                'new_general_news' => $new_general_news,
-                'message' => __('Successfully add new general news')
+                'message' => __('general-news-create-success')
             ],200);
 
         }
@@ -186,7 +179,7 @@ class PostController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There an error in server side')
+                'message' => __('general-news-create-error')
             ],500);
 
         }
@@ -195,36 +188,31 @@ class PostController extends Controller
     /**
      * Edite general news
      */
-    public function edite_general_news(Request $request)
+    public function edite_general_news(GeneralNewsRequest $request, string $id)
     {
 
         try {
-            // validate the inputs
-            $request->validate([
-                'general_news_id'=> 'required|string|exists:posts,id',
-                'title' => 'required|string|max:255',
-                'slug' => 'required|string|unique:posts,slug|max:255',
-                'body' => 'required|string',
-                'media_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
-            ]);
-
-            // get general news id from request
-            $general_news_id = $request->input('general_news_id');
 
             // get the general news will be editing
-            $general_news = Post::findOrFail($general_news_id);
+            $general_news = Post::findOrFail($id);
 
-            // get image from request
-            $new_image = $request->media_file;
+            if( is_null($request->media_file) ){
 
-            // put path to store image
-            $path = 'images/general_news_images';
+                $image_path = $general_news->media_url;
 
-            // get old file path
-            $old_file_path = $general_news->media_url;
+            }else{
+                // get image from request
+                $new_image = $request->media_file;
 
-            // coll store function to store the image
-            $image_path = edit_file($old_file_path, $new_image, $path);
+                // put path to store image
+                $path = 'images/general_news_images';
+
+                // get old file path
+                $old_file_path = $general_news->media_url;
+
+                // coll store function to store the image
+                $image_path = edit_file($old_file_path, $new_image, $path);
+            }
 
             // create new post as general news
             $general_news->update([
@@ -238,7 +226,7 @@ class PostController extends Controller
             // return response with created data
             return response()->json([
                 'new_general_news' => $general_news,
-                'message' => __('Successfully editing general news')
+                'message' => __('general-news-edite-success')
             ],200);
 
         }
@@ -246,7 +234,7 @@ class PostController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There an error in server side')
+                'message' => __('general-news-edite-error')
             ],500);
 
         }
@@ -255,17 +243,11 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete_general_news(Request $request)
+    public function delete_general_news(string $id)
     {
         // Get the post by id and check if exists
         try {
 
-            $request->validate([
-                'id' => 'required|string|exists:posts,id'
-            ]);
-
-            // get the id from request
-            $id = $request->input('id');
 
             // get the news object
             $data = getAndCheckModelById(Post::class, $id);
@@ -274,10 +256,10 @@ class PostController extends Controller
             $is_general = $data->is_general_news;
 
             // general message
-            $message = 'general news deleted successfully';
+            $message = 'general-news-delete-success';
 
             // Delete the post if it general news else put another message
-            $is_general? $data->delete() : $message = 'is not general news you can\'t delete it';
+            $is_general ? $data->delete() : $message = 'not-general-news-delete-error';
 
             return response()->json([
                 'message' => __($message)
@@ -285,7 +267,10 @@ class PostController extends Controller
 
         } catch (NotFoundResourceException $e) {
 
-            return response()->json([__($e->getMessage())], $e->getCode());
+            return response()->json([
+              'error' =>  __($e->getMessage()),
+                'message' => __('general-news-delete-error')
+            ], $e->getCode());
 
         }
     }

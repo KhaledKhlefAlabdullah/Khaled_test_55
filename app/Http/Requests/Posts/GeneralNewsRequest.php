@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\MonitorinPoints;
+namespace App\Http\Requests\Posts;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MainMonitoringPointRequest extends FormRequest
+class GeneralNewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,10 @@ class MainMonitoringPointRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:5',
-            'location' => 'required|string|min:5',
-            'level' => 'required|string|in:Normal,High,Dangerous',
-            'is_custom' => 'nullable|boolean|default:false',
-            'api_link' => 'required|url'
+            'title' => 'required|string|max:255',
+            'slug' => 'required|string|unique:posts,slug|max:255',
+            'body' => 'required|string',
+            'media_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ];
     }
 }

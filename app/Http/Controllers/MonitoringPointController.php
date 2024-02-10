@@ -6,8 +6,10 @@ use App\Http\Requests\MonitoringPointRequest;
 use App\Http\Requests\MonitorinPoints\MainMonitoringPointRequest;
 use App\Http\Resources\MonitoringPointResource;
 use App\Models\MonitoringPoint;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\transformCollection;
@@ -140,6 +142,7 @@ class MonitoringPointController extends Controller
                 'location' => $request->input('location'),
                 'point_type' => $request->input('level'),
                 'API_link' => $request->input('api_link'),
+                'is_custom' => Gate::authorize('infrastructure_provider_or_tenant_company',User::class)
             ]);
 
             // return response with success message

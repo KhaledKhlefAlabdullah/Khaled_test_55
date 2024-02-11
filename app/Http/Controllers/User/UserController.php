@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function App\Helpers\getAndCheckModelById;
 
 class UserController extends Controller
 {
@@ -129,7 +130,7 @@ class UserController extends Controller
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There are problem in server side try another time')
+                'message' => __('subdomain-user-add-error')
             ]);
 
         }
@@ -147,34 +148,25 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(string $id)
     {
         try {
-            // validate the user_id
-            $request->validate([
-                'user_id' => 'required|string|exists:users,id'
-            ]);
 
             // get the user
-            $user = User::findOrFail($request->input('user_id'));
+            $user = getAndCheckModelById(User::class, $id);
 
             // remove the user
             $user->delete();
 
             return response()->json([
-                'message' => 'User deleted successfully'
+                'message' => __('subdomain-user-delete-success')
             ], 200);
-
-        } catch (ModelNotFoundException $e) {
-
-            return response()->json([
-                'error' => 'User not found'
-            ], 404);
 
         } catch (\Exception $e) {
 
             return response()->json([
-                'error' => 'Something went wrong'
+                'error' => __($e->getMessage()),
+                'message' => __('subdomain-user-delete-error')
             ], 500);
 
         }

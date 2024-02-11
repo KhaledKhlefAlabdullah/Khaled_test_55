@@ -1,16 +1,15 @@
 # Satreps dev Back end
 
 This repository contains the back-end code for the satreps-dev project. The back-end is built using the Laravel
-framework and can be easily set up using Docker.
+framework and can be easily set up.
 
 ## Getting Started
 
-Follow the instructions below to set up and run the project locally using Docker.
+Follow the instructions below to set up and run the project locally.
 
 ### Prerequisites
 
-- Docker: Ensure you have Docker installed on your machine. You can download and install Docker
-  from [https://www.docker.com/get-started](https://www.docker.com/get-started).
+
 
 ### Installation
 
@@ -34,43 +33,21 @@ Follow the instructions below to set up and run the project locally using Docker
 
 4. Update the `.env` file with your preferred configuration settings, including database credentials.
 
-### Running with Docker
 
-1. Build the Docker images and start the containers:
-
-   ```bash
-   docker-compose up -d --build
-   ```
-
-2. Generate an application key:
+1. Generate an application key:
 
    ```bash
    php artisan key:generate
    ```
 
-3. Run database migrations and seeders:
+2. Run database migrations and seeders:
 
    ```bash
    php artisan migrate --seed
    ```
 
-4. The Laravel application should now be running at [http://localhost:8080](http://localhost:8080).
+3. The Laravel application should now be running at [http://localhost:8080](http://localhost:8080).
 
-### Stopping the Application
-
-To stop the application and shut down the Docker containers, run:
-
-```bash
-docker-compose down
-```
-
-### Accessing Logs
-
-To access the logs of the running containers, you can use the following command:
-
-```bash
-docker-compose logs -f
-```
 
 ### Troubleshooting
 

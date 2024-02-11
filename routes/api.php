@@ -180,7 +180,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/details/{id}', [UserController::class, 'subdomain_user_details']);
 
-                Route::post('/delete', [UserController::class, 'destroy']);
+                Route::delete('/delete/{id}', [UserController::class, 'destroy']);
 
             });
 

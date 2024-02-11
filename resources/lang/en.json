@@ -37,5 +37,8 @@
     "industrial-areas-editing-success": "Successfully editing industrial area details",
     "industrial-areas-editing-error": "There ara error in editing industrial area details",
     "subdomain-user-details-success": "Successfully getting the subdomain user details",
-    "subdomain-user-details-error": "There are error in getting the subdomain user details"
+    "subdomain-user-details-error": "There are error in getting the subdomain user details",
+    "subdomain-user-delete-success": "Successfully deleting the subdomain user",
+    "subdomain-user-delete-error": "There error in deleting the subdomain user",
+    "subdomain-user-add-error": "There error in add new subdomain user"
 }

@@ -178,7 +178,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [UserController::class, 'store_new_subdomain_user']);
 
-                Route::get('/details', [UserController::class, 'subdomain_user_details']);
+                Route::get('/details/{id}', [UserController::class, 'subdomain_user_details']);
 
                 Route::post('/delete', [UserController::class, 'destroy']);
 

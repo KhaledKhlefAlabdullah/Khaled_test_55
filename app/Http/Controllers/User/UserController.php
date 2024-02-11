@@ -46,7 +46,7 @@ class UserController extends Controller
                 ->join('stakeholders', 'industrial_areas.id', '=', 'stakeholders.industrial_area_id')
                 ->join('users', 'stakeholders.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-                ->select('industrial_areas.id as id', 'industrial_areas.name as industrial_area_name',
+                ->select('industrial_areas.id as id', 'users.id as user_id', 'industrial_areas.name as industrial_area_name',
                     'users.email', 'users.stakeholder_type', 'user_profiles.name as user_name')
                 ->where('industrial_areas.id', '=', $industrial_area_id)->get();
 
@@ -70,16 +70,12 @@ class UserController extends Controller
     /**
      * Get subdomain user details
      */
-    public function subdomain_user_details(Request $request)
+    public function subdomain_user_details(string $id)
     {
         try {
 
-            $request->validate([
-                'user_id' => 'required|string|exists:users,id'
-            ]);
-
             $user_details = User::with(['user_profile', 'stakeholder'])
-                ->findOrFail($request->input('user_id'));
+                ->findOrFail($id);
             return response()->json([
                 'user_details' => $user_details
             ], 200);

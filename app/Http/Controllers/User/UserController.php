@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -39,12 +40,20 @@ class UserController extends Controller
 
         try {
 
-            // get all stakeholders belong to industrial area
-            $subdomain_users = Auth::user()->industrial_area()->with(['stakeholders', 'user'])->get();
+            $industrial_area_id = Auth::user()->industrial_area_id;
+
+            $subdomain_users = DB::table('industrial_areas')
+                ->join('stakeholders', 'industrial_areas.id', '=', 'stakeholders.industrial_area_id')
+                ->join('users', 'stakeholders.user_id', '=', 'users.id')
+                ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                ->select('industrial_areas.id as id', 'industrial_areas.name as industrial_area_name',
+                    'users.email', 'users.stakeholder_type', 'user_profiles.name as user_name')
+                ->where('industrial_areas.id', '=', $industrial_area_id)->get();
 
             // return the result
             return response()->json([
-                'subdomain_users' => $subdomain_users
+                'data' => $subdomain_users,
+                'message' => __('Successfully getting the subdomain users details')
             ], 200);
 
         } catch (\Exception $e) {

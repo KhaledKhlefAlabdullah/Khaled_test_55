@@ -35,5 +35,7 @@
     "industrial-areas-showing-success": "Successfully getting industrial area details with id",
     "industrial-areas-showing-error": "There error in getting industrial area details",
     "industrial-areas-editing-success": "Successfully editing industrial area details",
-    "industrial-areas-editing-error": "There ara error in editing industrial area details"
+    "industrial-areas-editing-error": "There ara error in editing industrial area details",
+    "subdomain-user-details-success": "Successfully getting the subdomain user details",
+    "subdomain-user-details-error": "There are error in getting the subdomain user details"
 }

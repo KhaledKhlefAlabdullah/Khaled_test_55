@@ -77,14 +77,15 @@ class UserController extends Controller
             $user_details = User::with(['user_profile', 'stakeholder'])
                 ->findOrFail($id);
             return response()->json([
-                'user_details' => $user_details
+                'data' => $user_details,
+                'message' => __('subdomain-user-details-success')
             ], 200);
 
         } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There are error try another time')
+                'message' => __('subdomain-user-details-error')
             ], 500);
 
         }

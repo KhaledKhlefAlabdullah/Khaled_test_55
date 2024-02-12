@@ -107,7 +107,7 @@ class UserController extends Controller
                 'password' => 'required|string|min:3',
                 'phone_number' => 'nullable|string|max:20',
                 'contact_person' => 'nullable|string|max:255',
-                'stakeholder_type' => 'required|string|in:Tenant_company,Other_Stakeholder_Type',
+                'stakeholder_type' => 'required|string|in:Tenant_company,Infrastructure_provider,Government_representative',
                 'location' => 'nullable|string|max:255'
             ]);
 

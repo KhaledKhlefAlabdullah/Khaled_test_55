@@ -15,7 +15,7 @@ class FileSeeder extends Seeder
         // First file seed
         DB::table('files')->insert([
             'id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'file_type' => 'Educational',
             'title' => 'Introduction to Portal',
             'description' => 'A beginner\'s guide to Portal.',
@@ -30,7 +30,7 @@ class FileSeeder extends Seeder
 // Second file seed
         DB::table('files')->insert([
             'id' => '2a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'file_type' => 'Educational',
             'title' => 'User Educational for Product X',
             'description' => 'Step-by-step guide for using Product X.',
@@ -45,7 +45,7 @@ class FileSeeder extends Seeder
 // Third file seed
         DB::table('files')->insert([
             'id' => '3a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'file_type' => 'Educational',
             'title' => 'Project Educational Y Blueprint',
             'description' => 'Architectural Educational for Project Y construction.',

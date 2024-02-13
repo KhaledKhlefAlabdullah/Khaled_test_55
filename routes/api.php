@@ -356,6 +356,12 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            Route::group(['prefix' => 'notifications-settings'], function () {
+
+                Route::get('/', [NotificationsSettingController::class, 'view_all_notification_settings']);
+
+            });
+
 
         });
 

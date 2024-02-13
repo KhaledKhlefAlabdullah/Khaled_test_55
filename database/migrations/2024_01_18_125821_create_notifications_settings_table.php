@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('user_id');
             $table->string('main_category_id');
             $table->string('sub_category_id');
-            $table->enum('notification_state',['none','observation','forecasting'])->nullable();
-            $table->enum('notification_level',['none','normal','medium','high'])->nullable();
-            $table->enum('notification_priorities',['none','top','low','high']);
+            $table->enum('notification_state', ['none', 'observation', 'forecasting'])->default('none');
+            $table->enum('notification_level', ['none', 'normal', 'medium', 'high'])->default('none');
+            $table->enum('notification_priorities', ['none', 'top', 'low', 'high'])->default('none');
             $table->boolean('is_on')->default(false);
             $table->text('note')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -15,9 +15,141 @@ class NotificationSettingSeeder extends Seeder
         // Notification Settings for Portal Manager
         NotificationsSetting::create([
             'id' => '00p17a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
             'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
             'sub_category_id' => "022e8400-e29b-41d4-a716-446655440000", // rain
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '00P16a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "023e8400-e29b-41d4-a716-446655440000", // rain
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '00P16O6g-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "024e8400-e29b-41d4-a716-446655440000", // rain
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '00P1646g-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "025e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "026e8400-e29b-41d4-a716-446655440000", // rain
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P1646g-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "025e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "027e8400-e29b-41d4-a716-446655440000", // rain
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P3946g-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "025e8400-e29b-41d4-a716-446655440000", // weather
+            'sub_category_id' => "028e8400-e29b-41d4-a716-446655440000", // rain
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P1946g-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "029e8400-e29b-41d4-a716-446655440000", // Infrastructure
+            'sub_category_id' => "030e8400-e29b-41d4-a716-446655440000", // notification
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P19H6g-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "031e8400-e29b-41d4-a716-446655440000", // Infrastructure
+            'sub_category_id' => "032e8400-e29b-41d4-a716-446655440000", // notification
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P19H6g-7b7K-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "031e8400-e29b-41d4-a716-446655440000", // Infrastructure
+            'sub_category_id' => "033e8400-e29b-41d4-a716-446655440000", // notification
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P19H6g-7b7L-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "031e8400-e29b-41d4-a716-446655440000", // Infrastructure
+            'sub_category_id' => "034e8400-e29b-41d4-a716-446655440000", // notification
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P19H6g-7bpL-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "031e8400-e29b-41d4-a716-446655440000", // Infrastructure
+            'sub_category_id' => "035e8400-e29b-41d4-a716-446655440000", // notification
+            'notification_state' => 'none',
+            'notification_level' => 'high',
+            'notification_priorities' => 'high',
+            'is_on' => true,
+            'note' => 'Notification settings for Portal Manager',
+        ]);
+
+        NotificationsSetting::create([
+            'id' => '07P19G6g-7bpL-4fa9-1234-2a76172f5b58', // Generate a unique ID
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Portal Manager
+            'main_category_id' => "031e8400-e29b-41d4-a716-446655440000", // Infrastructure
+            'sub_category_id' => "036e8400-e29b-41d4-a716-446655440000", // notification
             'notification_state' => 'none',
             'notification_level' => 'high',
             'notification_priorities' => 'high',
@@ -50,6 +182,7 @@ class NotificationSettingSeeder extends Seeder
             'is_on' => true,
             'note' => 'Notification settings for Tenant Company (Second)',
         ]);
+
 
         // Notification Settings for Industrial Area Representative (First)
         NotificationsSetting::create([

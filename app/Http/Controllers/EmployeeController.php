@@ -26,7 +26,7 @@ class EmployeeController extends Controller
     {
         try {
 
-            //$user_id = Auth::id();
+            $user_id = Auth::id();
 
             $employees = DB::table('users')
                 ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
@@ -37,7 +37,8 @@ class EmployeeController extends Controller
                 ->join('entities as route', 'employees.route_id', '=', 'route.id')
                 ->select('employees.id', 'employees.employee_number as number', 'employees.is_leadership as leadership',
                     'residential_areas.name as residential_area_name', 'residential_areas.location as residential_area_location',
-                    'department.name as department_name', 'station.name as station_name', 'route.name as route_name')->where('users.id','=','12c97a6d-7b19-4fa9-a77f-2a76172f5b58')
+                    'department.name as department_name', 'station.name as station_name', 'route.name as route_name')
+                ->where('users.id', '=', $user_id)
                 ->get();
 
             return $employees;

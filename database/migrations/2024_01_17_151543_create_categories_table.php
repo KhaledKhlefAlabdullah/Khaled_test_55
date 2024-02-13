@@ -50,14 +50,6 @@ return new class extends Migration {
         ]);
 
         DB::table('categories')->insert([
-            'id' => '005e8400-e29b-4154-a716-446655445600',
-            'name' => 'Production Site',
-            'parent_id' => null,
-            'created_at' => now(),
-        ]);
-
-
-        DB::table('categories')->insert([
             'id' => '006e8400-e29b-41d4-a716-446655440000',
             'name' => 'Notification',
             'parent_id' => null,
@@ -71,12 +63,6 @@ return new class extends Migration {
             'created_at' => now(),
         ]);
 
-        DB::table('categories')->insert([
-            'id' => '008e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Weather Notification',
-            'parent_id' => '006e8400-e29b-41d4-a716-446655440000', // Notification
-            'created_at' => now(),
-        ]);
 
         DB::table('categories')->insert([
             'id' => '009e8400-e29b-41d4-a716-446655440000',
@@ -171,11 +157,17 @@ return new class extends Migration {
         ]);
 
 
-        // Notifications Categories
         // Start Weather Notification
         DB::table('categories')->insert([
+            'id' => '008e8400-e29b-41d4-a716-446655440000',
+            'name' => 'Weather',
+            'parent_id' => '006e8400-e29b-41d4-a716-446655440000', // Notification
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
             'id' => '022e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Rain Notification',
+            'name' => 'Rain',
             'parent_id' => '008e8400-e29b-41d4-a716-446655440000', // Weather Notification
             'created_at' => now(),
         ]);
@@ -183,7 +175,7 @@ return new class extends Migration {
         // Notifications Categories
         DB::table('categories')->insert([
             'id' => '023e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Wind Notification',
+            'name' => 'Wind',
             'parent_id' => '008e8400-e29b-41d4-a716-446655440000', // Weather Notification
             'created_at' => now(),
         ]);
@@ -191,7 +183,7 @@ return new class extends Migration {
         // Notifications Categories
         DB::table('categories')->insert([
             'id' => '024e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Report Weather Notification',
+            'name' => 'Report Weather',
             'parent_id' => '008e8400-e29b-41d4-a716-446655440000', // Weather Notification
             'created_at' => now(),
         ]);
@@ -200,28 +192,28 @@ return new class extends Migration {
         // Start Water Level Notification
         DB::table('categories')->insert([
             'id' => '025e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Water Level Notification',
+            'name' => 'Water Level',
             'parent_id' => '006e8400-e29b-41d4-a716-446655440000', // Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '026e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Monitoring Point Notification',
+            'name' => 'Monitoring Point',
             'parent_id' => '025e8400-e29b-41d4-a716-446655440000', // Water Level Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '027e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Dam Notification',
+            'name' => 'Dam',
             'parent_id' => '025e8400-e29b-41d4-a716-446655440000', // Water Level Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '028e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Report Water Notification',
+            'name' => 'Report Water',
             'parent_id' => '025e8400-e29b-41d4-a716-446655440000', // Water Level Notification
             'created_at' => now(),
         ]);
@@ -246,42 +238,42 @@ return new class extends Migration {
         // Start Business Impact Notification
         DB::table('categories')->insert([
             'id' => '031e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Business Impact Notification',
+            'name' => 'Business Impact',
             'parent_id' => '006e8400-e29b-41d4-a716-446655440000', // Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '032e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Production Site Notification',
+            'name' => 'Production Site',
             'parent_id' => '031e8400-e29b-41d4-a716-446655440000', // Business Impact Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '033e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Supplier Notification',
+            'name' => 'Suppliers',
             'parent_id' => '031e8400-e29b-41d4-a716-446655440000', // Business Impact Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '034e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Wastes Notification',
+            'name' => 'Wastes',
             'parent_id' => '031e8400-e29b-41d4-a716-446655440000', // Business Impact Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '035e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Shipment Notification',
+            'name' => 'Shipments',
             'parent_id' => '031e8400-e29b-41d4-a716-446655440000', // Business Impact Notification
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '036e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Employee Notification',
+            'name' => 'Employees',
             'parent_id' => '031e8400-e29b-41d4-a716-446655440000', // Business Impact Notification
             'created_at' => now(),
         ]);

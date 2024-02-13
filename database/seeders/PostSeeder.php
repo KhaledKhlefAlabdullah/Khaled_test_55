@@ -14,7 +14,7 @@ class PostSeeder extends Seeder
     {
         DB::table('posts')->insert([
             'id' => '0009776d-7b19-55a9-a77f-2a76172f5222',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
             'page_id' => '6a97a6d-7b19-4fa9-a77f-2a76172f5b58', // General News Page
             'category_id' => '040e8400-e29b-41d4-a716-446655440000', // News Category
             'title' => 'General News',
@@ -29,7 +29,7 @@ class PostSeeder extends Seeder
 
         DB::table('posts')->insert([
             'id' => '0009776d-7b19-55a9-k77f-2a76173f5822',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
             'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58', // About us Page
             'category_id' => '004e8400-e29b-41d4-a716-446655440000', // About Category
             'title' => 'Our Vision',
@@ -44,7 +44,7 @@ class PostSeeder extends Seeder
 
         DB::table('posts')->insert([
             'id' => '0005796g-7B19-55a9-k77f-2a76173f5822',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
             'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'category_id' => '004e8400-e29b-41d4-a716-446655440000',
             'title' => 'Our Approach',
@@ -59,7 +59,7 @@ class PostSeeder extends Seeder
 
         DB::table('posts')->insert([
             'id' => '0005796g-7B6c-8J39-k77f-2a76173f5822',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
             'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58', // About us Page
             'category_id' => '004e8400-e29b-41d4-a716-446655440000', // About Category
             'title' => 'Our Process',

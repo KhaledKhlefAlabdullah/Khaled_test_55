@@ -28,7 +28,7 @@ class NotificationSeeder extends Seeder
 // Second notification seed
         DB::table('notifications')->insert([
             'id' => '2a97a6d-0202-4fa9-a77f-2a7617205b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'New SMS Notification',
             'description' => 'You have received a new SMS message.',
             'slug' => 'new-sms-notification',
@@ -54,7 +54,7 @@ class NotificationSeeder extends Seeder
         // Fourth notification seed
         DB::table('notifications')->insert([
             'id' => '4a97a6d-0202-4fa9-a77f-2076172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Important System Update',
             'description' => 'There is an important system update. Please review the details.',
             'slug' => 'important-system-update',

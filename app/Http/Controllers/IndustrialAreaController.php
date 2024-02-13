@@ -29,7 +29,9 @@ class IndustrialAreaController extends Controller
             $industrial_areas = DB::table('user_profiles')
             ->join('users','user_profiles.user_id','=','users.id')
             ->join('industrial_areas','users.industrial_area_id','=','industrial_areas.id')
-                ->select('industrial_areas.id as id', 'industrial_areas.name as industrial_area_name', 'industrial_areas.address', 'industrial_areas.image_url', 'users.email', 'user_profiles.name as user_name')->get();
+                ->select('industrial_areas.id as id', 'industrial_areas.name as industrial_area_name',
+                    'industrial_areas.address', 'industrial_areas.image_url', 'users.email',
+                    'user_profiles.name as user_name')->whereNull('users.deleted_at')->get();
 
             // return the data
             return response()->json([

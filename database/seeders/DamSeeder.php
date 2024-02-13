@@ -14,7 +14,7 @@ class DamSeeder extends Seeder
     {
         DB::table('dams')->insert([
             'id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'name' => 'Dam 1',
             'location' => 'Location 1',
             'water_level' => 25.5,
@@ -25,7 +25,7 @@ class DamSeeder extends Seeder
 
         DB::table('dams')->insert([
             'id' => '2a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'name' => 'Dam 2',
             'location' => 'Location 2',
             'water_level' => 32.0,

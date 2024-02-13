@@ -15,7 +15,7 @@ class PageSeeder extends Seeder
         // First seed
         DB::table('pages')->insert([
             'id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'About Page',
             'type' => 'About',
             'description' => 'Join us for an exciting event!',
@@ -28,7 +28,7 @@ class PageSeeder extends Seeder
         // Second seed
         DB::table('pages')->insert([
             'id' => '2a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Contact Us Page',
             'type' => 'Contact-Us',
             'description' => 'Another exciting event!',
@@ -43,7 +43,7 @@ class PageSeeder extends Seeder
         // Third seed
         DB::table('pages')->insert([
             'id' => '3a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Webinar Page 1',
             'type' => 'Webinar',
             'description' => 'Learn from industry experts!',
@@ -54,7 +54,7 @@ class PageSeeder extends Seeder
         // Fourth seed
         DB::table('pages')->insert([
             'id' => '4a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Article Page',
             'type' => 'Article',
             'description' => 'Exciting new products!',
@@ -66,7 +66,7 @@ class PageSeeder extends Seeder
         // Fifth seed
         DB::table('pages')->insert([
             'id' => '5a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58',
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'News Page',
             'type' => 'News',
             'location' => 'Venue D',
@@ -76,7 +76,7 @@ class PageSeeder extends Seeder
         // Fifth seed
         DB::table('pages')->insert([
             'id' => '6a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
+            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // Portal manager
             'title' => 'General News Page',
             'type' => 'General News',
             'location' => 'Venue D',

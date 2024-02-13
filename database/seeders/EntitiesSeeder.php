@@ -54,7 +54,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '1araf3-7d17-4fa9-a77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '005e8400-e29b-4154-a716-446655445600', // route
+            'category_id' => '032e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Production Site 1',
             'public_id' => 'PS 1',
             'slug' => 'site 1',
@@ -66,7 +66,7 @@ class EntitiesSeeder extends Seeder
         DB::table('entities')->insert([
             'id' => '1ard6q-7b19-4fa9-p77f-2a76172f5b58',
             'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
-            'category_id' => '005e8400-e29b-4154-a716-446655445600', // route
+            'category_id' => '032e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Production Site 2',
             'public_id' => 'PS 2',
             'slug' => 'site 2',

@@ -47,9 +47,10 @@ class UserController extends Controller
                 ->join('stakeholders', 'industrial_areas.id', '=', 'stakeholders.industrial_area_id')
                 ->join('users', 'stakeholders.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-                ->select('industrial_areas.id as id', 'users.id as user_id', 'industrial_areas.name as industrial_area_name',
+                ->select('industrial_areas.id as industrial_area_id', 'users.id as user_id', 'industrial_areas.name as industrial_area_name',
                     'users.email', 'users.stakeholder_type', 'user_profiles.name as user_name')
-                ->where('industrial_areas.id', '=', $industrial_area_id)->get();
+                ->where(['industrial_areas.id' => $industrial_area_id])
+                ->whereNull('users.deleted_at')->get();
 
             // return the result
             return response()->json([

@@ -29,7 +29,6 @@ return new  class extends Migration {
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });

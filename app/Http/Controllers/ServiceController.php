@@ -19,16 +19,17 @@ class ServiceController extends Controller
 
             $industrial_area_id = Auth::user()->industrial_area_id;
 
-            $stakeholders = DB::table('stakeholders')
+            $seveices = DB::table('user_profiles')
+                ->join('users', 'user_profiles.user_id', '=', 'users.id')
+                ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
                 ->join('services', 'stakeholders.id', '=', 'services.stakeholder_id')
-                ->join('categories', '');
-            //Stakeholder::where('industrial_area_id', $industrial_area_id)->with('services')->get();
-
-            $services = Service::all();
+                ->join('categories', 'services.category_id', '=', 'categories.id')
+                ->select('services.id as service_id', 'services.slug as service_name', 'categories.id as category_id',
+                    'categories.name as category_name', 'user_profiles.name as provider_name')
+                ->where('stakeholders.industrial_area_id', '=', $industrial_area_id)->get();
 
             return response()->json([
-                'services' => $services,
-                'stakeholders' => $stakeholders,
+                'data' => $seveices,
                 'message' => __('Successfully fetching the services')
             ], 200);
         } catch (Exception $e) {

@@ -127,7 +127,8 @@ class NotificationsSettingController extends Controller
                 // Execute the query and retrieve the results
                 ->get();
 
-            // Process the retrieved data to separate aggregated strings into arrays and create individual objects
+
+           // Process the retrieved data to separate aggregated strings into arrays and create individual objects
             $processed_data = $notifications_settings->map(function ($item) {
                 return [
                     'main_category_id' => $item->main_category_id,

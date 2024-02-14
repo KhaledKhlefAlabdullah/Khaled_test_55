@@ -127,10 +127,30 @@ class NotificationsSettingController extends Controller
                 // Execute the query and retrieve the results
                 ->get();
 
+            // Process the retrieved data to separate aggregated strings into arrays and create individual objects
+            $processed_data = $notifications_settings->map(function ($item) {
+                return [
+                    'main_category_id' => $item->main_category_id,
+                    'main_category_name' => $item->main_category_name,
+                    'notification_settings' => collect(explode(',', $item->notification_settings_ids))->map(function ($id, $index) use ($item) {
+                        return [
+                            'id' => $id,
+                            'sub_category_id' => explode(',', $item->sub_categories_ids)[$index],
+                            'sub_category_name' => explode(',', $item->sub_categories_name)[$index],
+                            'state' => explode(',', $item->states)[$index],
+                            'level' => explode(',', $item->levels)[$index],
+                            'priority' => explode(',', $item->priorities)[$index],
+                            'on_off' => explode(',', $item->on_off)[$index],
+                        ];
+                    }),
+                ];
+            });
+
             return response()->json([
-                'data' => $notifications_settings,
+                'data' => $processed_data,
                 'message' => __('Successfully getting the notification setting data')
             ], 200);
+
         } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),

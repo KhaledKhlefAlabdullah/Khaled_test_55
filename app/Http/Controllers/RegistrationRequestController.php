@@ -21,11 +21,16 @@ class RegistrationRequestController extends Controller
     {
         try {
 
+
             // get authenticated user id
             $industrial_area_id = Auth::user()->industrial_area_id;
-
+            //View list of registration requests (Company Name-Representative Name - Email- Phone No.-Job Title)
             // get all registration for industrial area representative
-            $registration_requests = IndustrialArea::findOrFail($industrial_area_id)->registration_requests;
+            $registration_requests = RegistrationRequest::where('industrial_area_id', $industrial_area_id)
+                ->select('registration_requests.id as id', 'registration_requests.name as company_name',
+                    'registration_requests.representative_name as representative_name',
+                    'registration_requests.email', 'registration_requests.phone_number',
+                    'registration_requests.job_title')->get();
 
             // return the data
             return response()->json([
@@ -51,9 +56,9 @@ class RegistrationRequestController extends Controller
 
             // get authenticated user id
             $industrial_area_id = Auth::user()->industrial_area_id;
-
             // get all registration for industrial area representative
             $registration_request = RegistrationRequest::where(['id' => $id, 'industrial_area_id' => $industrial_area_id])->first();
+
 
             if (is_null($registration_request))
                 return response()->json([

@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use function App\Helpers\fake_register_request;
+use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\send_mail;
 
 
@@ -88,7 +89,6 @@ class RegistrationRequestController extends Controller
                 'location' => 'required|string',
                 'phone_number' => 'required|string',
                 'job_title' => 'required|string',
-                'request_state' => 'required|in:accepted,failed,pending',
                 'failed_message' => 'nullable|string'
             ]);
 
@@ -188,15 +188,13 @@ class RegistrationRequestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(string $id)
     {
         try {
 
-            // Get the registration request from the request
-            $registration_id = $request->input('registration_id');
+            $registration_request = getAndCheckModelById(RegistrationRequest::class, $id);
 
-            // Delete the stakeholder
-            RegistrationRequest::findOrFail($registration_id)->delete();
+            $registration_request->delete();
 
             return response()->json([
                 'message' => __('Registration request deleted successfully')

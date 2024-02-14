@@ -273,6 +273,7 @@ if (!function_exists('send_mail')) {
         try {
 
             return Mail::to($receiver)->send(new PortalMails($mail_message));
+
         } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),

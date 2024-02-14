@@ -8,6 +8,7 @@ use App\Models\Stakeholder;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
@@ -18,13 +19,16 @@ class ServiceController extends Controller
 
             $industrial_area_id = Auth::user()->industrial_area_id;
 
-            $stakeholders = Stakeholder::where('industrial_area_id', $industrial_area_id)->with('services')->get();
+            $stakeholders = DB::table('stakeholders')
+                ->join('services', 'stakeholders.id', '=', 'services.stakeholder_id')
+                ->join('categories', '');
+            //Stakeholder::where('industrial_area_id', $industrial_area_id)->with('services')->get();
 
             $services = Service::all();
 
             return response()->json([
                 'services' => $services,
-                '$stakeholders' => $stakeholders,
+                'stakeholders' => $stakeholders,
                 'message' => __('Successfully fetching the services')
             ], 200);
         } catch (Exception $e) {

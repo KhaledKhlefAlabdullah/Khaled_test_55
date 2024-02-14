@@ -14,7 +14,7 @@ class ParticipatingEntitiesSeeder extends Seeder
     {
         DB::table('participating_entities')->insert([
             'id' => "1dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
-            'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'user_id' => "12c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "First Title",
             'logo_url' => "images/participating1.jpg",
             'link' => null,
@@ -23,7 +23,7 @@ class ParticipatingEntitiesSeeder extends Seeder
 
         DB::table('participating_entities')->insert([
             'id' => "2dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
-            'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'user_id' => "12c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "Second Title",
             'logo_url' => "video/temp.mp4",
             'link' => null,
@@ -33,7 +33,7 @@ class ParticipatingEntitiesSeeder extends Seeder
 
         DB::table('participating_entities')->insert([
             'id' => "3dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
-            'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'user_id' => "12c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "Third Title",
             'logo_url' => "https://google.com",
             'link' => null,
@@ -43,7 +43,7 @@ class ParticipatingEntitiesSeeder extends Seeder
 
         DB::table('participating_entities')->insert([
             'id' => "4dd97a6d-7b19-4fa9-a78f-2a76172f5b58",
-            'user_id' => "13c97a6d-7b19-4fa9-a77f-2a76172f5b58",
+            'user_id' => "12c97a6d-7b19-4fa9-a77f-2a76172f5b58",
             'title' => "Forth Title",
             'logo_url' => "file/temp.pdf",
             'link' => null,

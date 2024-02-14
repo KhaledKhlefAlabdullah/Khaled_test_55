@@ -16,7 +16,7 @@ class MonitoringPointSeeder extends Seeder
         DB::table('monitoring_points')->insert([
             [
                 'id' => '119976d-5238-4fa9-a77f-2a76172f5b22',
-                'user_id' => '13c97a6d-7b19-4fa9-a77f-2a76172f5b58', // portal manager
+                'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // portal manager
                 'name' => 'Monitoring Point 1',
                 'location' => 'Coordinates: [latitude, longitude]',
                 'point_type' => 'normal',

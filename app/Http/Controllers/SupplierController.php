@@ -28,7 +28,14 @@ class SupplierController extends Controller
                 ->join('suppliers','stakeholders.id','=','suppliers.stakeholder_id')
                 ->join('entities as routes','suppliers.route_id','=','routes.id')
                 ->join('entities as materials','suppliers.material_id','=','materials.id')
-                ->select('suppliers.public_id as supplier_number','materials.name as material','suppliers.location as location','routes.name as route')->where('stakeholders.id','=',$stakeholder_id)->get();
+                ->select('suppliers.id as supplier_id', 'materials.id as material_id',
+                    'routes.id as route_id', 'suppliers.public_id as supplier_number',
+                    'materials.name as material', 'suppliers.location as location', 'routes.name as route')
+                ->where('stakeholders.id', '=', $stakeholder_id)
+                ->whereNull('suppliers.deleted_at')
+                ->whereNull('routes.deleted_at')
+                ->whereNull('materials.deleted_at')
+                ->get();
 
 
             return response()->json([
@@ -169,7 +176,7 @@ class SupplierController extends Controller
         } catch (NotFoundResourceException $e) {
 
             return response()->json(['message' => $e->getMessage()], $e->getCode());
-            
+
         }
 
         // Delete the supplier

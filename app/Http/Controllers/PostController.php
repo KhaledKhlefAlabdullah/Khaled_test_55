@@ -115,7 +115,11 @@ class PostController extends Controller
                 ->join('posts','categories.id','=','posts.category_id')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-                ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title', 'posts.slug', 'posts.body')->where(['categories.name' => 'news', 'posts.is_general_news' => true])->get();
+                ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
+                    'posts.slug', 'posts.body')
+                ->where(['categories.name' => 'news', 'posts.is_general_news' => true])
+                ->whereNull('users.deleted_at')
+                ->get();
 
             // Return json response with the result
             return response()->json([

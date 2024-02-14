@@ -195,15 +195,15 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
-            Route::group(['prefix' => 'registration_requests'], function () {
+            Route::group(['prefix' => 'registration-requests'], function () {
 
                 Route::get('/', [RegistrationRequestController::class, 'index']);
 
                 Route::get('/details', [RegistrationRequestController::class, 'show']);
 
-                Route::post('/accept_or_failed', [RegistrationRequestController::class, 'accept_or_failed']);
+                Route::post('/accept_or_failed/{id}', [RegistrationRequestController::class, 'accept_or_failed']);
 
-                Route::post('/delete', [RegistrationRequestController::class, 'destroy']);
+                Route::delete('/delete/{id}', [RegistrationRequestController::class, 'destroy']);
 
             });
 
@@ -356,6 +356,12 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            Route::group(['prefix' => 'notifications-settings'], function () {
+
+                Route::get('/', [NotificationsSettingController::class, 'view_all_notification_settings']);
+
+            });
+
 
         });
 
@@ -389,18 +395,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'store_unregistered']);
 
     require __DIR__ . '/auth.php';
+
 });
-//Route::group(['prefix' => 'stakeholders'], function () {
-//
-//    Route::get('/', [StakeholderController::class, 'index']);
-//
-//    Route::post('/add', [StakeholderController::class, 'store']);
-//
-//    Route::post('/edit', [StakeholderController::class, 'update']);
-//
-//    Route::post('/delete', [StakeholderController::class, 'destroy']);
-//
-//});
 
 
-// todo we have to use the functions to shortest the code

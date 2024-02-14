@@ -45,18 +45,20 @@ class RegistrationRequestController extends Controller
     /**
      * Display a request details.
      */
-    public function show(Request $request)
+    public function show(string $id)
     {
         try {
 
             // get authenticated user id
             $industrial_area_id = Auth::user()->industrial_area_id;
 
-            // get registration request id from api request
-            $registration_id = $request->registration_id;
-
             // get all registration for industrial area representative
-            $registration_request = RegistrationRequest::where(['id' => $registration_id, 'industrial_area_id' => $industrial_area_id])->first();
+            $registration_request = RegistrationRequest::where(['id' => $id, 'industrial_area_id' => $industrial_area_id])->first();
+
+            if (is_null($registration_request))
+                return response()->json([
+                    'message' => __('Get registration request details failed there no item with this id'),
+                ], 404);
 
             // return the data
             return response()->json([

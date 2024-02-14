@@ -199,7 +199,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [RegistrationRequestController::class, 'index']);
 
-                Route::get('/details', [RegistrationRequestController::class, 'show']);
+                Route::get('/details/{id}', [RegistrationRequestController::class, 'show']);
 
                 Route::post('/accept_or_failed/{id}', [RegistrationRequestController::class, 'accept_or_failed']);
 
@@ -377,7 +377,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('industrial-areas', [IndustrialAreaController::class, 'index']);
 
     // send registration request
-    Route::post('registration_requests/add-register', [RegistrationRequestController::class, 'store']);
+    Route::post('registration-requests/add-register', [RegistrationRequestController::class, 'store']);
 
     // get all general news
     Route::get('general-news', [PostController::class, 'view_general_news']);

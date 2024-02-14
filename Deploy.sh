@@ -16,7 +16,7 @@ git fetch origin $BRANCH
 git reset --hard origin/$BRANCH
 
 # Install/update dependencies
-composer install --optimize-autoloader --no-dev --no-interaction
+# composer install --optimize-autoloader --no-dev --no-interaction
 
 # Update database schema and run migrations
 php artisan migrate --force

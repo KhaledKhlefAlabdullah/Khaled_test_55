@@ -129,7 +129,7 @@ class RegistrationRequestController extends Controller
 
             // validate request inputs
             $request->validate([
-                'state' => 'required|boolean'
+                'state' => 'required|boolean',
             ]);
 
             // if state is 'true' accept the registration request, or refuse it
@@ -137,6 +137,8 @@ class RegistrationRequestController extends Controller
 
             // fetch the registration request
             $registration_request = RegistrationRequest::findOrFail($id);
+
+            $registration_request_id = $registration_request->id;
 
             // check state
             if ($state) {
@@ -164,13 +166,17 @@ class RegistrationRequestController extends Controller
 
             } else {
 
+                $request->validate([
+                    'message' => 'required|string'
+                ]);
+
                 // update the request state to failed if state is not true, and message to your request failed
                 $registration_request->update([
                     'request_state' => __('failed'),
                     'failed_message' => __('your request failed')
                 ]);
 
-                $mail_message = __('your registration request refused');
+                $mail_message = $request->input('message');
 
                 // Return a success response
                 $response = response()->json([
@@ -183,6 +189,8 @@ class RegistrationRequestController extends Controller
 
             // send email to registration
             send_mail($mail_message,$email);
+
+            $this->destroy($registration_request_id);
 
             return $response;
 

@@ -24,7 +24,7 @@ class RegistrationRequestController extends Controller
 
             // get authenticated user id
             $industrial_area_id = Auth::user()->industrial_area_id;
-            //View list of registration requests (Company Name-Representative Name - Email- Phone No.-Job Title)
+            //View list of registration requests (Company Name - Representative Name - Email - Phone No.-Job Title)
             // get all registration for industrial area representative
             $registration_requests = RegistrationRequest::where('industrial_area_id', $industrial_area_id)
                 ->select('registration_requests.id as id', 'registration_requests.name as company_name',
@@ -57,7 +57,11 @@ class RegistrationRequestController extends Controller
             // get authenticated user id
             $industrial_area_id = Auth::user()->industrial_area_id;
             // get all registration for industrial area representative
-            $registration_request = RegistrationRequest::where(['id' => $id, 'industrial_area_id' => $industrial_area_id])->first();
+            $registration_request = RegistrationRequest::where(['id' => $id, 'industrial_area_id' => $industrial_area_id])
+                ->select('registration_requests.id as id', 'registration_requests.name as company_name',
+                    'registration_requests.representative_name as representative_name',
+                    'registration_requests.email', 'registration_requests.phone_number',
+                    'registration_requests.job_title')->first();
 
 
             if (is_null($registration_request))

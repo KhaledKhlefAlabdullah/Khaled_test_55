@@ -156,7 +156,7 @@ class PostController extends Controller
             $image = $request->media_file;
 
             // put path to store image
-            $path = 'images/general_news_images';
+            $path = '/images/general_news_images';
 
             // coll store function to store the image
             $image_path = store_files($image,$path);
@@ -208,7 +208,7 @@ class PostController extends Controller
                 $new_image = $request->media_file;
 
                 // put path to store image
-                $path = 'images/general_news_images';
+                $path = '/images/general_news_images';
 
                 // get old file path
                 $old_file_path = $general_news->media_url;
@@ -327,7 +327,7 @@ class PostController extends Controller
                 $image = $request->image;
 
                 // put path to store image
-                $path = 'images/project_description_images';
+                $path = '/images/project_description_images';
 
                 // coll store function to store the image
                 $image_path = store_files($image, $path);
@@ -356,7 +356,7 @@ class PostController extends Controller
                 $image = $request->image;
 
                 // put path to store image
-                $path = 'images/project_description_images';
+                $path = '/images/project_description_images';
 
                 // coll store function to store the image
                 $image_path = edit_file($post->media_url, $image, $path);

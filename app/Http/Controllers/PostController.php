@@ -118,7 +118,7 @@ class PostController extends Controller
                 ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
                     'posts.slug', 'posts.body', 'posts.media_url as image')
                 ->where(['categories.name' => 'news', 'posts.is_general_news' => true])
-                ->whereNull('users.deleted_at')
+                ->whereNull('posts.deleted_at')
                 ->get();
 
             // Return json response with the result
@@ -145,6 +145,10 @@ class PostController extends Controller
     {
 
         try {
+
+            $request->validate([
+                'media_url' => 'required'
+            ]);
 
             // get category id where category is news
             $category_id = Category::where('name','news')->first()->id;

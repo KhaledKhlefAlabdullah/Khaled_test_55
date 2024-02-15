@@ -22,10 +22,9 @@ class GeneralNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|unique:posts,slug|max:255',
+            'title' => 'required|string|unique:posts,title|max:255',
             'body' => 'required|string',
-            'media_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ];
     }
 }

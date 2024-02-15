@@ -411,8 +411,11 @@ if (!function_exists('find_and_update')) {
                     'notification_settings' => [
                         ['sub_category_id' => '030e8400-e29b-41d4-a716-446655440000']
                     ]
-                ],
-                in_array($type, ['Tenant_company', 'Infrastructure_provider']) ? [
+                ]
+            ];
+            
+            if (in_array($type, ['Tenant_company', 'Infrastructure_provider'])) {
+                $extraItem = [
                     'main_category_id' => '031e8400-e29b-41d4-a716-446655440000',
                     'notification_settings' => [
                         ['sub_category_id' => '033e8400-e29b-41d4-a716-446655440000'],
@@ -421,9 +424,10 @@ if (!function_exists('find_and_update')) {
                         ['sub_category_id' => '036e8400-e29b-41d4-a716-446655440000'],
                         ['sub_category_id' => '034e8400-e29b-41d4-a716-446655440000']
                     ]
-                ] : []
-            ];
+                ];
 
+                $data[] = $extraItem;
+            }
 
             foreach ($data as $category) {
                 // Iterate through the notification settings for this main category

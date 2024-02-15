@@ -147,7 +147,7 @@ class PostController extends Controller
         try {
 
             $request->validate([
-                'media_url' => 'required'
+                'image' => 'required'
             ]);
 
             // get category id where category is news
@@ -157,7 +157,7 @@ class PostController extends Controller
             $user_id = Auth::id();
 
             // get image from request
-            $image = $request->media_file;
+            $image = $request->image;
 
             // put path to store image
             $path = '/images/general_news_images';
@@ -170,7 +170,7 @@ class PostController extends Controller
                 'user_id' => $user_id,
                 'category_id' => $category_id,
                 'title' => $request->input('title'),
-                'slug' => $request->input('slug'),
+                'slug' => str_ireplace(' ', '-', $request->input('title')),
                 'body' => $request->input('body'),
                 'media_url' => $image_path,
                 'media_type' => 'image',
@@ -203,13 +203,13 @@ class PostController extends Controller
             // get the general news will be editing
             $general_news = Post::findOrFail($id);
 
-            if( is_null($request->media_file) ){
+            if (is_null($request->image)) {
 
                 $image_path = $general_news->media_url;
 
             }else{
                 // get image from request
-                $new_image = $request->media_file;
+                $new_image = $request->image;
 
                 // put path to store image
                 $path = '/images/general_news_images';
@@ -224,7 +224,7 @@ class PostController extends Controller
             // create new post as general news
             $general_news->update([
                 'title' => $request->input('title'),
-                'slug' => $request->input('slug'),
+                'slug' => str_ireplace(' ', '-', $request->input('title')),
                 'body' => $request->input('body'),
                 'media_url' => $image_path,
                 'media_type' => 'image'

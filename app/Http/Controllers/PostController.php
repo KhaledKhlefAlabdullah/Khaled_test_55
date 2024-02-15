@@ -116,7 +116,7 @@ class PostController extends Controller
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                 ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
-                    'posts.slug', 'posts.body')
+                    'posts.slug', 'posts.body', 'posts.media_url as image')
                 ->where(['categories.name' => 'news', 'posts.is_general_news' => true])
                 ->whereNull('users.deleted_at')
                 ->get();
@@ -194,7 +194,6 @@ class PostController extends Controller
      */
     public function edite_general_news(GeneralNewsRequest $request, string $id)
     {
-
         try {
 
             // get the general news will be editing

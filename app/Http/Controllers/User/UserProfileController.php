@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use function App\Helpers\store_files;
 
 class UserProfileController extends Controller
@@ -136,7 +137,7 @@ class UserProfileController extends Controller
             // validate input data the data in every user profile
             $request->validate([
                 'name' => 'required|string|min:3',
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore(auth()->id())],
                 'location' => 'required|string',
                 'profile_image' => 'required|image|mimes:jpeg,png,gif,bmp'
             ]);

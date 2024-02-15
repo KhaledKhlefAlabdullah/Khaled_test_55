@@ -26,6 +26,7 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
+        // todo make the validation for the password more complex
         return [
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],

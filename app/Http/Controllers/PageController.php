@@ -201,7 +201,7 @@ class PageController extends Controller
 
             $file = $request->image;
 
-            $path = 'images/about_us_images';
+            $path = '/images/about_us_images';
 
             if (!$post) {
 

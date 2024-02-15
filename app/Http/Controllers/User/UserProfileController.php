@@ -151,7 +151,7 @@ class UserProfileController extends Controller
             $profile_image = $request->profile_image;
 
             // chose the path where image will store
-            $path = 'images/profile_images';
+            $path = '/images/profile_images';
 
             // coll store_files function to store the profile image
             $file_path = store_files($profile_image, $path);

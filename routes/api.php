@@ -161,7 +161,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [PostController::class, 'new_general_news']);
 
-                Route::put('/edite/{id}', [PostController::class, 'edite_general_news']);
+                // put request type post
+                Route::post('/edite/{id}', [PostController::class, 'edite_general_news']);
 
                 Route::delete('/delete/{id}', [PostController::class, 'delete_general_news']);
 

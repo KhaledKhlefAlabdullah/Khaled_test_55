@@ -62,7 +62,7 @@ class IndustrialAreaController extends Controller
 
             if (!is_null($image)) {
 
-                $path = 'images/industrial_areas_images';
+                $path = '/images/industrial_areas_images';
 
                 $image_path = store_files($image, $path);
 
@@ -156,7 +156,7 @@ class IndustrialAreaController extends Controller
 
             if (!is_null($image)) {
 
-                $path = 'images/industrial_areas_images';
+                $path = '/images/industrial_areas_images';
 
                 $image_url = edit_file($old_path, $image, $path);
 

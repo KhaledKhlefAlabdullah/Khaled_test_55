@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Mail\PortalMails;
+use App\Models\Notifications\NotificationsSetting;
 use App\Models\Page;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -356,4 +357,91 @@ if(!function_exists('find_and_update')){
 
         return $instances; // Return the updated instances
     }
+}
+
+/**
+ * Add notifications settings for user
+ */
+if (!function_exists('find_and_update')) {
+
+    function add_notifications_settings(string $type, string $user_id)
+    {
+        try {
+
+            /*
+             Weather:
+                Report Weather
+                Wind
+                Rain
+
+             Water Level:
+                Dam
+                Report Water
+                Monitoring Point
+
+            Infrastructure Notification:
+                Notifications
+
+            Business Impact:
+                Suppliers
+                Production Site
+                Shipments
+                Employees
+                Wastes
+             */
+            $data = [
+                [
+                    'main_category_id' => '008e8400-e29b-41d4-a716-446655440000',
+                    'notification_settings' => [
+                        ['sub_category_id' => '024e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '023e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '022e8400-e29b-41d4-a716-446655440000']
+                    ]
+                ],
+                [
+                    'main_category_id' => '025e8400-e29b-41d4-a716-446655440000',
+                    'notification_settings' => [
+                        ['sub_category_id' => '027e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '028e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '026e8400-e29b-41d4-a716-446655440000']
+                    ]
+                ],
+                [
+                    'main_category_id' => '029e8400-e29b-41d4-a716-446655440000',
+                    'notification_settings' => [
+                        ['sub_category_id' => '030e8400-e29b-41d4-a716-446655440000']
+                    ]
+                ],
+                in_array($type, ['Tenant_company', 'Infrastructure_provider']) ? [
+                    'main_category_id' => '031e8400-e29b-41d4-a716-446655440000',
+                    'notification_settings' => [
+                        ['sub_category_id' => '033e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '032e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '035e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '036e8400-e29b-41d4-a716-446655440000'],
+                        ['sub_category_id' => '034e8400-e29b-41d4-a716-446655440000']
+                    ]
+                ] : []
+            ];
+
+
+            foreach ($data as $category) {
+                // Iterate through the notification settings for this main category
+                foreach ($category['notification_settings'] as $notification_setting) {
+                    // Insert each notification setting related to this main category
+                    NotificationsSetting::create([
+                        'main_category_id' => $category['main_category_id'],
+                        'user_id' => $user_id,
+                        'sub_category_id' => $notification_setting['sub_category_id'],
+                    ]);
+                }
+            }
+        } catch (\Mockery\Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('add-notifications-settings-error')
+            ], 500);
+        }
+    }
+
 }

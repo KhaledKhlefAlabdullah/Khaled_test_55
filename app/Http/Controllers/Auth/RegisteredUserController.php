@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Notification\NotificationsSettingController;
 use App\Models\Stakeholder;
 use App\Models\User;
 use App\Models\UserProfile;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
+use function App\Helpers\add_notifications_settings;
 
 class RegisteredUserController extends Controller
 {
@@ -47,6 +49,9 @@ class RegisteredUserController extends Controller
                 'password' => password_hash($validatedData['password'], PASSWORD_DEFAULT),
                 'stakeholder_type' => is_null($validatedData['stakeholder_type']) ? 'Tenant_company' : $validatedData['stakeholder_type']
             ]);
+
+            if ($user->stakeholder_type != 'Portal_manager')
+                add_notifications_settings($user->stakeholder_type, $user->id);
 
             // Create a new user profile
             $user_profile = UserProfile::create([

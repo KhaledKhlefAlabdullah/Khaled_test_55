@@ -8,6 +8,7 @@ use App\Http\Resources\Notification\NotificationSettingResource;
 use App\Models\Notifications\NotificationsSetting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Mockery\Exception;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 

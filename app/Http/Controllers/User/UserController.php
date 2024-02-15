@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function App\Helpers\fake_register_request;
 use function App\Helpers\getAndCheckModelById;
 
 class UserController extends Controller
@@ -114,7 +115,7 @@ class UserController extends Controller
 
             // create industrial area representative (user)
             // Simulate a request to the RegisteredUserController@store method
-            $response = \App\Helpers\fake_register_request(
+            $response = fake_register_request(
                 name: $validatedData['name'],
                 email: $validatedData['email'],
                 password: $validatedData['password'],

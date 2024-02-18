@@ -15,12 +15,11 @@ return [
     |
     */
 
-
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['*'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://160.16.143.161')],
+    'allowed_origins' => ['http://160.16.143.161', 'https://satreps.shurasystem.com'],
 
     'allowed_origins_patterns' => [],
 

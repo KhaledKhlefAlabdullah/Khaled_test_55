@@ -1,0 +1,43 @@
+# This section contains commands to be executed before the main script runs
+before_script:
+  - echo "Before script"
+  - cd /www/wwwroot/satreps.shurasystem.com
+
+# Build stage: Fetch the latest code, install dependencies, and perform Laravel-specific tasks
+build:
+  stage: build
+  script:
+    # Fetch the latest changes from the remote repository
+    - git fetch --all
+    # Forcefully switch to the master branch
+    - git checkout --force origin/master
+    # Install project dependencies using Composer
+    - composer install --no-ansi --no-interaction --no-progress --optimize-autoloader
+    # Clear the application cache
+    - php artisan cache:clear
+    # Clear the configuration cache
+    - php artisan config:clear
+    # Create a symbolic link to the storage directory
+    - php artisan storage:link
+    # Set appropriate ownership for deployment user and web server
+    - chown -R deployer:www-data /www/wwwroot/satreps.shurasystem.com/
+    # Set file permissions for files and directories
+    - find /www/wwwroot/satreps.shurasystem.com -type f -exec chmod 664 {} \;
+    - find /www/wwwroot/satreps.shurasystem.com -type d -exec chmod 775 {} \;
+    # Set additional permissions for Laravel storage and cache directories
+    - chmod -R ug+rwx storage bootstrap/cache
+
+# Test stage: Run PHPUnit tests for the Laravel application
+test:
+  stage: test
+  script:
+    - php artisan test
+
+# Deploy stage: Execute tasks required after successful testing
+deploy:
+  stage: deploy
+  script:
+    # Display deployment message
+    - echo "Deployed"
+    # Restart the queue worker (if the application uses a queue)
+    - php artisan queue:restart # if you use queue

@@ -338,6 +338,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [WasteController::class, 'index']);
 
+                Route::get('/disposal-sites',[WasteController::class,'get_desposal_locations']);
+
                 Route::post('/add', [WasteController::class, 'store']);
 
                 Route::put('/edite/{id}', [WasteController::class, 'update']);

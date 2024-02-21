@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Wastes\WastesRequest;
+use App\Models\Category;
+use App\Models\Entity;
 use App\Models\Waste;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
 
 class WasteController extends Controller
@@ -72,6 +76,32 @@ class WasteController extends Controller
                 'error' => __($e->getMessage()),
                 'message' => __('waste-add-error')
             ], 500);
+        }
+    }
+
+
+    /**
+     * Get the desposal locations
+     */
+    public function get_desposal_locations()
+    {
+        try{
+
+            $category_id = getIdByName(Category::class,'Waste Disposal Site');
+
+            $disposal_sites = Entity::where('category_id',$category_id)->select('id','name')->get();
+
+            return response()->json([
+                'data' => $disposal_sites,
+                'message' => __('deisposal-get-success')
+            ]);
+
+        }
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('deisposal-get-error')
+            ],200);
         }
     }
 

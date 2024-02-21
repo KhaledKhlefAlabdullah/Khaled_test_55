@@ -12,21 +12,16 @@ class PostsNotifications extends Notification
 {
     use Queueable;
 
-
-    protected $user;
+    protected $user_profile;
     protected $message;
-    protected $priority;
-    // todo to continue later
-
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(UserProfile $user, string $message, string $priority)
+    public function __construct(UserProfile $user_profile, string $message)
     {
-        $this->$user = $user;
-        $this->$message = $message;
-        $this->$priority = $priority;
+        $this->user_profile = $user_profile;
+        $this->message = $message;
     }
 
     /**
@@ -36,7 +31,7 @@ class PostsNotifications extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['datadase'];
+        return ['database'];
     }
 
     /**
@@ -45,7 +40,9 @@ class PostsNotifications extends Notification
     public function toDatabase(object $notifiable)
     {
         return [
-
+            'sender_name' => $this->user_profile->name,
+            'sender_image' => $this->user_profile->avatar_URL,
+            'message' => __($this->message)
         ];
     }
 

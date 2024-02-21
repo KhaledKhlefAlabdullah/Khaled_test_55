@@ -7,9 +7,12 @@ use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
+use App\Notifications\PostsNotifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
@@ -177,7 +180,9 @@ class PostController extends Controller
                 'is_general_news' => true
             ]);
 
+            $user_profile = Auth::user()->user_profile()->first();
             
+            Notification::send(User::all(),new PostsNotifications($user_profile,'add new General news'));
 
             // return response with created data
             return response()->json([

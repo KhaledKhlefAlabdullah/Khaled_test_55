@@ -13,7 +13,7 @@ class NotificationSeeder extends Seeder
     public function run(): void
     {
         // First notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '1a97a6d-0202-4fa9-a77f-2a76172f0b58',
             'user_id' => '15c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'New Email Notification',
@@ -26,7 +26,7 @@ class NotificationSeeder extends Seeder
         ]);
 
 // Second notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '2a97a6d-0202-4fa9-a77f-2a7617205b58',
             'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'New SMS Notification',
@@ -39,7 +39,7 @@ class NotificationSeeder extends Seeder
         ]);
 
 // Third notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '3a97a6d-0202-4fa9-077f-2a76172f5b58',
             'user_id' => '19997a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'New App Notification',
@@ -52,7 +52,7 @@ class NotificationSeeder extends Seeder
         ]);
 
         // Fourth notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '4a97a6d-0202-4fa9-a77f-2076172f5b58',
             'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Important System Update',
@@ -65,7 +65,7 @@ class NotificationSeeder extends Seeder
         ]);
 
         // Fifth notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '5a97a6d-0202-4f09-a77f-2a76172f5b58',
             'user_id' => '19997a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Account Expiry Warning',
@@ -78,7 +78,7 @@ class NotificationSeeder extends Seeder
         ]);
 
         // Sixth notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '6a9706d-7b19-4fa9-a77f-2a76172f5b58',
             'user_id' => '19997a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'New Article Notification',
@@ -91,7 +91,7 @@ class NotificationSeeder extends Seeder
         ]);
 
 // Seventh notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '7a90a6d-7b19-4fa9-a77f-2a76172f5b58',
             'user_id' => '17c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Payment Received',
@@ -104,7 +104,7 @@ class NotificationSeeder extends Seeder
         ]);
 
 // Eighth notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '8a97a6d-7b19-4fa9-a70f-2a76172f5b58',
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'New Task Assigned',
@@ -117,7 +117,7 @@ class NotificationSeeder extends Seeder
         ]);
 
 // Ninth notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '9a97a6d-7b19-4f09-a77f-2a76172f5b58',
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'Event Reminder',
@@ -130,7 +130,7 @@ class NotificationSeeder extends Seeder
         ]);
 
 // Tenth notification seed
-        DB::table('notifications')->insert([
+        DB::table('notifications1')->insert([
             'id' => '10a97a6d-7b19-40a9-a77f-2a76172f5b58',
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'title' => 'New Product Announcement',

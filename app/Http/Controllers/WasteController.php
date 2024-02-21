@@ -23,7 +23,7 @@ class WasteController extends Controller
                 ->join('entities as routes', 'wastes.route_id', '=', 'routes.id')
                 ->select('wastes.id', 'wastes.waste_name as waste',
                     'disposal.location as disposal_location', 'routes.public_id as Route')
-                ->where('wastes.stakeholder_id', '=', stakeholder_id())->get();
+                ->where('wastes.stakeholder_id', '=', stakeholder_id())->whereNull('wastes.deleted_at')->get();
 
             // return the data
             return response()->json([

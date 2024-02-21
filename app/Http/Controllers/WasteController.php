@@ -22,7 +22,7 @@ class WasteController extends Controller
                 ->join('wastes', 'disposal.id', '=', 'wastes.waste_disposal_location_id')
                 ->join('entities as routes', 'wastes.route_id', '=', 'routes.id')
                 ->select('wastes.id', 'wastes.waste_name as waste',
-                    'disposal.location as disposal_location', 'routes.name as route')
+                    'disposal.location as disposal_location', 'routes.public_id as Route')
                 ->where('wastes.stakeholder_id', '=', stakeholder_id())->get();
 
             // return the data

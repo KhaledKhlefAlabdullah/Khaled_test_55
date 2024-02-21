@@ -294,9 +294,9 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add-supplier', [SupplierController::class, 'store']);
 
-                Route::post('/edite-supplier', [SupplierController::class, 'update']);
+                Route::put('/edite-supplier{id}', [SupplierController::class, 'update']);
 
-                Route::delete('/delete-supplier', [SupplierController::class, 'update']);
+                Route::delete('/delete-supplier{id}', [SupplierController::class, 'update']);
 
             });
 
@@ -360,6 +360,8 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'notifications-settings'], function () {
 
                 Route::get('/', [NotificationsSettingController::class, 'view_all_notification_settings']);
+
+                Route::put('/edite', [NotificationsSettingController::class, 'edite_notification_settings']);
 
             });
 

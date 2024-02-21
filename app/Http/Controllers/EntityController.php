@@ -291,7 +291,8 @@ class EntityController extends Controller
                 ->join('shipments', 'customers.id', '=', 'shipments.customer_id')
                 ->join('entities as products', 'shipments.product_id', '=', 'products.id')
                 ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
-                ->select('customers.id as entity_id', 'customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'routes.name as route')
+                ->select('customers.id as customer_id','customers.name as customer_name',
+                 'customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'routes.name as route')
                 ->where('customers.stakeholder_id', stakeholder_id())->get();
 
             return response()->json([

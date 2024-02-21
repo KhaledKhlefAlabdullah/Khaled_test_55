@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        
+        Schema::create('notifications1', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('user_id');
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('slug')->nullable();
             $table->boolean('is_read');

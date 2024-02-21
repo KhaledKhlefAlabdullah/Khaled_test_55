@@ -310,19 +310,19 @@ if(!function_exists('get_instances_with_value'))
 {
     function get_instances_with_value($model, $value)
     {
-        // Query the database to retrieve instances where any attribute has the specified value
-        $instance = $model::where(function ($query) use ($model, $value) {
-            $modelInstance = new $model(); // Create an instance of the model
-            $fillableAttributes = $modelInstance->getFillable(); // Get fillable attributes of the model
-            $primaryKey = $modelInstance->getKeyName(); // Get the primary key name
 
-            // Combine fillable attributes with primary key
-            $attributes = array_merge($fillableAttributes, [$primaryKey]);
-
-            foreach ($attributes as $attribute) {
-                $query->orWhere($attribute, $value); // Add OR condition for each attribute
-            }
-        })->first();
+        $instance = $model::where('id',$value)->first();
+        if(is_null($instance))
+        {
+            // Query the database to retrieve instances where any attribute has the specified value
+            $instance = $model::where(function ($query) use ($model, $value) {
+                $modelInstance = new $model(); // Create an instance of the model
+                $fillableAttributes = $modelInstance->getFillable(); // Get fillable attributes of the model
+                foreach ($fillableAttributes as $attribute) {
+                    $query->orWhere($attribute, $value); // Add OR condition for each attribute
+                }
+            })->first();
+        }
 
         return $instance;
     }

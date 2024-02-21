@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Exception;
 use function App\Helpers\find_and_update;
-use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
 
@@ -205,7 +204,7 @@ class EntityController extends Controller
             $category_id = getIdByName(Category::class, 'Production Site');
 
             $production_sites = Entity::where(['category_id' => $category_id, 'stakeholder_id' => stakeholder_id()])
-                ->select('entities.id', 'entities.name as production_site_name', 'entities.location')->get();
+                ->select('entities.id', 'entities.name as name', 'entities.location')->get();
 
             return response()->json([
                 'data' => $production_sites,
@@ -267,7 +266,7 @@ class EntityController extends Controller
                 'location' => 'required|string'
             ]);
 
-            $production_site = find_and_update(Entity::class, $id, ['name', 'location'], [$request->input('name'), $request->input('location')]);
+            find_and_update(Entity::class, $id, ['name', 'location'], [$request->input('name'), $request->input('location')]);
 
             return response()->json([
                 'message' => __('Successfully editing the production site details')

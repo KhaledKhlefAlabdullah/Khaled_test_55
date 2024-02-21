@@ -177,6 +177,8 @@ class PostController extends Controller
                 'is_general_news' => true
             ]);
 
+            
+
             // return response with created data
             return response()->json([
                 'message' => __('general-news-create-success')

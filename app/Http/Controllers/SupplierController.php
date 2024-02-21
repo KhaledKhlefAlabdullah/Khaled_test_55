@@ -115,13 +115,12 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request,string $id)
     {
         // Get the supplier by ID and check if it exists
         try {
 
             $request->validate([
-                'supplier_id' => 'required|string|exists:suppliers,id',
                 'route_id' => 'sometimes|required|string|exists:entities,id',
                 'material_id' => 'required|string|exists:entities,id',
                 'public_id' => 'sometimes|required|string|max:255',
@@ -131,8 +130,7 @@ class SupplierController extends Controller
                 'is_available' => 'sometimes|required|boolean'
             ]);
 
-            $id = $request->input('supplier_id');
-
+           
             $supplier = getAndCheckModelById(Supplier::class, $id);
 
         } catch (NotFoundResourceException $e) {
@@ -152,7 +150,6 @@ class SupplierController extends Controller
 
         // Return data
         return response()->json([
-            'data' => $supplier,
             'message' => __('Successfully editing supplier data')
         ],200);
     }
@@ -160,16 +157,10 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request,string $id)
     {
         // Get the supplier by ID and check if it exists
         try {
-
-            $request->validate([
-                'supplier_id' => 'required|string|exists:suppliers,id'
-            ]);
-
-            $id = $request->input('supplier_is');
 
             $supplier = getAndCheckModelById(Supplier::class, $id);
 

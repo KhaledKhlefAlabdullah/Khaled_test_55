@@ -111,7 +111,7 @@ class EntityController extends Controller
             $routes = DB::table('categories')
                 ->join('entities','categories.id','=','entities.category_id')
                 ->select('entities.id as route_id', 'entities.public_id as id', 'entities.from as from', 'entities.to as to', 'entities.usage as usage')
-                ->where(['entities.stakeholder_id'=>$stakeholder_id,'categories.name'=>'Route'])->get();
+                ->where(['entities.stakeholder_id'=>$stakeholder_id,'categories.name'=>'Route'])->whereNull('entities.deleted_at')->get();
 
             return response()->json([
                 'routes' => $routes,
@@ -205,7 +205,7 @@ class EntityController extends Controller
             $category_id = getIdByName(Category::class, 'Production Site');
 
             $production_sites = Entity::where(['category_id' => $category_id, 'stakeholder_id' => stakeholder_id()])
-                ->select('entities.id', 'entities.name as production site name', 'entities.location')->get();
+                ->select('entities.id', 'entities.name as production_site_name', 'entities.location')->get();
 
             return response()->json([
                 'data' => $production_sites,
@@ -270,7 +270,6 @@ class EntityController extends Controller
             $production_site = find_and_update(Entity::class, $id, ['name', 'location'], [$request->input('name'), $request->input('location')]);
 
             return response()->json([
-                'data' => $production_site,
                 'message' => __('Successfully editing the production site details')
             ], 200);
         } catch (\Exception $e) {

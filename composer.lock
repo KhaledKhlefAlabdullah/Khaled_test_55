@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d3a962320fe3421e8536ecb6548dac6f",
+    "content-hash": "45fed0087ab767494fbab5ff9da7e721",
     "packages": [
         {
             "name": "brick/math",
@@ -1047,16 +1047,16 @@
         },
         {
             "name": "laravel/breeze",
-            "version": "v1.28.1",
+            "version": "v1.28.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/breeze.git",
-                "reference": "e853918e770822780efd160a73fd676992340aca"
+                "reference": "1e48e29d3f769bb90bbdf2934c52f4612e3b5b47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/breeze/zipball/e853918e770822780efd160a73fd676992340aca",
-                "reference": "e853918e770822780efd160a73fd676992340aca",
+                "url": "https://api.github.com/repos/laravel/breeze/zipball/1e48e29d3f769bb90bbdf2934c52f4612e3b5b47",
+                "reference": "1e48e29d3f769bb90bbdf2934c52f4612e3b5b47",
                 "shasum": ""
             },
             "require": {
@@ -1105,20 +1105,20 @@
                 "issues": "https://github.com/laravel/breeze/issues",
                 "source": "https://github.com/laravel/breeze"
             },
-            "time": "2024-01-15T16:14:10+00:00"
+            "time": "2024-02-13T02:26:19+00:00"
         },
         {
             "name": "laravel/framework",
-            "version": "v10.43.0",
+            "version": "v10.44.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4f7802dfc9993cb57cf69615491ce1a7eb2e9529"
+                "reference": "1199dbe361787bbe9648131a79f53921b4148cf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4f7802dfc9993cb57cf69615491ce1a7eb2e9529",
-                "reference": "4f7802dfc9993cb57cf69615491ce1a7eb2e9529",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1199dbe361787bbe9648131a79f53921b4148cf6",
+                "reference": "1199dbe361787bbe9648131a79f53921b4148cf6",
                 "shasum": ""
             },
             "require": {
@@ -1166,6 +1166,7 @@
             "conflict": {
                 "carbonphp/carbon-doctrine-types": ">=3.0",
                 "doctrine/dbal": ">=4.0",
+                "phpunit/phpunit": ">=11.0.0",
                 "tightenco/collect": "<5.5.33"
             },
             "provide": {
@@ -1310,7 +1311,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-01-30T16:25:02+00:00"
+            "time": "2024-02-13T16:01:16+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -6010,16 +6011,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.13.10",
+            "version": "v1.13.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "e2b5060885694ca30ac008c05dc9d47f10ed1abf"
+                "reference": "60a163c3e7e3346a1dec96d3e6f02e6465452552"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/e2b5060885694ca30ac008c05dc9d47f10ed1abf",
-                "reference": "e2b5060885694ca30ac008c05dc9d47f10ed1abf",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/60a163c3e7e3346a1dec96d3e6f02e6465452552",
+                "reference": "60a163c3e7e3346a1dec96d3e6f02e6465452552",
                 "shasum": ""
             },
             "require": {
@@ -6030,13 +6031,13 @@
                 "php": "^8.1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.47.1",
-                "illuminate/view": "^10.41.0",
+                "friendsofphp/php-cs-fixer": "^3.49.0",
+                "illuminate/view": "^10.43.0",
                 "larastan/larastan": "^2.8.1",
                 "laravel-zero/framework": "^10.3.0",
                 "mockery/mockery": "^1.6.7",
                 "nunomaduro/termwind": "^1.15.1",
-                "pestphp/pest": "^2.31.0"
+                "pestphp/pest": "^2.33.6"
             },
             "bin": [
                 "builds/pint"
@@ -6072,7 +6073,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2024-01-22T09:04:15+00:00"
+            "time": "2024-02-13T17:20:13+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -7976,16 +7977,16 @@
         },
         {
             "name": "spatie/laravel-ignition",
-            "version": "2.4.1",
+            "version": "2.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-ignition.git",
-                "reference": "005e1e7b1232f3b22d7e7be3f602693efc7dba67"
+                "reference": "351504f4570e32908839fc5a2dc53bf77d02f85e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/005e1e7b1232f3b22d7e7be3f602693efc7dba67",
-                "reference": "005e1e7b1232f3b22d7e7be3f602693efc7dba67",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/351504f4570e32908839fc5a2dc53bf77d02f85e",
+                "reference": "351504f4570e32908839fc5a2dc53bf77d02f85e",
                 "shasum": ""
             },
             "require": {
@@ -8064,7 +8065,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-12T13:14:58+00:00"
+            "time": "2024-02-09T16:08:40+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -8123,7 +8124,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

@@ -7,6 +7,7 @@ use App\Http\Requests\Notification\NotificationRequest;
 use App\Http\Resources\Notification\NotificationResource;
 use App\Models\Notifications\Notification;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 
@@ -19,11 +20,12 @@ class NotificationController extends Controller
     public function index()
     {
         // Get all Notifications by relationship user and notifications
-        $data = User::with('notifications')->latest()->paginate();
+        $notifications = Auth::user()->notifications()->get();
 
-        return ($data->count() == 1)
-            ? new NotificationResource($data->first())
-            : NotificationResource::collection($data);
+        return response()->json([
+            'data' => $notifications,
+            'message' => __('get-notifications-success')
+        ],200);
     }
 
 

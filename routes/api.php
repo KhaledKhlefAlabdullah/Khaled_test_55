@@ -294,9 +294,9 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add-supplier', [SupplierController::class, 'store']);
 
-                Route::put('/edite-supplier{id}', [SupplierController::class, 'update']);
+                Route::put('/edite-supplier/{id}', [SupplierController::class, 'update']);
 
-                Route::delete('/delete-supplier{id}', [SupplierController::class, 'update']);
+                Route::delete('/delete-supplier/{id}', [SupplierController::class, 'destroy']);
 
             });
 

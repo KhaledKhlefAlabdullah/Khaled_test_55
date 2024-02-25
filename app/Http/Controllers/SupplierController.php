@@ -157,7 +157,7 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request,string $id)
+    public function destroy(string $id)
     {
         // Get the supplier by ID and check if it exists
         try {

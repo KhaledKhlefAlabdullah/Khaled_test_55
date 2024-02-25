@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Notifications\Notification;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -62,7 +61,7 @@ class User extends Authenticatable
 
     public function portal_settings(): HasMany
     {
-        return $this->hasMany(PortalSetting::Class, 'user_id');
+        return $this->hasMany(PortalSetting::class, 'user_id');
     }
 
     public function pages()
@@ -97,7 +96,7 @@ class User extends Authenticatable
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(Notification::class, 'user_id');
+        return $this->hasMany(Notification::class, 'notifiable_id');
     }
 
     public function dams(): HasMany

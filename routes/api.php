@@ -279,11 +279,11 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
 
-                Route::post('add', [EmployeeController::class, 'store']);
+                Route::post('/add', [EmployeeController::class, 'store']);
 
-                Route::put('edite', [EmployeeController::class, 'update']);
+                Route::put('/edite/{id}', [EmployeeController::class, 'update']);
 
-                Route::delete('delete', [EmployeeController::class, 'destroy']);
+                Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
 
             });
 
@@ -294,9 +294,9 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add-supplier', [SupplierController::class, 'store']);
 
-                Route::put('/edite-supplier{id}', [SupplierController::class, 'update']);
+                Route::put('/edite-supplier/{id}', [SupplierController::class, 'update']);
 
-                Route::delete('/delete-supplier{id}', [SupplierController::class, 'update']);
+                Route::delete('/delete-supplier/{id}', [SupplierController::class, 'destroy']);
 
             });
 

@@ -181,12 +181,11 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request,string $id)
     {
         try{
             // Validate the request
             $request->validate([
-                'employee_id' => 'required|string|exists:employees,id',
                 'employee_number' => 'required|integer|unique:'.Employee::class,
                 'department_id' => 'required|string|exists:entities,id',
                 'station_id' => 'required|string|exists:entities,id',
@@ -195,7 +194,7 @@ class EmployeeController extends Controller
                 'is_leadership' => 'required|boolean'
             ]);
 
-            $employee = getAndCheckModelById(Employee::class,$request->input('employee_id'));
+            $employee = getAndCheckModelById(Employee::class,$id);
 
             // Create the employee
             $employee->update([
@@ -223,18 +222,13 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(string $id)
     {
         // Get the employee by ID and check if it exists
         try {
 
-            $request->validate([
-                'id' => 'required|string|exists:employees,id'
-            ]);
-
-            $id = $request->input('id');
-
             $employee = getAndCheckModelById(Employee::class, $id);
+                
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }

@@ -10,27 +10,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Notification extends Model
 {
-    use HasFactory, HasUuid, SoftDeletes;
+    use HasFactory,SoftDeletes,HasUuid;
 
-    protected $keyType = 'string';
-
-    protected $primaryKey = 'id';
-
-    public $incrementing = false;
-
-
-    protected $fillable = [
-        'user_id',
-        'title',
-        'description',
-        'slug',
-        'is_read',
-        'notification_type',
-        'deleted_at'
+    protected $fillable =
+    [
+        'type',
+        'notifiable_type',
+        'notifiable_id',
+        'data'
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+    public function user(){
+        return $this->belongsTo(User::class,'notifiable_id');
     }
+
 }

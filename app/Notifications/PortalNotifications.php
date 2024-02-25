@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notification;
 
 use function App\Helpers\send_mail;
 
-class PostsNotifications extends Notification
+class PortalNotifications extends Notification
 {
     use Queueable;
 
@@ -20,15 +20,18 @@ class PostsNotifications extends Notification
     protected $message;
     protected $viaChannels;
 
+    protected $receivers;
+
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(array $viaChannels = ['database'],UserProfile $user_profile, string $message)
+    public function __construct(array $viaChannels = ['database'],$user_profile, string $message,$receivers)
     {
-        $this->viaChannels=$viaChannels;
+        $this->viaChannels = $viaChannels;
         $this->user_profile = $user_profile;
         $this->message = $message;
+        $this->receivers = $receivers;
     }
 
     /**
@@ -59,7 +62,12 @@ class PostsNotifications extends Notification
     public function toMail(object $notifiable)
     {
         try{
-            $succes = send_mail('message testing notify email','khaledabdullah2001104@gmail.com');
+            // todo make the emails block and pass it without foreach
+
+            $mails = $this->receivers->pluck('email')->toArray();
+
+            $succes = send_mail($this->message,$mails);
+
             if($succes){
                 return (new PortalMails('testing message'))->to($notifiable);
             }

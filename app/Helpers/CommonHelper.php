@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Mail\PortalMails;
 use App\Models\Notifications\NotificationsSetting;
 use App\Models\Page;
+use App\Notifications\PortalNotifications;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
@@ -358,6 +360,23 @@ if(!function_exists('find_and_update')){
         $instances->update($data);
 
         return $instances; // Return the updated instances
+    }
+}
+
+/**
+ * Send notifications 
+ */
+if(!function_exists('send_notifications')){
+
+    function send_notifications($receivers,array $viaChanel=['database'],$message){
+
+        $user_profile = Auth::user()
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_URL')
+            ->first();
+            
+        Notification::send($receivers,new PortalNotifications($viaChanel,$user_profile,$message,$receivers));
+
     }
 }
 

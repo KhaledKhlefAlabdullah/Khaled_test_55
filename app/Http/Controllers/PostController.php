@@ -17,6 +17,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\send_mail;
+use function App\Helpers\send_notifications;
 use function App\Helpers\store_files;
 
 class PostController extends Controller
@@ -150,40 +151,39 @@ class PostController extends Controller
 
         try {
 
-            // $request->validate([
-            //     'image' => 'required'
-            // ]);
+            $request->validate([
+                'image' => 'required'
+            ]);
 
-            // // get category id where category is news
-            // $category_id = Category::where('name','news')->first()->id;
+            // get category id where category is news
+            $category_id = Category::where('name','news')->first()->id;
 
-            // // get auth user id as author
-            // $user_id = Auth::id();
+            // get auth user id as author
+            $user_id = Auth::id();
 
-            // // get image from request
-            // $image = $request->image;
+            // get image from request
+            $image = $request->image;
 
-            // // put path to store image
-            // $path = '/images/general_news_images';
+            // put path to store image
+            $path = '/images/general_news_images';
 
-            // // coll store function to store the image
-            // $image_path = store_files($image,$path);
+            // coll store function to store the image
+            $image_path = store_files($image,$path);
 
-            // // create new post as general news
-            // Post::create([
-            //     'user_id' => $user_id,
-            //     'category_id' => $category_id,
-            //     'title' => $request->input('title'),
-            //     'slug' => str_ireplace(' ', '-', $request->input('title')),
-            //     'body' => $request->input('body'),
-            //     'media_url' => $image_path,
-            //     'media_type' => 'image',
-            //     'is_general_news' => true
-            // ]);
-
-            $user_profile = Auth::user()->user_profile()->first();
-            
-            Notification::send(User::all(),new PostsNotifications(['database','mail'],$user_profile,'add new General news'));
+            // create new post as general news
+            Post::create([
+                'user_id' => $user_id,
+                'category_id' => $category_id,
+                'title' => $request->input('title'),
+                'slug' => str_ireplace(' ', '-', $request->input('title')),
+                'body' => $request->input('body'),
+                'media_url' => $image_path,
+                'media_type' => 'image',
+                'is_general_news' => true
+            ]);
+        
+            // Send notification after add new general news
+            send_notifications(User::all(),['database','mail'],config('golbals.new-generalNews'));
 
             // return response with created data
             return response()->json([

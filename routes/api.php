@@ -279,6 +279,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
 
+                Route::get('/get-ifo',[EmployeeController::class,'get_info']);
+
                 Route::post('/add', [EmployeeController::class, 'store']);
 
                 Route::put('/edite/{id}', [EmployeeController::class, 'update']);

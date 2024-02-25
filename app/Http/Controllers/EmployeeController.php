@@ -38,7 +38,7 @@ class EmployeeController extends Controller
                 ->select('employees.id', 'employees.employee_number as number', 'employees.is_leadership as leadership',
                     'residential_areas.name as residential_area_name', 'residential_areas.location as residential_area_location',
                     'department.name as department_name', 'station.name as station_name', 'route.name as route_name')
-                ->where('users.id', '=', $user_id)
+                ->where('users.id', '=', $user_id)->whereNull('employees.deleted_at')
                 ->get();
 
             return $employees;
@@ -49,6 +49,23 @@ class EmployeeController extends Controller
                 'error' => __($e->getMessage()),
                 'message' => __('there are error in server side try another time')
             ]);
+        }
+
+    }
+
+    /**
+     * Get the related in formation for add new employee
+     */
+    public function gte_info(){
+
+        try{
+
+        }
+        catch(Exception $e){
+            return response()->jsone([
+                'error' => __($e->getMessage()),
+                ''
+            ],500);
         }
 
     }

@@ -2,11 +2,15 @@
 
 namespace App\Notifications;
 
+use App\Mail\PortalMails;
 use App\Models\UserProfile;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+
+use function App\Helpers\send_mail;
 
 class PostsNotifications extends Notification
 {
@@ -14,12 +18,15 @@ class PostsNotifications extends Notification
 
     protected $user_profile;
     protected $message;
+    protected $viaChannels;
+
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(UserProfile $user_profile, string $message)
+    public function __construct(array $viaChannels = ['database'],UserProfile $user_profile, string $message)
     {
+        $this->viaChannels=$viaChannels;
         $this->user_profile = $user_profile;
         $this->message = $message;
     }
@@ -31,11 +38,11 @@ class PostsNotifications extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return $this->viaChannels;
     }
 
     /**
-     * Get the mail representation of the notification.
+     * Get the database representation of the notification.
      */
     public function toDatabase(object $notifiable)
     {
@@ -46,7 +53,31 @@ class PostsNotifications extends Notification
         ];
     }
 
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable)
+    {
+        try{
+            $succes = send_mail('message testing notify email','khaledabdullah2001104@gmail.com');
+            if($succes){
+                return (new PortalMails('testing message'))->to($notifiable);
+            }
+        } 
+        catch (Exception $e) {
+            // Handle any exceptions that occur during mail sending
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('Could not send the email'),
+            ], 500);
+        }
     
+        // If mail sending fails, return an appropriate response
+        return response()->json([
+            'error' => __('Could not send the email'),
+        ], 500);
+    }
+
 
 
     /**

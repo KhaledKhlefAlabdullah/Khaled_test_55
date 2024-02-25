@@ -96,9 +96,6 @@ Route::group(['prefix' => 'api'], function () {
         // Natural Disasters
         Route::apiResource('natural-disasters', NaturalDisasterController::class);
 
-        // Notifications
-        Route::apiResource('notifications', NotificationController::class);
-
         // Notification Settings
         Route::apiResource('notification-settings', NotificationsSettingController::class);
 
@@ -294,11 +291,11 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [SupplierController::class, 'index']);
 
-                Route::post('/add-supplier', [SupplierController::class, 'store']);
+                Route::post('/add', [SupplierController::class, 'store']);
 
-                Route::put('/edite-supplier/{id}', [SupplierController::class, 'update']);
+                Route::put('/edite/{id}', [SupplierController::class, 'update']);
 
-                Route::delete('/delete-supplier/{id}', [SupplierController::class, 'destroy']);
+                Route::delete('/delete/{id}', [SupplierController::class, 'destroy']);
 
             });
 
@@ -331,7 +328,13 @@ Route::group(['prefix' => 'api'], function () {
             // Customers routes
             Route::group(['prefix' => 'customers'], function () {
 
-                Route::get('/', [EntityController::class, 'get_Customers']);
+                Route::get('/', [EntityController::class, 'get_customers']);
+
+                Route::post('/add', [EntityController::class, 'add_customer']);
+
+                Route::put('/edite/{customer_id}/{shipment_id}', [EntityController::class, 'edite_customer']);
+
+                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
 
             });
 
@@ -369,6 +372,16 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+
+        });
+
+        Route::group(['prefix' => 'notifications'],function(){
+
+            Route::get('/',[NotificationController::class,'index']);
+
+            Route::put('/marked-read/{id}',[NotificationController::class,'marked_as_read']);
+
+            Route::delete('/delete/{id}',[NotificationController::class,'destroy']);
 
         });
 

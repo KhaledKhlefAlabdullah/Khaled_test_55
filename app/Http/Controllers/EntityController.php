@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EntityRequest;
+use App\Http\Requests\MaterialRequest;
 use App\Http\Resources\EntityResource;
 use App\Models\Category;
 use App\Models\Entity;
@@ -338,30 +339,28 @@ class EntityController extends Controller
 
             $request->validate([
                 'id' => 'required|string|unique:entities,public_id',
-                'from' => 'required|string',
-                'to' => 'required|string',
-                'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
+                'name' => 'required|string',
+                'description' => 'nullable|string',
             ]);
+
 
             $entity = Entity::create([
                 'stakeholder_id' => stakeholder_id(),
-                'category_id' => getIdByName(Category::class, 'Route'),
+                'category_id' => getIdByName(Category::class, 'Material'),
                 'public_id' => $request->input('id'),
-                'from' => $request->input('from'),
-                'to' => $request->input('to'),
-                'usage' => $request->input('usage'),
-                'is_available' => true
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
             ]);
 
             return response()->json([
                 'data' => $entity,
-                'message' => __('Successfully adding new route')
+                'message' => __('Successfully adding new Material')
             ], 200);
 
         } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('There error in adding rout try again')
+                'message' => __('There error in adding Material try again')
             ], 500);
         }
     }

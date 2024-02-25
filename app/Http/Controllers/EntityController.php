@@ -108,21 +108,20 @@ class EntityController extends Controller
             $stakeholder_id = stakeholder_id();
 
             $routes = DB::table('categories')
-                ->join('entities','categories.id','=','entities.category_id')
+                ->join('entities', 'categories.id', '=', 'entities.category_id')
                 ->select('entities.id as route_id', 'entities.public_id as id', 'entities.from as from', 'entities.to as to', 'entities.usage as usage')
-                ->where(['entities.stakeholder_id'=>$stakeholder_id,'categories.name'=>'Route'])->whereNull('entities.deleted_at')->get();
+                ->where(['entities.stakeholder_id' => $stakeholder_id, 'categories.name' => 'Route'])->whereNull('entities.deleted_at')->get();
 
             return response()->json([
                 'routes' => $routes,
                 'message' => __('routes-getting-success')
-            ],200);
+            ], 200);
 
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('there error in server side try another time')
-            ],500);
+            ], 500);
         }
     }
 
@@ -131,7 +130,7 @@ class EntityController extends Controller
      */
     public function add_new_route(Request $request)
     {
-        try{
+        try {
 
             $request->validate([
                 'id' => 'required|string|unique:entities,public_id',
@@ -141,8 +140,8 @@ class EntityController extends Controller
             ]);
 
             $entity = Entity::create([
-                'stakeholder_id' =>  stakeholder_id(),
-                'category_id' =>  getIdByName(Category::class,'Route'),
+                'stakeholder_id' => stakeholder_id(),
+                'category_id' => getIdByName(Category::class, 'Route'),
                 'public_id' => $request->input('id'),
                 'from' => $request->input('from'),
                 'to' => $request->input('to'),
@@ -153,14 +152,13 @@ class EntityController extends Controller
             return response()->json([
                 'data' => $entity,
                 'message' => __('Successfully adding new route')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in adding rout try again')
-            ],500);
+            ], 500);
         }
     }
 
@@ -169,7 +167,7 @@ class EntityController extends Controller
      */
     public function edite_route_details(Request $request, string $id)
     {
-        try{
+        try {
 
             $request->validate([
                 'from' => 'required|string',
@@ -183,14 +181,13 @@ class EntityController extends Controller
             return response()->json([
                 'data' => $entity,
                 'message' => __('Successfully adding new route')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in editing rout details try again')
-            ],500);
+            ], 500);
         }
     }
 
@@ -290,8 +287,8 @@ class EntityController extends Controller
                 ->join('shipments', 'customers.id', '=', 'shipments.customer_id')
                 ->join('entities as products', 'shipments.product_id', '=', 'products.id')
                 ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
-                ->select('customers.id as customer_id','customers.name as customer_name',
-                 'customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'routes.name as route')
+                ->select('customers.id as customer_id', 'customers.name as customer_name',
+                    'customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'routes.name as route')
                 ->where('customers.stakeholder_id', stakeholder_id())->get();
 
             return response()->json([
@@ -306,4 +303,67 @@ class EntityController extends Controller
         }
 
     }
+
+
+
+    // Materials Start
+
+    /**
+     * Get all materials in database with material usage
+     */
+    public function get_materials()
+    {
+        $stakeholder_id = stakeholder_id();
+
+        // Fetching specific columns, namely the identifier, the general identifier, and the name of the material,
+        // also merging the items table and the entity table,
+        // which currently expresses the materials and returns data that has not been deleted.
+        $material = DB::table('categories')
+            ->join('entities', 'categories.id', '=', 'entities.category_id')
+            ->select('entities.id as material_id', 'entities.public_id as id', 'entities.name as name')
+            ->where(['entities.stakeholder_id' => $stakeholder_id, 'categories.name' => 'Material'])->whereNull('entities.deleted_at')->get();
+
+        return response()->json([
+            'materials' => $material,
+            'message' => __('materials-getting-success')
+        ], 200);
+    }
+
+    /**
+     * Add new material details
+     */
+    public function add_new_material(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'id' => 'required|string|unique:entities,public_id',
+                'from' => 'required|string',
+                'to' => 'required|string',
+                'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
+            ]);
+
+            $entity = Entity::create([
+                'stakeholder_id' => stakeholder_id(),
+                'category_id' => getIdByName(Category::class, 'Route'),
+                'public_id' => $request->input('id'),
+                'from' => $request->input('from'),
+                'to' => $request->input('to'),
+                'usage' => $request->input('usage'),
+                'is_available' => true
+            ]);
+
+            return response()->json([
+                'data' => $entity,
+                'message' => __('Successfully adding new route')
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('There error in adding rout try again')
+            ], 500);
+        }
+    }
+    // Materials End
 }

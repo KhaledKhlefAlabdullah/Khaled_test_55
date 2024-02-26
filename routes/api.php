@@ -364,14 +364,14 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // for notifications settings
             Route::group(['prefix' => 'notifications-settings'], function () {
 
-                Route::get('/', [NotificationsSettingController::class, 'view_all_notification_settings']);
+                Route::get('/', [NotificationsSettingController::class, 'index']);
 
-                Route::put('/edite', [NotificationsSettingController::class, 'edite_notification_settings']);
+                Route::put('/edite/{id}', [NotificationsSettingController::class, 'update']);
 
             });
-
 
         });
 

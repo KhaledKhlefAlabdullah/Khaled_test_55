@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('monitoring_points_notification_settings', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('monitoring_point_id');
-            $table->string('notifications_setting_id');
+            $table->string('notification_setting_id');
             $table->foreign('monitoring_point_id', 'monitoring_point_id')->references('id')->on('monitoring_points')->onDelete('cascade');
             $table->foreign('notifications_setting_id','notifications_setting_id')->references('id')->on('notifications_settings')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
+            // Add unique constraint across both columns
+            $table->unique(['monitoring_point_id', 'notification_setting_id'], 'unique_monitoring_point_notification_setting');
         });
     }
 

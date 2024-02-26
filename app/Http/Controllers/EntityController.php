@@ -182,7 +182,7 @@ class EntityController extends Controller
             ]);
 
             $entity = find_and_update(Entity::class, $id, ['from', 'to', 'usage'],
-                [$request->input('from'), $request->input('to'), $request->input('usage')]);
+                ['from' => $request->input('from'), 'to' => $request->input('to'), 'usage' => $request->input('usage')]);
 
             return response()->json([
                 'data' => $entity,
@@ -270,7 +270,7 @@ class EntityController extends Controller
                 'location' => 'required|string'
             ]);
 
-            find_and_update(Entity::class, $id, ['name', 'location'], [$request->input('name'), $request->input('location')]);
+            find_and_update(Entity::class, $id, ['name', 'location'], ['name' =>$request->input('name'), 'location' =>$request->input('location')]);
 
             return response()->json([
                 'message' => __('Successfully editing the production site details')

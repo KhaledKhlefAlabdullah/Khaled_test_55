@@ -62,10 +62,10 @@ class PortalNotifications extends Notification
     public function toMail(object $notifiable)
     {
         try{
-            // todo make the emails block and pass it without foreach
-
+            // Take the receiver mails
             $mails = $this->receivers->pluck('email')->toArray();
 
+            // send the notifications to all mails
             $succes = send_mail($this->message,$mails);
 
             if($succes){

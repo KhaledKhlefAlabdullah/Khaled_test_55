@@ -352,8 +352,8 @@ if(!function_exists('find_and_update')){
 
         // Create an associative array of keys and values
         $data = [];
-        foreach ($keys as $index => $key) {
-            $data[$key] = $values[$index];
+        foreach ($keys as  $key) {
+            $data[$key] = $values[$key];
         }
 
         // Update the model attributes with the provided data
@@ -383,7 +383,7 @@ if(!function_exists('send_notifications')){
 /**
  * Add notifications settings for user
  */
-if (!function_exists('find_and_update')) {
+if (!function_exists('add_notifications_settings')) {
 
     function add_notifications_settings(string $type, string $user_id)
     {
@@ -396,9 +396,9 @@ if (!function_exists('find_and_update')) {
                 Rain
 
              Water Level:
-                Dam
+                Dam (WE HAVE TO SELECT DAMS)
                 Report Water
-                Monitoring Point
+                Monitoring Point (WE HAVE TO SELECT MONITORING POINTS)
 
             Infrastructure Notification:
                 Notifications

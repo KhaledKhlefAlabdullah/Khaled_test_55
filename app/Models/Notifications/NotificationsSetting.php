@@ -58,4 +58,5 @@ class NotificationsSetting extends Model
     {
         return $this->belongsToMany(MonitoringPoint::class, 'monitoring_points_notification_settings', 'notifications_setting_id', 'monitoring_point_id');
     }
+    
 }

@@ -22,41 +22,38 @@ class NotificationSettingRequest extends BaseRequest
      */
     public function rules(): array
     {
-        if ($this->method() == 'PUT') {
-            return [
-                'notification_state' => ['nullable', 'in:none,observation,forecasting'],
-                'notification_level' => ['nullable', 'in:none,normal,medium,high'],
-                'notification_priorities' => ['required', 'in:none,top,low,high'],
-                'is_on' => ['required', 'sometimes', 'boolean'],
-                'note' => ['nullable', 'string'],
-            ];
-
-        }
-        return [
-            'user_id' => ['required', 'uuid', 'exists:users,id'],
-            'main_category_id' => ['required', 'uuid', 'exists:categories,id'],
-            'sub_category_id' => ['required', 'uuid', 'exists:categories,id'],
+       
+        $rules = [
             'notification_state' => ['nullable', 'in:none,observation,forecasting'],
-            'notification_level' => ['nullable', 'in:none,normal,medium,high'],
             'notification_priorities' => ['required', 'in:none,top,low,high'],
             'is_on' => ['required', 'sometimes', 'boolean'],
-            'note' => ['nullable', 'string'],
         ];
 
-    }
+        if(request()->has('notification_level')){
+            $rules['notification_level'] = ['nullable', 'in:none,normal,medium,high'];
+        }
 
+        if(request()->has('monitoring_points')){
 
-    public function attributes()
-    {
-        return [
-            'user_id' => 'User',
-            'main_category_id' => 'Main Category',
-            'sub_category_id' => 'Sub Category',
-            'notification_state' => 'Notification State',
-            'notification_level' => 'Notification Level',
-            'notification_priorities' => 'Notification Priorities',
-            'is_on' => 'On',
-            'note' => 'Note'
-        ];
+            $monitoring_points = request()->input('monitoring_points');
+
+            foreach($monitoring_points as $key => $point){
+                $rules["monitoring_points.$key.id"] = ['required','string','exists:monitoring_points,id'];
+            }
+
+        }
+
+        if(request()->has('dams')){
+
+            $dams = request()->input('dams');
+
+            foreach($dams as $key => $dam){
+                $rules["dams.$key.id"] = ['required','string','exists:dams,id'];
+            }
+
+        }
+
+        return $rules;
+        
     }
 }

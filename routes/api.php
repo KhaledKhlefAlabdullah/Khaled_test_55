@@ -347,6 +347,14 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+
+            // Products routes
+            Route::group(['prefix' => 'products'], function () {
+
+                Route::get('/',[EntityController::class,'get_products']);
+
+            });
+
             // Wastes Routes
             Route::group(['prefix' => 'wastes'], function () {
 

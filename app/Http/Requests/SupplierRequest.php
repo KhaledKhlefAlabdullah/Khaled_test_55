@@ -4,7 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+
+use function App\Helpers\stakeholder_id;
 
 class SupplierRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class SupplierRequest extends FormRequest
     protected function prepareForValidation()
     {
         // Set user_id based on the current user making the request
-        $this->merge(['stakeholder_id' => Auth::id()]);
+        $this->merge(['stakeholder_id' => stakeholder_id()]);
     }
 
     /**
@@ -36,19 +37,17 @@ class SupplierRequest extends FormRequest
             return [
                 'route_id' => ['sometimes', 'required', 'string', 'exists:entities,id'],
                 'material_id' => ['required', 'string', 'exists:entities,id'],
-                'public_id' => ['sometimes', 'required', 'string', 'max:255'],
-                'slug' => ['nullable', 'string', 'unique'],
+                'name' => ['sometimes', 'required', 'string','unique:suppliers,public_id'],
                 'location' => ['sometimes', 'required', 'string'],
                 'contact_info' => ['sometimes', 'required', 'string'],
                 'is_available' => ['sometimes', 'required', 'boolean'],
             ];
         }
         return [
-            'route_id' => ['required', 'uuid', 'exists:entities,id'],
-            'material_id' => ['required', 'uuid', 'exists:entities,id'],
-            'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
-            'public_id' => ['required', 'unique', 'string'],
-            'slug' => ['nullable', 'string', 'unique'],
+            'route_id' => ['required', 'string', 'exists:entities,id'],
+            'material_id' => ['required', 'string', 'exists:entities,id'],
+            'stakeholder_id' => ['required', 'string', 'exists:stakeholders,id'],
+            'name' => ['required', 'string','unique:suppliers,public_id'],
             'location' => ['required', 'string'],
             'contact_info' => ['required', 'string'],
             'is_available' => ['required', 'boolean'],
@@ -62,7 +61,6 @@ class SupplierRequest extends FormRequest
             'material_id' => 'Material',
             'stakeholder_id' => 'Stakeholder',
             'public_id' => 'Public',
-            'slug' => 'Slug',
             'location' => 'Location',
             'contact_info' => 'Contact Info',
             'is_available' => 'Is Available'

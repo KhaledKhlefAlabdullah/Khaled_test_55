@@ -29,7 +29,7 @@ class SupplierController extends Controller
                 ->join('entities as routes','suppliers.route_id','=','routes.id')
                 ->join('entities as materials','suppliers.material_id','=','materials.id')
                 ->select('suppliers.id as supplier_id', 'materials.id as material_id',
-                    'routes.id as route_id', 'suppliers.public_id as supplier_number',
+                    'routes.id as route_id', 'suppliers.public_id as supplier_number','suppliers.contact_info as contct_number',
                     'materials.name as material', 'suppliers.location as location', 'routes.public_id as route')
                 ->where('stakeholders.id', '=', $stakeholder_id)
                 ->whereNull('suppliers.deleted_at')
@@ -54,29 +54,17 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SupplierRequest $request)
     {
         try {
 
-            $request->validate([
-                'route_id' => 'sometimes|required|string|exists:entities,id',
-                'material_id' => 'required|string|exists:entities,id',
-                'public_id' => 'sometimes|required|string|max:255',
-                'slug' => 'nullable|string',
-                'location' => 'sometimes|required|string',
-                'contact_info' => 'sometimes|required|string',
-                'is_available' => 'sometimes|required|boolean'
-            ]);
-
-            $stakeholder_id = stakeholder_id();
-
             // Create the supplier
-            $supplier = Supplier::create([
-                'stakeholder_id' => $stakeholder_id,
+            Supplier::create([
+                'stakeholder_id' => $request->stakeholder_id,
                 'route_id' => $request->input('route_id'),
                 'material_id' => $request->input('material_id'),
                 'public_id' => $request->input('name'),
-                'slug' => $request->input('slug'),
+                'slug' => $request->input('name').'_'.$request->input('location'),
                 'location' => $request->input('location'),
                 'contact_info' => $request->input('contact_info'),
                 'is_available' => $request->input('is_available')
@@ -114,49 +102,29 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,string $id)
+    public function update(SupplierRequest $request,string $id)
     {
         // Get the supplier by ID and check if it exists
         try {
-
-           $validated = $request->validate([
-                'route_id' => 'sometimes|required|string|exists:entities,id',
-                'material_id' => 'required|string|exists:entities,id',
-                'public_id' => 'sometimes|required|string|max:255',
-                'slug' => 'nullable|string',
-                'location' => 'sometimes|required|string',
-                'contact_info' => 'sometimes|required|string',
-                'is_available' => 'sometimes|required|boolean'
-            ]);
-
            
             $supplier = getAndCheckModelById(Supplier::class, $id);
 
-            $supplier->update($validated);
+            $supplier->update([
+                'route_id' => $request->input('route_id'),
+                'material_id' => $request->input('material_id'),
+                'public_id' => $request->input('name'),
+                'location' => $request->input('location'),
+                'contact_info' => $request->input('contact_info'),
+                'is_available' => $request->input('is_available')
+            ]);
 
             return response()->json([
-                'message' => __('Successfully adding new supplier')
+                'message' => __('Successfully editing supplier')
             ],200);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
-
-        // Update the supplier
-        $supplier->update([
-            'route_id' => $request->input('route_id'),
-            'material_id' => $request->input('material_id'),
-            'public_id' => $request->input('public_id'),
-            'slug' => $request->input('slug'),
-            'location' => $request->input('location'),
-            'contact_info' => $request->input('contact_info'),
-            'is_available' => $request->input('is_available')
-        ]);
-
-        // Return data
-        return response()->json([
-            'message' => __('Successfully editing supplier data')
-        ],200);
     }
 
     /**

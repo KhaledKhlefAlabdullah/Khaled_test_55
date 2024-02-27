@@ -117,7 +117,7 @@ class EntityController extends Controller
                 ->where(['entities.stakeholder_id'=>$stakeholder_id,'categories.name'=>'Route'])->whereNull('entities.deleted_at')->get();
 
             return response()->json([
-                'routes' => $routes,
+                'data' => $routes,
                 'message' => __('routes-getting-success')
             ],200);
 
@@ -144,7 +144,7 @@ class EntityController extends Controller
                 'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
             ]);
 
-            $entity = Entity::create([
+            Entity::create([
                 'stakeholder_id' =>  stakeholder_id(),
                 'category_id' =>  getIdByName(Category::class,'Route'),
                 'public_id' => $request->input('id'),
@@ -155,7 +155,6 @@ class EntityController extends Controller
             ]);
 
             return response()->json([
-                'data' => $entity,
                 'message' => __('Successfully adding new route')
             ],200);
 
@@ -181,11 +180,10 @@ class EntityController extends Controller
                 'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
             ]);
 
-            $entity = find_and_update(Entity::class, $id, ['from', 'to', 'usage'],
+            find_and_update(Entity::class, $id, ['from', 'to', 'usage'],
                 ['from' => $request->input('from'), 'to' => $request->input('to'), 'usage' => $request->input('usage')]);
 
             return response()->json([
-                'data' => $entity,
                 'message' => __('Successfully adding new route')
             ],200);
 

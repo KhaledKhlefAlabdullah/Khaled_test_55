@@ -30,7 +30,7 @@ class SupplierController extends Controller
                 ->join('entities as materials','suppliers.material_id','=','materials.id')
                 ->select('suppliers.id as supplier_id', 'materials.id as material_id',
                     'routes.id as route_id', 'suppliers.public_id as supplier_number',
-                    'materials.name as material', 'suppliers.location as location', 'routes.name as route')
+                    'materials.name as material', 'suppliers.location as location', 'routes.public_id as route')
                 ->where('stakeholders.id', '=', $stakeholder_id)
                 ->whereNull('suppliers.deleted_at')
                 ->whereNull('routes.deleted_at')
@@ -84,7 +84,6 @@ class SupplierController extends Controller
 
             // Return data
             return response()->json([
-                'supplier' => $supplier,
                 'message' => __('Successfully adding new supplier')
             ],200);
 
@@ -120,7 +119,7 @@ class SupplierController extends Controller
         // Get the supplier by ID and check if it exists
         try {
 
-            $request->validate([
+           $validated = $request->validate([
                 'route_id' => 'sometimes|required|string|exists:entities,id',
                 'material_id' => 'required|string|exists:entities,id',
                 'public_id' => 'sometimes|required|string|max:255',
@@ -132,6 +131,12 @@ class SupplierController extends Controller
 
            
             $supplier = getAndCheckModelById(Supplier::class, $id);
+
+            $supplier->update($validated);
+
+            return response()->json([
+                'message' => __('Successfully adding new supplier')
+            ],200);
 
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());

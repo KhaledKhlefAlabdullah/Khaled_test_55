@@ -293,7 +293,7 @@ class EntityController extends Controller
                 ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
 
                 ->select('customers.id as customer_id','shipments.id as shipment_id','customers.name as customer_name',
-                 'customers.name','customers.public_id as id', 'products.name as shipped_product', 'shipments.location','customers.phone_number as phone', 'routes.name as route')
+                 'customers.name','customers.public_id as id', 'products.name as shipped_product', 'shipments.location','customers.phone_number as phone', 'routes.public_id as route')
                 ->where('customers.stakeholder_id', stakeholder_id())
                 ->whereNull('customers.deleted_at')
                 ->get();

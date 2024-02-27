@@ -13,6 +13,8 @@ use App\Models\Stakeholder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Exception;
+
+use function App\Helpers\count_items;
 use function App\Helpers\find_and_update;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
@@ -138,17 +140,19 @@ class EntityController extends Controller
         try {
 
             $request->validate([
-                'id' => 'required|string|unique:entities,public_id',
                 'from' => 'required|string',
                 'to' => 'required|string',
                 'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
             ]);
 
+            $category_id = getIdByName(Category::class,'Route');
 
+            $routes_count = count_items(Entity::class,['stakeholder_id' => stakeholder_id(),'category_id' => $category_id]);
+            
             Entity::create([
                 'stakeholder_id' =>  stakeholder_id(),
-                'category_id' =>  getIdByName(Category::class,'Route'),
-                'public_id' => $request->input('id'),
+                'category_id' =>  $category_id,
+                'public_id' => $routes_count.'R',
                 'from' => $request->input('from'),
                 'to' => $request->input('to'),
                 'usage' => $request->input('usage'),
@@ -234,10 +238,12 @@ class EntityController extends Controller
 
             $category_id = getIdByName(Category::class, 'Production Site');
 
+            $production_sites_count = count_items(Entity::class,['stakeholder_id' => stakeholder_id(),'category_id' => $category_id]);
+            
             Entity::create([
                 'stakeholder_id' => stakeholder_id(),
                 'category_id' => $category_id,
-                'public_id' => now(),
+                'public_id' => $production_sites_count.'PS',
                 'name' => $request->input('name'),
                 'location' => $request->input('location'),
                 'is_available' => true
@@ -291,7 +297,6 @@ class EntityController extends Controller
                 ->join('shipments', 'customers.id', '=', 'shipments.customer_id')
                 ->join('entities as products', 'shipments.product_id', '=', 'products.id')
                 ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
-
                 ->select('customers.id as customer_id','shipments.id as shipment_id','customers.name as customer_name',
                     'customers.public_id as id', 'products.name as shipped_product', 'shipments.location','customers.phone_number as phone', 'routes.public_id as route')
                 ->where('customers.stakeholder_id', stakeholder_id())
@@ -340,25 +345,29 @@ class EntityController extends Controller
     public function add_customer(CustomersRequest $request){
         try{
 
+            $customers_count = count_items(Entity::class,['stakeholder_id' => stakeholder_id(),'category_id' => getIdByName(Category::class,'Customer')]);
+            
             $customer = Entity::create([
                 'stakeholder_id' => stakeholder_id(),
                 'category_id' => getIdByName(Category::class,'Customer'),
                 'name' => $request->input('customer_name'),
-                'public_id' => $request->input('customer_name').'-'.now(),
+                'public_id' => $customers_count."C",
                 'phone_number' => $request->input('phone_number'),
             ]);
 
+            $shipments_count = count_items(Shipment::class,['customer_id' => $customer->id]);
+            
             Shipment::create([
                 'route_id' => $request->input('reoute_id'),
                 'product_id' => $request->input('shiped_product_id'),
                 'customer_id' => $customer->id,
                 'stakeholder_id' => stakeholder_id(),
-                'public_id' => now().'-SH-'.$customer->name,
+                'public_id' => $shipments_count.'SH',
                 'name' => $customer->name.'-Shipment',
                 'location' => $request->input('location'),
                 'contact_info' => $customer->phone_number
             ]);
-          
+
             return response()->json([
                 'message' => __('customer-creating-success')
             ],200);
@@ -384,7 +393,6 @@ class EntityController extends Controller
 
             $customer->update([
                 'name' => $request->input('customer_name'),
-                'public_id' => $request->input('customer_name').'-'.now(),
                 'phone_number' => $request->input('phone_number'),
             ]);
 
@@ -392,7 +400,6 @@ class EntityController extends Controller
                 'route_id' => $request->input('reoute_id'),
                 'product_id' => $request->input('shiped_product_id'),
                 'customer_id' => $customer->id,
-                'public_id' => now().'-SH-'.$customer->name,
                 'name' => $customer->name.'-Shipment',
                 'location' => $request->input('location'),
                 'contact_info' => $customer->phone_number

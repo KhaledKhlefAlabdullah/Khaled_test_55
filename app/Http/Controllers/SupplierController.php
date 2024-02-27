@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+
+use function App\Helpers\count_items;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\stakeholder_id;
 use function App\Helpers\transformCollection;
@@ -59,13 +61,15 @@ class SupplierController extends Controller
     {
         try {
 
+            $suppliers_count = count_items(Supplier::class,['stakeholder_id' => $request->stakeholder_id]);
+
             // Create the supplier
             Supplier::create([
                 'stakeholder_id' => $request->stakeholder_id,
                 'route_id' => $request->input('route_id'),
                 'material_id' => $request->input('material_id'),
-                'public_id' => $request->input('name'),
-                'slug' => $request->input('name').'_'.$request->input('location'),
+                'public_id' => $suppliers_count.'SUP',
+                'name' => $request->inpute('name'),
                 'location' => $request->input('location'),
                 'contact_info' => $request->input('contact_info'),
                 'is_available' => $request->input('is_available')
@@ -113,7 +117,7 @@ class SupplierController extends Controller
             $supplier->update([
                 'route_id' => $request->input('route_id'),
                 'material_id' => $request->input('material_id'),
-                'public_id' => $request->input('name'),
+                'name' => $request->input('name'),
                 'location' => $request->input('location'),
                 'contact_info' => $request->input('contact_info'),
                 'is_available' => $request->input('is_available')

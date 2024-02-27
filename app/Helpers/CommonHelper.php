@@ -470,3 +470,26 @@ if (!function_exists('add_notifications_settings')) {
     }
 
 }
+
+/**
+ * Get Counter
+ */
+if (!function_exists('count_items')) {
+
+    function count_items($model, array $validations)
+    {
+        try {
+
+            $item_count = $model::where($validations)->get()->count()+1;
+
+            return $item_count;
+           
+        } catch (\Mockery\Exception $e) {
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('get-count-error')
+            ], 500);
+        }
+    }
+
+}

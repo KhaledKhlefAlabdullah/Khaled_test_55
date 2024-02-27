@@ -15,7 +15,7 @@ return new  class extends Migration {
             $table->string('stakeholder_id');
             $table->string('category_id');
             $table->string('name')->nullable();
-            $table->string('public_id')->unique();
+            $table->string('public_id');
             $table->string('slug')->nullable();
             $table->string('phone_number')->nullable();
             $table->text('location')->nullable();
@@ -29,6 +29,7 @@ return new  class extends Migration {
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(['public_id', 'stakeholder_id']);
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });

@@ -319,7 +319,7 @@ class EntityController extends Controller
 
             $category_id = getIdByName(Category::class,'Product');
 
-            $products = Entity::where(['stakeholder_id' => stakeholder_id(),'category_id' => $category_id ])->select('*')->get();
+            $products = Entity::where(['stakeholder_id' => stakeholder_id(),'category_id' => $category_id ])->select('entities.id','entities.name')->get();
 
             return response()->json([
                 'data' => $products,

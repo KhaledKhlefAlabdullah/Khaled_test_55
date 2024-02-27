@@ -208,12 +208,12 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
-        // Routes for industrial area representative role
+        // Routes for iftrastructure provider role
         Route::middleware(['infrastructure-provider'])->group(function () {
 
         });
 
-        // Routes for industrial area representative role
+        // Routes for tenant company role
         Route::middleware(['tenant-company'])->group(function () {
 
             Route::post('change-status', [StakeholderController::class, 'edit_company_state']);
@@ -222,11 +222,20 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
         });
 
+        // Routes for industrial area represintative and Government represintative
         Route::middleware(['Industrial-area-or-government-representative'])->group(function () {
 
             // Add Manuals & Plans
-            Route::post('/manuals-and-plans/add', [FileController::class, 'add_manuals_and_plans'])->name('file.add_manuals_and_plans');
+            Route::group(['prefix' => 'manuals-and-plans'],function(){
 
+                Route::post('/add', [FileController::class, 'store']);
+
+                Route::post('/edite/{id}', [FileController::class, 'update']);
+
+                Route::delete('/delete/{id}', [FileController::class, 'destroy']);
+
+            });
+          
             // for main monitoring points
             Route::group(['prefix' => 'main-monitoring-points'], function () {
 

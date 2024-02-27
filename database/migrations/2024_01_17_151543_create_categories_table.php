@@ -29,6 +29,28 @@ return new class extends Migration {
         ]);
 
         DB::table('categories')->insert([
+            'id' => '003e8400-e29b-41d4-a716-4466554400MP',
+            'name' => 'ManualsAndPlans',
+            'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
+            'created_at' => now(),
+        ]);
+
+        
+        DB::table('categories')->insert([
+            'id' => '003e8400-e29b-41d4-a716-4466554400EDU',
+            'name' => 'Education',
+            'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '003e8400-e29b-41d4-a716-4466554400OTH',
+            'name' => 'Other',
+            'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
             'id' => '004e8400-e29b-41d4-a716-446655440000',
             'name' => 'About',
             'parent_id' => null,

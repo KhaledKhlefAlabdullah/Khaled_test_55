@@ -38,7 +38,7 @@ class CategorySeeder extends Seeder
         ]);
 
         DB::table('categories')->insert([
-            'id' => '33c97a6d-7b19-4fa9-a77f-2a76172f5b22',
+            'id' => '003e8400-e29b-41d4-a716-446655440000',
             'name' => 'File',
             'created_at' => now(),
         ]);

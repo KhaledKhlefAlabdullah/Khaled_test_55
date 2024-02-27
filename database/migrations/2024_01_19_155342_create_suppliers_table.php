@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
+            $table->unique(['public_id', 'stakeholder_id']);
 
         });
     }

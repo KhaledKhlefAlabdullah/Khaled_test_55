@@ -8,6 +8,7 @@ use App\Models\Notifications\NotificationsSetting;
 use App\Models\Page;
 use App\Notifications\PortalNotifications;
 use Exception;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +21,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
@@ -95,9 +97,7 @@ if (!function_exists('transformCollection')) {
 
 if (!function_exists('fake_register_request')) {
     /*
-     * This function is used to get and check if a model exists by ID
-     * @param string $model
-     * @param string $id
+     * This function is used to add new user using register function
      *
      * @throws NotFoundResourceException
      */
@@ -154,8 +154,8 @@ if (!function_exists('store_files')) {
         // rename the file
         $file_name = time() . '.' . $file_extension;
 
-        // store the in public directory
-        $file->move($path, $file_name);
+        // store the file in public directory
+        $file->move(public_path($path), $file_name);
 
         // return the path and file name
         return $path . '/' . $file_name;
@@ -164,18 +164,14 @@ if (!function_exists('store_files')) {
 }
 
 if (!function_exists('edit_file')) {
-    /*
-     * This function is used to get and check if a model exists by ID
-     * @param string $model
-     * @param string $id
-     *
-     * @throws NotFoundResourceException
-     */
+
     function edit_file($old_file_path, $new_file, $path): string
     {
         // Delete the old file from storage
         if (file_exists($old_file_path)) {
+
             unlink($old_file_path);
+
         }
 
         // Store the new file
@@ -187,13 +183,7 @@ if (!function_exists('edit_file')) {
 }
 
 if (!function_exists('edite_page_details')) {
-    /*
-     * This function is used to get and check if a model exists by ID
-     * @param string $model
-     * @param string $id
-     *
-     * @throws NotFoundResourceException
-     */
+   
     function edit_page_details($request, $page_type): Response|JsonResponse
     {
         try {

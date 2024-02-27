@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FileRequest;
-use App\Http\Requests\ManualAndPlanRequest;
 use App\Http\Resources\FileResource;
 use App\Models\File;
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
+
+use Illuminate\Support\Facades\Auth;
+
+use function App\Helpers\edit_file;
+use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\store_files;
 use function App\Helpers\transformCollection;
 
 class FileController extends Controller
@@ -28,15 +34,6 @@ class FileController extends Controller
         return transformCollection($files, FileResource::class);
     }
 
-    public function add_manuals_and_plans(ManualAndPlanRequest $request)
-    {
-        $valid_data = $request->validated();
-
-        $data = File::create($valid_data);
-
-        return new FileResource($data);
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -55,13 +52,36 @@ class FileController extends Controller
      */
     public function store(FileRequest $request)
     {
-        // Check if valid data
-        $valid_data = $request->validated();
+        try{
+            
+            $request->validated();
 
-        // Create file
-        $file = File::create($valid_data);
+            $file = $request->file;
+            
+            $path = '/files/'.$request->input('file_type');
 
-        return new FileResource($file);
+            $path = store_files($file,$path);
+
+            File::create([
+                'user_id' => Auth::id(),
+                'category_id' => $request->input('category_id'),
+                'file_type' => $request->input('file_type'),
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'version' => $request->input('version'),
+                'media_url' => $path,
+                'media_type' => $request->input('media_type')
+            ]);
+            return response()->json([
+                'message' => __('file-adding-success')
+            ]);
+        }
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('file-adding-error')
+            ]);
+        }        
     }
 
     /**
@@ -85,23 +105,41 @@ class FileController extends Controller
      */
     public function update(FileRequest $request, string $id)
     {
-        // Get file by ID
-        $file = File::find($id);
+        try{
 
-        // Check if file exists
-        if (!$file) {
-            return response()->json(['message' => 'File not found'], 404);
+            $request->validated();
+
+           // Get file by ID
+            $file_ = getAndCheckModelById(File::class,$id);
+             
+            $file = $request->file;
+            
+            $path = '/files/'.$request->input('file_type');
+
+            $old_path = $file_->media_url;
+
+            $new_file_path = edit_file($old_path,$file,$path);
+
+            $file_->update([
+                'category_id' => $request->input('category_id'),
+                'file_type' => $request->input('file_type'),
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'version' => $request->input('version'),
+                'media_url' => $new_file_path,
+                'media_type' => $request->input('media_type')
+            ]);
+
+            return response()->json([
+                'message' => __('file-editing-success')
+            ]);
         }
-
-        // Check if user is authorized
-        if ($file->user_id != auth()->user()->id) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('file-editing-error')
+        ]);
         }
-
-        // Update file
-        $file->update($request->all());
-
-        return new FileResource($file);
     }
 
     /**
@@ -110,7 +148,7 @@ class FileController extends Controller
     public function destroy(string $id)
     {
         // Get file by ID
-        $file = File::find($id);
+        $file = getAndCheckModelById(File::class,$id);
 
         // Check if file exists
         if (!$file) {
@@ -125,6 +163,6 @@ class FileController extends Controller
         // Delete file
         $file->delete();
 
-        return response()->json(['message' => 'File deleted successfully']);
+        return response()->json(['message' => 'File deleted successfully'],200);
     }
 }

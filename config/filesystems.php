@@ -44,35 +44,6 @@ return [
             'throw' => false,
         ],
 
-        'profile_images' => [
-            'driver' => 'local',
-            'root' => storage_path('public/images/profile_images/'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'general_news_images' => [
-            'driver' => 'local',
-            'root' => storage_path('public/images/general_news_images/'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'project_description_images' => [
-            'driver' => 'local',
-            'root' => storage_path('public/images/project_description_images/'),
-            'url' => env('APP_URL') . '/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'about_us_images' => [
-            'driver' => 'local',
-            'root' => storage_path('public/images/about_us_images/'),
-            'url' => env('APP_URL') . '/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

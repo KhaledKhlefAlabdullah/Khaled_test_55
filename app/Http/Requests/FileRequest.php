@@ -23,26 +23,27 @@ class FileRequest extends BaseRequest
     {
         if ($this->method() == 'PUT') {
             return [
-                'file_type' => ['sometimes', 'required', 'in:Education,Manuals & Plans,Other'],
+                'file_type' => ['sometimes', 'required', 'in:Education,ManualsAndPlans,Other'],
+                'category_id' => ['sometimes','required','string','exists:categories,id'],
                 'title' => ['sometimes', 'required', 'string', 'max:255'],
                 'description' => ['sometimes', 'required', 'string', 'max:255'],
                 'version' => ['nullable', 'string', 'max:100'],
-                'media_url' => ['nullable', 'string', 'url'],
+                'file' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png,gif,mp4,mp3'],
                 'media_type' => ['nullable', 'in:image,video,file'],
-                'update_frequency' => ['nullable', 'in:daily,weekly,monthly'],
+                'update_frequency' => ['sometimes', 'in:daily,weekly,monthly'],
             ];
 
         }
 
         return [
-            'user_id' => ['required', 'uuid', 'exists:users,id'],
-            'file_type' => ['required', 'in:Education,Manuals,Plans'],
+            'category_id' => ['required','string','exists:categories,id'],
+            'file_type' => ['required', 'in:Education,ManualsAndPlans'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'version' => ['nullable', 'string', 'max:100'],
-            'media_url' => ['nullable', 'string', 'url'],
+            'file' => ['required', 'mimes:pdf,jpg,jpeg,png,gif,mp4,mp3'],
             'media_type' => ['nullable', 'in:image,video,file'],
-            'update_frequency' => ['nullable', 'in:daily,weekly,monthly'],
+            'update_frequency' => ['sometimes', 'in:daily,weekly,monthly'],
         ];
 
     }

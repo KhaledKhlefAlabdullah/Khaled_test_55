@@ -39,7 +39,7 @@ class SupplierRequest extends FormRequest
                 'material_id' => ['required', 'string', 'exists:entities,id'],
                 'name' => ['sometimes', 'required', 'string','unique:suppliers,public_id'],
                 'location' => ['sometimes', 'required', 'string'],
-                'contact_info' => ['sometimes', 'required', 'string'],
+                'contact_info' => ['sometimes', 'required', 'string','regex:/^\+?[0-9]{9,20}$/'],
                 'is_available' => ['sometimes', 'required', 'boolean'],
             ];
         }
@@ -49,7 +49,7 @@ class SupplierRequest extends FormRequest
             'stakeholder_id' => ['required', 'string', 'exists:stakeholders,id'],
             'name' => ['required', 'string','unique:suppliers,public_id'],
             'location' => ['required', 'string'],
-            'contact_info' => ['required', 'string'],
+            'contact_info' => ['required', 'string','regex:/^\+?[0-9]{9,20}$/'],
             'is_available' => ['required', 'boolean'],
         ];
     }

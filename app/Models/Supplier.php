@@ -23,7 +23,6 @@ class Supplier extends Model
         'public_id',
         'location',
         'contact_info',
-        'slug',
         'is_available'
     ];
 

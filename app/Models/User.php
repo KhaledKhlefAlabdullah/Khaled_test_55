@@ -94,11 +94,6 @@ class User extends Authenticatable
         return $this->hasMany(Message::class, 'receiver_id');
     }
 
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class, 'notifiable_id');
-    }
-
     public function dams(): HasMany
     {
         return $this->hasMany(Dam::class, 'user_id');

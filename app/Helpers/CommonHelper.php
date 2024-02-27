@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Mail\PortalMails;
 use App\Models\Notifications\NotificationsSetting;
 use App\Models\Page;
+use App\Notifications\PortalNotifications;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 /**
@@ -273,8 +275,10 @@ if (!function_exists('send_mail')) {
     {
         try {
 
-            return Mail::to($receiver)->send(new PortalMails($mail_message));
-
+            Mail::to($receiver)->send(new PortalMails($mail_message));
+            
+            return true;
+        
         } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -348,8 +352,8 @@ if(!function_exists('find_and_update')){
 
         // Create an associative array of keys and values
         $data = [];
-        foreach ($keys as $index => $key) {
-            $data[$key] = $values[$index];
+        foreach ($keys as  $key) {
+            $data[$key] = $values[$key];
         }
 
         // Update the model attributes with the provided data
@@ -360,9 +364,26 @@ if(!function_exists('find_and_update')){
 }
 
 /**
+ * Send notifications 
+ */
+if(!function_exists('send_notifications')){
+
+    function send_notifications($receivers,array $viaChanel=['database'],$message){
+
+        $user_profile = Auth::user()
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_URL')
+            ->first();
+            
+        Notification::send($receivers,new PortalNotifications($viaChanel,$user_profile,$message,$receivers));
+
+    }
+}
+
+/**
  * Add notifications settings for user
  */
-if (!function_exists('find_and_update')) {
+if (!function_exists('add_notifications_settings')) {
 
     function add_notifications_settings(string $type, string $user_id)
     {
@@ -375,9 +396,9 @@ if (!function_exists('find_and_update')) {
                 Rain
 
              Water Level:
-                Dam
+                Dam (WE HAVE TO SELECT DAMS)
                 Report Water
-                Monitoring Point
+                Monitoring Point (WE HAVE TO SELECT MONITORING POINTS)
 
             Infrastructure Notification:
                 Notifications

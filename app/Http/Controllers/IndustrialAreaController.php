@@ -146,9 +146,9 @@ class IndustrialAreaController extends Controller
             // get the industrial area want to edite
             $industrial_area = IndustrialArea::findOrFail($id);
 
-            $user = find_and_update(User::class,$industrial_area->id,['email'],[$request->input('email')]);
+            $user = find_and_update(User::class,$industrial_area->id,['email'],['email' => $request->input('email')]);
 
-            $user_profile = find_and_update(UserProfile::class,$user->id,['name'],[$request->input('representative_name')]);
+            $user_profile = find_and_update(UserProfile::class,$user->id,['name'],['name' => $request->input('representative_name')]);
 
             $image = $request->image;
 

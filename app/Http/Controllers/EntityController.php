@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomersRequest;
 use App\Http\Requests\EntityRequest;
 use App\Http\Requests\MaterialRequest;
 use App\Http\Resources\EntityResource;
 use App\Models\Category;
 use App\Models\Entity;
+use App\Models\Shipment;
 use App\Models\Stakeholder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Exception;
 use function App\Helpers\find_and_update;
+use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
 
@@ -89,6 +92,7 @@ class EntityController extends Controller
     {
         // Get the entity by ID
         $entity = Entity::find($id);
+
         if (!$entity) {
             return response()->json(['message' => 'Entity not found'], 404);
         }
@@ -114,7 +118,7 @@ class EntityController extends Controller
                 ->where(['entities.stakeholder_id' => $stakeholder_id, 'categories.name' => 'Route'])->whereNull('entities.deleted_at')->get();
 
             return response()->json([
-                'routes' => $routes,
+                'data' => $routes,
                 'message' => __('routes-getting-success')
             ], 200);
 
@@ -140,9 +144,10 @@ class EntityController extends Controller
                 'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
             ]);
 
-            $entity = Entity::create([
-                'stakeholder_id' => stakeholder_id(),
-                'category_id' => getIdByName(Category::class, 'Route'),
+
+            Entity::create([
+                'stakeholder_id' =>  stakeholder_id(),
+                'category_id' =>  getIdByName(Category::class,'Route'),
                 'public_id' => $request->input('id'),
                 'from' => $request->input('from'),
                 'to' => $request->input('to'),
@@ -151,7 +156,6 @@ class EntityController extends Controller
             ]);
 
             return response()->json([
-                'data' => $entity,
                 'message' => __('Successfully adding new route')
             ], 200);
 
@@ -176,11 +180,10 @@ class EntityController extends Controller
                 'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
             ]);
 
-            $entity = find_and_update(Entity::class, $id, ['from', 'to', 'usage'],
-                [$request->input('from'), $request->input('to'), $request->input('usage')]);
+            find_and_update(Entity::class, $id, ['from', 'to', 'usage'],
+                ['from' => $request->input('from'), 'to' => $request->input('to'), 'usage' => $request->input('usage')]);
 
             return response()->json([
-                'data' => $entity,
                 'message' => __('Successfully adding new route')
             ], 200);
 
@@ -264,7 +267,7 @@ class EntityController extends Controller
                 'location' => 'required|string'
             ]);
 
-            find_and_update(Entity::class, $id, ['name', 'location'], [$request->input('name'), $request->input('location')]);
+            find_and_update(Entity::class, $id, ['name', 'location'], ['name' =>$request->input('name'), 'location' =>$request->input('location')]);
 
             return response()->json([
                 'message' => __('Successfully editing the production site details')
@@ -280,7 +283,7 @@ class EntityController extends Controller
     /**
      * View list of customers details
      */
-    public function get_Customers()
+    public function get_customers()
     {
         try {
 
@@ -288,9 +291,12 @@ class EntityController extends Controller
                 ->join('shipments', 'customers.id', '=', 'shipments.customer_id')
                 ->join('entities as products', 'shipments.product_id', '=', 'products.id')
                 ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
-                ->select('customers.id as customer_id', 'customers.name as customer_name',
-                    'customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'routes.name as route')
-                ->where('customers.stakeholder_id', stakeholder_id())->get();
+
+                ->select('customers.id as customer_id','shipments.id as shipment_id','customers.name as customer_name',
+                 'customers.name','customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'routes.public_id as route')
+                ->where('customers.stakeholder_id', stakeholder_id())
+                ->whereNull('customers.deleted_at')
+                ->get();
 
             return response()->json([
                 'data' => $customers,
@@ -303,6 +309,83 @@ class EntityController extends Controller
             ], 500);
         }
 
+    }
+
+    /**
+     * Add new customer
+     */
+    public function add_customer(CustomersRequest $request){
+        try{
+
+            $customer = Entity::create([
+                'stakeholder_id' => stakeholder_id(),
+                'category_id' => getIdByName(Category::class,'Customer'),
+                'name' => $request->input('customer_name'),
+                'public_id' => $request->input('customer_name').'-'.now(),
+                'phone_number' => $request->input('phone_number'),
+            ]);
+
+            Shipment::create([
+                'route_id' => $request->input('reoute_id'),
+                'product_id' => $request->input('shiped_product_id'),
+                'customer_id' => $customer->id,
+                'stakeholder_id' => stakeholder_id(),
+                'public_id' => now().'-SH-'.$customer->name,
+                'name' => $customer->name.'-Shipment',
+                'location' => $request->input('location'),
+                'contact_info' => $customer->phone_number
+            ]);
+          
+            return response()->json([
+                'message' => __('customer-creating-success')
+            ],200);
+
+        }
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('customer-creating-error')
+            ], 500);
+        }
+    }
+    
+    /**
+     * Eedite Customer details
+     */
+    public function edite_customer(CustomersRequest $request,string $customer_id,string $shipment_id){
+        try{
+
+            $customer = getAndCheckModelById(Entity::class,$customer_id);
+
+            $shipment = getAndCheckModelById(Shipment::class,$shipment_id);
+
+            $customer->update([
+                'name' => $request->input('customer_name'),
+                'public_id' => $request->input('customer_name').'-'.now(),
+                'phone_number' => $request->input('phone_number'),
+            ]);
+
+            $shipment->update([
+                'route_id' => $request->input('reoute_id'),
+                'product_id' => $request->input('shiped_product_id'),
+                'customer_id' => $customer->id,
+                'public_id' => now().'-SH-'.$customer->name,
+                'name' => $customer->name.'-Shipment',
+                'location' => $request->input('location'),
+                'contact_info' => $customer->phone_number
+            ]);
+          
+            return response()->json([
+                'message' => __('customer-editeing-success')
+            ],200);
+
+        }
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('customer-editeing-error')
+            ], 500);
+        }
     }
 
 
@@ -365,4 +448,5 @@ class EntityController extends Controller
         }
     }
     // Materials End
+
 }

@@ -19,6 +19,9 @@ return new class extends Migration
             $table->foreign('notification_setting_id')->references('id')->on('notifications_settings')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
+            // Add unique constraint across both columns
+            $table->unique(['dam_id', 'notification_setting_id'], 'unique_dam_notification_setting');
+
         });
     }
 

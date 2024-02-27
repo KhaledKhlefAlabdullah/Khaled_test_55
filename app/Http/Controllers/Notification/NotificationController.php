@@ -7,7 +7,9 @@ use App\Http\Requests\Notification\NotificationRequest;
 use App\Http\Resources\Notification\NotificationResource;
 use App\Models\Notifications\Notification;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 
@@ -19,77 +21,83 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        // Get all Notifications by relationship user and notifications
-        $notifications = Auth::user()->notifications()->get();
+        try{
 
-        return response()->json([
-            'data' => $notifications,
-            'message' => __('get-notifications-success')
-        ],200);
+            // Get all notifications for the authenticated user
+            $notifications = Auth::user()->notifications;
+
+            // Extract only the "id" and "data" fields from each notification
+            $notificationData = $notifications->map(function ($notification) {
+                return [
+                    'id' => $notification->id,
+                    'sender_name' => $notification->data['sender_name'],
+                    'sender_image' => $notification->data['sender_image'],
+                    'message' => $notification->data['message']
+                ];
+            });
+
+            // Return the response as JSON
+            return response()->json([
+                'data' => $notificationData,
+                'message' => __('get-notifications-success')
+            ], 200);
+
+        }
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('get-notifications-error')
+            ],500);  
+        }
     }
 
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(NotificationRequest $request)
-    {
-        // Validate the request
-        $validated = $request->validated();
-
-        $notification = Notification::create($validated);
-
-        return new NotificationResource($notification);
-    }
+  
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        // Get and check the notification
-        try {
-            $data = getAndCheckModelById(Notification::class, $id);
-
-            return new NotificationResource($data);
-
-        } catch (NotFoundResourceException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
-        }
-    }
 
     /**
-     * Update the specified resource in storage.
+     * Marked the notification as read
      */
-    public function update(NotificationRequest $request, string $id)
+    public function marked_as_read(string $id)
     {
-        // Get and check the notification
-        try {
-            $data = getAndCheckModelById(Notification::class, $id);
+        try{
 
-            $validated = $request->validated();
+            $data = Auth::user()->notifications->where('id',$id);
 
-            $data->update($validated);
+            $data->markAsRead();
 
-            return new NotificationResource($data);
+            return response()->json([
+                'message' => __('marked-read-notifications-success')
+            ],200);
 
-        } catch (NotFoundResourceException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('marked-read-notifications-error')
+            ],500);  
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function     destroy(string $id)
     {
         // Get and check the notification
         try {
-            $data = getAndCheckModelById(Notification::class, $id);
+
+            $data = Auth::user()->notifications->where('id',$id)->first();
 
             $data->delete();
 
-            return response()->json(['message' => 'Notification deleted successfully']);
+            return response()->json(['message' => 'Notification deleted successfully'],200);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }

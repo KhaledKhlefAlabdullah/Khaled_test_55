@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Notifications\NotificationsSetting;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,8 +36,8 @@ class MonitoringPoint extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function notifications_settings()
+    public function notification_settings()
     {
-        return $this->hasMany('App\Models\Monitoring_points_notification_setting', 'monitoring_point_id');
+        return $this->belongsToMany(NotificationsSetting::class, 'monitoring_points_notification_settings', 'monitoring_point_id', 'notifications_setting_id');
     }
 }

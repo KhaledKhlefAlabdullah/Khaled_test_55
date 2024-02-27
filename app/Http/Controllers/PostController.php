@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\send_mail;
+use function App\Helpers\send_notifications;
 use function App\Helpers\store_files;
 
 class PostController extends Controller
@@ -112,7 +114,7 @@ class PostController extends Controller
     {
 
         try {
-
+            
             // Get general news by get all posts with category news and posts is general news equal true
             $news = DB::table('categories')
                 ->join('posts','categories.id','=','posts.category_id')
@@ -179,10 +181,9 @@ class PostController extends Controller
                 'media_type' => 'image',
                 'is_general_news' => true
             ]);
-
-            $user_profile = Auth::user()->user_profile()->first();
-            
-            Notification::send(User::all(),new PostsNotifications($user_profile,'add new General news'));
+        
+            // Send notification after add new general news
+            send_notifications(User::all(),['database','mail'],config('golbals.new-generalNews'));
 
             // return response with created data
             return response()->json([

@@ -157,19 +157,6 @@ class NotificationSettingSeeder extends Seeder
             'note' => 'Notification settings for Portal Manager',
         ]);
 
-        // Notification Settings for Tenant Company (First)
-        NotificationsSetting::create([
-            'id' => '00p27a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID
-            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // User ID for Tenant Company (First)
-            'main_category_id' => "008e8400-e29b-41d4-a716-446655440000", // weather
-            'sub_category_id' => "023e8400-e29b-41d4-a716-446655440000", // wind
-            'notification_state' => 'none',
-            'notification_level' => 'none',
-            'notification_priorities' => 'none',
-            'is_on' => false,
-            'note' => 'Notification settings for Tenant Company (First)',
-        ]);
-
         // Notification Settings for Tenant Company (Second)
         NotificationsSetting::create([
             'id' => '00p37a6d-7b19-4fa9-1234-2a76172f5b58', // Generate a unique ID

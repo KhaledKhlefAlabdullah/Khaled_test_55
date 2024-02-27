@@ -293,7 +293,7 @@ class EntityController extends Controller
                 ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
 
                 ->select('customers.id as customer_id','shipments.id as shipment_id','customers.name as customer_name',
-                 'customers.name','customers.public_id as id', 'products.name as shipped_product', 'shipments.location','customers.phone_number as phone', 'routes.public_id as route')
+                    'customers.public_id as id', 'products.name as shipped_product', 'shipments.location','customers.phone_number as phone', 'routes.public_id as route')
                 ->where('customers.stakeholder_id', stakeholder_id())
                 ->whereNull('customers.deleted_at')
                 ->get();
@@ -309,6 +309,29 @@ class EntityController extends Controller
             ], 500);
         }
 
+    }
+
+    /**
+     * Get the products for customers
+     */
+    public function get_products(){
+        try{
+
+            $category_id = getIdByName(Category::class,'Product');
+
+            $products = Entity::where(['stakeholder_id' => stakeholder_id(),'category_id' => $category_id ])->select('*')->get();
+
+            return response()->json([
+                'data' => $products,
+                'message' => __('products-getting-success')
+            ]);
+        }
+        catch(Exception $e){
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('products-getting-error')
+            ], 500);
+        }
     }
 
     /**

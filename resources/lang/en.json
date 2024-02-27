@@ -1,6 +1,7 @@
 
 {
     "routes-getting-success": "routes-getting-success",
+    "materials-getting-success": "materials-getting-success",
     "production-s-getting-success": "Successfully getting the production sites",
     "production-s-getting-error": "There error in getting the production sites try again",
     "add-production-site": "Successfully adding new production site",

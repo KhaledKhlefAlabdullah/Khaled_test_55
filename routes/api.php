@@ -11,6 +11,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IndustrialAreaController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MonitoringPointController;
 use App\Http\Controllers\NaturalDisasterController;
@@ -297,6 +298,14 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::delete('/delete/{id}', [SupplierController::class, 'destroy']);
 
+            });
+
+            // Materials
+            Route::group(['prefix' => 'materials'], function () {
+
+                Route::get('/', [EntityController::class, 'get_materials']);
+
+                Route::post('/add', [EntityController::class, 'add_new_material']);
             });
 
             // Routes

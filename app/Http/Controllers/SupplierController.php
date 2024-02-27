@@ -31,6 +31,7 @@ class SupplierController extends Controller
                 ->select('suppliers.id as supplier_id', 'materials.id as material_id',
                     'routes.id as route_id', 'suppliers.public_id as supplier_number','suppliers.contact_info as contct_number',
                     'materials.name as material', 'suppliers.location as location', 'routes.public_id as route')
+
                 ->where('stakeholders.id', '=', $stakeholder_id)
                 ->whereNull('suppliers.deleted_at')
                 ->whereNull('routes.deleted_at')
@@ -106,7 +107,7 @@ class SupplierController extends Controller
     {
         // Get the supplier by ID and check if it exists
         try {
-           
+
             $supplier = getAndCheckModelById(Supplier::class, $id);
 
             $supplier->update([

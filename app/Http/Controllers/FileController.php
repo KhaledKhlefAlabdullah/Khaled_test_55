@@ -11,6 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use Illuminate\Support\Facades\Auth;
 
+use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\gatMediaType;
 use function App\Helpers\getAndCheckModelById;
@@ -34,7 +35,11 @@ class FileController extends Controller
         $files = File::where('file_type', '=', 'Manuals & Plans')->paginate();
 
         // Using a custom transformCollection function to format the response
-        return transformCollection($files, FileResource::class);
+//        return transformCollection($files, FileResource::class);
+
+        return api_response(data: $files->items(),
+            message: "Get Manuals and Plans Successfully",
+            pagination: $files);
     }
 
     /**
@@ -42,7 +47,7 @@ class FileController extends Controller
      */
     public function add_manuals_and_plans(FileRequest $request)
     {
-        return $this->store($request,'ManualsAndPlans');
+        return $this->store($request, 'ManualsAndPlans');
     }
 
     /**
@@ -61,17 +66,17 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,$file_type)
+    public function store(Request $request, $file_type)
     {
-        try{
+        try {
 
             $request->validated();
 
             $file = $request->file;
 
-            $path = '/files/'.$request->input('file_type');
+            $path = '/files/' . $request->input('file_type');
 
-            $path = store_files($file,$path);
+            $path = store_files($file, $path);
 
             File::create([
                 'user_id' => Auth::id(),
@@ -86,8 +91,7 @@ class FileController extends Controller
             return response()->json([
                 'message' => __('file-adding-success')
             ]);
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('file-adding-error')
@@ -116,20 +120,20 @@ class FileController extends Controller
      */
     public function update(FileRequest $request, string $id)
     {
-        try{
+        try {
 
             $request->validated();
 
-           // Get file by ID
-            $file_ = getAndCheckModelById(File::class,$id);
+            // Get file by ID
+            $file_ = getAndCheckModelById(File::class, $id);
 
             $file = $request->file;
 
-            $path = '/files/'.$request->input('file_type');
+            $path = '/files/' . $request->input('file_type');
 
             $old_path = $file_->media_url;
 
-            $new_file_path = edit_file($old_path,$file,$path);
+            $new_file_path = edit_file($old_path, $file, $path);
 
             $file_->update([
                 'category_id' => $request->input('category_id'),
@@ -144,12 +148,11 @@ class FileController extends Controller
             return response()->json([
                 'message' => __('file-editing-success')
             ]);
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('file-editing-error')
-        ]);
+            ]);
         }
     }
 
@@ -159,7 +162,7 @@ class FileController extends Controller
     public function destroy(string $id)
     {
         // Get file by ID
-        $file = getAndCheckModelById(File::class,$id);
+        $file = getAndCheckModelById(File::class, $id);
 
         // Check if file exists
         if (!$file) {
@@ -174,6 +177,6 @@ class FileController extends Controller
         // Delete file
         $file->delete();
 
-        return response()->json(['message' => 'File deleted successfully'],200);
+        return response()->json(['message' => 'File deleted successfully'], 200);
     }
 }

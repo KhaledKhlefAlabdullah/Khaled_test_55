@@ -114,14 +114,14 @@ class PostController extends Controller
     {
 
         try {
-            
+
             // Get general news by get all posts with category news and posts is general news equal true
             $news = DB::table('categories')
-                ->join('posts','categories.id','=','posts.category_id')
+                ->join('posts', 'categories.id', '=', 'posts.category_id')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                 ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
-                     'posts.body', 'posts.media_url as image')
+                    'posts.body', 'posts.media_url as image')
                 ->where(['categories.name' => 'news', 'posts.is_general_news' => true])
                 ->whereNull('posts.deleted_at')
                 ->get();
@@ -132,13 +132,12 @@ class PostController extends Controller
                 'message' => __('general-news-getting-success')
             ]);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-getting-error')
-            ],500);
+            ], 500);
 
         }
     }
@@ -156,7 +155,7 @@ class PostController extends Controller
             ]);
 
             // get category id where category is news
-            $category_id = Category::where('name','news')->first()->id;
+            $category_id = Category::where('name', 'news')->first()->id;
 
             // get auth user id as author
             $user_id = Auth::id();
@@ -168,7 +167,7 @@ class PostController extends Controller
             $path = '/images/general_news_images';
 
             // coll store function to store the image
-            $image_path = store_files($image,$path);
+            $image_path = store_files($image, $path);
 
             // create new post as general news
             Post::create([
@@ -180,22 +179,21 @@ class PostController extends Controller
                 'media_type' => 'image',
                 'is_general_news' => true
             ]);
-        
+
             // Send notification after add new general news
-            send_notifications(User::all(),['database','mail'],config('golbals.new-generalNews'));
+            send_notifications(User::all(), ['database', 'mail'], config('golbals.new-generalNews'));
 
             // return response with created data
             return response()->json([
                 'message' => __('general-news-create-success')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-create-error')
-            ],500);
+            ], 500);
 
         }
     }
@@ -214,7 +212,7 @@ class PostController extends Controller
 
                 $image_path = $general_news->media_url;
 
-            }else{
+            } else {
                 // get image from request
                 $new_image = $request->image;
 
@@ -240,15 +238,14 @@ class PostController extends Controller
             return response()->json([
                 'new_general_news' => $general_news,
                 'message' => __('general-news-edite-success')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-edite-error')
-            ],500);
+            ], 500);
 
         }
     }
@@ -276,12 +273,12 @@ class PostController extends Controller
 
             return response()->json([
                 'message' => __($message)
-            ],200);
+            ], 200);
 
         } catch (NotFoundResourceException $e) {
 
             return response()->json([
-              'error' =>  __($e->getMessage()),
+                'error' => __($e->getMessage()),
                 'message' => __('general-news-delete-error')
             ], $e->getCode());
 
@@ -302,13 +299,12 @@ class PostController extends Controller
             return response()->json([
                 'data' => $description,
                 'message' => __('Successfully get project description')
-            ],200);
-        }
-        catch (\Exception $e){
+            ], 200);
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('filed to get project description, there an problem')
-            ],200);
+            ], 200);
 
         }
     }
@@ -318,7 +314,7 @@ class PostController extends Controller
      */
     public function edite_project_description(Request $request, string $id)
     {
-        try{
+        try {
 
             // validate the input data
             $request->validate([
@@ -359,8 +355,7 @@ class PostController extends Controller
 
                 $message = 'Successfully creating project description';
 
-            }
-            else{
+            } else {
 
                 // get image from request
                 $image = $request->image;
@@ -385,13 +380,31 @@ class PostController extends Controller
                 'message' => __($message)
             ]);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in server side try another time')
-            ],500);
+            ], 500);
         }
+    }
+
+
+    /**
+     * view_list_of_announcements
+     *
+     * View announcements list ( publisher-published date-content )
+     */
+    public function view_list_of_announcements()
+    {
+        // Get list of announcements
+        //  category announcements is = 048e9200-e29b-41d4-a716-446655440000
+        $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+            ->get(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url']);
+
+        // resource announcements
+
+        // return response helper
+
     }
 
 }

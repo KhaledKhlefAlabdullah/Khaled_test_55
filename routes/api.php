@@ -143,6 +143,14 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::post('edit-project-description/{id}', [PostController::class, 'edit_project_description']);
 
+            Route::group(['prefix' => 'educational-files'], function(){
+
+                Route::post('/add',[FileController::class,'add_educational_files']);
+
+                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+
+            });
+
             Route::group(['prefix' => 'industrial-areas'], function () {
 
                 Route::post('/add', [IndustrialAreaController::class, 'store']);
@@ -418,6 +426,8 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
+
+        // For all authenticated users
         Route::group(['prefix' => 'notifications'],function(){
 
             Route::get('/',[NotificationController::class,'index']);
@@ -431,6 +441,8 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
         Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
+
+        Route::get('/educational-files',[FileController::class,'view_educational_files']);
 
     });
 

@@ -201,7 +201,7 @@ if (!function_exists('edit_file')) {
 
 }
 
-if (!function_exists('edite_page_details')) {
+if (!function_exists('edit_page_details')) {
    
     function edit_page_details($request, $page_type): Response|JsonResponse
     {

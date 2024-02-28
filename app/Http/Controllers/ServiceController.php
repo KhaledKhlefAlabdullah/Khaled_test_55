@@ -15,7 +15,7 @@ class ServiceController extends Controller
     public function index()
     {
         try {
-            // todo i have to edite it when i get answer on question 22
+            // todo i have to edit it when i get answer on question 22
 
             $industrial_area_id = Auth::user()->industrial_area_id;
 

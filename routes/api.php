@@ -137,11 +137,11 @@ Route::group(['prefix' => 'api'], function () {
         // Routes for portal manager role
         Route::middleware(['portal-manger'])->group(function () {
 
-            Route::post('edite-about-us-posts-details/{id}', [PageController::class, 'edite_about_us_post_details']);
+            Route::post('edit-about-us-posts-details/{id}', [PageController::class, 'edit_about_us_post_details']);
 
-            Route::post('edite-contact-us-details', [PageController::class, 'edite_contact_us_details']);
+            Route::post('edit-contact-us-details', [PageController::class, 'edit_contact_us_details']);
 
-            Route::post('edite-project-description/{id}', [PostController::class, 'edite_project_description']);
+            Route::post('edit-project-description/{id}', [PostController::class, 'edit_project_description']);
 
             Route::group(['prefix' => 'industrial-areas'], function () {
 
@@ -150,7 +150,7 @@ Route::group(['prefix' => 'api'], function () {
                 Route::get('/details/{id}', [IndustrialAreaController::class, 'show']);
 
 
-                Route::put('/edite/{id}', [IndustrialAreaController::class, 'update']);
+                Route::put('/edit/{id}', [IndustrialAreaController::class, 'update']);
 
             });
 
@@ -160,7 +160,7 @@ Route::group(['prefix' => 'api'], function () {
                 Route::post('/add', [PostController::class, 'new_general_news']);
 
                 // put request type post
-                Route::post('/edite/{id}', [PostController::class, 'edite_general_news']);
+                Route::post('/edit/{id}', [PostController::class, 'edit_general_news']);
 
                 Route::delete('/delete/{id}', [PostController::class, 'delete_general_news']);
 
@@ -190,7 +190,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [ServiceController::class, 'store']);
 
-                Route::post('/edite', [ServiceController::class, 'update']);
+                Route::post('/edit', [ServiceController::class, 'update']);
 
             });
 
@@ -230,7 +230,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
-                Route::post('/edite/{id}', [FileController::class, 'update']);
+                Route::post('/edit/{id}', [FileController::class, 'update']);
 
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
@@ -243,7 +243,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [MonitoringPointController::class, 'add_monitoring_point']);
 
-                Route::put('/edite/{id}', [MonitoringPointController::class, 'edite_monitoring_point_details']);
+                Route::put('/edit/{id}', [MonitoringPointController::class, 'edit_monitoring_point_details']);
 
                 Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
 
@@ -265,7 +265,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [UserProfileController::class, 'show']);
 
-                Route::post('/edite', [UserProfileController::class, 'update']);
+                Route::post('/edit', [UserProfileController::class, 'update']);
 
             });
 
@@ -292,7 +292,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [EmployeeController::class, 'store']);
 
-                Route::put('/edite/{id}', [EmployeeController::class, 'update']);
+                Route::put('/edit/{id}', [EmployeeController::class, 'update']);
 
                 Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
 
@@ -305,7 +305,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [SupplierController::class, 'store']);
 
-                Route::put('/edite/{id}', [SupplierController::class, 'update']);
+                Route::put('/edit/{id}', [SupplierController::class, 'update']);
 
                 Route::delete('/delete/{id}', [SupplierController::class, 'destroy']);
 
@@ -326,7 +326,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [EntityController::class, 'add_new_route']);
 
-                Route::put('/edite/{id}', [EntityController::class, 'edite_route_details']);
+                Route::put('/edit/{id}', [EntityController::class, 'edit_route_details']);
 
                 Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
 
@@ -339,7 +339,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [EntityController::class, 'add_new_production_site']);
 
-                Route::put('/edite/{id}', [EntityController::class, 'edite_production_site']);
+                Route::put('/edit/{id}', [EntityController::class, 'edit_production_site']);
 
                 Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
 
@@ -352,7 +352,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [EntityController::class, 'add_customer']);
 
-                Route::put('/edite/{customer_id}/{shipment_id}', [EntityController::class, 'edite_customer']);
+                Route::put('/edit/{customer_id}/{shipment_id}', [EntityController::class, 'edit_customer']);
 
                 Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
 
@@ -375,7 +375,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [WasteController::class, 'store']);
 
-                Route::put('/edite/{id}', [WasteController::class, 'update']);
+                Route::put('/edit/{id}', [WasteController::class, 'update']);
 
                 Route::delete('/delete/{id}', [WasteController::class, 'destroy']);
 
@@ -386,7 +386,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [MonitoringPointController::class, 'add_monitoring_point']);
 
-                Route::put('/edite/{id}', [MonitoringPointController::class, 'edite_monitoring_point_details']);
+                Route::put('/edit/{id}', [MonitoringPointController::class, 'edit_monitoring_point_details']);
 
                 Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
 
@@ -397,7 +397,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [NotificationsSettingController::class, 'index']);
 
-                Route::put('/edite/{id}', [NotificationsSettingController::class, 'update']);
+                Route::put('/edit/{id}', [NotificationsSettingController::class, 'update']);
 
             });
 

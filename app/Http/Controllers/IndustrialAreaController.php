@@ -143,7 +143,7 @@ class IndustrialAreaController extends Controller
     {
         try{
 
-            // get the industrial area want to edite
+            // get the industrial area want to edit
             $industrial_area = IndustrialArea::findOrFail($id);
 
             $user = find_and_update(User::class,$industrial_area->id,['email'],['email' => $request->input('email')]);

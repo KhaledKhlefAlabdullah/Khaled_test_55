@@ -26,7 +26,7 @@ class Message extends Model
         'media_url',
         'message_type',
         'is_read',
-        'is_edite',
+        'is_edit',
         'is_starred'
     ];
 

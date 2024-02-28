@@ -19,7 +19,7 @@ class MessageFactory extends Factory
             'media_url' => fake()->word(),
             'message_type' => fake()->randomElement(['text', 'image', 'video']),
             'is_read' => fake()->boolean(),
-            'is_edite' => fake()->boolean(),
+            'is_edit' => fake()->boolean(),
             'is_starred' => fake()->boolean(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

@@ -143,11 +143,11 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::post('edit-project-description/{id}', [PostController::class, 'edit_project_description']);
 
-            Route::group(['prefix' => 'educational-files'], function(){
+            Route::group(['prefix' => 'educational-files'], function () {
 
-                Route::post('/add',[FileController::class,'add_educational_files']);
+                Route::post('/add', [FileController::class, 'add_educational_files']);
 
-                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+                Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
             });
 
@@ -234,7 +234,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::middleware(['Industrial-area-or-government-representative'])->group(function () {
 
             // Add Manuals & Plans
-            Route::group(['prefix' => 'manuals-and-plans'],function(){
+            Route::group(['prefix' => 'manuals-and-plans'], function () {
 
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
@@ -269,7 +269,9 @@ Route::group(['prefix' => 'api'], function () {
                 // View my Announcements list (content-last published date)
                 Route::get('/view-list-of-my-announcements', [PostController::class, 'view_list_of_my_announcements']);
 
-
+                // Publish an Announcements
+                // Publish an Announcement to be displayed to portal users
+                Route::put('/publish-an-announcements', [PostController::class, 'publish_an_announcements']);
             });
             // Announcements End
 
@@ -296,7 +298,7 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
             // View manuals and plans
-            Route::get('/manuals-and-plans', [FileController::class,'view_manuals_and_plans']);
+            Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
         });
 
         // Routes for just infrastructure provider and tenant company
@@ -311,7 +313,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
 
-                Route::get('/get-ifo',[EmployeeController::class,'get_info']);
+                Route::get('/get-ifo', [EmployeeController::class, 'get_info']);
 
                 Route::post('/add', [EmployeeController::class, 'store']);
 
@@ -385,7 +387,7 @@ Route::group(['prefix' => 'api'], function () {
             // Products routes
             Route::group(['prefix' => 'products'], function () {
 
-                Route::get('/',[EntityController::class,'get_products']);
+                Route::get('/', [EntityController::class, 'get_products']);
 
             });
 
@@ -394,7 +396,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [WasteController::class, 'index']);
 
-                Route::get('/disposal-sites',[WasteController::class,'get_desposal_locations']);
+                Route::get('/disposal-sites', [WasteController::class, 'get_desposal_locations']);
 
                 Route::post('/add', [WasteController::class, 'store']);
 
@@ -428,13 +430,13 @@ Route::group(['prefix' => 'api'], function () {
 
 
         // For all authenticated users
-        Route::group(['prefix' => 'notifications'],function(){
+        Route::group(['prefix' => 'notifications'], function () {
 
-            Route::get('/',[NotificationController::class,'index']);
+            Route::get('/', [NotificationController::class, 'index']);
 
-            Route::put('/marked-read/{id}',[NotificationController::class,'marked_as_read']);
+            Route::put('/marked-read/{id}', [NotificationController::class, 'marked_as_read']);
 
-            Route::delete('/delete/{id}',[NotificationController::class,'destroy']);
+            Route::delete('/delete/{id}', [NotificationController::class, 'destroy']);
 
         });
 
@@ -442,7 +444,7 @@ Route::group(['prefix' => 'api'], function () {
 
         Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
 
-        Route::get('/educational-files',[FileController::class,'view_educational_files']);
+        Route::get('/educational-files', [FileController::class, 'view_educational_files']);
 
     });
 

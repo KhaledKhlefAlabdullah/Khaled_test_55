@@ -222,7 +222,7 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
         });
 
-        // Routes for industrial area represintative and Government represintative
+        // Routes for industrial area representative and Government representative
         Route::middleware(['Industrial-area-or-government-representative'])->group(function () {
 
             // Add Manuals & Plans
@@ -235,7 +235,7 @@ Route::group(['prefix' => 'api'], function () {
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
             });
-          
+
             // for main monitoring points
             Route::group(['prefix' => 'main-monitoring-points'], function () {
 
@@ -249,6 +249,21 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+
+            // Announcements Start
+            Route::group(['prefix' => 'announcements'], function () {
+
+                // View list of Announcements
+                // View announcements list (publisher-published date-content )
+                Route::get('/view-list-of-announcements', [PostController::class, 'view_list_of_announcements']);
+
+                // View list of my Announcements
+                // View my Announcements list (content-last published date)
+                Route::get('/view-list-of-my-announcements', [PostController::class, 'view_list_of_my_announcements']);
+
+
+            });
+            // Announcements End
 
         });
 

@@ -77,12 +77,14 @@ class FileController extends Controller
     public function store(Request $request,$file_type)
     {
         try{
-            
+
             $request->validated();
 
             $file = $request->file;
+
             
             $path = '/files/'.$file_type;
+
 
             $path = store_files($file,$path);
 
@@ -105,7 +107,7 @@ class FileController extends Controller
                 'error' => __($e->getMessage()),
                 'message' => __('file-adding-error')
             ]);
-        }        
+        }
     }
 
     /**
@@ -135,9 +137,9 @@ class FileController extends Controller
 
            // Get file by ID
             $file_ = getAndCheckModelById(File::class,$id);
-             
+
             $file = $request->file;
-            
+
             $path = '/files/'.$request->input('file_type');
 
             $old_path = $file_->media_url;

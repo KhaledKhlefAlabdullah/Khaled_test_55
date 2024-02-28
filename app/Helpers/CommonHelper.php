@@ -163,6 +163,25 @@ if (!function_exists('store_files')) {
     }
 }
 
+if(!function_exists('getMediaType')){
+    function getMediaType($file){
+
+        $ext = $file->getClientOriginalExtension();
+
+        if(in_array($ext,['jpg,jpeg,png,gif'])){
+           $type ='image';
+        }
+        elseif($ext == 'pdf'){
+            $type = 'file';
+        }
+        else{
+            $type = 'video';
+        }
+
+        return $type;
+    }
+}
+
 if (!function_exists('edit_file')) {
 
     function edit_file($old_file_path, $new_file, $path): string
@@ -470,9 +489,9 @@ if (!function_exists('count_items')) {
     {
         try {
 
-            $item_count = $model::where($validations)->get()->count()+1;
+            $item_count = $model::where($validations)->get()->count();
 
-            return $item_count;
+            return $item_count+1;
            
         } catch (\Mockery\Exception $e) {
             return response()->json([

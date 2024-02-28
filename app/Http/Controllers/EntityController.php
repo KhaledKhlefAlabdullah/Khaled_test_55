@@ -355,8 +355,8 @@ class EntityController extends Controller
                 'phone_number' => $request->input('phone_number'),
             ]);
 
-            $shipments_count = count_items(Shipment::class,['customer_id' => $customer->id]);
-            
+            $shipments_count = count_items(Shipment::class,['customer_id' => $customer->id,'stakeholder_id' => stakeholder_id()]);
+
             Shipment::create([
                 'route_id' => $request->input('reoute_id'),
                 'product_id' => $request->input('shiped_product_id'),
@@ -369,6 +369,7 @@ class EntityController extends Controller
             ]);
 
             return response()->json([
+                'cont' => $shipments_count,
                 'message' => __('customer-creating-success')
             ],200);
 

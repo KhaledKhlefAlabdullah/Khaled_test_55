@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('public_id')->unique();
             $table->text('location');
             $table->text('contact_info');
-            $table->boolean('is_available');
+            $table->boolean('is_available')->default(1);
             $table->foreign('route_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('material_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');

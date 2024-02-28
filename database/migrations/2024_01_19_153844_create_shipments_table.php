@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('product_id');
             $table->string('customer_id');
             $table->string('stakeholder_id');
-            $table->string('public_id')->unique();
+            $table->string('public_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->text('location');
@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['public_id', 'stakeholder_id']);
+            $table->unique(['customer_id','public_id']);
         });
     }
 

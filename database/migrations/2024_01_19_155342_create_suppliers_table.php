@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('route_id');
             $table->string('material_id');
             $table->string('stakeholder_id');
-            $table->string('public_id')->unique();
+            $table->string('public_id');
             $table->text('location');
             $table->text('contact_info');
             $table->boolean('is_available');

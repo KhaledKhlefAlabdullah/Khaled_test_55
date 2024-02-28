@@ -470,9 +470,9 @@ if (!function_exists('count_items')) {
     {
         try {
 
-            $item_count = $model::where($validations)->get()->count()+1;
+            $item_count = $model::where($validations)->get()->count();
 
-            return $item_count;
+            return $item_count+1;
            
         } catch (\Mockery\Exception $e) {
             return response()->json([

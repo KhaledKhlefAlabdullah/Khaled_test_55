@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string('residential_area_id');
             $table->integer('employee_number')->unique();
             $table->boolean('is_leadership');
-            $table->string('slug')->nullable();
             $table->foreign('route_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('department_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('station_id')->references('id')->on('entities')->onDelete('cascade');

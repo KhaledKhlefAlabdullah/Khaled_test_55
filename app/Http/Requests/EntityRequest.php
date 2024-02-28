@@ -38,7 +38,6 @@ class EntityRequest extends FormRequest
             return [
                 'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
                 'name' => ['sometimes', 'required', 'string', 'max:100'],
-                'slug' => ['sometimes', 'required', 'string', 'max:100', 'unique:entities,slug'],
                 'public_id' => ['sometimes', 'required', 'string', 'unique:entities,public_id'],
                 'phone_number' => ['nullable', 'string', 'max:100', 'unique:entities,phone_number'],
                 'location' => ['nullable', 'string', 'max:255'],
@@ -57,7 +56,6 @@ class EntityRequest extends FormRequest
             'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
             'category_id' => ['required', 'uuid', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:100'],
-            'slug' => ['required', 'string', 'max:100', 'unique:entities,slug'],
             'public_id' => ['required', 'string', 'unique:entities,public_id'],
             'phone_number' => ['nullable', 'string', 'max:100', 'unique:entities,phone_number'],
             'location' => ['nullable', 'string', 'max:255'],
@@ -85,7 +83,6 @@ class EntityRequest extends FormRequest
             'stakeholder_id' => 'Stakeholder',
             'category_id' => 'Category',
             'name' => 'Name',
-            'slug' => 'Slug',
             'public_id' => 'Public ID',
             'phone_number' => 'Phone Number',
             'location' => 'Location',

@@ -20,7 +20,6 @@ class Post extends Model
         'category_id',
         'page_id',
         'title',
-        'slug',
         'body',
         'media_url',
         'media_type',

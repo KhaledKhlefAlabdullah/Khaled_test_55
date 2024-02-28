@@ -23,7 +23,6 @@ class EmployeeSeeder extends Seeder
                 'residential_area_id' => 'asdasdasdasdasdasdasd',
                 'employee_number' => 1,
                 'is_leadership' => true,
-                'slug' => 'employee-1',
                 'created_at' => now(),
             ],
             [
@@ -35,7 +34,6 @@ class EmployeeSeeder extends Seeder
                 'residential_area_id' => 'ssssssseeeeeewwwwqqqq',
                 'employee_number' => 2,
                 'is_leadership' => false,
-                'slug' => 'employee-2',
                 'created_at' => now(),
             ],
         ]);

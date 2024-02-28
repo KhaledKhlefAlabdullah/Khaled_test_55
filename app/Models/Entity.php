@@ -20,7 +20,6 @@ class Entity extends Model
         'stakeholder_id',
         'category_id',
         'name',
-        'slug',
         'public_id',
         'phone_number',
         'location',

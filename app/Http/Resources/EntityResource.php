@@ -19,7 +19,6 @@ class EntityResource extends JsonResource
             'stakeholder_id' => $this->stakeholder_id,
             'category_id' => $this->category_id,
             'name' => $this->name,
-            'slug' => $this->slug,
             'public_id' => $this->public_id,
             'phone_number' => $this->phone_number,
             'location' => $this->location,

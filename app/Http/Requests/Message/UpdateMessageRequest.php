@@ -25,7 +25,7 @@ class UpdateMessageRequest extends FormRequest
         return [
             'message' => ['sometimes', 'required', 'string', 'max:255'],
             'is_read' => ['nullable', 'boolean'],
-            'is_edite' => ['nullable', 'boolean'],
+            'is_edit' => ['nullable', 'boolean'],
             'is_starred' => ['nullable', 'boolean'],
         ];
     }
@@ -40,7 +40,7 @@ class UpdateMessageRequest extends FormRequest
     {
         return [
             'is_read' => 'Is Read',
-            'is_edite' => 'Is Edite',
+            'is_edit' => 'Is edit',
             'is_starred' => 'Is Starred',
         ];
     }

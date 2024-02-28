@@ -140,13 +140,13 @@ class WasteController extends Controller
 
             // return response with success message
             return response()->json([
-                'message' => __('waste-edite-success')
+                'message' => __('waste-edit-success')
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('waste-edite-error')
+                'message' => __('waste-edit-error')
             ]);
         }
     }

@@ -172,9 +172,9 @@ class EntityController extends Controller
     }
 
     /**
-     * Edite route details
+     * edit route details
      */
-    public function edite_route_details(Request $request, string $id)
+    public function edit_route_details(Request $request, string $id)
     {
         try {
 
@@ -262,9 +262,9 @@ class EntityController extends Controller
     }
 
     /**
-     * Edite production site details
+     * edit production site details
      */
-    public function edite_production_site(Request $request, string $id)
+    public function edit_production_site(Request $request, string $id)
     {
         try {
 
@@ -382,9 +382,9 @@ class EntityController extends Controller
     }
     
     /**
-     * Eedite Customer details
+     * Eedit Customer details
      */
-    public function edite_customer(CustomersRequest $request,string $customer_id,string $shipment_id){
+    public function edit_customer(CustomersRequest $request,string $customer_id,string $shipment_id){
         try{
 
             $customer = getAndCheckModelById(Entity::class,$customer_id);
@@ -406,14 +406,14 @@ class EntityController extends Controller
             ]);
           
             return response()->json([
-                'message' => __('customer-editeing-success')
+                'message' => __('customer-editing-success')
             ],200);
 
         }
         catch(Exception $e){
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('customer-editeing-error')
+                'message' => __('customer-editing-error')
             ], 500);
         }
     }

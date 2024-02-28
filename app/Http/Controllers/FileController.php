@@ -11,6 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use Illuminate\Support\Facades\Auth;
 
+use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getMediaType;
@@ -25,26 +26,34 @@ class FileController extends Controller
      * paginates the results, and transforms the file data using the specified
      * resource class before returning it.
      *
-     * @return LengthAwarePaginator
      */
     public function view_manuals_and_plans()
     {
+        return $this->get_files('ManualsAndPlans');
+    }
+
+    /**
+     * Get the educational files
+     */
+    public function view_educational_files()
+    {
+        return $this->get_files('Educational');
+    }
+
+    /**
+     * Get files 
+     */
+    public function get_files($file_type){
         try{
 
-            $files = File::where('file_type', '=', 'ManualsAndPlans')->select('files.id','files.title','files.description','files.media_url','files.created_at')->get();
+            $files = File::where('file_type', '=', $file_type)->select('files.id','files.title','files.description','files.media_url','files.created_at')->get();
 
-            return response()->json([
-                'data' => $files,
-                'message' => __('manuals&plans-getting-success')
-            ],200);
-
+            return api_response($files,'files-getting-success');
         }
         catch(Exception $e){
 
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('manuals&plans-getting-error')
-            ],500);
+            return api_response(message:'files-getting-error',errors:[$e->getMessage()],code:500);
+            
         }
     }
 
@@ -54,6 +63,14 @@ class FileController extends Controller
     public function add_manuals_and_plans(FileRequest $request)
     {
         return $this->store($request,'ManualsAndPlans');
+    }
+
+      /**
+     * Add educational files
+     */
+    public function add_educational_files(FileRequest $request)
+    {
+        return $this->store($request,'Educational');
     }
 
     /**
@@ -176,12 +193,12 @@ class FileController extends Controller
 
         // Check if file exists
         if (!$file) {
-            return response()->json(['message' => 'File not found'], 404);
+            return api_response(message: 'File not found', code:404); 
         }
 
         // Check if user is authorized
-        if ($file->user_id != auth()->user()->id) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+        if ($file->user_id != Auth::id()) {
+            return api_response(message: 'Unauthorized to delete this file it\'s dont belong to you', code:401); 
         }
 
         // todo add this in evere object has any type of media to remove it from the app
@@ -190,6 +207,7 @@ class FileController extends Controller
         // Delete file
         $file->delete();
 
-        return response()->json(['message' => 'File deleted successfully'],200);
+        return api_response(message: 'File deleted successfully', code:200); 
+        
     }
 }

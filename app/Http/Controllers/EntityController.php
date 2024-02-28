@@ -369,7 +369,6 @@ class EntityController extends Controller
             ]);
 
             return response()->json([
-                'cont' => $shipments_count,
                 'message' => __('customer-creating-success')
             ],200);
 

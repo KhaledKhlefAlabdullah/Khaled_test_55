@@ -96,7 +96,7 @@ class StakeholderController extends Controller
     }
 
     /**
-     * Edite company status.
+     * edit company status.
      */
     public function edit_company_state(Request $request)
     {

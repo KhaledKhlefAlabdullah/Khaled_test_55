@@ -23,7 +23,7 @@ class MessageResource extends JsonResource
             'media_url' => $this->media_url,
             'message_type' => $this->message_type,
             'is_read' => $this->is_read,
-            'is_edite' => $this->is_edite,
+            'is_edit' => $this->is_edit,
             'is_starred' => $this->is_starred,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

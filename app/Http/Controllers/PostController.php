@@ -199,9 +199,9 @@ class PostController extends Controller
     }
 
     /**
-     * Edite general news
+     * edit general news
      */
-    public function edite_general_news(GeneralNewsRequest $request, string $id)
+    public function edit_general_news(GeneralNewsRequest $request, string $id)
     {
         try {
 
@@ -237,15 +237,17 @@ class PostController extends Controller
             // return response with created data
             return response()->json([
                 'new_general_news' => $general_news,
-                'message' => __('general-news-edite-success')
-            ], 200);
+
+                'message' => __('general-news-edit-success')
+            ],200);
+
 
         } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('general-news-edite-error')
-            ], 500);
+                'message' => __('general-news-edit-error')
+            ],500);
 
         }
     }
@@ -312,7 +314,7 @@ class PostController extends Controller
     /**
      * Add project description
      */
-    public function edite_project_description(Request $request, string $id)
+    public function edit_project_description(Request $request, string $id)
     {
         try {
 

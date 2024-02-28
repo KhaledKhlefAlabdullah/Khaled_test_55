@@ -163,9 +163,9 @@ class MonitoringPointController extends Controller
     }
 
     /**
-     * Edite monitoring point details
+     * edit monitoring point details
      */
-    public function edite_monitoring_point_details(MainMonitoringPointRequest $request, string $id)
+    public function edit_monitoring_point_details(MainMonitoringPointRequest $request, string $id)
     {
         try {
 
@@ -182,12 +182,12 @@ class MonitoringPointController extends Controller
 
             // return response with success message
             return response()->json([
-                'message' => __('monitoring-edite-success')
+                'message' => __('monitoring-edit-success')
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
-                'message' => __('monitoring-edite-error')
+                'message' => __('monitoring-edit-error')
             ], 500);
         }
     }

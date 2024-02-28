@@ -287,6 +287,8 @@ Route::group(['prefix' => 'api'], function () {
             // Fill contact us form
             Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
+            // View manuals and plans
+            Route::get('/manuals-and-plans', [FileController::class,'view_manuals_and_plans']);
         });
 
         // Routes for just infrastructure provider and tenant company

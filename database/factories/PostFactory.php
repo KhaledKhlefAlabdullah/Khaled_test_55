@@ -20,7 +20,7 @@ class PostFactory extends Factory
             'page_id' => Page::factory(),
             'category_id' => Category::factory(),
             'title' => fake()->sentence,
-            'slug' => fake()->slug,
+            
             'body' => fake()->paragraph,
             'media_url' => fake()->imageUrl, // Replace with the appropriate method for your media URL generation
             'media_type' => fake()->randomElement(['image', 'video', 'file']),

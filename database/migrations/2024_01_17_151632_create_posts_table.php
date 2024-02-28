@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('page_id')->nullable();
             $table->string('category_id');
             $table->string('title');
-            $table->string('slug')->nullable();
             $table->text('body');
             $table->string('media_url')->nullable();
             $table->enum('media_type', ['image', 'video', 'file'])->nullable();

@@ -28,7 +28,6 @@ class NotificationRequest extends BaseRequest
                 'user_id' => ['required', 'uuid', 'exists:users,id'],
                 'title' => ['required', 'string', 'max:255'],
                 'description' => ['nullable', 'string', 'max:255'],
-                'slug' => ['nullable', 'string', 'max:255'],
                 'is_read' => ['required', 'boolean'],
                 'notification_type' => ['required', 'in:email,sms,notification'],
             ];
@@ -36,7 +35,6 @@ class NotificationRequest extends BaseRequest
         return [
             'title' => ['sometimes', 'required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255'],
             'is_read' => ['sometimes', 'required', 'boolean'],
             'notification_type' => ['sometimes', 'required', 'in:email,sms,notification'],
         ];
@@ -48,7 +46,6 @@ class NotificationRequest extends BaseRequest
             'user_id' => 'User ID',
             'title' => 'Title',
             'description' => 'Description',
-            'slug' => 'Slug',
             'is_read' => 'Is Read',
             'notification_type' => 'Notification Type',
         ];

@@ -19,7 +19,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '018e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Route 1',
             'public_id' => 'R01',
-            'slug' => 'route-1',
             'phone_number' => '123-456-7890',
             'location' => 'Location A',
             'from' => 'Location AA',
@@ -38,7 +37,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '018e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Route 5',
             'public_id' => 'R02',
-            'slug' => 'route-5',
             'phone_number' => '123-456-7890',
             'location' => 'Location F',
             'from' => 'Location FF',
@@ -57,7 +55,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '032e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Production Site 1',
             'public_id' => 'PS 1',
-            'slug' => 'site 1',
             'location' => 'Location F',
             'is_available' => true,
             'created_at' => now(),
@@ -69,7 +66,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '032e8400-e29b-41d4-a716-446655440000', // route
             'name' => 'Production Site 2',
             'public_id' => 'PS 2',
-            'slug' => 'site 2',
             'location' => 'Location 5TY',
             'is_available' => true,
             'created_at' => now(),
@@ -82,7 +78,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '019e8400-e29b-41d4-a716-446655440000', // material
             'name' => 'Diamond',
             'public_id' => 'M01',
-            'slug' => 'diamond',
             'created_at' => now(),
         ]);
 
@@ -93,7 +88,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '019e8400-e29b-41d4-a716-446655440000', // material
             'name' => 'Oil',
             'public_id' => 'M02',
-            'slug' => 'oil',
             'created_at' => now(),
         ]);
 
@@ -103,7 +97,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '048e8400-e29b-41d4-a716-446655440000', // waste disposal site
             'name' => 'Waste disposal site',
             'public_id' => 'WDS01',
-            'slug' => 'waste-disposal-site',
             'created_at' => now(),
         ]);
 
@@ -113,7 +106,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '020e8400-e29b-41d4-a716-446655440000', // station
             'name' => 'First Station',
             'public_id' => 'S01',
-            'slug' => 'station',
             'location' => 'Location Station',
             'created_at' => now(),
         ]);
@@ -125,7 +117,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '017e8400-e29b-41d4-a716-446655440000', // product
             'name' => 'Salty',
             'public_id' => 'P01',
-            'slug' => 'salty',
             'created_at' => now(),
         ]);
 
@@ -136,7 +127,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '017e8400-e29b-41d4-a716-446655440000', // product
             'name' => 'Apple',
             'public_id' => 'P02',
-            'slug' => 'apple',
             'created_at' => now(),
         ]);
 
@@ -146,7 +136,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '037e8400-e29b-41d4-a716-446655440000', // customer
             'name' => 'Ali',
             'public_id' => 'SUP01',
-            'slug' => 'ali-55',
             'created_at' => now(),
         ]);
 
@@ -156,7 +145,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '037e8400-e29b-41d4-a716-446655440000', // customer
             'name' => 'Muhannad',
             'public_id' => 'SUP02',
-            'slug' => 'ali-55',
             'created_at' => now(),
         ]);
 
@@ -166,7 +154,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '038e8400-e29b-41d4-a716-446655440000', // department
             'name' => 'IT',
             'public_id' => "IT01",
-            'slug' => 'it',
             'created_at' => now(),
         ]);
 
@@ -176,7 +163,6 @@ class EntitiesSeeder extends Seeder
             'category_id' => '048e8400-e29b-41d4-a716-446655440000',
             'name' => 'Wastes Disposal site 2',
             'public_id' => "WA 01",
-            'slug' => 'wast',
             'location' => 'location-disposal-A',
             'created_at' => now(),
         ]);

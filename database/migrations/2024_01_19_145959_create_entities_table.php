@@ -16,7 +16,6 @@ return new  class extends Migration {
             $table->string('category_id');
             $table->string('name')->nullable();
             $table->string('public_id');
-            $table->string('slug')->nullable();
             $table->string('phone_number')->nullable();
             $table->text('location')->nullable();
             $table->text('from')->nullable();

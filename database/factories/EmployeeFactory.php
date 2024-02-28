@@ -17,7 +17,6 @@ class EmployeeFactory extends Factory
         return [
             'public_id' => fake()->word(),
             'is_leader_shop' => fake()->boolean(),
-            'slug' => fake()->slug(),
             'phone_number' => fake()->phoneNumber(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

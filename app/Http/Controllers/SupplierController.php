@@ -69,7 +69,7 @@ class SupplierController extends Controller
                 'route_id' => $request->input('route_id'),
                 'material_id' => $request->input('material_id'),
                 'public_id' => $suppliers_count.'SUP',
-                'name' => $request->inpute('name'),
+                'name' => $request->input('name'),
                 'location' => $request->input('location'),
                 'contact_info' => $request->input('contact_info'),
                 'is_available' => $request->input('is_available')

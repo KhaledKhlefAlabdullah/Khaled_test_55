@@ -72,7 +72,6 @@ class EmployeeRequest extends FormRequest
             'station_id' => 'Station',
             'public_id' => 'Public',
             'is_leader_shop' => 'leader shop',
-            'slug' => 'Slug',
             'phone_number' => 'Phone number'
         ];
     }

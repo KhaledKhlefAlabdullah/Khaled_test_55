@@ -23,7 +23,6 @@ class Employee extends Model
         'residential_area_id',
         'employee_number',
         'is_leadership',
-        'slug',
     ];
 
     public function stakeholder()

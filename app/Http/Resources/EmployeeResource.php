@@ -22,7 +22,6 @@ class EmployeeResource extends JsonResource
             'stakeholder_id' => $this->stakeholder_id,
             'public_id' => $this->public_id,
             'is_leader_shop' => $this->is_leader_shop,
-            'slug' => $this->slug,
             'phone_number' => $this->phone_number,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

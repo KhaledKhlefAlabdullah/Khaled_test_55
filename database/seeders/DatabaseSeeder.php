@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             ContactUsMessageSeeder::class,
             EntitiesSeeder::class,
             FileSeeder::class,
-            NotificationSeeder::class,
             NotificationSettingSeeder::class,
             TimelineSeeder::class,
             TimelineEventSeeder::class,

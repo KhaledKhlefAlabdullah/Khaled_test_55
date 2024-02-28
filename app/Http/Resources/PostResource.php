@@ -20,7 +20,6 @@ class PostResource extends JsonResource
             'page_id' => $this->page_id,
             'category_id' => $this->category_id,
             'title' => $this->title,
-            'slug' => $this->slug,
             'body' => $this->body,
             'media_url' => $this->media_url,
             'media_type' => $this->media_type,

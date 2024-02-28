@@ -22,7 +22,6 @@ class SupplierResource extends JsonResource
             'public_id' => $this->public_id,
             'location' => $this->location,
             'contact_info' => $this->contact_info,
-            'slug' => $this->slug,
             'is_available' => $this->is_available,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at

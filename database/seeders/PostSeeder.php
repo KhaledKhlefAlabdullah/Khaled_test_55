@@ -18,7 +18,6 @@ class PostSeeder extends Seeder
             'page_id' => '6a97a6d-7b19-4fa9-a77f-2a76172f5b58', // General News Page
             'category_id' => '040e8400-e29b-41d4-a716-446655440000', // News Category
             'title' => 'General News',
-            'slug' => 'general-news',
             'body' => 'I am body for post',
             'media_url' => 'assets/images/temp.jpg',
             'media_type' => 'file',
@@ -33,7 +32,6 @@ class PostSeeder extends Seeder
             'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58', // About us Page
             'category_id' => '004e8400-e29b-41d4-a716-446655440000', // About Category
             'title' => 'Our Vision',
-            'slug' => 'our-vision',
             'body' => 'I am body for our vision',
             'media_url' => null,
             'media_type' => null,
@@ -48,7 +46,6 @@ class PostSeeder extends Seeder
             'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'category_id' => '004e8400-e29b-41d4-a716-446655440000',
             'title' => 'Our Approach',
-            'slug' => 'our-approach',
             'body' => 'I am body for our approach',
             'media_url' => null,
             'media_type' => null,
@@ -63,7 +60,6 @@ class PostSeeder extends Seeder
             'page_id' => '1a97a6d-7b19-4fa9-a77f-2a76172f5b58', // About us Page
             'category_id' => '004e8400-e29b-41d4-a716-446655440000', // About Category
             'title' => 'Our Process',
-            'slug' => 'our-process',
             'body' => 'I am body for our process',
             'media_url' => null,
             'media_type' => null,
@@ -78,7 +74,6 @@ class PostSeeder extends Seeder
             'page_id' => '5a97a6d-7b19-4fa9-a77f-2a76172f5b58', // News Page
             'category_id' => '040e8400-e29b-41d4-a716-446655440000', //  News Category
             'title' => 'General News',
-            'slug' => 'general-news',
             'body' => 'I am body for post',
             'is_priority' => false,
             'priority_count' => '4',
@@ -93,7 +88,6 @@ class PostSeeder extends Seeder
             'page_id' => '5a97a6d-7b19-4fa9-a77f-2a76172f5b58', // News Page
             'category_id' => '005e8400-e29b-4154-a716-446655440000',
             'title' => 'Project description',
-            'slug' => 'description',
             'body' => 'I am body for post',
             'is_priority' => false,
             'priority_count' => '4',

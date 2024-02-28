@@ -18,7 +18,6 @@ class ServiceValidationRequest extends FormRequest
             'stakeholder_id' => 'required|string|exists:stakeholders,id',
             'category_id' => 'required|string|exists:categories,id',
             'infrastructures_state' => 'required|string',
-            'slug' => 'required|string|',
             'description' => 'required|string',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',

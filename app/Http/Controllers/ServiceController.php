@@ -24,7 +24,7 @@ class ServiceController extends Controller
                 ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
                 ->join('services', 'stakeholders.id', '=', 'services.stakeholder_id')
                 ->join('categories', 'services.category_id', '=', 'categories.id')
-                ->select('services.id as service_id', 'services.slug as service_name', 'categories.id as category_id',
+                ->select('services.id as service_id', 'categories.id as category_id',
                     'categories.name as category_name', 'user_profiles.name as provider_name')
                 ->where('stakeholders.industrial_area_id', '=', $industrial_area_id)->get();
 
@@ -53,7 +53,6 @@ class ServiceController extends Controller
                 'stakeholder_id' => 'required|string|exists:stakeholders,id',
                 'category_id' => 'required|string|exists:categories,id',
                 'infrastructures_state' => 'required|in:available,partially,interrupted',
-                'slug' => 'required|string',
                 'description' => 'required|string',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after:start_date'
@@ -86,7 +85,6 @@ class ServiceController extends Controller
 
             $validatedData = $request->validate([
                 'infrastructures_state' => 'required|in:available,partially,interrupted',
-                'slug' => 'required|string',
                 'description' => 'required|string',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after:start_date'

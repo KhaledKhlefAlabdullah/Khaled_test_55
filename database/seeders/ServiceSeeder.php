@@ -22,7 +22,6 @@ class ServiceSeeder extends Seeder
                 'description' => 'Service Description 2',
                 'start_date' => '2024-02-01',
                 'end_date' => '2024-03-01',
-                'slug' => 'service-1',
                 'created_at' => now(),
             ],
             [
@@ -30,7 +29,6 @@ class ServiceSeeder extends Seeder
                 'stakeholder_id' => '4r97a6d-5238-4fa9-a77f-2a76172f5b58',
                 'category_id' => '045e8400-e29b-41d4-a716-446655440000', //  service
                 'infrastructures_state' => 'partially',
-                'slug' => 'service-2',
                 'description' => 'Service Description 2',
                 'start_date' => '2024-02-01',
                 'end_date' => '2024-03-01',

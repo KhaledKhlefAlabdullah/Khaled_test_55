@@ -12,11 +12,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 use function App\Helpers\edit_file;
-use function App\Helpers\gatMediaType;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getMediaType;
 use function App\Helpers\store_files;
-use function App\Helpers\transformCollection;
 
 class FileController extends Controller
 {

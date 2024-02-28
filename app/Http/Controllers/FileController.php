@@ -31,10 +31,23 @@ class FileController extends Controller
      */
     public function view_manuals_and_plans()
     {
-        $files = File::where('file_type', '=', 'Manuals & Plans')->paginate();
+        try{
 
-        // Using a custom transformCollection function to format the response
-        return transformCollection($files, FileResource::class);
+            $files = File::where('file_type', '=', 'ManualsAndPlans')->select('files.id','files.title','files.description','files.media_url','files.created_at')->get();
+
+            return response()->json([
+                'data' => $files,
+                'message' => __('manuals&plans-getting-success')
+            ],200);
+
+        }
+        catch(Exception $e){
+
+            return response()->json([
+                'error' => __($e->getMessage()),
+                'message' => __('manuals&plans-getting-error')
+            ],500);
+        }
     }
 
     /**
@@ -68,8 +81,13 @@ class FileController extends Controller
             $request->validated();
 
             $file = $request->file;
+<<<<<<< HEAD
 
             $path = '/files/'.$request->input('file_type');
+=======
+            
+            $path = '/files/'.$file_type;
+>>>>>>> khaled
 
             $path = store_files($file,$path);
 
@@ -170,6 +188,9 @@ class FileController extends Controller
         if ($file->user_id != auth()->user()->id) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
+
+        // todo add this in evere object has any type of media to remove it from the app
+        unlink(public_path($file->media_url));
 
         // Delete file
         $file->delete();

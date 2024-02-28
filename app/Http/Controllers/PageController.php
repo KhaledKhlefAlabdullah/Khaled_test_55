@@ -131,7 +131,7 @@ class PageController extends Controller
     /**
      * Fill contact us details
      */
-    public function edite_contact_us_details(Request $request)
+    public function edit_contact_us_details(Request $request)
     {
         // validate the inputs
         $request->validate([
@@ -185,9 +185,9 @@ class PageController extends Controller
     }
 
     /**
-     * Edite about us page details
+     * edit about us page details
      */
-    public function edite_about_us_post_details(Request $request, string $id)
+    public function edit_about_us_post_details(Request $request, string $id)
     {
         try {
 

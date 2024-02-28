@@ -189,7 +189,7 @@ if (!function_exists('edit_file')) {
         // Delete the old file from storage
         if (file_exists($old_file_path)) {
 
-            unlink($old_file_path);
+            unlink(public_path($old_file_path));
 
         }
 
@@ -201,7 +201,7 @@ if (!function_exists('edit_file')) {
 
 }
 
-if (!function_exists('edite_page_details')) {
+if (!function_exists('edit_page_details')) {
    
     function edit_page_details($request, $page_type): Response|JsonResponse
     {

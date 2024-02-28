@@ -174,7 +174,7 @@ class UserProfileController extends Controller
 
                 case 'Industrial_area_representative':
 
-                    // edite user data with:
+                    // Edit user data with:
                     // name to user_profiles
                     // email to users
                     // location from user_profiles
@@ -192,7 +192,7 @@ class UserProfileController extends Controller
                     break;
                 case 'Tenant_company':
 
-                    // edite user data with:
+                    // Edit user data with:
                     // name to user_profiles
                     // email to users
                     // phone to user_profiles
@@ -221,7 +221,7 @@ class UserProfileController extends Controller
                     break;
                 case 'Infrastructure_provider':
 
-                    // edite user data with:
+                    // Edit user data with:
                     // name to user_profiles
                     // email to users
                     // infrastructure_type to stakeholders
@@ -249,7 +249,7 @@ class UserProfileController extends Controller
                     break;
                 case 'Government_representative':
 
-                    // edite user data with:
+                    // Edit user data with:
                     // name to user_profiles
                     // email to users
                     // phone to user_profiles

@@ -40,7 +40,7 @@ class StoreMessageRequest extends FormRequest
             'media_url' => ['nullable', 'string', 'max:255'],
             'message_type' => ['nullable', 'in:text,image,video'],
             'is_read' => ['nullable', 'boolean'],
-            'is_edite' => ['nullable', 'boolean'],
+            'is_edit' => ['nullable', 'boolean'],
             'is_starred' => ['nullable', 'boolean'],
         ];
     }
@@ -60,7 +60,7 @@ class StoreMessageRequest extends FormRequest
             'media_url' => 'Media URL',
             'message_type' => 'Message Type',
             'is_read' => 'Read',
-            'is_edite' => 'Edite',
+            'is_edit' => 'edit',
             'is_starred' => 'Starred',
         ];
     }

@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('media_url')->nullable();
             $table->enum('message_type', ['text', 'image', 'video'])->nullable();
             $table->boolean('is_read')->default(false);
-            $table->boolean('is_edite')->default(false);
+            $table->boolean('is_edit')->default(false);
             $table->boolean('is_starred')->default(false);
             $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('receiver_id')->references('id')->on('users')->onDelete('cascade');

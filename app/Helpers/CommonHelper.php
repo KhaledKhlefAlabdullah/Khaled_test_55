@@ -201,13 +201,9 @@ if (!function_exists('edit_file')) {
 
 }
 
-<<<<<<< HEAD
+
 if (!function_exists('edit_page_details')) {
    
-=======
-if (!function_exists('edite_page_details')) {
-
->>>>>>> khaled2
     function edit_page_details($request, $page_type): Response|JsonResponse
     {
         try {

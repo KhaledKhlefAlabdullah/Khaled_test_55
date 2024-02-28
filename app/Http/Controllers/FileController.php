@@ -12,11 +12,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 use function App\Helpers\edit_file;
-use function App\Helpers\gatMediaType;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getMediaType;
 use function App\Helpers\store_files;
-use function App\Helpers\transformCollection;
 
 class FileController extends Controller
 {
@@ -77,12 +75,14 @@ class FileController extends Controller
     public function store(Request $request,$file_type)
     {
         try{
-            
+
             $request->validated();
 
             $file = $request->file;
+
             
             $path = '/files/'.$file_type;
+
 
             $path = store_files($file,$path);
 
@@ -105,7 +105,7 @@ class FileController extends Controller
                 'error' => __($e->getMessage()),
                 'message' => __('file-adding-error')
             ]);
-        }        
+        }
     }
 
     /**
@@ -135,9 +135,9 @@ class FileController extends Controller
 
            // Get file by ID
             $file_ = getAndCheckModelById(File::class,$id);
-             
+
             $file = $request->file;
-            
+
             $path = '/files/'.$request->input('file_type');
 
             $old_path = $file_->media_url;

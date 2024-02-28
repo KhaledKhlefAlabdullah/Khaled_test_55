@@ -163,6 +163,25 @@ if (!function_exists('store_files')) {
     }
 }
 
+if(!function_exists('getMediaType')){
+    function getMediaType($file){
+
+        $ext = $file->getClientOriginalExtension();
+
+        if(in_array($ext,['jpg,jpeg,png,gif'])){
+           $type ='image';
+        }
+        elseif($ext == 'pdf'){
+            $type = 'file';
+        }
+        else{
+            $type = 'video';
+        }
+
+        return $type;
+    }
+}
+
 if (!function_exists('edit_file')) {
 
     function edit_file($old_file_path, $new_file, $path): string

@@ -228,7 +228,7 @@ Route::group(['prefix' => 'api'], function () {
             // Add Manuals & Plans
             Route::group(['prefix' => 'manuals-and-plans'],function(){
 
-                Route::post('/add', [FileController::class, 'store']);
+                Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
                 Route::post('/edite/{id}', [FileController::class, 'update']);
 

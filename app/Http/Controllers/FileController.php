@@ -11,6 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use Illuminate\Support\Facades\Auth;
 
+use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\gatMediaType;
 use function App\Helpers\getAndCheckModelById;
@@ -55,7 +56,7 @@ class FileController extends Controller
      */
     public function add_manuals_and_plans(FileRequest $request)
     {
-        return $this->store($request,'ManualsAndPlans');
+        return $this->store($request, 'ManualsAndPlans');
     }
 
     /**
@@ -76,13 +77,13 @@ class FileController extends Controller
      */
     public function store(Request $request,$file_type)
     {
-        try{
+        try {
 
             $request->validated();
 
             $file = $request->file;
 
-            
+
             $path = '/files/'.$file_type;
 
 

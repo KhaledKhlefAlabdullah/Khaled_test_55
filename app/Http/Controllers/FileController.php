@@ -6,12 +6,15 @@ use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
 use App\Models\File;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use Illuminate\Support\Facades\Auth;
 
 use function App\Helpers\edit_file;
+use function App\Helpers\gatMediaType;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getMediaType;
 use function App\Helpers\store_files;
 use function App\Helpers\transformCollection;
 
@@ -35,6 +38,14 @@ class FileController extends Controller
     }
 
     /**
+     * Add manuals and plans
+     */
+    public function add_manuals_and_plans(FileRequest $request)
+    {
+        return $this->store($request,'ManualsAndPlans');
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -50,7 +61,7 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(FileRequest $request)
+    public function store(Request $request,$file_type)
     {
         try{
 
@@ -65,12 +76,12 @@ class FileController extends Controller
             File::create([
                 'user_id' => Auth::id(),
                 'category_id' => $request->input('category_id'),
-                'file_type' => $request->input('file_type'),
+                'file_type' => $file_type,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
                 'media_url' => $path,
-                'media_type' => $request->input('media_type')
+                'media_type' => getMediaType($file)
             ]);
             return response()->json([
                 'message' => __('file-adding-success')
@@ -127,7 +138,7 @@ class FileController extends Controller
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
                 'media_url' => $new_file_path,
-                'media_type' => $request->input('media_type')
+                'media_type' => getMediaType($file)
             ]);
 
             return response()->json([

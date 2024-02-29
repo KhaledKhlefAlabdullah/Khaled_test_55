@@ -201,6 +201,7 @@ if (!function_exists('edit_file')) {
 
 }
 
+
 if (!function_exists('edit_page_details')) {
    
     function edit_page_details($request, $page_type): Response|JsonResponse
@@ -285,9 +286,9 @@ if (!function_exists('send_mail')) {
         try {
 
             Mail::to($receiver)->send(new PortalMails($mail_message));
-            
+
             return true;
-        
+
         } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -316,6 +317,7 @@ if(!function_exists('stakeholder_id')){
     }
 
 }
+
 /**
  * This Function it get the instance by any value inside it
  */
@@ -373,7 +375,7 @@ if(!function_exists('find_and_update')){
 }
 
 /**
- * Send notifications 
+ * Send notifications
  */
 if(!function_exists('send_notifications')){
 
@@ -383,7 +385,7 @@ if(!function_exists('send_notifications')){
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
             ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_URL')
             ->first();
-            
+
         Notification::send($receivers,new PortalNotifications($viaChanel,$user_profile,$message,$receivers));
 
     }
@@ -443,7 +445,7 @@ if (!function_exists('add_notifications_settings')) {
                     ]
                 ]
             ];
-            
+
             if (in_array($type, ['Tenant_company', 'Infrastructure_provider'])) {
                 $extraItem = [
                     'main_category_id' => '031e8400-e29b-41d4-a716-446655440000',
@@ -492,7 +494,7 @@ if (!function_exists('count_items')) {
             $item_count = $model::where($validations)->get()->count();
 
             return $item_count+1;
-           
+
         } catch (\Mockery\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -501,4 +503,42 @@ if (!function_exists('count_items')) {
         }
     }
 
+}
+
+
+/**
+ * Prepares a standardized JSON response for API endpoints.
+ *
+ * @param mixed $data (optional) The data to be included in the response body.
+ * @param string $message (optional) A message to be included in the response body.
+ * @param int $code (optional) The HTTP status code for the response. Defaults to 200 (OK).
+ * @param mixed $pagination (optional) Pagination information to be included in the response.
+ * @param array $meta (optional) Additional metadata to be included in the response.
+ * @param array $errors (optional) An array of error messages to be included in the response.
+ * @return JsonResponse
+ *
+ * @throws \InvalidArgumentException if an invalid HTTP status code is provided.
+ */
+if (!function_exists('api_response')) {
+    function api_response($data = null, $message = "", $code = 200, $pagination = null, $meta = [], $errors = []): JsonResponse
+    {
+        $response = [
+            'data' => $data,
+            'message' => __($message),
+        ];
+
+        if ($pagination) {
+            $response['pagination'] = $pagination;
+        }
+
+        if ($meta) {
+            $response['meta'] = $meta;
+        }
+
+        if ($errors) {
+            $response['errors'] = $errors;
+        }
+
+        return response()->json($response, $code);
+    }
 }

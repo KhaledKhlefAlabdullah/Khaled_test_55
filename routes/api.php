@@ -143,6 +143,14 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::post('edit-project-description/{id}', [PostController::class, 'edit_project_description']);
 
+            Route::group(['prefix' => 'educational-files'], function(){
+
+                Route::post('/add',[FileController::class,'add_educational_files']);
+
+                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+
+            });
+
             Route::group(['prefix' => 'industrial-areas'], function () {
 
                 Route::post('/add', [IndustrialAreaController::class, 'store']);
@@ -222,7 +230,7 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
         });
 
-        // Routes for industrial area represintative and Government represintative
+        // Routes for industrial area representative and Government representative
         Route::middleware(['Industrial-area-or-government-representative'])->group(function () {
 
             // Add Manuals & Plans
@@ -235,7 +243,7 @@ Route::group(['prefix' => 'api'], function () {
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
             });
-          
+
             // for main monitoring points
             Route::group(['prefix' => 'main-monitoring-points'], function () {
 
@@ -249,6 +257,21 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+
+            // Announcements Start
+            Route::group(['prefix' => 'announcements'], function () {
+
+                // View list of Announcements
+                // View announcements list (publisher-published date-content )
+                Route::get('/view-list-of-announcements', [PostController::class, 'view_list_of_announcements']);
+
+                // View list of my Announcements
+                // View my Announcements list (content-last published date)
+                Route::get('/view-list-of-my-announcements', [PostController::class, 'view_list_of_my_announcements']);
+
+
+            });
+            // Announcements End
 
         });
 
@@ -403,6 +426,8 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
+
+        // For all authenticated users
         Route::group(['prefix' => 'notifications'],function(){
 
             Route::get('/',[NotificationController::class,'index']);
@@ -416,6 +441,10 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
 
         Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
+
+        Route::get('/educational-files',[FileController::class,'view_educational_files']);
+
+        Route::get('/download-educational-file/{id}',[FileController::class,'download_files']);
 
     });
 
@@ -441,6 +470,9 @@ Route::group(['prefix' => 'api'], function () {
 
     // Fill contact us form
     Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'store_unregistered']);
+
+    // View list of educational files
+    Route::get('/educational-files',[FileController::class,'view_educational_files']);
 
     require __DIR__ . '/auth.php';
 

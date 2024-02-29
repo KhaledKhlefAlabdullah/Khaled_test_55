@@ -55,4 +55,9 @@ class User_policies
     {
         return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE || $user->stakeholder_type == $this::GOVERNMENT_REPRESENTATIVE;
     }
+
+    public function Industrial_area_representative_or_infrastructure_provider(User $user): bool
+    {
+        return $user->stakeholder_type == $this::INDUSTRIAL_REPRESENTATIVE || $user->stakeholder_type == $this::INFRASTRUCTURE_PROVIDER;
+    }
 }

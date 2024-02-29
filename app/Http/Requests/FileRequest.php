@@ -38,7 +38,7 @@ class FileRequest extends BaseRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'version' => ['nullable', 'string', 'max:100'],
-            'file' => ['required', 'mimes:pdf,jpg,jpeg,png,gif,mp4,mp3'],
+            'file' => ['required', 'mimes:pdf,pptx,jpg,jpeg,png,gif,mp4,mp3'],
             'update_frequency' => ['sometimes', 'in:daily,weekly,monthly'],
         ];
 

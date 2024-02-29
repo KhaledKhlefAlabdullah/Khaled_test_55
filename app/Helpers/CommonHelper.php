@@ -379,7 +379,7 @@ if(!function_exists('find_and_update')){
  */
 if(!function_exists('send_notifications')){
 
-    function send_notifications($receivers,array $viaChanel=['database'],$message){
+    function send_notifications($receivers,$message,array $viaChanel=['database']){
 
         $user_profile = Auth::user()
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')

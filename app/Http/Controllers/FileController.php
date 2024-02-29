@@ -79,6 +79,22 @@ class FileController extends Controller
         return $this->store($request,'Educational');
     }
 
+     /**
+     * edit manuals and plans
+     */
+    public function edit_manuals_and_plans(FileRequest $request,string $id)
+    {
+        return $this->update($request,'ManualsAndPlans',$id);
+    }
+
+      /**
+     * edit educational files
+     */
+    public function edit_educational_files(FileRequest $request,string $id)
+    {
+        return $this->update($request,'Educational',$id);
+    }
+
     /**
      * Download educational files
      */
@@ -177,7 +193,7 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(FileRequest $request, string $id)
+    public function update(Request $request,string $file_type, string $id)
     {
         try{
 
@@ -188,7 +204,7 @@ class FileController extends Controller
 
             $file = $request->file;
 
-            $path = '/files/'.$request->input('file_type');
+            $path = '/files/'.$file_type;
 
             $old_path = $file_->media_url;
 
@@ -196,7 +212,7 @@ class FileController extends Controller
 
             $file_->update([
                 'category_id' => $request->input('category_id'),
-                'file_type' => $request->input('file_type'),
+                'file_type' => $file_type,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
@@ -240,7 +256,7 @@ class FileController extends Controller
         // Delete file
         $file->delete();
 
-        return api_response(message: 'File deleted successfully'q); 
+        return api_response(message: 'file-delete-success'); 
         
     }
 }

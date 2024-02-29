@@ -10,6 +10,7 @@ use App\Http\Middleware\Api\Infrastructar_provider_middleware;
 use App\Http\Middleware\Api\Infrastructure_provider_and_tenant_company_middleware;
 use App\Http\Middleware\Api\Portal_manager_middleware;
 use App\Http\Middleware\Api\Tenant_company_middleware;
+use App\Http\Middleware\Industrail_area_representative_or_infrastructure_provider;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -80,6 +81,7 @@ class Kernel extends HttpKernel
         'all-users-expect-portal-manager' => Allow_all_users_expect_portal_manager_middleware::class,
         'infrastructure-provider-or-tenant-company' => Infrastructure_provider_and_tenant_company_middleware::class,
         'Industrial-area-or-government-representative' => Industrial_area_representative_or_government_representative::class,
+        'Industrail-area-representative-or-infrastructure-provider' => Industrail_area_representative_or_infrastructure_provider::class,
         'localize'                => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
         'localizationRedirect'    => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter::class,
         'localeSessionRedirect'   => \Mcamara\LaravelLocalization\Middleware\LocaleSessionRedirect::class,

@@ -18,8 +18,8 @@ class File extends Model
 
     protected $fillable = [
         'user_id',
-        'category_id',
-        'file_type',
+        'main_category_id',
+        'sub_category_id',
         'title',
         'description',
         'version',
@@ -32,8 +32,13 @@ class File extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function category()
+    public function main_category()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Category::class, 'main_category_id');
+    }
+
+    public function sub_category()
+    {
+        return $this->belongsTo(Category::class, 'sub_category_id');
     }
 }

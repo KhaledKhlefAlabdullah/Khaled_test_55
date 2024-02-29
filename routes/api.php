@@ -206,6 +206,7 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For registration requests
             Route::group(['prefix' => 'registration-requests'], function () {
 
                 Route::get('/', [RegistrationRequestController::class, 'index']);
@@ -220,8 +221,16 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
-        // Routes for iftrastructure provider role
+        // Routes for inftrastructure provider role
         Route::middleware(['infrastructure-provider'])->group(function () {
+
+            Route::group(['prefix' => 'infrastructure-services-reports'],function(){
+
+                Route::post('/upload',[FileController::class,'add_nfrastructure_services_report_file']);
+
+                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+
+            });
 
         });
 
@@ -232,6 +241,11 @@ Route::group(['prefix' => 'api'], function () {
 
             // View list of Manuals and plans
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
+        });
+
+        // Routes for Government representative role
+        Route::middleware(['government-representative'])->group(function () {
+
         });
 
         // Routes for industrial area representative and Government representative
@@ -280,10 +294,36 @@ Route::group(['prefix' => 'api'], function () {
             });
             // Announcements End
 
+            // For Guidelines and updates
+            Route::group(['prefix' => 'guideline-and-updates'],function(){
+
+                Route::get('/my',[FileController::class,'view_my_guidelines_and_updates']);
+
+                Route::post('/add',[FileController::class,'add_guidelines_and_updates_files']);
+
+                Route::post('/update/{id}',[FileController::class,'update_guidelines_and_updates_files']);
+
+                Route::post('/edit/{id}',[FileController::class,'edit_guidelines_and_updates_files']);
+
+                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+
+            }); 
+
+            // For water level reports
+            Route::group(['prefix' => 'water-level-reports'],function(){
+
+                Route::post('/upload',[FileController::class,'add_water_level_report_file']);
+
+                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+
+            });
+
         });
 
-        // Routes for industrial area representative role
-        Route::middleware(['government-representative'])->group(function () {
+        // Routes for for industrial area representative and infrastructure providerrole
+        Route::middleware(['Industrail-area-representative-or-infrastructure-provider'])->group(function () {
+
+            Route::get('download-infrastructure-sevices-reports/{id}',[FileController::class,'download_file']);
 
         });
 
@@ -299,11 +339,32 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For Guidelines and updates
+            Route::get('/guideline-and-updates/',[FileController::class,'view_guidelines_and_updates']);
+
+            // For Infrastructure services reports
+            Route::get('/infrastructure-services-reports',[FileController::class,'view_infrastructure_service_reports']);
+
             // Fill contact us form
-            Route::post('contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
+            Route::post('/contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
             // View manuals and plans
+<<<<<<< HEAD
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
+=======
+            Route::get('/manuals-and-plans', [FileController::class,'view_manuals_and_plans']);
+
+            // For water level reports
+            Route::group(['prefix' => 'water-level-reports'],function(){
+
+                Route::get('/',[FileController::class,'view_water_level_reports']);
+
+                Route::get('/download/{id}',[FileController::class,'download_file']);
+
+            });
+
+
+>>>>>>> khaled
         });
 
         // Routes for just infrastructure provider and tenant company
@@ -453,7 +514,7 @@ Route::group(['prefix' => 'api'], function () {
 
         Route::get('/educational-files', [FileController::class, 'view_educational_files']);
 
-        Route::get('/download-educational-file/{id}',[FileController::class,'download_files']);
+        Route::get('/download-educational-file/{id}',[FileController::class,'download_file']);
 
     });
 

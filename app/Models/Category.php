@@ -44,9 +44,14 @@ class Category extends Model
         return $this->hasMany(Post::class, 'category_id');
     }
 
-    public function files()
+    public function main_category_files()
     {
-        return $this->hasMany(File::class, 'category_id');
+        return $this->hasMany(File::class, 'main_category_id');
+    }
+
+    public function sub_category_files()
+    {
+        return $this->hasMany(File::class, 'sub_category_id');
     }
 
     public function main_category_notifications_settings()

@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
+use App\Models\Category;
 use App\Models\File;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-
 use Illuminate\Support\Facades\Auth;
-
 use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getIdByName;
 use function App\Helpers\getMediaType;
 use function App\Helpers\store_files;
 
@@ -29,39 +28,70 @@ class FileController extends Controller
      */
     public function view_manuals_and_plans()
     {
-        return $this->get_files('ManualsAndPlans');
+        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-4466554400MP']);
     }
-
+    /*
+*/
     /**
      * Get the educational files
      */
     public function view_educational_files()
     {
-        return $this->get_files('Educational');
+        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-44665544EDU']);
     }
 
+    /**
+     * Get the Guide lines files
+     */
+    public function view_guidelines_and_updates()
+    {
+        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-44665544GAU']);
+    }
 
+    /**
+     * Get my Guide lines files
+     */
+    public function view_my_guidelines_and_updates()
+    {
+        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-44665544GAU', 'user_id' => Auth::id()]);
+    }
+
+    /**
+     * Get view infrastructure service reports files
+     */
+    public function view_infrastructure_service_reports()
+    {
+        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-44665544ISR']);
+    }
+
+    /**
+     * Get my water level files
+     */
+    public function view_water_level_reports()
+    {
+        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-44665544WLR']);
+    }
 
     /**
      * Get files 
      */
-    public function get_files($file_type){
-        try{
+    public function get_files(array $Conditions)
+    {
+        try {
 
-            $files = File::where('file_type', $file_type)->when(Auth::check(), function($query){
-                return $query->addSelect('files.id','files.title','files.description','files.media_url','files.created_at');
-            }, function($query){
-                return $query->addSelect('files.id','files.title','files.description','files.created_at');
+            $files = File::where($Conditions)->when(Auth::check(), function ($query) {
+                return $query->addSelect('files.id', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
+            }, function ($query) {
+                return $query->addSelect('files.id', 'files.title', 'files.description', 'files.created_at');
             })->get();
-            
-            return api_response($files,'files-getting-success');
-        }
-        catch(Exception $e){
 
-            return api_response(message:'files-getting-error',errors:[$e->getMessage()],code:500);
-            
+            return api_response($files, 'files-getting-success');
+        } catch (Exception $e) {
+
+            return api_response(message: 'files-getting-error', errors: [$e->getMessage()], code: 500);
         }
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
     /**
@@ -99,20 +129,22 @@ class FileController extends Controller
 =======
      
 >>>>>>> master
+=======
+
+>>>>>>> khaled
     /**
-     * Download educational files
+     * Download files
      */
-    public function download_files(string $id){
+    public function download_file(string $id)
+    {
 
-        try{
+        try {
 
-            $educational_file = getAndCheckModelById(File::class,$id);
+            $file = getAndCheckModelById(File::class, $id);
 
-            return response()->download(public_path($educational_file->media_url));
-
-        }
-        catch(Exception $e){
-            return api_response(errors: [$e->getMessage()],code:500,message:'download-error');
+            return response()->download(public_path($file->media_url));
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], code: 500, message: 'download-error');
         }
     }
 
@@ -134,27 +166,52 @@ class FileController extends Controller
      */
     public function add_manuals_and_plans(FileRequest $request)
     {
-        return $this->store($request,'ManualsAndPlans');
+        return $this->store($request, 'ManualsAndPlans');
     }
 
-      /**
+    /**
      * Add educational files
      */
     public function add_educational_files(FileRequest $request)
     {
-        return $this->store($request,'Educational');
+        return $this->store($request, 'Educational');
+    }
+
+    /**
+     * Add Guidelines and updates files
+     */
+    public function add_guidelines_and_updates_files(FileRequest $request)
+    {
+        return $this->store($request, 'GuidelineAndUpdates');
+    }
+
+    /**
+     * Add Infrastructure service report file
+     */
+    public function add_nfrastructure_services_report_file(FileRequest $request)
+    {
+        return $this->store($request, 'InfrastructureReports');
+    }
+
+    /**
+     * Add water level report file
+     */
+    public function add_water_level_report_file(FileRequest $request)
+    {
+        return $this->store($request, 'WaterLevelReports');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,$file_type)
+    public function store(Request $request, $file_type)
     {
         try {
 
             $request->validated();
 
             $file = $request->file;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
@@ -163,28 +220,31 @@ class FileController extends Controller
             
             $path_ = '/files/'.$file_type;
 >>>>>>> master
+=======
+>>>>>>> khaled
 
-            $path = store_files($file,$path_);
+            $category_id = getIdByName(Category::class, $file_type);
+
+            $path_ = '/files/' . $file_type;
+
+            $path = store_files($file, $path_);
 
             File::create([
                 'user_id' => Auth::id(),
-                'category_id' => $request->input('category_id'),
-                'file_type' => $file_type,
+                'main_category_id' => $category_id,
+                'sub_category_id' => $request->input('category_id'),
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
                 'media_url' => $path,
                 'media_type' => getMediaType($file)
             ]);
-            return response()->json([
-                'message' => __('file-adding-success')
-            ]);
-        }
-        catch(Exception $e){
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('file-adding-error')
-            ]);
+
+
+            return api_response(message: 'file-adding-success');
+        } catch (Exception $e) {
+
+            return api_response(errors: [$e->getMessage()], message: 'file-adding-error', code: 500);
         }
     }
 
@@ -208,38 +268,80 @@ class FileController extends Controller
     /**
      * edit manuals and plans
      */
-    public function edit_manuals_and_plans(FileRequest $request,string $id)
+    public function edit_manuals_and_plans(FileRequest $request, string $id)
     {
-        return $this->update($request,'ManualsAndPlans',$id);
+        return $this->update($request, 'ManualsAndPlans', $id);
     }
 
-      /**
+    /**
      * edit educational files
      */
-    public function edit_educational_files(FileRequest $request,string $id)
+    public function edit_educational_files(FileRequest $request, string $id)
     {
-        return $this->update($request,'Educational',$id);
+        return $this->update($request, 'Educational', $id);
     }
+
+    /**
+     * edit Guideline And Updates files
+     */
+    public function edit_guidelines_and_updates_files(FileRequest $request, string $id)
+    {
+        return $this->update($request, 'GuidelineAndUpdates', $id);
+    }
+
+    /**
+     * edit Guideline And Updates files
+     */
+    public function update_guidelines_and_updates_files(Request $request, string $id)
+    {
+        try {
+
+            // Get file by ID
+            $file_ = getAndCheckModelById(File::class, $id);
+
+            $file = $request->file;
+
+            $path = '/files/GuidelineAndUpdates';
+
+            $old_path = $file_->media_url;
+
+            $new_file_path = edit_file($old_path, $file, $path);
+
+            $file_->update([
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+                'version' => $request->input('version'),
+                'media_url' => $new_file_path,
+            ]);
+
+            return api_response(message: 'update-GuidelineAndUpdates-success');
+        } catch (Exception $e) {
+
+            return api_response(errors: [$e->getMessage()], message: 'update-GuidelineAndUpdates-error', code: 500);
+        }
+    }
+
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,string $file_type, string $id)
+    public function update(Request $request, string $file_type, string $id)
     {
-        try{
+        try {
 
             $request->validated();
 
-           // Get file by ID
-            $file_ = getAndCheckModelById(File::class,$id);
+            // Get file by ID
+            $file_ = getAndCheckModelById(File::class, $id);
 
             $file = $request->file;
 
-            $path = '/files/'.$file_type;
+            $path = '/files/' . $file_type;
 
             $old_path = $file_->media_url;
 
-            $new_file_path = edit_file($old_path,$file,$path);
+            $new_file_path = edit_file($old_path, $file, $path);
 
             $file_->update([
                 'category_id' => $request->input('category_id'),
@@ -251,15 +353,11 @@ class FileController extends Controller
                 'media_type' => getMediaType($file)
             ]);
 
-            return response()->json([
-                'message' => __('file-editing-success')
-            ]);
-        }
-        catch(Exception $e){
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('file-editing-error')
-        ]);
+
+            return api_response(message: 'file-editing-success');
+        } catch (Exception $e) {
+
+            return api_response(errors: [$e->getMessage()], message: 'file-editing-error', code: 500);
         }
     }
 
@@ -269,16 +367,16 @@ class FileController extends Controller
     public function destroy(string $id)
     {
         // Get file by ID
-        $file = getAndCheckModelById(File::class,$id);
+        $file = getAndCheckModelById(File::class, $id);
 
         // Check if file exists
         if (!$file) {
-            return api_response(message: 'File not found', code:404); 
+            return api_response(message: 'File not found', code: 404);
         }
 
         // Check if user is authorized
         if ($file->user_id != Auth::id()) {
-            return api_response(message: 'Unauthorized to delete this file it\'s dont belong to you', code:401); 
+            return api_response(message: 'Unauthorized to delete this file it\'s dont belong to you', code: 401);
         }
 
         // todo add this in evere object has any type of media to remove it from the app
@@ -287,7 +385,6 @@ class FileController extends Controller
         // Delete file
         $file->delete();
 
-        return api_response(message: 'file-delete-success'); 
-        
+        return api_response(message: 'file-delete-success');
     }
 }

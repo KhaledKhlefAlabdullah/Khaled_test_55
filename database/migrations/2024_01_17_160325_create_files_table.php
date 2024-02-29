@@ -13,8 +13,8 @@ return new class extends Migration {
         Schema::create('files', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('user_id');
-            $table->string('category_id');
-            $table->enum('file_type', ['Educational', 'ManualsAndPlans','Other']);
+            $table->string('main_category_id');
+            $table->string('sub_category_id');
             $table->string('title');
             $table->text('description');
             $table->string('version')->nullable();
@@ -22,7 +22,8 @@ return new class extends Migration {
             $table->enum('media_type', ['image', 'video', 'file'])->nullable();
             $table->enum('update_frequency', ['daily', 'weekly', 'monthly'])->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('main_category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('sub_category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

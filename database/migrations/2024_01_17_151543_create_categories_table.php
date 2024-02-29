@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     /**
@@ -50,9 +51,23 @@ return new class extends Migration {
             'created_at' => now(),
         ]);
 
-        B::table('categories')->insert([
+        DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544GAU',
             'name' => 'GuidelineAndUpdates',
+            'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '003e8400-e29b-41d4-a716-44665544ISR',
+            'name' => 'InfrastructureReports',
+            'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '003e8400-e29b-41d4-a716-44665544WLR',
+            'name' => 'WaterLevelReports',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);

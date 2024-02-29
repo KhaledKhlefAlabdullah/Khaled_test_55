@@ -42,7 +42,7 @@ if (!function_exists('getAndCheckModelById')) {
         $instance = $model::find($id);
 
         if (!$instance) {
-            throw new NotFoundResourceException($model . ' not found', 404);
+            throw new NotFoundResourceException($model . ' not found', 400);
         }
 
         return $instance;
@@ -202,7 +202,7 @@ if (!function_exists('edit_file')) {
 
 
 if (!function_exists('edit_page_details')) {
-   
+
     function edit_page_details($request, $page_type): Response|JsonResponse
     {
         try {

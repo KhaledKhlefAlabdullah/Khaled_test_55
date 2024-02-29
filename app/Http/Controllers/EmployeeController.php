@@ -108,10 +108,7 @@ class EmployeeController extends Controller
             return $employee;
         }
         catch (\Exception $e){
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('there are error in server side try another time')
-            ]);
+            return api_response(errors:$e->getMessage(),message:'employee-adding-error',code:500);
         }
     }
 

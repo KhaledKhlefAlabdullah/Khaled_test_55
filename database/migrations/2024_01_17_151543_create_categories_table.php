@@ -50,6 +50,13 @@ return new class extends Migration {
             'created_at' => now(),
         ]);
 
+        B::table('categories')->insert([
+            'id' => '003e8400-e29b-41d4-a716-44665544GAU',
+            'name' => 'GuidelineAndUpdates',
+            'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
+            'created_at' => now(),
+        ]);
+
         DB::table('categories')->insert([
             'id' => '004e8400-e29b-41d4-a716-446655440000',
             'name' => 'About',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\EmployeeResource;
+use App\Models\Category;
 use App\Models\Employee;
 
 use App\Models\Entity;
@@ -12,9 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Util\Exception;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+
+use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
+use function Laravel\Prompts\error;
 
 class EmployeeController extends Controller
 {
@@ -56,16 +60,20 @@ class EmployeeController extends Controller
     /**
      * Get the related in formation for add new employee
      */
-    public function gte_info(){
+    public function get_info(){
 
         try{
 
+            $departments = Entity::where(['category_id' => getIdByName(Category::class,'Department'),'stakeholder_id' => stakeholder_id()])->select('id','name')->get();
+
+            $routes = Entity::where(['category_id' => getIdByName(Category::class,'Route'),'stakeholder_id' => stakeholder_id()])->select('id','name')->get();
+
+            $stations = Entity::where(['category_id' => getIdByName(Category::class,'Station'),'stakeholder_id' => stakeholder_id()])->select('id','name')->get();
+
+            return api_response(data:['departments' => $departments,'routes' => $routes,'stations' => $stations],message:'employee-info-getting-success');
         }
         catch(Exception $e){
-            return response()->jsone([
-                'error' => __($e->getMessage()),
-                ''
-            ],500);
+            return api_response(message:'employee-info-getting-error',errors:$e->getMessage(),code:500);
         }
 
     }

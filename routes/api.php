@@ -147,7 +147,11 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [FileController::class, 'add_educational_files']);
 
-                Route::delete('/delete/{id}', [FileController::class, 'destroy']);
+
+                Route::post('/edit/{id}',[FileController::class,'edit_educational_files']);
+
+                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+
 
             });
 
@@ -233,12 +237,13 @@ Route::group(['prefix' => 'api'], function () {
         // Routes for industrial area representative and Government representative
         Route::middleware(['Industrial-area-or-government-representative'])->group(function () {
 
-            // Add Manuals & Plans
-            Route::group(['prefix' => 'manuals-and-plans'], function () {
+            // Manuals & Plans
+            Route::group(['prefix' => 'manuals-and-plans'],function(){
+
 
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
-                Route::post('/edit/{id}', [FileController::class, 'update']);
+                Route::post('/edit/{id}', [FileController::class, 'edit_manuals_and_plans']);
 
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
@@ -308,6 +313,8 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'employees'], function () {
 
                 Route::get('/', [EmployeeController::class, 'index']);
+
+                Route::get('/related-info', [EmployeeController::class, 'get_info']);
 
                 Route::get('/get-csv', [EmployeeController::class, 'export_csv_employees_file']);
 

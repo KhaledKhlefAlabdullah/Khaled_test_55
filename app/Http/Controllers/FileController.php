@@ -62,6 +62,7 @@ class FileController extends Controller
             
         }
     }
+<<<<<<< HEAD
 
     /**
      * Add manuals and plans
@@ -95,6 +96,9 @@ class FileController extends Controller
         return $this->update($request,'Educational',$id);
     }
 
+=======
+     
+>>>>>>> master
     /**
      * Download educational files
      */
@@ -126,6 +130,22 @@ class FileController extends Controller
     }
 
     /**
+     * Add manuals and plans
+     */
+    public function add_manuals_and_plans(FileRequest $request)
+    {
+        return $this->store($request,'ManualsAndPlans');
+    }
+
+      /**
+     * Add educational files
+     */
+    public function add_educational_files(FileRequest $request)
+    {
+        return $this->store($request,'Educational');
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request,$file_type)
@@ -135,12 +155,16 @@ class FileController extends Controller
             $request->validated();
 
             $file = $request->file;
+<<<<<<< HEAD
 
 
             $path = '/files/'.$file_type;
+=======
+            
+            $path_ = '/files/'.$file_type;
+>>>>>>> master
 
-
-            $path = store_files($file,$path);
+            $path = store_files($file,$path_);
 
             File::create([
                 'user_id' => Auth::id(),
@@ -178,6 +202,23 @@ class FileController extends Controller
         }
 
         return new FileResource($file);
+    }
+
+
+    /**
+     * edit manuals and plans
+     */
+    public function edit_manuals_and_plans(FileRequest $request,string $id)
+    {
+        return $this->update($request,'ManualsAndPlans',$id);
+    }
+
+      /**
+     * edit educational files
+     */
+    public function edit_educational_files(FileRequest $request,string $id)
+    {
+        return $this->update($request,'Educational',$id);
     }
 
     /**

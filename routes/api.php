@@ -272,8 +272,12 @@ Route::group(['prefix' => 'api'], function () {
                 // Publish an Announcements
                 // Publish an Announcement to be displayed to portal users
                 Route::put('/publish-an-announcements', [PostController::class, 'publish_an_announcements']);
+
+                // edit_announcements
+                Route::put('/edit-announcements', [PostController::class, 'edit_announcements']);
             });
             // Announcements End
+
 
         });
 

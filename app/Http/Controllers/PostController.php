@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnnouncementsRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
@@ -535,22 +536,55 @@ class PostController extends Controller
      * Edit my  Announcement
      *
      */
-    public function edit_announcements(PostRequest $request, string $id)
+    public function edit_announcements(AnnouncementsRequest $request, string $id)
     {
         try {
-            // validate data request
-            $data_valid = $request->validated();
 
-            // get data from id
-            $data = getAndCheckModelById(Post::class, $id);
+            $data = Post::findOrFail($id);
 
-            // update
-        } catch (NotFoundResourceException $e) {
+            if (is_null($request->image)) {
+
+                $image_path = $data->media_url;
+
+            } else {
+                // get image from request
+                $new_image = $request->image;
+
+                // put path to store image
+                $path = '/images/announcements';
+
+                // get old file path
+                $old_file_path = $data->media_url;
+
+                // coll store function to store the image
+                $image_path = edit_file($old_file_path, $new_image, $path);
+            }
+
+            // create new post as general news
+            $data->update([
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+                'media_url' => $image_path,
+                'is_publish' => $request->input('is_publish'),
+            ]);
+
+            // return response with created data
+            return api_response(
+                data: $data,
+                message: "Edit announcements Successfully"
+            );
+
+
+        } catch (\Exception $e) {
+
             return api_response(
                 message: $e->getMessage(),
-                code: $e->getCode() ?? 500, errors: ['not found resource']
+                code: $e->getCode() ?? 500,
+                errors: ['Edit Announcements Error']
             );
+
         }
     }
+
 
 }

@@ -147,6 +147,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add',[FileController::class,'add_educational_files']);
 
+                Route::post('/edit/{id}',[FileController::class,'update']);
+
                 Route::delete('/delete/{id}',[FileController::class,'destroy']);
 
             });

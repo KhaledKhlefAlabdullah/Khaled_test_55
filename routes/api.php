@@ -309,6 +309,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [EmployeeController::class, 'index']);
 
+                Route::get('/related-info', [EmployeeController::class, 'get_info']);
+
                 Route::get('/get-csv', [EmployeeController::class, 'export_csv_employees_file']);
 
                 Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);

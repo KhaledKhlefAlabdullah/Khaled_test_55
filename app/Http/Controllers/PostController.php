@@ -9,11 +9,14 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use App\Notifications\PostsNotifications;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\send_mail;
@@ -239,7 +242,7 @@ class PostController extends Controller
                 'new_general_news' => $general_news,
 
                 'message' => __('general-news-edit-success')
-            ],200);
+            ], 200);
 
 
         } catch (\Exception $e) {
@@ -247,7 +250,7 @@ class PostController extends Controller
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-edit-error')
-            ],500);
+            ], 500);
 
         }
     }
@@ -392,21 +395,162 @@ class PostController extends Controller
 
 
     /**
-     * view_list_of_announcements
+     * View the list of announcements based on the specified category ID.
      *
-     * View announcements list ( publisher-published date-content )
+     * This endpoint retrieves a list of announcements filtered by the specified category ID.
+     * The returned data includes announcement ID, user ID, title, body, publication status, and media URL.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function view_list_of_announcements()
+    public function view_list_of_announcements(): \Illuminate\Http\JsonResponse
     {
-        // Get list of announcements
-        //  category announcements is = 048e9200-e29b-41d4-a716-446655440000
-        $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
-            ->get(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url']);
 
-        // resource announcements
+        try {
+            // Get list of announcements
+            // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
+            $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+                ->select('id', 'user_id', 'title', 'body', 'is_publish', 'media_url')->get();
 
-        // return response helper
+            // Check if any announcements were found
+            if ($data->isEmpty()) {
+                return api_response(message: __('announcements-list-is-empty'));
+            }
 
+            // Return response helper
+            return api_response(data: $data,
+                message: __('view-list-of-announcements-successfully'));
+
+        } catch (Exception $e) {
+            // Log the error
+            Log::error($e->getMessage());
+
+            // Return error response
+            return api_response(
+                message: $e->getMessage(),
+                code: $e->getCode(),
+                errors: ['error on list of announcements']);
+        }
+    }
+
+
+    /**
+     * View the list of announcements created by the authenticated user.
+     *
+     * This endpoint retrieves a list of announcements belonging to the authenticated user.
+     * The announcements are filtered by the specified category ID and include details such as
+     * announcement ID, user ID, title, body, publication status, and media URL.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view_list_of_my_announcements(): \Illuminate\Http\JsonResponse
+    {
+
+        try {
+            // Get list of user announcements
+            // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
+            // user_id is created announcements
+            $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+                ->where('user_id', '=', Auth::id())
+                ->select(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url'])->get();
+
+            // Check if any announcements were found
+            if ($data->isEmpty()) {
+                return api_response(message: __('announcements-list-is-empty'));
+            }
+
+            // Return response helper
+            return api_response(data: $data,
+                message: __('view-list-of-my-announcements-successfully'));
+
+        } catch (Exception $e) {
+            // Log the error
+            Log::error($e->getMessage());
+
+            // Return error response
+            return api_response(
+                message: $e->getMessage(),
+                code: 404,
+                errors: ['error on user list of announcements']);
+        }
+    }
+
+
+    /**
+     * Publish an announcement based on the provided request data.
+     *
+     * This method expects 'id' and 'is_publish' in the request.
+     * It performs validation and publishes the announcement if everything is valid.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function publish_an_announcements(Request $request)
+    {
+        try {
+            // Get 'id' and 'is_publish' from the request
+            $id = $request->input('id');
+            $isPublish = $request->input('is_publish') ?? true;
+
+            // Validate data as needed (you may customize this validation)
+            $validated = $request->validate([
+                'id' => ['required', 'uuid'],
+                'is_publish' => ['sometimes', 'boolean'],
+            ]);
+
+            // Check if validation passes or fails
+            if (!$validated) {
+                return api_response(message: __('Validation failed'), code: 400);
+            }
+
+
+            // Update the announcement with the provided 'is_publish' status
+            $announcement = Post::find($id);
+
+            if (!$announcement) {
+                return api_response(message: __('Announcement not found'), code: 404);
+            }
+
+            $announcement->update(['is_publish' => $isPublish]);
+
+            // Return success response
+            return api_response(message: __('Announcement published successfully'));
+
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error($e->getMessage());
+
+            // Return error response
+            return api_response(
+                message: $e->getMessage(),
+                code: $e->getCode() ?: 500,
+                errors: ['error publishing announcement']
+            );
+
+
+        }
+    }
+
+
+    /*
+     * Edit my  Announcement
+     *
+     */
+    public function edit_announcements(PostRequest $request, string $id)
+    {
+        try {
+            // validate data request
+            $data_valid = $request->validated();
+
+            // get data from id
+            $data = getAndCheckModelById(Post::class, $id);
+
+            // update
+        } catch (NotFoundResourceException $e) {
+            return api_response(
+                message: $e->getMessage(),
+                code: $e->getCode() ?? 500, errors: ['not found resource']
+            );
+        }
     }
 
 }

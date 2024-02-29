@@ -147,7 +147,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add',[FileController::class,'add_educational_files']);
 
-                Route::post('/edit/{id}',[FileController::class,'update']);
+                Route::post('/edit/{id}',[FileController::class,'edit_educational_files']);
 
                 Route::delete('/delete/{id}',[FileController::class,'destroy']);
 
@@ -235,12 +235,12 @@ Route::group(['prefix' => 'api'], function () {
         // Routes for industrial area representative and Government representative
         Route::middleware(['Industrial-area-or-government-representative'])->group(function () {
 
-            // Add Manuals & Plans
+            // Manuals & Plans
             Route::group(['prefix' => 'manuals-and-plans'],function(){
 
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
-                Route::post('/edit/{id}', [FileController::class, 'update']);
+                Route::post('/edit/{id}', [FileController::class, 'edit_manuals_and_plans']);
 
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 

@@ -444,6 +444,8 @@ Route::group(['prefix' => 'api'], function () {
 
         Route::get('/educational-files',[FileController::class,'view_educational_files']);
 
+        Route::get('/download-educational-file/{id}',[FileController::class,'download_files']);
+
     });
 
     // public routes
@@ -468,6 +470,9 @@ Route::group(['prefix' => 'api'], function () {
 
     // Fill contact us form
     Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'store_unregistered']);
+
+    // View list of educational files
+    Route::get('/educational-files',[FileController::class,'view_educational_files']);
 
     require __DIR__ . '/auth.php';
 

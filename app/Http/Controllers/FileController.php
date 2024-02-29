@@ -68,7 +68,7 @@ class FileController extends Controller
      */
     public function add_manuals_and_plans(FileRequest $request)
     {
-        return $this->store($request,'ManualsAndPlans');
+        return $this->store($request, 'ManualsAndPlans');
     }
 
       /**
@@ -114,13 +114,13 @@ class FileController extends Controller
      */
     public function store(Request $request,$file_type)
     {
-        try{
+        try {
 
             $request->validated();
 
             $file = $request->file;
 
-            
+
             $path = '/files/'.$file_type;
 
 

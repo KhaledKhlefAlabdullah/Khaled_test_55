@@ -275,6 +275,19 @@ Route::group(['prefix' => 'api'], function () {
             });
             // Announcements End
 
+            // For Guidelines and updates
+            Route::group(['prefix' => 'guideline-and-updates'],function(){
+
+                Route::get('/my',[FileController::class,'view_my_guidelines_and_updates']);
+
+                Route::post('/add',[FileController::class,'add_guidelines_and_updates_files']);
+
+                Route::post('/edit/{id}',[FileController::class,'edit_guidelines_and_updates_files']);
+
+                Route::delete('/delete/{id}',[FileController::class,'destroy']);
+
+            }); 
+
         });
 
         // Routes for industrial area representative role
@@ -291,6 +304,12 @@ Route::group(['prefix' => 'api'], function () {
                 Route::get('/', [UserProfileController::class, 'show']);
 
                 Route::post('/edit', [UserProfileController::class, 'update']);
+
+            });
+
+            Route::group(['prefix' => 'guideline-and-updates'], function(){
+
+                Route::get('/',[FileController::class,'view_guidelines_and_updates']);
 
             });
 

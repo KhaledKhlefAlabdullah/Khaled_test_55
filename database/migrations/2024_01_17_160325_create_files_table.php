@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->uuid('id')->primary()->unique();
             $table->string('user_id');
             $table->string('category_id');
-            $table->enum('file_type', ['Educational', 'ManualsAndPlans','Other']);
+            $table->enum('file_type', ['Educational', 'ManualsAndPlans','Other','GuidelineAndUpdates']);
             $table->string('title');
             $table->text('description');
             $table->string('version')->nullable();

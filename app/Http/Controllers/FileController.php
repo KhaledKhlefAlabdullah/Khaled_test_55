@@ -29,7 +29,7 @@ class FileController extends Controller
      */
     public function view_manuals_and_plans()
     {
-        return $this->get_files('ManualsAndPlans');
+        return $this->get_files(['file_type' => 'ManualsAndPlans']);
     }
 
     /**
@@ -37,18 +37,32 @@ class FileController extends Controller
      */
     public function view_educational_files()
     {
-        return $this->get_files('Educational');
+        return $this->get_files(['file_type' => 'Educational']);
     }
 
+    /**
+     * Get the Guide lines files
+     */
+    public function view_guidelines_and_updates()
+    {
+        return $this->get_files(['file_type' => 'GuidelineAndUpdates']);
+    }
 
+     /**
+     * Get my Guide lines files
+     */
+    public function view_my_guidelines_and_updates()
+    {
+        return $this->get_files(['file_type' => 'GuidelineAndUpdates', 'user_id' => Auth::id()]);
+    }
 
     /**
      * Get files 
      */
-    public function get_files($file_type){
+    public function get_files(array $Conditions){
         try{
 
-            $files = File::where('file_type', $file_type)->when(Auth::check(), function($query){
+            $files = File::where($Conditions)->when(Auth::check(), function($query){
                 return $query->addSelect('files.id','files.title','files.description','files.media_url','files.created_at');
             }, function($query){
                 return $query->addSelect('files.id','files.title','files.description','files.created_at');
@@ -101,7 +115,7 @@ class FileController extends Controller
         return $this->store($request,'ManualsAndPlans');
     }
 
-      /**
+    /**
      * Add educational files
      */
     public function add_educational_files(FileRequest $request)
@@ -109,6 +123,13 @@ class FileController extends Controller
         return $this->store($request,'Educational');
     }
 
+    /**
+    * Add Guidelines and updates files
+    */
+    public function add_guidelines_and_updates_files(FileRequest $request)
+    {
+        return $this->store($request,'GuidelineAndUpdates');
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -177,6 +198,14 @@ class FileController extends Controller
     public function edit_educational_files(FileRequest $request,string $id)
     {
         return $this->update($request,'Educational',$id);
+    }
+
+       /**
+     * edit Guideline And Updates files
+     */
+    public function edit_guidelines_and_updates_files(FileRequest $request,string $id)
+    {
+        return $this->update($request,'GuidelineAndUpdates',$id);
     }
 
     /**

@@ -40,14 +40,20 @@ class FileController extends Controller
         return $this->get_files('Educational');
     }
 
+
+
     /**
      * Get files 
      */
     public function get_files($file_type){
         try{
 
-            $files = File::where('file_type', '=', $file_type)->select('files.id','files.title','files.description','files.media_url','files.created_at')->get();
-
+            $files = File::where('file_type', $file_type)->when(Auth::check(), function($query){
+                return $query->addSelect('files.id','files.title','files.description','files.media_url','files.created_at');
+            }, function($query){
+                return $query->addSelect('files.id','files.title','files.description','files.created_at');
+            })->get();
+            
             return api_response($files,'files-getting-success');
         }
         catch(Exception $e){
@@ -71,6 +77,23 @@ class FileController extends Controller
     public function add_educational_files(FileRequest $request)
     {
         return $this->store($request,'Educational');
+    }
+
+    /**
+     * Download educational files
+     */
+    public function download_files(string $id){
+
+        try{
+
+            $educational_file = getAndCheckModelById(File::class,$id);
+
+            return response()->download(public_path($educational_file->media_url));
+
+        }
+        catch(Exception $e){
+            return api_response(errors: [$e->getMessage()],code:500,message:'download-error');
+        }
     }
 
     /**
@@ -207,7 +230,7 @@ class FileController extends Controller
         // Delete file
         $file->delete();
 
-        return api_response(message: 'File deleted successfully', code:200); 
+        return api_response(message: 'File deleted successfully'q); 
         
     }
 }

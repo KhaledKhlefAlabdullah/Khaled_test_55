@@ -220,6 +220,15 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For articles 
+            Route::group(['prefix' => 'articles'],function (){
+
+                Route::post('/add'.[PostController::class,'add_article']);
+
+                Route::delete('/delete/{id}',[PostController::class,'destroy']);
+
+            });
+
         });
 
         // Routes for inftrastructure provider role
@@ -343,6 +352,9 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::post('/edit', [UserProfileController::class, 'update']);
 
+            // View manuals and plans
+
+            Route::get('/manuals-and-plans', [FileController::class,'view_manuals_and_plans']);
         });
 
         // For Guidelines and updates
@@ -377,6 +389,134 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::get('/download/{id}', [FileController::class, 'download_file']);
 
+        });
+
+        // Routes for just infrastructure provider and tenant company
+        Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function () {
+
+            // Employees
+            Route::group(['prefix' => 'employees'], function () {
+
+                Route::get('/', [EmployeeController::class, 'index']);
+
+                Route::get('/related-info', [EmployeeController::class, 'get_info']);
+
+                Route::get('/get-csv', [EmployeeController::class, 'export_csv_employees_file']);
+
+                Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
+
+                Route::get('/get-ifo', [EmployeeController::class, 'get_info']);
+
+                Route::post('/add', [EmployeeController::class, 'store']);
+
+                Route::put('/edit/{id}', [EmployeeController::class, 'update']);
+
+                Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
+
+            });
+
+            // Suppliers
+            Route::group(['prefix' => 'suppliers'], function () {
+
+                Route::get('/', [SupplierController::class, 'index']);
+
+                Route::post('/add', [SupplierController::class, 'store']);
+
+                Route::put('/edit/{id}', [SupplierController::class, 'update']);
+
+                Route::delete('/delete/{id}', [SupplierController::class, 'destroy']);
+
+            });
+
+            // Materials
+            Route::group(['prefix' => 'materials'], function () {
+
+                Route::get('/', [EntityController::class, 'get_materials']);
+
+                Route::post('/add', [EntityController::class, 'add_new_material']);
+            });
+
+            // Routes
+            Route::group(['prefix' => 'routes'], function () {
+
+                Route::get('/', [EntityController::class, 'get_routes']);
+
+                Route::post('/add', [EntityController::class, 'add_new_route']);
+
+                Route::put('/edit/{id}', [EntityController::class, 'edit_route_details']);
+
+                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
+
+            });
+
+            // Production Sites
+            Route::group(['prefix' => 'production-sites'], function () {
+
+                Route::get('/', [EntityController::class, 'production_sites']);
+
+                Route::post('/add', [EntityController::class, 'add_new_production_site']);
+
+                Route::put('/edit/{id}', [EntityController::class, 'edit_production_site']);
+
+                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
+
+            });
+
+            // Customers routes
+            Route::group(['prefix' => 'customers'], function () {
+
+                Route::get('/', [EntityController::class, 'get_customers']);
+
+                Route::post('/add', [EntityController::class, 'add_customer']);
+
+                Route::put('/edit/{customer_id}/{shipment_id}', [EntityController::class, 'edit_customer']);
+
+                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
+
+            });
+
+
+            // Products routes
+            Route::group(['prefix' => 'products'], function () {
+
+                Route::get('/', [EntityController::class, 'get_products']);
+
+            });
+
+            // Wastes Routes
+            Route::group(['prefix' => 'wastes'], function () {
+
+                Route::get('/', [WasteController::class, 'index']);
+
+                Route::get('/disposal-sites', [WasteController::class, 'get_desposal_locations']);
+
+                Route::post('/add', [WasteController::class, 'store']);
+
+                Route::put('/edit/{id}', [WasteController::class, 'update']);
+
+                Route::delete('/delete/{id}', [WasteController::class, 'destroy']);
+
+            });
+
+            // for custom monitoring points
+            Route::group(['prefix' => 'custom-monitoring-points'], function () {
+
+                Route::post('/add', [MonitoringPointController::class, 'add_monitoring_point']);
+
+                Route::put('/edit/{id}', [MonitoringPointController::class, 'edit_monitoring_point_details']);
+
+                Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
+
+            });
+
+            // for notifications settings
+            Route::group(['prefix' => 'notifications-settings'], function () {
+
+                Route::get('/', [NotificationsSettingController::class, 'index']);
+
+                Route::put('/edit/{id}', [NotificationsSettingController::class, 'update']);
+
+            });
 
         });
 

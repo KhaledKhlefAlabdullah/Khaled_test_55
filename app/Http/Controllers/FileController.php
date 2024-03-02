@@ -73,7 +73,7 @@ class FileController extends Controller
     }
 
     /**
-     * Get files 
+     * Get files
      */
     public function get_files(array $Conditions)
     {
@@ -91,6 +91,39 @@ class FileController extends Controller
             return api_response(message: 'files-getting-error', errors: [$e->getMessage()], code: 500);
         }
     }
+
+    /**
+     * Add manuals and plans
+     */
+    public function add_manuals_and_plans(FileRequest $request)
+    {
+        return $this->store($request, 'ManualsAndPlans');
+    }
+
+      /**
+     * Add educational files
+     */
+    public function add_educational_files(FileRequest $request)
+    {
+        return $this->store($request,'Educational');
+    }
+
+     /**
+     * edit manuals and plans
+     */
+    public function edit_manuals_and_plans(FileRequest $request,string $id)
+    {
+        return $this->update($request,'ManualsAndPlans',$id);
+    }
+
+      /**
+     * edit educational files
+     */
+    public function edit_educational_files(FileRequest $request,string $id)
+    {
+        return $this->update($request,'Educational',$id);
+    }
+
 
     /**
      * Download files
@@ -121,21 +154,6 @@ class FileController extends Controller
             : FileResource::collection($files);
     }
 
-    /**
-     * Add manuals and plans
-     */
-    public function add_manuals_and_plans(FileRequest $request)
-    {
-        return $this->store($request, 'ManualsAndPlans');
-    }
-
-    /**
-     * Add educational files
-     */
-    public function add_educational_files(FileRequest $request)
-    {
-        return $this->store($request, 'Educational');
-    }
 
     /**
      * Add Guidelines and updates files
@@ -171,6 +189,11 @@ class FileController extends Controller
             $request->validated();
 
             $file = $request->file;
+
+
+            $path = '/files/'.$file_type;
+
+            $path_ = '/files/'.$file_type;
 
             $category_id = getIdByName(Category::class, $file_type);
 
@@ -214,21 +237,6 @@ class FileController extends Controller
     }
 
 
-    /**
-     * edit manuals and plans
-     */
-    public function edit_manuals_and_plans(FileRequest $request, string $id)
-    {
-        return $this->update($request, 'ManualsAndPlans', $id);
-    }
-
-    /**
-     * edit educational files
-     */
-    public function edit_educational_files(FileRequest $request, string $id)
-    {
-        return $this->update($request, 'Educational', $id);
-    }
 
     /**
      * edit Guideline And Updates files

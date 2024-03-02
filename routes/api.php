@@ -220,6 +220,15 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For articles 
+            Route::group(['prefix' => 'articles'],function (){
+
+                Route::post('/add'.[PostController::class,'add_article']);
+
+                Route::delete('/delete/{id}',[PostController::class,'destroy']);
+
+            });
+
         });
 
         // Routes for inftrastructure provider role
@@ -350,9 +359,7 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('/contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
             // View manuals and plans
-<<<<<<< HEAD
-            Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
-=======
+
             Route::get('/manuals-and-plans', [FileController::class,'view_manuals_and_plans']);
 
             // For water level reports
@@ -376,7 +383,6 @@ Route::group(['prefix' => 'api'], function () {
             });
 
 
->>>>>>> khaled
         });
 
         // Routes for just infrastructure provider and tenant company

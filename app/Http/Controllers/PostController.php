@@ -30,7 +30,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($condations,$columns)
+    public function index($condations, $columns)
     {
         $posts = Post::where($condations)->with('category')->select($columns)->get();
 
@@ -43,7 +43,7 @@ class PostController extends Controller
      */
     public function store(Request $request, string $page_id, string $category_id)
     {
-        try{
+        try {
 
             $request->validated();
 
@@ -59,7 +59,7 @@ class PostController extends Controller
                 $file_type = getMediaType($file);
 
             }
-            
+
             Post::create([
                 'page_id' => $page_id,
                 'category_id' => $category_id,
@@ -73,9 +73,8 @@ class PostController extends Controller
                 'is_publish' =>  $request->input('is_publish')
             ]);
 
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'data-adding-success',code:500);
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'data-adding-success', code: 500);
         }
     }
 
@@ -87,12 +86,12 @@ class PostController extends Controller
         // Get Post by id and check if exist
         try {
 
-            $data = getAndCheckModelById(Post::class, $id)->select('title','body','media_url')->first();
+            $data = getAndCheckModelById(Post::class, $id)->select('title', 'body', 'media_url')->first();
 
-            return api_response(data:$data,message:'data-getting-success');
+            return api_response(data: $data, message: 'data-getting-success');
 
         } catch (NotFoundResourceException $e) {
-            return api_response(errors:[$e->getMessage()],message:'data-getting-error',code:500);
+            return api_response(errors: [$e->getMessage()], message: 'data-getting-error', code: 500);
         }
 
     }
@@ -149,7 +148,6 @@ class PostController extends Controller
 
             $news = DB::table('categories')
                 ->join('posts', 'categories.id', '=', 'posts.category_id')
-
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                 ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
@@ -160,11 +158,10 @@ class PostController extends Controller
 
             // Return json response with the result
 
-            return api_response(data:$news,message:'general-news-getting-success');
-        }
-        catch (Exception $e){
+            return api_response(data: $news, message: 'general-news-getting-success');
+        } catch (Exception $e) {
 
-            return api_response(errors:$e->getMessage(),message:'general-news-getting-error',code: 500);
+            return api_response(errors: $e->getMessage(), message: 'general-news-getting-error', code: 500);
         }
     }
 
@@ -325,11 +322,10 @@ class PostController extends Controller
                 ->select('posts.id', 'posts.body', 'posts.media_url')->where('categories.name', '=', 'Project Description')->first();
 
 
-            return api_response(data:$description,message:'Successfully get project description');
-        }
-        catch (\Exception $e){
+            return api_response(data: $description, message: 'Successfully get project description');
+        } catch (\Exception $e) {
 
-            return api_response(errors:$e->getMessage(),message:'filed to get project description, there an problem',code:500);
+            return api_response(errors: $e->getMessage(), message: 'filed to get project description, there an problem', code: 500);
         }
     }
 
@@ -428,7 +424,7 @@ class PostController extends Controller
             // Get list of announcements
             // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
             $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
-                ->select('id', 'user_id', 'title', 'body', 'is_publish', 'media_url')->get();
+                ->select(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url'])->get();
 
             // Check if any announcements were found
             if ($data->isEmpty()) {
@@ -604,19 +600,29 @@ class PostController extends Controller
         }
     }
 
+    /*
+     * view_announcements
+     * see Announcements about urgent changes and updates in any interface
+     */
+    public function view_announcements()
+    {
+        view_list_of_announcements();
+    }
+
+
+
     // For Articles
     // View list of articles
     public function view_list_of_articles()
     {
-        try{
+        try {
 
-            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')],[ 'id','title', 'created_at as date']);
+            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')], ['id', 'title', 'created_at as date']);
 
-            return api_response(data:$articles, message:'articles-getting-success');
+            return api_response(data: $articles, message: 'articles-getting-success');
 
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()], message:'articles-getting-error', code:500);
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'articles-getting-error', code: 500);
         }
     }
 
@@ -629,7 +635,7 @@ class PostController extends Controller
     // Search for articale
     public function search_article(string $query)
     {
-        return search(Post::class,['category_id' => getIdByName(Category::class,'Article')],$query);
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'Article')], $query);
     }
 
     // Add article

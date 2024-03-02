@@ -170,9 +170,10 @@ if (!function_exists('getMediaType')) {
 
         $ext = $file->getClientOriginalExtension();
 
-        if (in_array($ext, ['jpg,jpeg,png,gif'])) {
-            $type = 'image';
-        } elseif ($ext == 'pdf') {
+        if(in_array($ext,['jpg','jpeg','png','gif'])){
+           $type ='image';
+        }
+        elseif(in_array($ext ,['pdf','pptx'])){
             $type = 'file';
         } else {
             $type = 'video';

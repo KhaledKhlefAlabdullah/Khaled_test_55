@@ -11,7 +11,6 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IndustrialAreaController;
-use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MonitoringPointController;
 use App\Http\Controllers\NaturalDisasterController;
@@ -34,7 +33,6 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
-use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -672,7 +670,7 @@ Route::group(['prefix' => 'api'], function () {
 
     Route::get('/download-educational-file/{id}', [FileController::class, 'download_file']);
 
-});
+
 
 // public routes
 
@@ -702,5 +700,5 @@ Route::get('/educational-files', [FileController::class, 'view_educational_files
 
 require __DIR__ . '/auth.php';
 
-
+});
 

@@ -6,6 +6,7 @@ use App\Http\Requests\Message\StoreMessageRequest;
 use App\Http\Requests\Message\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
@@ -14,19 +15,15 @@ class MessageController extends Controller
      *
      * TODO: يجب تعديل هذه الدالة بحيث يسمح فقط لمالك المحادثة جلب الرسائل عن طريق معرف المحادثة
      */
-    public function showMessagesByChatId(string $chat_id)
+    public function index(string $chat_id)
     {
         // Get all messages from the authenticated user
-        $messages = Message::whereChatId($chat_id)->get();
-
-        // Check is empty
-        if (!$messages) {
-            return response()->json(['message' => 'No messages found'], 404);
-        }
-
-        return $messages->count() == 1 ?
-            new MessageResource($messages->first()) : // return only one message
-            MessageResource::collection($messages); // return all messages
+        $messages = Message::where('chat_id',$chat_id)
+            ->leftJoin('user_profile as sender','sender.user_id','=','messages.sender_id')
+            ->select('messages.message','messages.media_url','messages.is_read',
+            'messages.is_edit','messages.is_starred','sender.name','sender.avatar_url')->get();
+        return $messages;
+        
     }
 
     /**

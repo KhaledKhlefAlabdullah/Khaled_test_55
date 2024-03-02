@@ -48,90 +48,6 @@ use App\Http\Controllers\WasteController;
 Route::group(['prefix' => 'api'], function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
-        // Pages
-        Route::apiResource('pages', PageController::class);
-        //    Route::prefix('pages')->group(function () {
-        //        Route::get('/', 'index')->name('pages.index');
-        //    });
-
-        // Contact Us Messages
-        Route::apiResource('contact-us-messages', ContactUsMessageController::class);
-
-        // Categories
-        Route::apiResource('categories', CategoriesController::class);
-
-        // Chats
-        Route::apiResource('chats', ChatController::class);
-
-        // Messages
-        //    Route::apiResource('messages', MessageController::class)->except(['index']);
-
-        // Messages
-        Route::prefix('messages')->controller(MessageController::class)->group(function () {
-            Route::get('/get/{chat_id}', 'showMessagesByChatId')->name('messages.showMessagesByChatId');
-            Route::post('/', 'store')->name('messages.store');
-            Route::get('/{id}', 'show')->name('messages.show');
-            Route::put('/{message}', 'update')->name('messages.update');
-            Route::delete('/{id}', 'destroy')->name('messages.destroy');
-        });
-
-        // Dams
-        Route::apiResource('dams', DamController::class);
-
-        // Disaster Reports
-        Route::apiResource('disaster-reports', DisasterReportController::class);
-
-        // Entities
-        Route::apiResource('entities', EntityController::class);
-
-        // Files
-        //    Route::apiResource('files', FileController::class);
-
-        // Industrial Areas
-        //    Route::apiResource('industrial-areas', IndustrialAreaController::class);
-
-        // Monitoring Points
-        //Route::apiResource('monitoring-points', MonitoringPointController::class);
-
-        // Natural Disasters
-        Route::apiResource('natural-disasters', NaturalDisasterController::class);
-
-        // Notification Settings
-        Route::apiResource('notification-settings', NotificationsSettingController::class);
-
-        // Participating Entities
-        Route::apiResource('participating-entities', ParticipatingEntityController::class);
-
-        // Portal Settings
-        Route::apiResource('portal-settings', PortalSettingsController::class);
-
-        // Posts
-        Route::apiResource('posts', PostController::class);
-
-        // Services
-        //    Route::apiResource('services', ServiceController::class);
-
-        // Shipments
-        Route::apiResource('shipments', ShipmentController::class);
-
-        // Timelines
-        Route::apiResource('timelines', TimelineController::class)->except(['update', 'show']);
-
-        // Timelines Events
-        Route::apiResource('timeline-events', TimelineEventController::class);
-
-        // Timelines Queries
-        Route::apiResource('timeline-queries', TimelineQuiresController::class)->except(['update']);
-
-        // Timelines Shares Requests
-        Route::apiResource('timeline-shares-requests', TimelineSharesRequestController::class);
-
-        // User Profiles
-        //    Route::apiResource('user-profiles', UserProfileController::class);
-
-    });
-
-    Route::middleware(['auth:sanctum'])->group(function () {
 
         // Routes for portal manager role
         Route::middleware(['portal-manger'])->group(function () {
@@ -386,7 +302,19 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
-            Route::get('/download/{id}', [FileController::class, 'download_file']);
+            Route::group(['prefix' => 'chats'],function(){
+
+                Route::get('/',[ChatController::class,'index']);
+
+                Route::group(['prefix' => 'messages'],function(){
+
+                    Route::get('/{id}',[MessageController::class,'index']);
+
+                });
+
+            });
+
+
 
         });
 

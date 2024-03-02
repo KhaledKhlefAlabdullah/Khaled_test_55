@@ -306,9 +306,11 @@ if (!function_exists('stakeholder_id')) {
 
     function stakeholder_id()
     {
-        try {
-            return Auth::user()->stakeholder()->first()->id;
-        } catch (\Exception $e) {
+        try{
+            return Auth::user()->stakeholder->id;
+        }
+        catch (\Exception $e){
+
             return \response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There no stake holder')

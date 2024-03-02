@@ -24,7 +24,7 @@ class PostRequest extends BaseRequest
     {
         if ($this->isMethod('PUT')) {
             return [
-                'page_id' => ['sometimes', 'required', 'uuid', 'exists:pages,id'],
+                'page_id' => ['sometimes', 'nullable', 'uuid', 'exists:pages,id'],
                 'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
                 'title' => ['sometimes', 'required', 'string', 'max:255'],
                 'body' => ['sometimes', 'required', 'string'],

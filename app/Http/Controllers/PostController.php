@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnnouncementsRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
@@ -9,22 +10,12 @@ use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\User;
-<<<<<<< HEAD
-use App\Notifications\PostsNotifications;
-=======
->>>>>>> khaled
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-<<<<<<< HEAD
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Notification;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
-=======
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
->>>>>>> khaled
 use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
@@ -135,14 +126,9 @@ class PostController extends Controller
         try {
 
             // Get general news by get all posts with category news and posts is general news equal true
-<<<<<<< HEAD
             $news = DB::table('categories')
                 ->join('posts', 'categories.id', '=', 'posts.category_id')
-=======
-            $news = 
-            DB::table('categories')
-                ->join('posts','categories.id','=','posts.category_id')
->>>>>>> khaled
+
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                 ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
@@ -152,23 +138,10 @@ class PostController extends Controller
                 ->get();
 
             // Return json response with the result
-<<<<<<< HEAD
-            return response()->json([
-                'news' => $news,
-                'message' => __('general-news-getting-success')
-            ]);
 
-        } catch (\Exception $e) {
-
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('general-news-getting-error')
-            ], 500);
-=======
             return api_response(data:$news,message:'general-news-getting-success');
         }
         catch (Exception $e){
->>>>>>> khaled
 
             return api_response(errors:$e->getMessage(),message:'general-news-getting-error',code: 500);
         }
@@ -330,23 +303,12 @@ class PostController extends Controller
                 ->join('posts', 'categories.id', '=', 'posts.category_id')
                 ->select('posts.id', 'posts.body', 'posts.media_url')->where('categories.name', '=', 'Project Description')->first();
 
-<<<<<<< HEAD
-            return response()->json([
-                'data' => $description,
-                'message' => __('Successfully get project description')
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('filed to get project description, there an problem')
-            ], 200);
-=======
+
             return api_response(data:$description,message:'Successfully get project description');
         }
         catch (\Exception $e){
 
             return api_response(errors:$e->getMessage(),message:'filed to get project description, there an problem',code:500);
->>>>>>> khaled
 
         }
     }
@@ -572,21 +534,53 @@ class PostController extends Controller
      * Edit my  Announcement
      *
      */
-    public function edit_announcements(PostRequest $request, string $id)
+    public function edit_announcements(AnnouncementsRequest $request, string $id)
     {
         try {
-            // validate data request
-            $data_valid = $request->validated();
 
-            // get data from id
-            $data = getAndCheckModelById(Post::class, $id);
+            $data = Post::findOrFail($id);
 
-            // update
-        } catch (NotFoundResourceException $e) {
+            if (is_null($request->image)) {
+
+                $image_path = $data->media_url;
+
+            } else {
+                // get image from request
+                $new_image = $request->image;
+
+                // put path to store image
+                $path = '/images/announcements';
+
+                // get old file path
+                $old_file_path = $data->media_url;
+
+                // coll store function to store the image
+                $image_path = edit_file($old_file_path, $new_image, $path);
+            }
+
+            // create new post as general news
+            $data->update([
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+                'media_url' => $image_path,
+                'is_publish' => $request->input('is_publish'),
+            ]);
+
+            // return response with created data
+            return api_response(
+                data: $data,
+                message: "Edit announcements Successfully"
+            );
+
+
+        } catch (\Exception $e) {
+
             return api_response(
                 message: $e->getMessage(),
-                code: $e->getCode() ?? 500, errors: ['not found resource']
+                code: $e->getCode() ?? 500,
+                errors: ['Edit Announcements Error']
             );
+
         }
     }
 
@@ -617,5 +611,6 @@ class PostController extends Controller
     {
         return search(Post::class,['category_id' => getIdByName(Category::class,'Article')],$query);
     }
+
 
 }

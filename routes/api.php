@@ -220,10 +220,10 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
-            // For articles 
+            // For articles
             Route::group(['prefix' => 'articles'],function (){
 
-                Route::post('/add'.[PostController::class,'add_article']);
+                Route::post('/add', [PostController::class, 'add_article']);
 
                 Route::delete('/delete/{id}',[PostController::class,'destroy']);
 
@@ -378,7 +378,7 @@ Route::group(['prefix' => 'api'], function () {
 
             // For articles
             Route::group(['prefix' => 'articles'], function(){
-                
+
                 Route::get('/',[PostController::class,'view_list_of_articles']);
 
                 Route::post('/search/{query}',[PostController::class,'search_article']);
@@ -701,6 +701,3 @@ Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'stor
 Route::get('/educational-files', [FileController::class, 'view_educational_files']);
 
 require __DIR__ . '/auth.php';
-
-});
-

@@ -169,10 +169,10 @@ if(!function_exists('getMediaType')){
 
         $ext = $file->getClientOriginalExtension();
 
-        if(in_array($ext,['jpg,jpeg,png,gif'])){
+        if(in_array($ext,['jpg','jpeg','png','gif'])){
            $type ='image';
         }
-        elseif($ext == 'pdf'){
+        elseif(in_array($ext ,['pdf','pptx'])){
             $type = 'file';
         }
         else{

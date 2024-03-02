@@ -49,17 +49,19 @@ class PostController extends Controller
             $file_type = null;
 
             if($request->media){
+
                 $file = $request->media;
 
-                $path = 'images/articles';
+                $file_type = getMediaType($file);
+
+                $path = $file_type.'s/articles';
 
                 $file_path = store_files($file,$path);
-
-                $file_type = getMediaType($file);
 
             }
             
             Post::create([
+                'user_id' => Auth::id(),
                 'page_id' => $page_id,
                 'category_id' => $category_id,
                 'title' => $request->input('title'),
@@ -68,9 +70,11 @@ class PostController extends Controller
                 'media_type' => $file_type,
                 'is_priority' => $request->input('is_priority'),
                 'priority_count' =>  $request->input('priority_count'),
-                'is_general_news' => $request->input('is_general_news'),
-                'is_publish' =>  $request->input('is_publish')
+                'is_general_news' => $request->input('is_general_news') ? $request->input('is_general_news') : false,
+                'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish'): true
             ]);
+
+            return api_response(message:'data-getting-success');
 
         }
         catch(Exception $e){
@@ -443,7 +447,7 @@ class PostController extends Controller
     public function add_article(PostRequest $request)
     {
 
-        return $this->store($request, getIdByName(Page::class,'Atricle','title'), getIdByName(Category::class,'Post'));
+        return $this->store($request, getIdByName(Page::class,'Article','title'), getIdByName(Category::class,'Post'));
 
     }
 

@@ -307,7 +307,7 @@ if(!function_exists('stakeholder_id')){
     function stakeholder_id()
     {
         try{
-            return Auth::user()->stakeholder()->first()->id;
+            return Auth::user()->stakeholder->id;
         }
         catch (\Exception $e){
             return \response()->json([

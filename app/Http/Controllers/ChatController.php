@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Chat\ChatResource;
 use App\Models\Chat;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use function App\Helpers\api_response;
 
 class ChatController extends Controller
 {
@@ -13,12 +17,28 @@ class ChatController extends Controller
      */
     public function index()
     {
-        // Get a list of all chats
-        $chats = Chat::latest()->paginate();
+        try{
 
-        return $chats->count() == 1
-            ? new ChatResource($chats->first()) // return single chat
-            : ChatResource::collection($chats); // return all chat resources
+            $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;
+
+            // Get a list of all chats
+            $chats = DB::table('chats')
+                ->join('chat_members as chm', 'chats.id', '=', 'chm.chat_id')
+                ->join('users', 'chm.user_id', '=', 'users.id')
+                ->join('user_profiles as up', 'users.id', '=', 'up.user_id')
+                ->join('stakeholders as sk', 'users.id', '=', 'sk.user_id')
+                ->select('chats.id as chat_id','up.name', 'up.avatar_URL', 'sk.tenant_company_state')
+                ->where(['sk.industrial_area_id' => $industrial_area_id, 'chm.user_id' => Auth::id()])
+                ->whereNull('sk.deleted_at')
+                ->get();
+        
+
+            return api_response(data:$chats,message:'chats-getting-success');
+
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'chats-getting-error',code:500);
+        }
     }
 
 

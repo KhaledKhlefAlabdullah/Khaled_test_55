@@ -22,7 +22,7 @@ class PostRequest extends BaseRequest
      */
     public function rules(): array
     {
-        
+ 
         return [
             'page_id' => ['sometimes', 'required', 'uuid', 'exists:pages,id'],
             'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],

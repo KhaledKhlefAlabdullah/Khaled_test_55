@@ -42,7 +42,7 @@ if (!function_exists('getAndCheckModelById')) {
         $instance = $model::find($id);
 
         if (!$instance) {
-            throw new NotFoundResourceException($model . ' not found', 400);
+            throw new NotFoundResourceException($model . 'Not found', 400);
         }
 
         return $instance;

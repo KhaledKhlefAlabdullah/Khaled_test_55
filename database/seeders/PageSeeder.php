@@ -55,7 +55,7 @@ class PageSeeder extends Seeder
         DB::table('pages')->insert([
             'id' => '4a97a6d-7b19-4fa9-a77f-2a76172f5b58',
             'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'title' => 'Article Page',
+            'title' => 'Article',
             'type' => 'Article',
             'description' => 'Exciting new products!',
             'location' => 'Venue C',

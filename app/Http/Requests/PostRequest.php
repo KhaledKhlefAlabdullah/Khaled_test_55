@@ -38,7 +38,6 @@ class PostRequest extends BaseRequest
         }
 
         return [
-            'user_id' => ['required', 'uuid', 'exists:users,id'],
             'page_id' => ['required', 'uuid', 'exists:pages,id'],
             'category_id' => ['required', 'uuid', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:255'],

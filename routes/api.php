@@ -34,6 +34,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
+use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -352,6 +353,17 @@ Route::group(['prefix' => 'api'], function () {
                 Route::get('/',[FileController::class,'view_water_level_reports']);
 
                 Route::get('/download/{id}',[FileController::class,'download_file']);
+
+            });
+
+            // For articles
+            Route::group(['prefix' => 'articles'], function(){
+                
+                Route::get('/',[PostController::class,'view_list_of_articles']);
+
+                Route::post('/search/{query}',[PostController::class,'search_article']);
+
+                Route::get('/{id}',[PostController::class,'view_article']);
 
             });
 

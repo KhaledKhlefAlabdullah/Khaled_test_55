@@ -221,7 +221,7 @@ Route::group(['prefix' => 'api'], function () {
             // For articles 
             Route::group(['prefix' => 'articles'],function (){
 
-                Route::post('/add'.[PostController::class,'add_article']);
+                Route::post('/add',[PostController::class,'add_article']);
 
                 Route::delete('/delete/{id}',[PostController::class,'destroy']);
 

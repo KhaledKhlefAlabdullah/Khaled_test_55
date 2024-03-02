@@ -49,7 +49,7 @@ class PostController extends Controller
             $file_type = null;
 
             if($request->media){
-                $file = $request->media_url;
+                $file = $request->media;
 
                 $path = 'images/articles';
 

@@ -19,6 +19,7 @@ use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
+use function App\Helpers\getMediaType;
 use function App\Helpers\search;
 use function App\Helpers\send_notifications;
 use function App\Helpers\store_files;
@@ -39,17 +40,36 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostRequest $request)
+    public function store(Request $request, string $page_id, string $category_id)
     {
         try{
 
+            $request->validated();
+
+            $file_type = null;
+
+            if($request->media){
+                $file = $request->media_url;
+
+                $path = 'images/articles';
+
+                $file_path = store_files($file,$path);
+
+                $file_type = getMediaType($file);
+
+            }
+            
             Post::create([
-                'page_id' => ['sometimes', 'required', 'uuid', 'exists:pages,id'],
-                'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
-                'title' => ['sometimes', 'required', 'string', 'max:255'],
-                'body' => ['sometimes', 'required', 'string'],
-                'media_url' => ['nullable', 'url'],
-                'media_type' => ['nullable', 'string', 'in:image,video,file'],
+                'page_id' => $page_id,
+                'category_id' => $category_id,
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+                'media_url' => $file_path,
+                'media_type' => $file_type,
+                'is_priority' => $request->input('is_priority'),
+                'priority_count' =>  $request->input('priority_count'),
+                'is_general_news' => $request->input('is_general_news'),
+                'is_publish' =>  $request->input('is_publish')
             ]);
 
         }
@@ -417,6 +437,14 @@ class PostController extends Controller
     public function search_article(string $query)
     {
         return search(Post::class,['category_id' => getIdByName(Category::class,'Article')],$query);
+    }
+
+    // Add article
+    public function add_article(PostRequest $request)
+    {
+
+        return $this->store($request, getIdByName(Page::class,'Atricle','title'), getIdByName(Category::class,'Post'));
+
     }
 
 }

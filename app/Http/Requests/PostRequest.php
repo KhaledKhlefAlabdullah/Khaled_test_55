@@ -22,30 +22,16 @@ class PostRequest extends BaseRequest
      */
     public function rules(): array
     {
-        if ($this->isMethod('PUT')) {
-            return [
-                'page_id' => ['sometimes', 'required', 'uuid', 'exists:pages,id'],
-                'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
-                'title' => ['sometimes', 'required', 'string', 'max:255'],
-                'body' => ['sometimes', 'required', 'string'],
-                'media_url' => ['nullable', 'url'],
-                'media_type' => ['nullable', 'string', 'in:image,video,file'],
-                'is_priority' => ['nullable', 'boolean'],
-                'priority_count' => ['nullable', 'integer'],
-                'is_general_news' => ['sometimes', 'required', 'boolean'],
-                'is_publish' => ['sometimes', 'required', 'boolean']
-            ];
-        }
-
+        
         return [
-            'page_id' => ['required', 'uuid', 'exists:pages,id'],
-            'category_id' => ['required', 'uuid', 'exists:categories,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-            'media_url' => ['nullable', 'url'],
-            'media_type' => ['nullable', 'string', 'in:image,video,file'],
-            'is_priority' => ['nullable', 'boolean'],
-            'priority_count' => ['nullable', 'integer'],
+            'page_id' => ['sometimes', 'required', 'uuid', 'exists:pages,id'],
+            'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
+            'title' => ['sometimes', 'required', 'string', 'max:255'],
+            'body' => ['sometimes', 'required', 'string'],
+            'media_url' => ['sometimes', 'nullable', 'url'],
+            'media_type' => ['sometimes', 'nullable', 'string', 'in:image,video,file'],
+            'is_priority' => ['sometimes', 'nullable', 'boolean'],
+            'priority_count' => ['sometimes', 'nullable', 'integer'],
             'is_general_news' => ['sometimes', 'required', 'boolean'],
             'is_publish' => ['sometimes', 'required', 'boolean']
         ];

@@ -562,5 +562,5 @@ Route::get('/educational-files', [FileController::class, 'view_educational_files
 
 require __DIR__ . '/auth.php';
 
-
+});
 

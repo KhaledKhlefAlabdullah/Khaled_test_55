@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CategoriesController;
@@ -291,18 +292,20 @@ Route::group(['prefix' => 'api'], function () {
 
                 // View list of Announcements
                 // View announcements list (publisher-published date-content )
-                Route::get('/view-list-of-announcements', [PostController::class, 'view_list_of_announcements']);
+                Route::get('/view-list-of-announcements', [AnnouncementsController::class, 'view_list_of_announcements']);
 
                 // View list of my Announcements
                 // View my Announcements list (content-last published date)
-                Route::get('/view-list-of-my-announcements', [PostController::class, 'view_list_of_my_announcements']);
+                Route::get('/view-list-of-my-announcements', [AnnouncementsController::class, 'view_list_of_my_announcements']);
 
                 // Publish an Announcements
                 // Publish an Announcement to be displayed to portal users
-                Route::put('/publish-an-announcements', [PostController::class, 'publish_an_announcements']);
+                Route::put('/publish-an-announcements', [AnnouncementsController::class, 'publish_an_announcements']);
 
                 // edit_announcements
-                Route::put('/edit-announcements', [PostController::class, 'edit_announcements']);
+                Route::put('/edit-announcements', [AnnouncementsController::class, 'edit_announcements']);
+
+                Route::delete('/delete-announcements', [AnnouncementsController::class, 'delete_announcements']);
             });
             // Announcements End
 
@@ -344,6 +347,16 @@ Route::group(['prefix' => 'api'], function () {
     // Routes for all users expect Portal manager role
     Route::middleware(['all-users-expect-portal-manager'])->group(function () {
 
+
+        Route::group(['prefix' => 'announcements'], function () {
+
+            // View Announcements
+            // see Announcements about urgent changes and updates in any interface
+            Route::get('/view-announcements', [AnnouncementsController::class, 'view_announcements']);
+        });
+
+
+
         // For profile functions
         Route::group(['prefix' => 'profile'], function () {
 
@@ -368,7 +381,6 @@ Route::group(['prefix' => 'api'], function () {
         // View manuals and plans
         Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
 
-        Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
 
         // For water level reports
         Route::group(['prefix' => 'water-level-reports'], function () {
@@ -389,6 +401,7 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/download/{id}', [FileController::class, 'download_file']);
 
         });
+
 
         // Routes for just infrastructure provider and tenant company
         Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function () {
@@ -702,5 +715,3 @@ Route::get('/educational-files', [FileController::class, 'view_educational_files
 require __DIR__ . '/auth.php';
 
 });
-
-

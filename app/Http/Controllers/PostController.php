@@ -6,20 +6,30 @@ use App\Http\Requests\PostRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
+use App\Models\Page;
 use App\Models\Post;
 use App\Models\User;
+<<<<<<< HEAD
 use App\Notifications\PostsNotifications;
+=======
+>>>>>>> khaled
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+=======
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
+
+>>>>>>> khaled
 use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
-use function App\Helpers\send_mail;
+use function App\Helpers\getIdByName;
+use function App\Helpers\search;
 use function App\Helpers\send_notifications;
 use function App\Helpers\store_files;
 
@@ -28,14 +38,11 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($condations,$columns)
     {
-        // Get all posts
-        $posts = Post::paginate();
+        $posts = Post::where($condations)->with('category')->select($columns)->get();
 
-        return ($posts->count() == 1)
-            ? new PostResource($posts->first())
-            : PostResource::collection($posts);
+        return $posts;
     }
 
 
@@ -44,13 +51,21 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        // Validate the request
-        $valid_date = $request->validated();
+        try{
 
-        // Create the post
-        $post = Post::create($valid_date);
+            Post::create([
+                'page_id' => ['sometimes', 'required', 'uuid', 'exists:pages,id'],
+                'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
+                'title' => ['sometimes', 'required', 'string', 'max:255'],
+                'body' => ['sometimes', 'required', 'string'],
+                'media_url' => ['nullable', 'url'],
+                'media_type' => ['nullable', 'string', 'in:image,video,file'],
+            ]);
 
-        return new PostResource($post);
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'data-adding-success',code:500);
+        }
     }
 
     /**
@@ -60,12 +75,13 @@ class PostController extends Controller
     {
         // Get Post by id and check if exist
         try {
-            $data = getAndCheckModelById(Post::class, $id);
 
-            return new PostResource($data);
+            $data = getAndCheckModelById(Post::class, $id)->select('title','body','media_url')->first();
+
+            return api_response(data:$data,message:'data-getting-success');
 
         } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
+            return api_response(errors:[$e->getMessage()],message:'data-getting-error',code:500);
         }
 
     }
@@ -119,8 +135,14 @@ class PostController extends Controller
         try {
 
             // Get general news by get all posts with category news and posts is general news equal true
+<<<<<<< HEAD
             $news = DB::table('categories')
                 ->join('posts', 'categories.id', '=', 'posts.category_id')
+=======
+            $news = 
+            DB::table('categories')
+                ->join('posts','categories.id','=','posts.category_id')
+>>>>>>> khaled
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                 ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
@@ -130,6 +152,7 @@ class PostController extends Controller
                 ->get();
 
             // Return json response with the result
+<<<<<<< HEAD
             return response()->json([
                 'news' => $news,
                 'message' => __('general-news-getting-success')
@@ -141,7 +164,13 @@ class PostController extends Controller
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-getting-error')
             ], 500);
+=======
+            return api_response(data:$news,message:'general-news-getting-success');
+        }
+        catch (Exception $e){
+>>>>>>> khaled
 
+            return api_response(errors:$e->getMessage(),message:'general-news-getting-error',code: 500);
         }
     }
 
@@ -301,6 +330,7 @@ class PostController extends Controller
                 ->join('posts', 'categories.id', '=', 'posts.category_id')
                 ->select('posts.id', 'posts.body', 'posts.media_url')->where('categories.name', '=', 'Project Description')->first();
 
+<<<<<<< HEAD
             return response()->json([
                 'data' => $description,
                 'message' => __('Successfully get project description')
@@ -310,6 +340,13 @@ class PostController extends Controller
                 'error' => __($e->getMessage()),
                 'message' => __('filed to get project description, there an problem')
             ], 200);
+=======
+            return api_response(data:$description,message:'Successfully get project description');
+        }
+        catch (\Exception $e){
+
+            return api_response(errors:$e->getMessage(),message:'filed to get project description, there an problem',code:500);
+>>>>>>> khaled
 
         }
     }
@@ -551,6 +588,34 @@ class PostController extends Controller
                 code: $e->getCode() ?? 500, errors: ['not found resource']
             );
         }
+    }
+
+    // For Articles
+    // View list of articles
+    public function view_list_of_articles()
+    {
+        try{
+
+            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')],[ 'id','title', 'created_at as date']);
+
+            return api_response(data:$articles, message:'articles-getting-success');
+
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()], message:'articles-getting-error', code:500);
+        }
+    }
+
+    // Get the article details
+    public function view_article(string $id)
+    {
+        return $this->show($id);
+    }
+
+    // Search for articale
+    public function search_article(string $query)
+    {
+        return search(Post::class,['category_id' => getIdByName(Category::class,'Article')],$query);
     }
 
 }

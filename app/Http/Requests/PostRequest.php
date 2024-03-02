@@ -38,8 +38,12 @@ class PostRequest extends BaseRequest
         }
 
         return [
+<<<<<<< HEAD
             'user_id' => ['required', 'uuid', 'exists:users,id'],
             'page_id' => ['nullable', 'uuid', 'exists:pages,id'],
+=======
+            'page_id' => ['required', 'uuid', 'exists:pages,id'],
+>>>>>>> khaled
             'category_id' => ['required', 'uuid', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:255'],
             'body' => ['required', 'string'],

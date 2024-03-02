@@ -50,9 +50,10 @@ if (!function_exists('getAndCheckModelById')) {
 }
 
 if (!function_exists('getIdByName')) {
-    function getIdByName($model, $name)
+    function getIdByName($model, $name, $attribute = 'name')
     {
-        $instance_id = $model::where('name', $name)->first()->id;
+        
+        $instance_id = $model::where($attribute, $name)->first()->id;
 
         if (!$instance_id) {
             throw new NotFoundResourceException($model . ' not found or there no ' . $name, 404);
@@ -546,4 +547,48 @@ if (!function_exists('api_response')) {
 
         return response()->json($response, $code);
     }
+}
+
+// Search For any instance of any model
+if(!function_exists('search')){
+
+    /**
+     * @param mixed $model is the model will search about it
+     * @param array $conditions it's the conditions to specifiy the search
+     * @param mixed $query is the input parameter to search about it
+     * 
+     * @return array $results it's result on search process
+     */
+    function search($model, $conditions, $query){
+
+        try{
+
+           // Perform the search on your model
+            $results = $model::where(function($queryBuilder) use ($model, $query) {
+                $modelInstance = new $model(); // Create an instance of the model
+                $attributes = $modelInstance->getFillable(); // Get fillable attributes of the model
+
+                // Dynamically build the OR conditions for each attribute
+                foreach ($attributes as $attribute) {
+                    $queryBuilder->orWhere($attribute, 'like', '%'.$query.'%');
+                }
+            });
+
+            // Apply additional conditions
+            foreach ($conditions as $attribute => $value) {
+                $results->where($attribute, $value);
+            }
+
+            // Execute the query and get the results
+            $results = $results->select('id','title')->get();
+
+            return api_response(data:$results,message:'search-success');
+
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'search-error',code:500);
+        }
+
+    }
+
 }

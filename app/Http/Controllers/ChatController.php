@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Chat\ChatResource;
 use App\Models\Chat;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,16 +24,23 @@ class ChatController extends Controller
             $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;
 
             // Get a list of all chats
-            $chats = DB::table('chats')
-                ->join('chat_members as chm', 'chats.id', '=', 'chm.chat_id')
-                ->join('users', 'chm.user_id', '=', 'users.id')
-                ->join('user_profiles as up', 'users.id', '=', 'up.user_id')
-                ->join('stakeholders as sk', 'users.id', '=', 'sk.user_id')
-                ->select('chats.id as chat_id','up.name', 'up.avatar_URL', 'sk.tenant_company_state')
-                ->where(['sk.industrial_area_id' => $industrial_area_id, 'chm.user_id' => Auth::id()])
-                ->whereNull('sk.deleted_at')
-                ->get();
-
+            $chats = User::select('user_profiles.name','user_profiles.avatar_url')
+            ->join('user_profiles','users.id','=','user_profiles.user_id')
+            ->join();
+            // DB::table('chats')
+            //     ->join('chat_members as chm', 'chats.id', '=', 'chm.chat_id')
+            //     ->join('users', 'chm.user_id', '=', 'users.id')
+            //     ->join('user_profiles as up', 'users.id', '=', 'up.user_id')
+            //     ->join('stakeholders as sk', 'users.id', '=', 'sk.user_id')
+            //     ->select('chats.id as chat_id','users.id as user_id','up.name as user_name', 'up.avatar_URL', 'sk.tenant_company_state')
+            //     ->where(['sk.industrial_area_id' => $industrial_area_id, 'users.id' => Auth::id()])
+            //     ->whereNull('sk.deleted_at')
+            //     ->whereNull('up.deleted_at')
+            //     ->whereNull('users.deleted_at')
+            //     ->whereNull('chm.deleted_at')
+            //     ->whereNull('chats.deleted_at')
+            //     ->get();
+        
 
             return api_response(data:$chats,message:'chats-getting-success');
 

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\api_response;
 
-
 class ChatController extends Controller
 {
     /**
@@ -23,24 +22,14 @@ class ChatController extends Controller
 
             $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;
 
-            // Get a list of all chats
-            $chats = User::select('user_profiles.name','user_profiles.avatar_url')
-            ->join('user_profiles','users.id','=','user_profiles.user_id')
-            ->join();
-            // DB::table('chats')
-            //     ->join('chat_members as chm', 'chats.id', '=', 'chm.chat_id')
-            //     ->join('users', 'chm.user_id', '=', 'users.id')
-            //     ->join('user_profiles as up', 'users.id', '=', 'up.user_id')
-            //     ->join('stakeholders as sk', 'users.id', '=', 'sk.user_id')
-            //     ->select('chats.id as chat_id','users.id as user_id','up.name as user_name', 'up.avatar_URL', 'sk.tenant_company_state')
-            //     ->where(['sk.industrial_area_id' => $industrial_area_id, 'users.id' => Auth::id()])
-            //     ->whereNull('sk.deleted_at')
-            //     ->whereNull('up.deleted_at')
-            //     ->whereNull('users.deleted_at')
-            //     ->whereNull('chm.deleted_at')
-            //     ->whereNull('chats.deleted_at')
-            //     ->get();
-        
+            $chats = User::select('user_profiles.name as user_name', 'user_profiles.avatar_URL as user_avatar')
+                ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                ->join('chat_members', 'users.id', '=', 'chat_members.user_id')
+                ->join('chats', 'chat_members.chat_id', '=', 'chats.id')
+                ->join('stakeholders', 'user_profiles.user_id', '=', 'stakeholders.user_id')
+                ->where('users.id', '<>', Auth::id())
+                ->where('stakeholders.industrial_area_id', $industrial_area_id)
+                ->get();
 
             return api_response(data:$chats,message:'chats-getting-success');
 

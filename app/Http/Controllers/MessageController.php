@@ -86,7 +86,7 @@ class MessageController extends Controller
      */
     public function store(MessageRequest $request)
     {
-       try{
+        try {
             // Validate the request data
             $request->validated();
 
@@ -97,15 +97,15 @@ class MessageController extends Controller
             if($request->has('media')){
     
                 $file = $request->media;
-                
+
                 $file_type = getMediaType($file);
-    
-                $path = 'messages/'.$file_type;
-    
-                $media_url = store_files($file,$path);
-    
+
+                $path = 'messages/' . $file_type;
+
+                $media_url = store_files($file, $path);
+
             }
-    
+
             // Create the message
             Message::create([
                 'sender_id' => Auth::id(),
@@ -115,13 +115,12 @@ class MessageController extends Controller
                 'media_url' => $media_ur,
                 'message_type' => $file_type,
             ]);
-    
-            return api_response(message:'message-creating-success');
-    
-       }
-       catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'message-creatting-error',code:500);
-       }
+
+            return api_response(message: 'message-creating-success');
+
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'message-creatting-error', code: 500);
+        }
     }
 
     /**

@@ -30,8 +30,7 @@ class FileController extends Controller
     {
         return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-4466554400MP']);
     }
-    /*
-*/
+
     /**
      * Get the educational files
      */
@@ -73,7 +72,7 @@ class FileController extends Controller
     }
 
     /**
-     * Get files 
+     * Get files
      */
     public function get_files(array $Conditions)
     {
@@ -82,7 +81,7 @@ class FileController extends Controller
             $files = File::where($Conditions)->join('categories','categories.id','=','files.sub_category_id')->when(Auth::check(), function ($query) {
                 return $query->addSelect('files.id','categories.id as category_id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
             }, function ($query) {
-                return $query->addSelect('files.id','categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
+                return $query->addSelect('files.id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
             })->get();
 
             return api_response($files, 'files-getting-success');
@@ -91,6 +90,7 @@ class FileController extends Controller
             return api_response(message: 'files-getting-error', errors: [$e->getMessage()], code: 500);
         }
     }
+
 
     /**
      * Download files
@@ -126,7 +126,7 @@ class FileController extends Controller
      */
     public function add_Manuals_And_Plans(FileRequest $request)
     {
-        return $this->store($request, 'ManualsAndPlans');
+        return $this->store($request, 'Manuals And Plans');
     }
 
     /**
@@ -171,6 +171,11 @@ class FileController extends Controller
             $request->validated();
 
             $file = $request->file;
+
+
+            $path = '/files/' . $file_type;
+
+            $path_ = '/files/' . $file_type;
 
             $category_id = getIdByName(Category::class, $file_type);
 
@@ -219,7 +224,7 @@ class FileController extends Controller
      */
     public function edit_Manuals_And_Plans(FileRequest $request, string $id)
     {
-        return $this->update($request, 'ManualsAndPlans', $id);
+        return $this->update($request, 'Manuals And Plans', $id);
     }
 
     /**

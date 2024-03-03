@@ -32,11 +32,10 @@ class MessageRequest extends FormRequest
      */
     public function rules(): array
     {
-        if ($this->isMethod('PUT')) 
-        {
+        if ($this->isMethod('PUT')) {
             return [
                 'message' => ['required', 'string', 'max:255'],
-            ]; 
+            ];
         }
         return [
             'receiver_id' => ['required', 'string', 'exists:users,id'],

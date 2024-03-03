@@ -297,9 +297,11 @@ Route::group(['prefix' => 'api'], function () {
 
                     Route::post('/search/{chat_id}/{query}',[MessageController::class,'search_message']);
 
-                    Route::get('/add',[MessageController::class,'store']);
+                    Route::post('/add',[MessageController::class,'store']);
 
-                    Route::post('/edit/{id}',[MessageController::class,'update']);
+                    Route::put('/edit/{id}',[MessageController::class,'update']);
+
+                    Route::delete('/delete/{id}',[MessageController::class,'destroy']);
 
                     Route::post('/set-starred/{message_id}',[MessageController::class,'set_message_starred']);
 

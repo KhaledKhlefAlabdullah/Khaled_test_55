@@ -79,7 +79,7 @@ class FileController extends Controller
         try {
 
             $files = File::where($Conditions)->join('categories','categories.id','=','files.sub_category_id')->when(Auth::check(), function ($query) {
-                return $query->addSelect('files.id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
+                return $query->addSelect('files.id','categories.id as category_id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
             }, function ($query) {
                 return $query->addSelect('files.id','categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
             })->get();

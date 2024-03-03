@@ -127,12 +127,7 @@ Route::group(['prefix' => 'api'], function () {
             // For articles
             Route::group(['prefix' => 'articles'], function () {
 
-<<<<<<< HEAD
                 Route::post('/add',[PostController::class,'add_article']);
-=======
-
-                Route::post('/add', [PostController::class, 'add_article']);
->>>>>>> 917f40f59630a01d65f4e984f969d9ddf1e214e3
 
                 Route::delete('/delete/{id}',[PostController::class,'destroy']);
 
@@ -250,7 +245,7 @@ Route::group(['prefix' => 'api'], function () {
 
         Route::get('download-infrastructure-sevices-reports/{id}', [FileController::class, 'download_file']);
 
-    });
+    
 
     // Routes for all users expect Portal manager role
     Route::middleware(['all-users-expect-portal-manager'])->group(function () {
@@ -264,13 +259,8 @@ Route::group(['prefix' => 'api'], function () {
 
             // View manuals and plans
 
-<<<<<<< HEAD
             // For Guidelines and updates
             Route::get('/guideline-and-updates/',[FileController::class,'view_guidelines_and_updates']);
-=======
-            Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
-        });
->>>>>>> 917f40f59630a01d65f4e984f969d9ddf1e214e3
 
         // For Guidelines and updates
         Route::get('/guideline-and-updates/', [FileController::class, 'view_guidelines_and_updates']);
@@ -278,11 +268,8 @@ Route::group(['prefix' => 'api'], function () {
         // For Infrastructure services reports
         Route::get('/infrastructure-services-reports', [FileController::class, 'view_infrastructure_service_reports']);
 
-<<<<<<< HEAD
             // View manuals and plans
             Route::get('/manuals-and-plans', [FileController::class,'view_manuals_and_plans']);
-=======
->>>>>>> 917f40f59630a01d65f4e984f969d9ddf1e214e3
 
         // Fill contact us form
         Route::post('/contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
@@ -300,11 +287,8 @@ Route::group(['prefix' => 'api'], function () {
             // For articles
             Route::group(['prefix' => 'articles'], function () {
 
-<<<<<<< HEAD
                 Route::post('/search/{query}',[PostController::class,'search_article']);
-=======
                 Route::get('/', [PostController::class, 'view_list_of_articles']);
->>>>>>> 917f40f59630a01d65f4e984f969d9ddf1e214e3
 
                 Route::get('/{id}',[PostController::class,'view_article']);
 
@@ -578,7 +562,7 @@ Route::group(['prefix' => 'api'], function () {
             Route::delete('/delete/{id}', [WasteController::class, 'destroy']);
 
         });
-
+});
         // for custom monitoring points
         Route::group(['prefix' => 'custom-monitoring-points'], function () {
 
@@ -663,8 +647,4 @@ Route::group(['prefix' => 'api'], function () {
 
     require __DIR__ . '/auth.php';
 
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> 917f40f59630a01d65f4e984f969d9ddf1e214e3

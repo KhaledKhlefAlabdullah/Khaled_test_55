@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Chat\ChatResource;
 use App\Models\Chat;
+use Exception;
 use Illuminate\Http\Request;
+
+use function App\Helpers\api_response;
 
 class ChatController extends Controller
 {
@@ -13,12 +16,15 @@ class ChatController extends Controller
      */
     public function index()
     {
-        // Get a list of all chats
-        $chats = Chat::latest()->paginate();
+        try{
 
-        return $chats->count() == 1
-            ? new ChatResource($chats->first()) // return single chat
-            : ChatResource::collection($chats); // return all chat resources
+            // Get a list of all chats
+            $chats = Chat::;
+
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'chats-getting-error',code:500);
+        }
     }
 
 

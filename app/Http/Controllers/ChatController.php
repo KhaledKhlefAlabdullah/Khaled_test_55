@@ -27,9 +27,13 @@ class ChatController extends Controller
                 ->join('users', 'chm.user_id', '=', 'users.id')
                 ->join('user_profiles as up', 'users.id', '=', 'up.user_id')
                 ->join('stakeholders as sk', 'users.id', '=', 'sk.user_id')
-                ->select('chats.id as chat_id','up.name', 'up.avatar_URL', 'sk.tenant_company_state')
-                ->where(['sk.industrial_area_id' => $industrial_area_id, 'chm.user_id' => Auth::id()])
+                ->select('chats.id as chat_id','users.id as user_id','up.name as user_name', 'up.avatar_URL', 'sk.tenant_company_state')
+                ->where(['sk.industrial_area_id' => $industrial_area_id, 'users.id' => Auth::id()])
                 ->whereNull('sk.deleted_at')
+                ->whereNull('up.deleted_at')
+                ->whereNull('users.deleted_at')
+                ->whereNull('chm.deleted_at')
+                ->whereNull('chats.deleted_at')
                 ->get();
         
 

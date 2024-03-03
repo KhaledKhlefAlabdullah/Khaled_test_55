@@ -6,24 +6,33 @@ use App\Http\Requests\Message\StoreMessageRequest;
 use App\Http\Requests\Message\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+
+use function App\Helpers\api_response;
 
 class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * TODO: يجب تعديل هذه الدالة بحيث يسمح فقط لمالك المحادثة جلب الرسائل عن طريق معرف المحادثة
+     * 
      */
     public function index(string $chat_id)
     {
-        // Get all messages from the authenticated user
+        try{
+            // Get all messages from the authenticated user
         $messages = Message::where('chat_id',$chat_id)
-            ->leftJoin('user_profile as sender','sender.user_id','=','messages.sender_id')
-            ->select('messages.message','messages.media_url','messages.is_read',
-            'messages.is_edit','messages.is_starred','sender.name','sender.avatar_url')->get();
-        return $messages;
+            ->leftJoin('user_profiles as sender','sender.user_id','=','messages.sender_id')
+            ->select('messages.message','messages.media_url','messages.is_read','messages.is_edit',
+            'messages.is_starred','messages.created_at','sender.name as sender_name','sender.avatar_url as sender_profile')->get();
+
+        return api_response(data:$messages,message:'messages-getting-success');
         
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'messages-getting-error',code:500);
+        }        
     }
 
     /**

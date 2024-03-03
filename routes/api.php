@@ -178,6 +178,8 @@ Route::group(['prefix' => 'api'], function () {
             // Manuals & Plans
             Route::group(['prefix' => 'manuals-and-plans'],function(){
 
+                Route::get('/categories',[CategoriesController::class,'get_manula_and_plans_categories']);
+
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
                 Route::post('/edit/{id}', [FileController::class, 'edit_manuals_and_plans']);

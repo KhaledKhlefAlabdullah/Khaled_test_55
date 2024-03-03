@@ -23,23 +23,17 @@ class ChatController extends Controller
             $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;
 
             // Get a list of all chats
-            $chats = User::select('user_profiles.name','user_profiles.avatar_url')
-            ->join('user_profiles','users.id','=','user_profiles.user_id')
-            ->join();
-            // DB::table('chats')
-            //     ->join('chat_members as chm', 'chats.id', '=', 'chm.chat_id')
-            //     ->join('users', 'chm.user_id', '=', 'users.id')
-            //     ->join('user_profiles as up', 'users.id', '=', 'up.user_id')
-            //     ->join('stakeholders as sk', 'users.id', '=', 'sk.user_id')
-            //     ->select('chats.id as chat_id','users.id as user_id','up.name as user_name', 'up.avatar_URL', 'sk.tenant_company_state')
-            //     ->where(['sk.industrial_area_id' => $industrial_area_id, 'users.id' => Auth::id()])
-            //     ->whereNull('sk.deleted_at')
-            //     ->whereNull('up.deleted_at')
-            //     ->whereNull('users.deleted_at')
-            //     ->whereNull('chm.deleted_at')
-            //     ->whereNull('chats.deleted_at')
-            //     ->get();
-        
+            $chatIds = DB::table('chat_members')
+            ->where('user_id', Auth::id())
+            ->pluck('chat_id');
+            
+            $chats = Chat::whereIn('chats.id', $chatIds)
+            ->join('chat_members as cm', 'chats.id', '=', 'cm.chat_id')
+            ->join('users as u', 'cm.user_id', '=', 'u.id')
+            ->join('user_profiles as up', 'u.id', '=', 'up.user_id')
+            ->select('chats.id as chat_id', 'u.id as user_id', 'up.name as user_name', 'up.avatar_URL as avatar_URL')
+            ->where('u.id', '<>', Auth::id())
+            ->get();
 
             return api_response(data:$chats,message:'chats-getting-success');
 

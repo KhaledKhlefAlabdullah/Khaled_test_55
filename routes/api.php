@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CategoriesController;
@@ -135,12 +136,12 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // For articles
-            Route::group(['prefix' => 'articles'],function (){
+            Route::group(['prefix' => 'articles'], function () {
 
 
                 Route::post('/add', [PostController::class, 'add_article']);
 
-                Route::delete('/delete/{id}',[PostController::class,'destroy']);
+                Route::delete('/delete/{id}', [PostController::class, 'destroy']);
 
             });
 
@@ -207,18 +208,21 @@ Route::group(['prefix' => 'api'], function () {
 
                 // View list of Announcements
                 // View announcements list (publisher-published date-content )
-                Route::get('/view-list-of-announcements', [PostController::class, 'view_list_of_announcements']);
+                Route::get('/view-list-of-announcements', [AnnouncementsController::class, 'view_list_of_announcements']);
 
                 // View list of my Announcements
                 // View my Announcements list (content-last published date)
-                Route::get('/view-list-of-my-announcements', [PostController::class, 'view_list_of_my_announcements']);
+                Route::get('/view-list-of-my-announcements', [AnnouncementsController::class, 'view_list_of_my_announcements']);
 
                 // Publish an Announcements
                 // Publish an Announcement to be displayed to portal users
-                Route::put('/publish-an-announcements', [PostController::class, 'publish_an_announcements']);
+                Route::put('/publish-an-announcements', [AnnouncementsController::class, 'publish_an_announcements']);
 
                 // edit_announcements
-                Route::put('/edit-announcements', [PostController::class, 'edit_announcements']);
+                Route::put('/edit-announcements/{id}', [AnnouncementsController::class, 'edit_announcements']);
+
+                // Delete an Announcement
+                Route::delete('/delete-announcements/{id}', [AnnouncementsController::class, 'delete_announcements']);
             });
             // Announcements End
 
@@ -269,7 +273,7 @@ Route::group(['prefix' => 'api'], function () {
 
             // View manuals and plans
 
-            Route::get('/manuals-and-plans', [FileController::class,'view_manuals_and_plans']);
+            Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
         });
 
         // For Guidelines and updates
@@ -292,30 +296,35 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/', [FileController::class, 'view_water_level_reports']);
 
             // For articles
-            Route::group(['prefix' => 'articles'], function(){
+            Route::group(['prefix' => 'articles'], function () {
 
-                Route::get('/',[PostController::class,'view_list_of_articles']);
+                Route::get('/', [PostController::class, 'view_list_of_articles']);
 
-                Route::post('/search/{query}',[PostController::class,'search_article']);
+                Route::post('/search/{query}', [PostController::class, 'search_article']);
 
-                Route::get('/{id}',[PostController::class,'view_article']);
+                Route::get('/{id}', [PostController::class, 'view_article']);
 
             });
 
-            Route::group(['prefix' => 'chats'],function(){
+            Route::group(['prefix' => 'chats'], function () {
 
-                Route::get('/',[ChatController::class,'index']);
+                Route::get('/', [ChatController::class, 'index']);
 
-                Route::group(['prefix' => 'messages'],function(){
+                Route::group(['prefix' => 'messages'], function () {
 
-                    Route::get('/{id}',[MessageController::class,'index']);
+                    Route::get('/{id}', [MessageController::class, 'index']);
 
                 });
 
             });
 
 
+        });
 
+        // View Announcements
+        Route::group(['prefix' => 'announcements'], function () {
+            // View Announcements
+            Route::get('/view-announcements', [AnnouncementsController::class, 'view_announcements']);
         });
 
         // Routes for just infrastructure provider and tenant company
@@ -600,34 +609,33 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/download-educational-file/{id}', [FileController::class, 'download_file']);
 
 
-
 // public routes
 
 // get al industrial areas
-Route::get('industrial-areas', [IndustrialAreaController::class, 'index']);
+    Route::get('industrial-areas', [IndustrialAreaController::class, 'index']);
 
 // send registration request
-Route::post('registration-requests/add-register', [RegistrationRequestController::class, 'store']);
+    Route::post('registration-requests/add-register', [RegistrationRequestController::class, 'store']);
 
 // get all general news
-Route::get('general-news', [PostController::class, 'view_general_news']);
+    Route::get('general-news', [PostController::class, 'view_general_news']);
 
 // project description
-Route::get('project-description', [PostController::class, 'view_project_description']);
+    Route::get('project-description', [PostController::class, 'view_project_description']);
 
 // View contact us details
-Route::get('contact-us-details', [PageController::class, 'contact_us_details']);
+    Route::get('contact-us-details', [PageController::class, 'contact_us_details']);
 
 // View about us details
-Route::get('about-us-details', [PageController::class, 'about_us_page_details']);
+    Route::get('about-us-details', [PageController::class, 'about_us_page_details']);
 
 // Fill contact us form
-Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'store_unregistered']);
+    Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'store_unregistered']);
 
-// View list of educational files
-Route::get('/educational-files', [FileController::class, 'view_educational_files']);
+    // View list of educational files
+    Route::get('/educational-files', [FileController::class, 'view_educational_files']);
 
-require __DIR__ . '/auth.php';
+    require __DIR__ . '/auth.php';
 
 });
 

@@ -3,33 +3,23 @@
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
-use App\Http\Controllers\DamController;
-use App\Http\Controllers\DisasterReportController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IndustrialAreaController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MonitoringPointController;
-use App\Http\Controllers\NaturalDisasterController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Notification\NotificationsSettingController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\ParticipatingEntityController;
-use App\Http\Controllers\PortalSettingsController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProductionSitesController;
 use App\Http\Controllers\RegistrationRequestController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\ShipmentController;
 use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\Timelines\TimelineController;
-use App\Http\Controllers\Timelines\TimelineEventController;
-use App\Http\Controllers\Timelines\TimelineQuiresController;
-use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
@@ -461,6 +451,7 @@ Route::group(['prefix' => 'api'], function () {
 
     // Routes for just infrastructure provider and tenant company
     Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function () {
+        // todo
 
         // Employees
         Route::group(['prefix' => 'employees'], function () {
@@ -543,7 +534,6 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
-
         // Products routes
         Route::group(['prefix' => 'products'], function () {
 
@@ -583,6 +573,19 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/', [NotificationsSettingController::class, 'index']);
 
             Route::put('/edit/{id}', [NotificationsSettingController::class, 'update']);
+
+        });
+
+        // production sites
+        Route::group(['prefix' => 'production-sites'], function () {
+            // View my production sites details
+            // View production sites on map
+            Route::get('/view-my-production-sites-details', [ProductionSitesController::class, 'view_my_production_sites_details']);
+
+            // TODO: This function must be integrated with the flood API if one exists
+            // View the current status of the Production site
+            // View the current status of the Production site (how many days are expected for the flood to reach the site)
+            Route::get('/view-current-status-of-production-site/{id}', [ProductionSitesController::class, 'view_current_status_of_production_site']);
 
         });
 
@@ -638,5 +641,3 @@ Route::group(['prefix' => 'api'], function () {
     require __DIR__ . '/auth.php';
 
 });
-
-

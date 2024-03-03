@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Message\StoreMessageRequest;
-use App\Http\Requests\Message\UpdateMessageRequest;
+use App\Http\Requests\Message\MessageRequest;
 use App\Http\Resources\MessageResource;
-use App\Models\Chat;
 use App\Models\Message;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-
 use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getMediaType;
@@ -87,16 +84,18 @@ class MessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMessageRequest $request)
+    public function store(MessageRequest $request)
     {
         try {
             // Validate the request data
             $request->validated();
 
-            $file_type = 'text';
+            $media_ur = null;
 
-            if ($request->has('media')) {
-
+            $file_type ='text';
+            
+            if($request->has('media')){
+    
                 $file = $request->media;
 
                 $file_type = getMediaType($file);
@@ -113,7 +112,7 @@ class MessageController extends Controller
                 'receiver_id' => $request->input('receiver_id'),
                 'chat_id' => $request->input('chat_id'),
                 'message' => $request->input('message'),
-                'media_url' => $media_url,
+                'media_url' => $media_ur,
                 'message_type' => $file_type,
             ]);
 
@@ -140,23 +139,26 @@ class MessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMessageRequest $request, string $id)
+    public function update(MessageRequest $request, string $id)
     {
-        // Get the message by message ID
-        $message = Message::find($id);
+        try{
+             // Get the message by message ID
+            $message = getAndCheckModelById(Message::class,$id);
 
-        // Check if the message exists
-        if (!$message) {
-            return response()->json(['message' => 'Message not found'], 404);
+            // Validate the message
+            $request->validated();
+
+            // Update the message
+            $message->update([
+                'message' => $request->input('message')
+            ]);
+
+            return api_response(message:'message-editting-success');
         }
-        // Validate the message
-        $valid_data = $request->validated();
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'message-editting-error',code:500);
+        }
 
-        // Update the message
-        $message->update($valid_data);
-
-        // Return the updated message
-        return new MessageResource($message);
     }
 
     /**
@@ -164,18 +166,22 @@ class MessageController extends Controller
      */
     public function destroy(string $id)
     {
-        // Get the message by ID
-        $message = Message::find($id);
+        try{
+            // Get the message by ID
+            $message = getAndCheckModelById(Message::class,$id);
 
-        // Check if message exists
-        if (!$message) {
-            return response()->json(['message' => 'Message not found'], 404);
+            if($message->media_url){
+                unlink(public_path($message->media_url));
+            }
+            // Delete the message
+            $message->delete();
+
+            // Return the deleted message
+            return api_response(message:'message-delete-success');
         }
-
-        // Delete the message
-        $message->delete();
-
-        // Return the deleted message
-        return response()->json(['message' => 'Message deleted successfully']);
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'message-delete-error',code:500);
+        }
+        
     }
 }

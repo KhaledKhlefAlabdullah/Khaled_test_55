@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StoreMessageRequest extends FormRequest
+class MessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,7 +34,6 @@ class StoreMessageRequest extends FormRequest
     {
         if ($this->isMethod('PUT')) {
             return [
-                'message_id' => ['required', 'string', 'exists:messages,id'],
                 'message' => ['required', 'string', 'max:255'],
             ];
         }

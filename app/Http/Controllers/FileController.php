@@ -78,8 +78,8 @@ class FileController extends Controller
     {
         try {
 
-            $files = File::where($Conditions)->join('categories', 'categories.id', '=', 'files.sub_category_id')->when(Auth::check(), function ($query) {
-                return $query->addSelect('files.id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
+            $files = File::where($Conditions)->join('categories','categories.id','=','files.sub_category_id')->when(Auth::check(), function ($query) {
+                return $query->addSelect('files.id','categories.id as category_id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
             }, function ($query) {
                 return $query->addSelect('files.id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
             })->get();
@@ -253,19 +253,25 @@ class FileController extends Controller
             // Get file by ID
             $file_ = getAndCheckModelById(File::class, $id);
 
-            $file = $request->file;
+            if ($request->hasFile('file')) {
 
-            $path = '/files/Guideline And Updates';
+                $newFile = $request->file('file');
+        
+                // Process and store the new file
+                $path = '/files/Guideline And Updates';
 
-            $old_path = $file_->media_url;
+                $file_path = edit_file($file_->media_url, $newFile, $path);
 
-            $new_file_path = edit_file($old_path, $file, $path);
+            } else {
+                // Keep the existing file path if no new file is uploaded
+                $file_path = $file_->media_url;
+            }            
 
             $file_->update([
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
-                'media_url' => $new_file_path,
+                'media_url' => $file_path,
             ]);
 
             return api_response(message: 'update-Guideline-And-Updates-success');
@@ -289,22 +295,33 @@ class FileController extends Controller
             // Get file by ID
             $file_ = getAndCheckModelById(File::class, $id);
 
-            $file = $request->file;
+            $file_path = $file_->media_url;
 
-            $path = '/files/' . $file_type;
+            if ($request->hasFile('file')) {
 
-            $old_path = $file_->media_url;
+                $newFile = $request->file('file');
+        
+                // Process and store the new file
+                $path = '/files/' . $file_type;
 
-            $new_file_path = edit_file($old_path, $file, $path);
+                $file_path = edit_file($file_->media_url, $newFile, $path);
 
+                $file_type = getMediaType($newFile);
+            } else {
+                // Keep the existing file path if no new file is uploaded
+                $file_path = $file_->media_url;
+
+                $file_type = $file_->file_type;
+            }
+        
             $file_->update([
                 'category_id' => $request->input('category_id'),
                 'file_type' => $file_type,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
-                'media_url' => $new_file_path,
-                'media_type' => getMediaType($file)
+                'media_url' => $file_path,
+                'media_type' => $file_type
             ]);
 
 

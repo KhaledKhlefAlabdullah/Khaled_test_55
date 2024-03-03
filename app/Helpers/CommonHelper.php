@@ -578,7 +578,7 @@ if(!function_exists('search')){
             }
 
             // Execute the query and get the results
-            $results = $results->select('id','title')->get();
+            $results = $results->get();
 
             return api_response(data:$results,message:'search-success');
 

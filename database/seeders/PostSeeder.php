@@ -100,7 +100,7 @@ class PostSeeder extends Seeder
             'id' => '1009776d-7b19-55a9-a77f-2a76172f5322',
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58', // IAR 1
             'page_id' => '4a97a6d-7b19-4fa9-a77f-2a76172f5b58', // News Page
-            'category_id' => '040e8400-e29b-41d4-a716-44665544000A',
+            'category_id' => '003e8400-e29b-41d4-a716-446655440000',
             'title' => 'article 1',
             'body' => 'I am body for post',
             'is_priority' => false,
@@ -114,7 +114,7 @@ class PostSeeder extends Seeder
             'id' => '1009776d-7b19-55a9-a77f-2a76172G5322',
             'user_id' => '14c97a6d-7b19-4fa9-a77f-2a76172f5b58', // IAR 1
             'page_id' => '4a97a6d-7b19-4fa9-a77f-2a76172f5b58', 
-            'category_id' => '040e8400-e29b-41d4-a716-44665544000A',
+            'category_id' => '003e8400-e29b-41d4-a716-446655440000',
             'title' => 'article 2',
             'body' => 'I am body for post',
             'is_priority' => false,

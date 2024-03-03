@@ -11,10 +11,33 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 
 use function App\Helpers\api_response;
+use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\search;
 
 class MessageController extends Controller
 {
+
+
+    /**
+     * Get messages by conditions
+     */
+    public function get_messages_by_conditions(array $conditions)
+    {
+        try{
+            // Get all messages from the authenticated user
+            $messages = Message::where($conditions)
+                ->leftJoin('user_profiles as sender','sender.user_id','=','messages.sender_id')
+                ->select('messages.id','messages.message','messages.media_url','messages.is_read','messages.is_edit',
+                'messages.is_starred','messages.created_at','sender.name as sender_name','sender.avatar_url as sender_profile')->get();
+
+            return api_response(data:$messages,message:'messages-getting-success');
+        
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'messages-getting-error',code:500);
+        } 
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,27 +45,43 @@ class MessageController extends Controller
      */
     public function index(string $chat_id)
     {
-        try{
-            // Get all messages from the authenticated user
-        $messages = Message::where('chat_id',$chat_id)
-            ->leftJoin('user_profiles as sender','sender.user_id','=','messages.sender_id')
-            ->select('messages.message','messages.media_url','messages.is_read','messages.is_edit',
-            'messages.is_starred','messages.created_at','sender.name as sender_name','sender.avatar_url as sender_profile')->get();
+        return $this->get_messages_by_conditions(['chat_id' => $chat_id]);
+    }
 
-        return api_response(data:$messages,message:'messages-getting-success');
-        
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'messages-getting-error',code:500);
-        }        
+    /**
+     * Display list of starred messages
+     */
+    public function get_starred_messages(string $chat_id)
+    {
+        return $this->get_messages_by_conditions(['chat_id' => $chat_id, 'is_starred' => true]);   
     }
 
     /**
      * Search for message in chat
      */
-    public function search_message(string $query,string $chat_id)
+    public function search_message(string $chat_id, string $query)
     {
         return search(Message::class,['chat_id' => $chat_id],$query);
+    }
+
+    /**
+     * Set message as starred
+     */
+    public function set_message_starred(string $message_id)
+    {
+        try{
+
+            $message = getAndCheckModelById(Message::class,$message_id);
+
+            $message->update([
+                'is_starred' => !$message->is_starred
+            ]);
+
+            return api_response(message:'message-set-starred-success');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'message-set-starred-error',code:500);
+        }
     }
 
     /**

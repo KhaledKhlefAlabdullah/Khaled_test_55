@@ -293,7 +293,11 @@ Route::group(['prefix' => 'api'], function () {
 
                     Route::get('/{chat_id}',[MessageController::class,'index']);
 
-                    Rout::post('/search/{query}',[MessageController::class,'search_message']);
+                    Route::get('/starred/{chat_id}',[MessageController::class,'get_starred_messages']);
+
+                    Route::post('/search/{chat_id}/{query}',[MessageController::class,'search_message']);
+
+                    Route::post('/set-starred/{message_id}',[MessageController::class,'set_message_starred']);
 
                 });
 

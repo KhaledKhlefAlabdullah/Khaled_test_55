@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -131,7 +130,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [PostController::class, 'add_article']);
 
-                Route::delete('/delete/{id}', [PostController::class, 'destroy']);
+                Route::delete('/delete/{id}',[PostController::class,'destroy']);
 
             });
 
@@ -155,8 +154,8 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::post('change-status', [StakeholderController::class, 'edit_company_state']);
 
-            // View list of Manuals And Plans
-            Route::get('/manuals-and-plans', [FileController::class, 'view_Manuals And Plans'])->name('file.view_Manuals And Plans');
+            // View list of Manuals and plans
+            Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
         });
 
         // Routes for Government representative role
@@ -171,13 +170,10 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'manuals-and-plans'], function () {
 
 
-<<<<<<< HEAD
                 Route::get('/categories',[CategoriesController::class,'get_manula_and_plans_categories']);
 
                 Route::post('/add', [FileController::class, 'add_Manuals And Plans']);
-=======
-                Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
->>>>>>> 6ecb9acbfebb5bf0c2bbf98e32894f94d761d349
+
 
                 Route::post('/edit/{id}', [FileController::class, 'edit_Manuals And Plans']);
 
@@ -204,21 +200,18 @@ Route::group(['prefix' => 'api'], function () {
 
                 // View list of Announcements
                 // View announcements list (publisher-published date-content )
-                Route::get('/view-list-of-announcements', [AnnouncementsController::class, 'view_list_of_announcements']);
+                Route::get('/view-list-of-announcements', [PostController::class, 'view_list_of_announcements']);
 
                 // View list of my Announcements
                 // View my Announcements list (content-last published date)
-                Route::get('/view-list-of-my-announcements', [AnnouncementsController::class, 'view_list_of_my_announcements']);
+                Route::get('/view-list-of-my-announcements', [PostController::class, 'view_list_of_my_announcements']);
 
                 // Publish an Announcements
                 // Publish an Announcement to be displayed to portal users
-                Route::put('/publish-an-announcements', [AnnouncementsController::class, 'publish_an_announcements']);
+                Route::put('/publish-an-announcements', [PostController::class, 'publish_an_announcements']);
 
                 // edit_announcements
-                Route::put('/edit-announcements/{id}', [AnnouncementsController::class, 'edit_announcements']);
-
-                // Delete an Announcement
-                Route::delete('/delete-announcements/{id}', [AnnouncementsController::class, 'delete_announcements']);
+                Route::put('/edit-announcements', [PostController::class, 'edit_announcements']);
             });
             // Announcements End
 
@@ -278,13 +271,9 @@ Route::group(['prefix' => 'api'], function () {
         // For Infrastructure services reports
         Route::get('/infrastructure-services-reports', [FileController::class, 'view_infrastructure_service_reports']);
 
-<<<<<<< HEAD
-            // View Manuals And Plans
-            Route::get('/manuals-and-plans', [FileController::class,'view_Manuals And Plans']);
-=======
+
         // Fill contact us form
         Route::post('/contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
->>>>>>> 6ecb9acbfebb5bf0c2bbf98e32894f94d761d349
 
         // View manuals and plans
         Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
@@ -307,13 +296,12 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
-            Route::group(['prefix' => 'chats'], function () {
+            Route::group(['prefix' => 'chats'],function(){
 
-                Route::get('/', [ChatController::class, 'index']);
+                Route::get('/',[ChatController::class,'index']);
 
                 Route::group(['prefix' => 'messages'], function () {
 
-<<<<<<< HEAD
                     Route::get('/{chat_id}',[MessageController::class,'index']);
 
                     Route::get('/starred/{chat_id}',[MessageController::class,'get_starred_messages']);
@@ -325,9 +313,8 @@ Route::group(['prefix' => 'api'], function () {
                     Route::post('/edit/{id}',[MessageController::class,'update']);
 
                     Route::post('/set-starred/{message_id}',[MessageController::class,'set_message_starred']);
-=======
+
                     Route::get('/{id}', [MessageController::class, 'index']);
->>>>>>> 6ecb9acbfebb5bf0c2bbf98e32894f94d761d349
 
                 });
 

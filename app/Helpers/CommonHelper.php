@@ -42,7 +42,7 @@ if (!function_exists('getAndCheckModelById')) {
         $instance = $model::find($id);
 
         if (!$instance) {
-            throw new NotFoundResourceException($model . ' not found', 404);
+            throw new NotFoundResourceException($model . 'Not found', 400);
         }
 
         return $instance;
@@ -52,7 +52,7 @@ if (!function_exists('getAndCheckModelById')) {
 if (!function_exists('getIdByName')) {
     function getIdByName($model, $name, $attribute = 'name')
     {
-        
+
         $instance_id = $model::where($attribute, $name)->first()->id;
 
         if (!$instance_id) {
@@ -164,8 +164,9 @@ if (!function_exists('store_files')) {
     }
 }
 
-if(!function_exists('getMediaType')){
-    function getMediaType($file){
+if (!function_exists('getMediaType')) {
+    function getMediaType($file)
+    {
 
         $ext = $file->getClientOriginalExtension();
 
@@ -174,8 +175,7 @@ if(!function_exists('getMediaType')){
         }
         elseif(in_array($ext ,['pdf','pptx'])){
             $type = 'file';
-        }
-        else{
+        } else {
             $type = 'video';
         }
 
@@ -204,7 +204,7 @@ if (!function_exists('edit_file')) {
 
 
 if (!function_exists('edit_page_details')) {
-   
+
     function edit_page_details($request, $page_type): Response|JsonResponse
     {
         try {
@@ -300,20 +300,21 @@ if (!function_exists('send_mail')) {
     }
 }
 /*
- * This function  return stakeholder id because it used many times in defirents places
+ * This function  return stakeholder id because it used many times in redirects places
  */
-if(!function_exists('stakeholder_id')){
+if (!function_exists('stakeholder_id')) {
 
     function stakeholder_id()
     {
         try{
-            return Auth::user()->stakeholder()->first()->id;
+            return Auth::user()->stakeholder->id;
         }
         catch (\Exception $e){
+
             return \response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There no stake holder')
-            ],500);
+            ], 500);
         }
     }
 
@@ -322,14 +323,12 @@ if(!function_exists('stakeholder_id')){
 /**
  * This Function it get the instance by any value inside it
  */
-if(!function_exists('get_instances_with_value'))
-{
+if (!function_exists('get_instances_with_value')) {
     function get_instances_with_value($model, $value)
     {
 
-        $instance = $model::where('id',$value)->first();
-        if(is_null($instance))
-        {
+        $instance = $model::where('id', $value)->first();
+        if (is_null($instance)) {
             // Query the database to retrieve instances where any attribute has the specified value
             $instance = $model::where(function ($query) use ($model, $value) {
                 $modelInstance = new $model(); // Create an instance of the model
@@ -350,8 +349,8 @@ if(!function_exists('get_instances_with_value'))
 /**
  * This function is update the instance with keys and values passed to it
  */
-if(!function_exists('find_and_update')){
-     function find_and_update($model, $search_param, $keys, $values)
+if (!function_exists('find_and_update')) {
+    function find_and_update($model, $search_param, $keys, $values)
     {
 
         // Ensure the number of keys and values match
@@ -364,7 +363,7 @@ if(!function_exists('find_and_update')){
 
         // Create an associative array of keys and values
         $data = [];
-        foreach ($keys as  $key) {
+        foreach ($keys as $key) {
             $data[$key] = $values[$key];
         }
 
@@ -378,19 +377,20 @@ if(!function_exists('find_and_update')){
 /**
  * Send notifications
  */
-if(!function_exists('send_notifications')){
+if (!function_exists('send_notifications')) {
 
-    function send_notifications($receivers,$message,array $viaChanel=['database']){
-
+    function send_notifications($receivers, $message, array $viaChanel = ['database'])
+    {
         $user_profile = Auth::user()
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
             ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_URL')
             ->first();
 
-        Notification::send($receivers,new PortalNotifications($viaChanel,$user_profile,$message,$receivers));
+        Notification::send($receivers, new PortalNotifications($viaChanel, $user_profile, $message, $receivers));
 
     }
 }
+
 
 /**
  * Add notifications settings for user
@@ -494,7 +494,7 @@ if (!function_exists('count_items')) {
 
             $item_count = $model::where($validations)->get()->count();
 
-            return $item_count+1;
+            return $item_count + 1;
 
         } catch (\Mockery\Exception $e) {
             return response()->json([
@@ -524,9 +524,12 @@ if (!function_exists('api_response')) {
     function api_response($data = null, $message = "", $code = 200, $pagination = null, $meta = [], $errors = []): JsonResponse
     {
         $response = [
-            'data' => $data,
             'message' => __($message),
         ];
+
+        if ($data !== null) {
+            $response['data'] = $data;
+        }
 
         if ($pagination) {
             $response['pagination'] = $pagination;
@@ -551,7 +554,7 @@ if(!function_exists('search')){
      * @param mixed $model is the model will search about it
      * @param array $conditions it's the conditions to specifiy the search
      * @param mixed $query is the input parameter to search about it
-     * 
+     *
      * @return array $results it's result on search process
      */
     function search($model, $conditions, $query){

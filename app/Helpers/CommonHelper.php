@@ -52,7 +52,7 @@ if (!function_exists('getAndCheckModelById')) {
 if (!function_exists('getIdByName')) {
     function getIdByName($model, $name, $attribute = 'name')
     {
-        
+
         $instance_id = $model::where($attribute, $name)->first()->id;
 
         if (!$instance_id) {
@@ -554,7 +554,7 @@ if(!function_exists('search')){
      * @param mixed $model is the model will search about it
      * @param array $conditions it's the conditions to specifiy the search
      * @param mixed $query is the input parameter to search about it
-     * 
+     *
      * @return array $results it's result on search process
      */
     function search($model, $conditions, $query){

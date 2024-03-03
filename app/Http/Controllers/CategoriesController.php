@@ -17,26 +17,26 @@ use function App\Helpers\getIdByName;
 class CategoriesController extends Controller
 {
 
-      /**
+    /**
      * Get the categories for the manuals and plans
      */
     public function get_manula_and_plans_categories()
     {
-        return $this->categories_by_paarent_id(getIdByName(Category::class,'Manuals And Plans')); 
+        return $this->categories_by_paarent_id(getIdByName(Category::class, 'Manuals And Plans'));
     }
 
     /**
      * Get the categories by parent id
      */
-    public function categories_by_paarent_id(string $parent_id){
-        try{
+    public function categories_by_paarent_id(string $parent_id)
+    {
+        try {
 
-            $categories = Category::where('parent_id',$parent_id)->select('id','name')->get();
+            $categories = Category::where('parent_id', $parent_id)->select('id', 'name')->get();
 
-            return api_response(data:$categories,message:'categories-getting-error');
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'categories-getting-error',code:500);
+            return api_response(data: $categories, message: 'categories-getting-error');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'categories-getting-error', code: 500);
         }
     }
 

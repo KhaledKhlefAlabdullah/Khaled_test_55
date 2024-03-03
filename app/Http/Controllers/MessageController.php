@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Message\StoreMessageRequest;
 use App\Http\Requests\Message\UpdateMessageRequest;
 use App\Http\Resources\MessageResource;
+use App\Models\Chat;
 use App\Models\Message;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 
 use function App\Helpers\api_response;
+use function App\Helpers\search;
 
 class MessageController extends Controller
 {
@@ -33,6 +35,14 @@ class MessageController extends Controller
         catch(Exception $e){
             return api_response(errors:[$e->getMessage()],message:'messages-getting-error',code:500);
         }        
+    }
+
+    /**
+     * Search for message in chat
+     */
+    public function search_message(string $query,string $chat_id)
+    {
+        return search(Message::class,['chat_id' => $chat_id],$query);
     }
 
     /**

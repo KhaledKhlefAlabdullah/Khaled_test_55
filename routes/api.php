@@ -288,9 +288,12 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/',[ChatController::class,'index']);
 
+                // For chats messages
                 Route::group(['prefix' => 'messages'],function(){
 
-                    Route::get('/{id}',[MessageController::class,'index']);
+                    Route::get('/{chat_id}',[MessageController::class,'index']);
+
+                    Rout::post('/search/{query}',[MessageController::class,'search_message']);
 
                 });
 

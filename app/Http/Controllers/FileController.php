@@ -19,14 +19,14 @@ use function App\Helpers\store_files;
 class FileController extends Controller
 {
     /**
-     * Retrieve and paginate manuals and plans files.
+     * Retrieve and paginate Manuals And Plans files.
      *
      * This function fetches files of type 'Manuals & Plans' from the database,
      * paginates the results, and transforms the file data using the specified
      * resource class before returning it.
      *
      */
-    public function view_manuals_and_plans()
+    public function view_Manuals_And_Plans()
     {
         return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-4466554400MP']);
     }
@@ -79,10 +79,10 @@ class FileController extends Controller
     {
         try {
 
-            $files = File::where($Conditions)->when(Auth::check(), function ($query) {
-                return $query->addSelect('files.id', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
+            $files = File::where($Conditions)->join('categories','categories.id','=','files.sub_category_id')->when(Auth::check(), function ($query) {
+                return $query->addSelect('files.id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
             }, function ($query) {
-                return $query->addSelect('files.id', 'files.title', 'files.description', 'files.created_at');
+                return $query->addSelect('files.id','categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
             })->get();
 
             return api_response($files, 'files-getting-success');
@@ -122,9 +122,9 @@ class FileController extends Controller
     }
 
     /**
-     * Add manuals and plans
+     * Add Manuals And Plans
      */
-    public function add_manuals_and_plans(FileRequest $request)
+    public function add_Manuals_And_Plans(FileRequest $request)
     {
         return $this->store($request, 'ManualsAndPlans');
     }
@@ -142,7 +142,7 @@ class FileController extends Controller
      */
     public function add_guidelines_and_updates_files(FileRequest $request)
     {
-        return $this->store($request, 'GuidelineAndUpdates');
+        return $this->store($request, 'Guideline And Updates');
     }
 
     /**
@@ -150,7 +150,7 @@ class FileController extends Controller
      */
     public function add_nfrastructure_services_report_file(FileRequest $request)
     {
-        return $this->store($request, 'InfrastructureReports');
+        return $this->store($request, 'Infrastructure Reports');
     }
 
     /**
@@ -158,7 +158,7 @@ class FileController extends Controller
      */
     public function add_water_level_report_file(FileRequest $request)
     {
-        return $this->store($request, 'WaterLevelReports');
+        return $this->store($request, 'Water Level Reports');
     }
 
     /**
@@ -215,9 +215,9 @@ class FileController extends Controller
 
 
     /**
-     * edit manuals and plans
+     * edit Manuals And Plans
      */
-    public function edit_manuals_and_plans(FileRequest $request, string $id)
+    public function edit_Manuals_And_Plans(FileRequest $request, string $id)
     {
         return $this->update($request, 'ManualsAndPlans', $id);
     }
@@ -235,7 +235,7 @@ class FileController extends Controller
      */
     public function edit_guidelines_and_updates_files(FileRequest $request, string $id)
     {
-        return $this->update($request, 'GuidelineAndUpdates', $id);
+        return $this->update($request, 'Guideline And Updates', $id);
     }
 
     /**
@@ -250,7 +250,7 @@ class FileController extends Controller
 
             $file = $request->file;
 
-            $path = '/files/GuidelineAndUpdates';
+            $path = '/files/Guideline And Updates';
 
             $old_path = $file_->media_url;
 
@@ -263,10 +263,10 @@ class FileController extends Controller
                 'media_url' => $new_file_path,
             ]);
 
-            return api_response(message: 'update-GuidelineAndUpdates-success');
+            return api_response(message: 'update-Guideline-And-Updates-success');
         } catch (Exception $e) {
 
-            return api_response(errors: [$e->getMessage()], message: 'update-GuidelineAndUpdates-error', code: 500);
+            return api_response(errors: [$e->getMessage()], message: 'update-Guideline And Updates-error', code: 500);
         }
     }
 

@@ -155,8 +155,8 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::post('change-status', [StakeholderController::class, 'edit_company_state']);
 
-            // View list of Manuals and plans
-            Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
+            // View list of Manuals And Plans
+            Route::get('/manuals-and-plans', [FileController::class, 'view_Manuals And Plans'])->name('file.view_Manuals And Plans');
         });
 
         // Routes for Government representative role
@@ -171,9 +171,10 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'manuals-and-plans'], function () {
 
 
+
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
-                Route::post('/edit/{id}', [FileController::class, 'edit_manuals_and_plans']);
+                Route::post('/edit/{id}', [FileController::class, 'edit_Manuals And Plans']);
 
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
@@ -272,6 +273,7 @@ Route::group(['prefix' => 'api'], function () {
         // For Infrastructure services reports
         Route::get('/infrastructure-services-reports', [FileController::class, 'view_infrastructure_service_reports']);
 
+
         // Fill contact us form
         Route::post('/contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
@@ -302,6 +304,13 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::group(['prefix' => 'messages'], function () {
 
+                    Route::post('/search/{chat_id}/{query}',[MessageController::class,'search_message']);
+
+                    Route::get('/add',[MessageController::class,'store']);
+
+                    Route::post('/edit/{id}',[MessageController::class,'update']);
+
+                    Route::post('/set-starred/{message_id}',[MessageController::class,'set_message_starred']);
                     Route::get('/{id}', [MessageController::class, 'index']);
 
                 });

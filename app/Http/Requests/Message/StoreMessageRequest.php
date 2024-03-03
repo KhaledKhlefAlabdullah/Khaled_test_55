@@ -32,16 +32,17 @@ class StoreMessageRequest extends FormRequest
      */
     public function rules(): array
     {
+        if ($this->isMethod('PUT')) {
+            return [
+                'message_id' => ['required', 'string', 'exists:messages,id'],
+                'message' => ['required', 'string', 'max:255'],
+            ];
+        }
         return [
-            'sender_id' => ['required', 'uuid', 'exists:users,id'],
-            'receiver_id' => ['required', 'uuid', 'exists:users,id'],
-            'chat_id' => ['required', 'uuid', 'exists:chats,id'],
+            'receiver_id' => ['required', 'string', 'exists:users,id'],
+            'chat_id' => ['required', 'string', 'exists:chats,id'],
             'message' => ['required', 'string', 'max:255'],
-            'media_url' => ['nullable', 'string', 'max:255'],
-            'message_type' => ['nullable', 'in:text,image,video'],
-            'is_read' => ['nullable', 'boolean'],
-            'is_edit' => ['nullable', 'boolean'],
-            'is_starred' => ['nullable', 'boolean'],
+            'media' => ['sometimes', 'file', 'mimes:png.jpg,jpeg,gif,mp4'],
         ];
     }
 

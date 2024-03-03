@@ -68,21 +68,21 @@ return new class extends Migration {
 
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544GAU',
-            'name' => 'GuidelineAndUpdates',
+            'name' => 'Guideline And Updates',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544ISR',
-            'name' => 'InfrastructureReports',
+            'name' => 'Infrastructure Reports',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544WLR',
-            'name' => 'WaterLevelReports',
+            'name' => 'Water Level Reports',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);

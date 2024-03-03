@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getMediaType;
 use function App\Helpers\search;
+use function App\Helpers\store_files;
 
 class MessageController extends Controller
 {
@@ -87,14 +89,39 @@ class MessageController extends Controller
      */
     public function store(StoreMessageRequest $request)
     {
-        // Validate the request data
-        $valid_data = $request->validated();
+        try {
+            // Validate the request data
+            $request->validated();
 
-        // Create the message
-        $message = Message::create($valid_data);
+            $file_type = 'text';
 
-        // Return the newly created message
-        return new MessageResource($message);
+            if ($request->has('media')) {
+
+                $file = $request->media;
+
+                $file_type = getMediaType($file);
+
+                $path = 'messages/' . $file_type;
+
+                $media_url = store_files($file, $path);
+
+            }
+
+            // Create the message
+            Message::create([
+                'sender_id' => Auth::id(),
+                'receiver_id' => $request->input('receiver_id'),
+                'chat_id' => $request->input('chat_id'),
+                'message' => $request->input('message'),
+                'media_url' => $media_url,
+                'message_type' => $file_type,
+            ]);
+
+            return api_response(message: 'message-creating-success');
+
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'message-creatting-error', code: 500);
+        }
     }
 
     /**

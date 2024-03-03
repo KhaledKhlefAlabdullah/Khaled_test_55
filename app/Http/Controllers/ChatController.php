@@ -22,14 +22,18 @@ class ChatController extends Controller
 
             $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;
 
-            $chats = User::select('user_profiles.name as user_name', 'user_profiles.avatar_URL as user_avatar')
-                ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-                ->join('chat_members', 'users.id', '=', 'chat_members.user_id')
-                ->join('chats', 'chat_members.chat_id', '=', 'chats.id')
-                ->join('stakeholders', 'user_profiles.user_id', '=', 'stakeholders.user_id')
-                ->where('users.id', '<>', Auth::id())
-                ->where('stakeholders.industrial_area_id', $industrial_area_id)
-                ->get();
+            // Get a list of all chats
+            $chatIds = DB::table('chat_members')
+            ->where('user_id', Auth::id())
+            ->pluck('chat_id');
+            
+            $chats = Chat::whereIn('chats.id', $chatIds)
+            ->join('chat_members as cm', 'chats.id', '=', 'cm.chat_id')
+            ->join('users as u', 'cm.user_id', '=', 'u.id')
+            ->join('user_profiles as up', 'u.id', '=', 'up.user_id')
+            ->select('chats.id as chat_id', 'u.id as user_id', 'up.name as user_name', 'up.avatar_URL as avatar_URL')
+            ->where('u.id', '<>', Auth::id())
+            ->get();
 
             return api_response(data:$chats,message:'chats-getting-success');
 

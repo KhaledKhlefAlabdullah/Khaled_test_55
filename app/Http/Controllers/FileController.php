@@ -91,38 +91,7 @@ class FileController extends Controller
         }
     }
 
-    /**
-     * Add manuals and plans
-     */
-    public function add_manuals_and_plans(FileRequest $request)
-    {
-        return $this->store($request, 'ManualsAndPlans');
-    }
-
-      /**
-     * Add educational files
-     */
-    public function add_educational_files(FileRequest $request)
-    {
-        return $this->store($request,'Educational');
-    }
-
-     /**
-     * edit manuals and plans
-     */
-    public function edit_manuals_and_plans(FileRequest $request,string $id)
-    {
-        return $this->update($request,'ManualsAndPlans',$id);
-    }
-
-      /**
-     * edit educational files
-     */
-    public function edit_educational_files(FileRequest $request,string $id)
-    {
-        return $this->update($request,'Educational',$id);
-    }
-
+    
 
     /**
      * Download files

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AnnouncementsRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
@@ -29,7 +30,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($condations,$columns)
+    public function index($condations, $columns)
     {
         $posts = Post::where($condations)->with('category')->select($columns)->get();
 
@@ -42,7 +43,7 @@ class PostController extends Controller
      */
     public function store(Request $request, string $page_id, string $category_id)
     {
-        try{
+        try {
 
             $request->validated();
 
@@ -59,7 +60,7 @@ class PostController extends Controller
                 $file_path = store_files($file,$path);
 
             }
-            
+
             Post::create([
                 'user_id' => Auth::id(),
                 'page_id' => $page_id,
@@ -90,12 +91,12 @@ class PostController extends Controller
         // Get Post by id and check if exist
         try {
 
-            $data = getAndCheckModelById(Post::class, $id)->select('title','body','media_url')->first();
+            $data = getAndCheckModelById(Post::class, $id)->select('title', 'body', 'media_url')->first();
 
-            return api_response(data:$data,message:'data-getting-success');
+            return api_response(data: $data, message: 'data-getting-success');
 
         } catch (NotFoundResourceException $e) {
-            return api_response(errors:[$e->getMessage()],message:'data-getting-error',code:500);
+            return api_response(errors: [$e->getMessage()], message: 'data-getting-error', code: 500);
         }
 
     }
@@ -147,25 +148,25 @@ class PostController extends Controller
     {
 
         try {
-            
+
             // Get general news by get all posts with category news and posts is general news equal true
-            $news = 
-            DB::table('categories')
-                ->join('posts','categories.id','=','posts.category_id')
+
+            $news = DB::table('categories')
+                ->join('posts', 'categories.id', '=', 'posts.category_id')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                 ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
-                     'posts.body', 'posts.media_url as image')
+                    'posts.body', 'posts.media_url as image')
                 ->where(['categories.name' => 'news', 'posts.is_general_news' => true])
                 ->whereNull('posts.deleted_at')
                 ->get();
 
             // Return json response with the result
-            return api_response(data:$news,message:'general-news-getting-success');
-        }
-        catch (Exception $e){
 
-            return api_response(errors:$e->getMessage(),message:'general-news-getting-error',code: 500);
+            return api_response(data: $news, message: 'general-news-getting-success');
+        } catch (Exception $e) {
+
+            return api_response(errors: $e->getMessage(), message: 'general-news-getting-error', code: 500);
         }
     }
 
@@ -182,7 +183,7 @@ class PostController extends Controller
             ]);
 
             // get category id where category is news
-            $category_id = Category::where('name','news')->first()->id;
+            $category_id = Category::where('name', 'news')->first()->id;
 
             // get auth user id as author
             $user_id = Auth::id();
@@ -194,7 +195,7 @@ class PostController extends Controller
             $path = '/images/general_news_images';
 
             // coll store function to store the image
-            $image_path = store_files($image,$path);
+            $image_path = store_files($image, $path);
 
             // create new post as general news
             Post::create([
@@ -206,22 +207,21 @@ class PostController extends Controller
                 'media_type' => 'image',
                 'is_general_news' => true
             ]);
-        
+
             // Send notification after add new general news
-            send_notifications(User::all(),['database','mail'],config('golbals.new-generalNews'));
+            send_notifications(User::all(), ['database', 'mail'], config('golbals.new-generalNews'));
 
             // return response with created data
             return response()->json([
                 'message' => __('general-news-create-success')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-create-error')
-            ],500);
+            ], 500);
 
         }
     }
@@ -240,7 +240,7 @@ class PostController extends Controller
 
                 $image_path = $general_news->media_url;
 
-            }else{
+            } else {
                 // get image from request
                 $new_image = $request->image;
 
@@ -265,16 +265,17 @@ class PostController extends Controller
             // return response with created data
             return response()->json([
                 'new_general_news' => $general_news,
-                'message' => __('general-news-edit-success')
-            ],200);
 
-        }
-        catch (\Exception $e){
+                'message' => __('general-news-edit-success')
+            ], 200);
+
+
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-edit-error')
-            ],500);
+            ], 500);
 
         }
     }
@@ -302,12 +303,12 @@ class PostController extends Controller
 
             return response()->json([
                 'message' => __($message)
-            ],200);
+            ], 200);
 
         } catch (NotFoundResourceException $e) {
 
             return response()->json([
-              'error' =>  __($e->getMessage()),
+                'error' => __($e->getMessage()),
                 'message' => __('general-news-delete-error')
             ], $e->getCode());
 
@@ -325,12 +326,11 @@ class PostController extends Controller
                 ->join('posts', 'categories.id', '=', 'posts.category_id')
                 ->select('posts.id', 'posts.body', 'posts.media_url')->where('categories.name', '=', 'Project Description')->first();
 
-            return api_response(data:$description,message:'Successfully get project description');
-        }
-        catch (\Exception $e){
 
-            return api_response(errors:$e->getMessage(),message:'filed to get project description, there an problem',code:500);
+            return api_response(data: $description, message: 'Successfully get project description');
+        } catch (\Exception $e) {
 
+            return api_response(errors: $e->getMessage(), message: 'filed to get project description, there an problem', code: 500);
         }
     }
 
@@ -339,7 +339,7 @@ class PostController extends Controller
      */
     public function edit_project_description(Request $request, string $id)
     {
-        try{
+        try {
 
             // validate the input data
             $request->validate([
@@ -380,8 +380,7 @@ class PostController extends Controller
 
                 $message = 'Successfully creating project description';
 
-            }
-            else{
+            } else {
 
                 // get image from request
                 $image = $request->image;
@@ -406,28 +405,229 @@ class PostController extends Controller
                 'message' => __($message)
             ]);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in server side try another time')
-            ],500);
+            ], 500);
         }
     }
+
+
+    /**
+     * View the list of announcements based on the specified category ID.
+     *
+     * This endpoint retrieves a list of announcements filtered by the specified category ID.
+     * The returned data includes announcement ID, user ID, title, body, publication status, and media URL.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view_list_of_announcements(): \Illuminate\Http\JsonResponse
+    {
+
+        try {
+            // Get list of announcements
+            // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
+            $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+                ->select(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url'])->get();
+
+            // Check if any announcements were found
+            if ($data->isEmpty()) {
+                return api_response(message: __('announcements-list-is-empty'));
+            }
+
+            // Return response helper
+            return api_response(data: $data,
+                message: __('view-list-of-announcements-successfully'));
+
+        } catch (Exception $e) {
+            // Log the error
+            Log::error($e->getMessage());
+
+            // Return error response
+            return api_response(
+                message: $e->getMessage(),
+                code: $e->getCode(),
+                errors: ['error on list of announcements']);
+        }
+    }
+
+
+    /**
+     * View the list of announcements created by the authenticated user.
+     *
+     * This endpoint retrieves a list of announcements belonging to the authenticated user.
+     * The announcements are filtered by the specified category ID and include details such as
+     * announcement ID, user ID, title, body, publication status, and media URL.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view_list_of_my_announcements(): \Illuminate\Http\JsonResponse
+    {
+
+        try {
+            // Get list of user announcements
+            // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
+            // user_id is created announcements
+            $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+                ->where('user_id', '=', Auth::id())
+                ->select(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url'])->get();
+
+            // Check if any announcements were found
+            if ($data->isEmpty()) {
+                return api_response(message: __('announcements-list-is-empty'));
+            }
+
+            // Return response helper
+            return api_response(data: $data,
+                message: __('view-list-of-my-announcements-successfully'));
+
+        } catch (Exception $e) {
+            // Log the error
+            Log::error($e->getMessage());
+
+            // Return error response
+            return api_response(
+                message: $e->getMessage(),
+                code: 404,
+                errors: ['error on user list of announcements']);
+        }
+    }
+
+
+    /**
+     * Publish an announcement based on the provided request data.
+     *
+     * This method expects 'id' and 'is_publish' in the request.
+     * It performs validation and publishes the announcement if everything is valid.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function publish_an_announcements(Request $request)
+    {
+        try {
+            // Get 'id' and 'is_publish' from the request
+            $id = $request->input('id');
+            $isPublish = $request->input('is_publish') ?? true;
+
+            // Validate data as needed (you may customize this validation)
+            $validated = $request->validate([
+                'id' => ['required', 'uuid'],
+                'is_publish' => ['sometimes', 'boolean'],
+            ]);
+
+            // Check if validation passes or fails
+            if (!$validated) {
+                return api_response(message: __('Validation failed'), code: 400);
+            }
+
+
+            // Update the announcement with the provided 'is_publish' status
+            $announcement = Post::find($id);
+
+            if (!$announcement) {
+                return api_response(message: __('Announcement not found'), code: 404);
+            }
+
+            $announcement->update(['is_publish' => $isPublish]);
+
+            // Return success response
+            return api_response(message: __('Announcement published successfully'));
+
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error($e->getMessage());
+
+            // Return error response
+            return api_response(
+                message: $e->getMessage(),
+                code: $e->getCode() ?: 500,
+                errors: ['error publishing announcement']
+            );
+
+
+        }
+    }
+
+
+    /*
+     * Edit my  Announcement
+     *
+     */
+    public function edit_announcements(AnnouncementsRequest $request, string $id)
+    {
+        try {
+
+            $data = Post::findOrFail($id);
+
+            if (is_null($request->image)) {
+
+                $image_path = $data->media_url;
+
+            } else {
+                // get image from request
+                $new_image = $request->image;
+
+                // put path to store image
+                $path = '/images/announcements';
+
+                // get old file path
+                $old_file_path = $data->media_url;
+
+                // coll store function to store the image
+                $image_path = edit_file($old_file_path, $new_image, $path);
+            }
+
+            // create new post as general news
+            $data->update([
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+                'media_url' => $image_path,
+                'is_publish' => $request->input('is_publish'),
+            ]);
+
+            // return response with created data
+            return api_response(
+                data: $data,
+                message: "Edit announcements Successfully"
+            );
+
+
+        } catch (\Exception $e) {
+
+            return api_response(
+                message: $e->getMessage(),
+                code: $e->getCode() ?? 500,
+                errors: ['Edit Announcements Error']
+            );
+
+        }
+    }
+
+    /*
+     * view_announcements
+     * see Announcements about urgent changes and updates in any interface
+     */
+    public function view_announcements()
+    {
+        view_list_of_announcements();
+    }
+
+
 
     // For Articles
     // View list of articles
     public function view_list_of_articles()
     {
-        try{
+        try {
 
-            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')],[ 'id','title', 'created_at as date']);
+            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')], ['id', 'title', 'created_at as date']);
 
-            return api_response(data:$articles, message:'articles-getting-success');
+            return api_response(data: $articles, message: 'articles-getting-success');
 
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()], message:'articles-getting-error', code:500);
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'articles-getting-error', code: 500);
         }
     }
 
@@ -440,7 +640,7 @@ class PostController extends Controller
     // Search for articale
     public function search_article(string $query)
     {
-        return search(Post::class,['category_id' => getIdByName(Category::class,'Article')],$query);
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'Article')], $query);
     }
 
     // Add article

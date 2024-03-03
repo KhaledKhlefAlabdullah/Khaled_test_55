@@ -30,8 +30,7 @@ class FileController extends Controller
     {
         return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-4466554400MP']);
     }
-    /*
-*/
+    
     /**
      * Get the educational files
      */
@@ -92,38 +91,7 @@ class FileController extends Controller
         }
     }
 
-    /**
-     * Add manuals and plans
-     */
-    public function add_manuals_and_plans(FileRequest $request)
-    {
-        return $this->store($request, 'ManualsAndPlans');
-    }
-
-      /**
-     * Add educational files
-     */
-    public function add_educational_files(FileRequest $request)
-    {
-        return $this->store($request,'Educational');
-    }
-
-     /**
-     * edit manuals and plans
-     */
-    public function edit_manuals_and_plans(FileRequest $request,string $id)
-    {
-        return $this->update($request,'ManualsAndPlans',$id);
-    }
-
-      /**
-     * edit educational files
-     */
-    public function edit_educational_files(FileRequest $request,string $id)
-    {
-        return $this->update($request,'Educational',$id);
-    }
-
+    
 
     /**
      * Download files
@@ -154,6 +122,21 @@ class FileController extends Controller
             : FileResource::collection($files);
     }
 
+    /**
+     * Add manuals and plans
+     */
+    public function add_manuals_and_plans(FileRequest $request)
+    {
+        return $this->store($request, 'Manuals And Plans');
+    }
+
+    /**
+     * Add educational files
+     */
+    public function add_educational_files(FileRequest $request)
+    {
+        return $this->store($request, 'Educational');
+    }
 
     /**
      * Add Guidelines and updates files
@@ -237,6 +220,21 @@ class FileController extends Controller
     }
 
 
+    /**
+     * edit manuals and plans
+     */
+    public function edit_manuals_and_plans(FileRequest $request, string $id)
+    {
+        return $this->update($request, 'Manuals And Plans', $id);
+    }
+
+    /**
+     * edit educational files
+     */
+    public function edit_educational_files(FileRequest $request, string $id)
+    {
+        return $this->update($request, 'Educational', $id);
+    }
 
     /**
      * edit Guideline And Updates files

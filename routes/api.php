@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
 use App\Http\Controllers\EmployeeController;
@@ -53,11 +54,9 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/add', [FileController::class, 'add_educational_files']);
 
-
                 Route::post('/edit/{id}', [FileController::class, 'edit_educational_files']);
 
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
-
 
             });
 
@@ -128,7 +127,6 @@ Route::group(['prefix' => 'api'], function () {
             // For articles
             Route::group(['prefix' => 'articles'], function () {
 
-
                 Route::post('/add', [PostController::class, 'add_article']);
 
                 Route::delete('/delete/{id}', [PostController::class, 'destroy']);
@@ -170,6 +168,8 @@ Route::group(['prefix' => 'api'], function () {
             // Manuals & Plans
             Route::group(['prefix' => 'manuals-and-plans'], function () {
 
+
+                Route::get('/categories', [CategoriesController::class, 'get_manula_and_plans_categories']);
 
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
@@ -216,74 +216,71 @@ Route::group(['prefix' => 'api'], function () {
             });
             // Announcements End
 
+            // For Guidelines and updates
+            Route::group(['prefix' => 'guideline-and-updates'], function () {
+
+                Route::get('/my', [FileController::class, 'view_my_guidelines_and_updates']);
+
+                Route::post('/add', [FileController::class, 'add_guidelines_and_updates_files']);
+
+                Route::post('/update/{id}', [FileController::class, 'update_guidelines_and_updates_files']);
+
+                Route::post('/edit/{id}', [FileController::class, 'edit_guidelines_and_updates_files']);
+
+                Route::delete('/delete/{id}', [FileController::class, 'destroy']);
+
+            });
+
+            // For water level reports
+            Route::group(['prefix' => 'water-level-reports'], function () {
+
+                Route::post('/upload', [FileController::class, 'add_water_level_report_file']);
+
+                Route::delete('/delete/{id}', [FileController::class, 'destroy']);
+
+            });
 
         });
-        // For Guidelines and updates
-        Route::group(['prefix' => 'guideline-and-updates'], function () {
 
-            Route::get('/my', [FileController::class, 'view_my_guidelines_and_updates']);
+        // Routes for for industrial area representative and infrastructure providerrole
+        Route::middleware(['Industrail-area-representative-or-infrastructure-provider'])->group(function () {
 
-            Route::post('/add', [FileController::class, 'add_guidelines_and_updates_files']);
-
-            Route::post('/update/{id}', [FileController::class, 'update_guidelines_and_updates_files']);
-
-            Route::post('/edit/{id}', [FileController::class, 'edit_guidelines_and_updates_files']);
-
-            Route::delete('/delete/{id}', [FileController::class, 'destroy']);
+            Route::get('download-infrastructure-sevices-reports/{id}', [FileController::class, 'download_file']);
 
         });
 
-        // For water level reports
-        Route::group(['prefix' => 'water-level-reports'], function () {
+        // Routes for all users expect Portal manager role
+        Route::middleware(['all-users-expect-portal-manager'])->group(function () {
 
-            Route::post('/upload', [FileController::class, 'add_water_level_report_file']);
+            // For profile functions
+            Route::group(['prefix' => 'profile'], function () {
 
-            Route::delete('/delete/{id}', [FileController::class, 'destroy']);
+                Route::get('/', [UserProfileController::class, 'show']);
 
-        });
+                Route::post('/edit', [UserProfileController::class, 'update']);
 
-    });
+            });
 
-    // Routes for for industrial area representative and infrastructure providerrole
-    Route::middleware(['Industrail-area-representative-or-infrastructure-provider'])->group(function () {
+            // For Guidelines and updates
+            Route::get('/guideline-and-updates/', [FileController::class, 'view_guidelines_and_updates']);
 
-        Route::get('download-infrastructure-sevices-reports/{id}', [FileController::class, 'download_file']);
+            // For Infrastructure services reports
+            Route::get('/infrastructure-services-reports', [FileController::class, 'view_infrastructure_service_reports']);
 
-    });
-
-    // Routes for all users expect Portal manager role
-    Route::middleware(['all-users-expect-portal-manager'])->group(function () {
-
-        // For profile functions
-        Route::group(['prefix' => 'profile'], function () {
-
-            Route::get('/', [UserProfileController::class, 'show']);
-
-            Route::post('/edit', [UserProfileController::class, 'update']);
+            // Fill contact us form
+            Route::post('/contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
 
             // View manuals and plans
-
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
-        });
 
-        // For Guidelines and updates
-        Route::get('/guideline-and-updates/', [FileController::class, 'view_guidelines_and_updates']);
+            // For water level reports
+            Route::group(['prefix' => 'water-level-reports'], function () {
 
-        // For Infrastructure services reports
-        Route::get('/infrastructure-services-reports', [FileController::class, 'view_infrastructure_service_reports']);
+                Route::get('/', [FileController::class, 'view_water_level_reports']);
 
-        // Fill contact us form
-        Route::post('/contact-us-registered', [ContactUsMessageController::class, 'store_registered']);
+                Route::get('/download/{id}', [FileController::class, 'download_file']);
 
-        // View manuals and plans
-        Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
-
-        Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans']);
-
-        // For water level reports
-        Route::group(['prefix' => 'water-level-reports'], function () {
-
-            Route::get('/', [FileController::class, 'view_water_level_reports']);
+            });
 
             // For articles
             Route::group(['prefix' => 'articles'], function () {
@@ -300,21 +297,28 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [ChatController::class, 'index']);
 
+                // For chats messages
                 Route::group(['prefix' => 'messages'], function () {
 
-                    Route::get('/{id}', [MessageController::class, 'index']);
+                    Route::get('/{chat_id}', [MessageController::class, 'index']);
+
+                    Route::get('/starred/{chat_id}', [MessageController::class, 'get_starred_messages']);
+
+                    Route::post('/search/{chat_id}/{query}', [MessageController::class, 'search_message']);
+
+                    Route::post('/set-starred/{message_id}', [MessageController::class, 'set_message_starred']);
 
                 });
 
             });
 
-
-        });
-
-        // View Announcements
-        Route::group(['prefix' => 'announcements'], function () {
             // View Announcements
-            Route::get('/view-announcements', [AnnouncementsController::class, 'view_announcements']);
+            Route::group(['prefix' => 'announcements'], function () {
+                // View Announcements
+                Route::get('/view-announcements', [AnnouncementsController::class, 'view_announcements']);
+            });
+
+
         });
 
         // Routes for just infrastructure provider and tenant company
@@ -444,195 +448,64 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // production sites
+            Route::group(['prefix' => 'production-sites'], function () {
+                // View my production sites details
+                // View production sites on map
+                Route::get('/view-my-production-sites-details', [ProductionSitesController::class, 'view_my_production_sites_details']);
+
+                // TODO: This function must be integrated with the flood API if one exists
+                // View the current status of the Production site
+                // View the current status of the Production site (how many days are expected for the flood to reach the site)
+                Route::get('/view-current-status-of-production-site/{id}', [ProductionSitesController::class, 'view_current_status_of_production_site']);
+
+            });
+
         });
 
+
+        // For all authenticated users
+        Route::group(['prefix' => 'notifications'], function () {
+
+            Route::get('/', [NotificationController::class, 'index']);
+
+            Route::put('/marked-read/{id}', [NotificationController::class, 'marked_as_read']);
+
+            Route::delete('/delete/{id}', [NotificationController::class, 'destroy']);
+
+        });
+
+        Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
+
+        Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
+
+        Route::get('/educational-files', [FileController::class, 'view_educational_files']);
+
+        Route::get('/download-educational-file/{id}', [FileController::class, 'download_file']);
 
     });
 
-    // Routes for just infrastructure provider and tenant company
-    Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function () {
-        // todo
+    // public routes
 
-        // Employees
-        Route::group(['prefix' => 'employees'], function () {
-
-            Route::get('/', [EmployeeController::class, 'index']);
-
-            Route::get('/related-info', [EmployeeController::class, 'get_info']);
-
-            Route::get('/get-csv', [EmployeeController::class, 'export_csv_employees_file']);
-
-            Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
-
-            Route::get('/get-ifo', [EmployeeController::class, 'get_info']);
-
-            Route::post('/add', [EmployeeController::class, 'store']);
-
-            Route::put('/edit/{id}', [EmployeeController::class, 'update']);
-
-            Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
-
-        });
-
-        // Suppliers
-        Route::group(['prefix' => 'suppliers'], function () {
-
-            Route::get('/', [SupplierController::class, 'index']);
-
-            Route::post('/add', [SupplierController::class, 'store']);
-
-            Route::put('/edit/{id}', [SupplierController::class, 'update']);
-
-            Route::delete('/delete/{id}', [SupplierController::class, 'destroy']);
-
-        });
-
-        // Materials
-        Route::group(['prefix' => 'materials'], function () {
-
-            Route::get('/', [EntityController::class, 'get_materials']);
-
-            Route::post('/add', [EntityController::class, 'add_new_material']);
-        });
-
-        // Routes
-        Route::group(['prefix' => 'routes'], function () {
-
-            Route::get('/', [EntityController::class, 'get_routes']);
-
-            Route::post('/add', [EntityController::class, 'add_new_route']);
-
-            Route::put('/edit/{id}', [EntityController::class, 'edit_route_details']);
-
-            Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
-
-        });
-
-        // Production Sites
-        Route::group(['prefix' => 'production-sites'], function () {
-
-            Route::get('/', [EntityController::class, 'production_sites']);
-
-            Route::post('/add', [EntityController::class, 'add_new_production_site']);
-
-            Route::put('/edit/{id}', [EntityController::class, 'edit_production_site']);
-
-            Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
-
-        });
-
-        // Customers routes
-        Route::group(['prefix' => 'customers'], function () {
-
-            Route::get('/', [EntityController::class, 'get_customers']);
-
-            Route::post('/add', [EntityController::class, 'add_customer']);
-
-            Route::put('/edit/{customer_id}/{shipment_id}', [EntityController::class, 'edit_customer']);
-
-            Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
-
-        });
-
-        // Products routes
-        Route::group(['prefix' => 'products'], function () {
-
-            Route::get('/', [EntityController::class, 'get_products']);
-
-        });
-
-        // Wastes Routes
-        Route::group(['prefix' => 'wastes'], function () {
-
-            Route::get('/', [WasteController::class, 'index']);
-
-            Route::get('/disposal-sites', [WasteController::class, 'get_desposal_locations']);
-
-            Route::post('/add', [WasteController::class, 'store']);
-
-            Route::put('/edit/{id}', [WasteController::class, 'update']);
-
-            Route::delete('/delete/{id}', [WasteController::class, 'destroy']);
-
-        });
-
-        // for custom monitoring points
-        Route::group(['prefix' => 'custom-monitoring-points'], function () {
-
-            Route::post('/add', [MonitoringPointController::class, 'add_monitoring_point']);
-
-            Route::put('/edit/{id}', [MonitoringPointController::class, 'edit_monitoring_point_details']);
-
-            Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
-
-        });
-
-        // for notifications settings
-        Route::group(['prefix' => 'notifications-settings'], function () {
-
-            Route::get('/', [NotificationsSettingController::class, 'index']);
-
-            Route::put('/edit/{id}', [NotificationsSettingController::class, 'update']);
-
-        });
-
-        // production sites
-        Route::group(['prefix' => 'production-sites'], function () {
-            // View my production sites details
-            // View production sites on map
-            Route::get('/view-my-production-sites-details', [ProductionSitesController::class, 'view_my_production_sites_details']);
-
-            // TODO: This function must be integrated with the flood API if one exists
-            // View the current status of the Production site
-            // View the current status of the Production site (how many days are expected for the flood to reach the site)
-            Route::get('/view-current-status-of-production-site/{id}', [ProductionSitesController::class, 'view_current_status_of_production_site']);
-
-        });
-
-    });
-
-
-    // For all authenticated users
-    Route::group(['prefix' => 'notifications'], function () {
-
-        Route::get('/', [NotificationController::class, 'index']);
-
-        Route::put('/marked-read/{id}', [NotificationController::class, 'marked_as_read']);
-
-        Route::delete('/delete/{id}', [NotificationController::class, 'destroy']);
-
-    });
-
-    Route::post('/forgot-password', [PasswordResetLinkController::class, 'store']);
-
-    Route::post('change-password', [AuthenticatedSessionController::class, 'change_password']);
-
-    Route::get('/educational-files', [FileController::class, 'view_educational_files']);
-
-    Route::get('/download-educational-file/{id}', [FileController::class, 'download_file']);
-
-
-// public routes
-
-// get al industrial areas
+    // get al industrial areas
     Route::get('industrial-areas', [IndustrialAreaController::class, 'index']);
 
-// send registration request
+    // send registration request
     Route::post('registration-requests/add-register', [RegistrationRequestController::class, 'store']);
 
-// get all general news
+    // get all general news
     Route::get('general-news', [PostController::class, 'view_general_news']);
 
-// project description
+    // project description
     Route::get('project-description', [PostController::class, 'view_project_description']);
 
-// View contact us details
+    // View contact us details
     Route::get('contact-us-details', [PageController::class, 'contact_us_details']);
 
-// View about us details
+    // View about us details
     Route::get('about-us-details', [PageController::class, 'about_us_page_details']);
 
-// Fill contact us form
+    // Fill contact us form
     Route::post('contact-us-unregistered', [ContactUsMessageController::class, 'store_unregistered']);
 
     // View list of educational files
@@ -641,3 +514,5 @@ Route::group(['prefix' => 'api'], function () {
     require __DIR__ . '/auth.php';
 
 });
+
+

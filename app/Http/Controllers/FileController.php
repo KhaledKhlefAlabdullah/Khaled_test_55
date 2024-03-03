@@ -30,8 +30,7 @@ class FileController extends Controller
     {
         return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-4466554400MP']);
     }
-    /*
-*/
+
     /**
      * Get the educational files
      */
@@ -73,7 +72,7 @@ class FileController extends Controller
     }
 
     /**
-     * Get files 
+     * Get files
      */
     public function get_files(array $Conditions)
     {
@@ -91,6 +90,7 @@ class FileController extends Controller
             return api_response(message: 'files-getting-error', errors: [$e->getMessage()], code: 500);
         }
     }
+
 
     /**
      * Download files
@@ -126,7 +126,7 @@ class FileController extends Controller
      */
     public function add_manuals_and_plans(FileRequest $request)
     {
-        return $this->store($request, 'ManualsAndPlans');
+        return $this->store($request, 'Manuals And Plans');
     }
 
     /**
@@ -171,6 +171,11 @@ class FileController extends Controller
             $request->validated();
 
             $file = $request->file;
+
+
+            $path = '/files/' . $file_type;
+
+            $path_ = '/files/' . $file_type;
 
             $category_id = getIdByName(Category::class, $file_type);
 
@@ -219,7 +224,7 @@ class FileController extends Controller
      */
     public function edit_manuals_and_plans(FileRequest $request, string $id)
     {
-        return $this->update($request, 'ManualsAndPlans', $id);
+        return $this->update($request, 'Manuals And Plans', $id);
     }
 
     /**

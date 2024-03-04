@@ -51,28 +51,7 @@ class PageSeeder extends Seeder
 
         ]);
 
-        // Fourth seed
-        DB::table('pages')->insert([
-            'id' => '4a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'title' => 'Article',
-            'type' => 'Article',
-            'description' => 'Exciting new products!',
-            'location' => 'Venue C',
-            'created_at' => now(),
-
-        ]);
-
-        // Fifth seed
-        DB::table('pages')->insert([
-            'id' => '5a97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58',
-            'title' => 'News Page',
-            'type' => 'News',
-            'location' => 'Venue D',
-            'created_at' => now(),
-        ]);
-
+  
         // Fifth seed
         DB::table('pages')->insert([
             'id' => '6a97a6d-7b19-4fa9-a77f-2a76172f5b58',

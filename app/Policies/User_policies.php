@@ -41,7 +41,7 @@ class User_policies
         return $user->stakeholder_type == $this::GOVERNMENT_REPRESENTATIVE;
     }
 
-    public function all_users_expect_portal_manager(User $user): bool
+    public function all_users_except_portal_manager(User $user): bool
     {
         return $user->stakeholder_type != $this::PORTAL_MANAGER;
     }

@@ -19,7 +19,7 @@ use function App\Helpers\store_files;
 class FileController extends Controller
 {
     /**
-     * Retrieve and paginate Manuals And Plans files.
+     * Retrieve and paginate Manuals_And_Plans files.
      *
      * This function fetches files of type 'Manuals & Plans' from the database,
      * paginates the results, and transforms the file data using the specified
@@ -122,11 +122,11 @@ class FileController extends Controller
     }
 
     /**
-     * Add Manuals And Plans
+     * Add Manuals_And_Plans
      */
     public function add_Manuals_And_Plans(FileRequest $request)
     {
-        return $this->store($request, 'Manuals And Plans');
+        return $this->store($request, 'Manuals_And_Plans');
     }
 
     /**
@@ -142,7 +142,7 @@ class FileController extends Controller
      */
     public function add_guidelines_and_updates_files(FileRequest $request)
     {
-        return $this->store($request, 'Guideline And Updates');
+        return $this->store($request, 'Guideline_And_Updates');
     }
 
     /**
@@ -150,7 +150,7 @@ class FileController extends Controller
      */
     public function add_nfrastructure_services_report_file(FileRequest $request)
     {
-        return $this->store($request, 'Infrastructure Reports');
+        return $this->store($request, 'Infrastructure_Reports');
     }
 
     /**
@@ -158,7 +158,7 @@ class FileController extends Controller
      */
     public function add_water_level_report_file(FileRequest $request)
     {
-        return $this->store($request, 'Water Level Reports');
+        return $this->store($request, 'Water_Level_Reports');
     }
 
     /**
@@ -220,11 +220,11 @@ class FileController extends Controller
 
 
     /**
-     * edit Manuals And Plans
+     * edit Manuals_And_Plans
      */
     public function edit_Manuals_And_Plans(FileRequest $request, string $id)
     {
-        return $this->update($request, 'Manuals And Plans', $id);
+        return $this->update($request, 'Manuals_And_Plans', $id);
     }
 
     /**
@@ -236,15 +236,15 @@ class FileController extends Controller
     }
 
     /**
-     * edit Guideline And Updates files
+     * edit Guideline_And_Updates files
      */
     public function edit_guidelines_and_updates_files(FileRequest $request, string $id)
     {
-        return $this->update($request, 'Guideline And Updates', $id);
+        return $this->update($request, 'Guideline_And_Updates', $id);
     }
 
     /**
-     * edit Guideline And Updates files
+     * edit Guideline_And_Updates files
      */
     public function update_guidelines_and_updates_files(Request $request, string $id)
     {
@@ -258,7 +258,7 @@ class FileController extends Controller
                 $newFile = $request->file('file');
         
                 // Process and store the new file
-                $path = '/files/Guideline And Updates';
+                $path = '/files/Guideline_And_Updates';
 
                 $file_path = edit_file($file_->media_url, $newFile, $path);
 
@@ -277,7 +277,7 @@ class FileController extends Controller
             return api_response(message: 'update-Guideline-And-Updates-success');
         } catch (Exception $e) {
 
-            return api_response(errors: [$e->getMessage()], message: 'update-Guideline And Updates-error', code: 500);
+            return api_response(errors: [$e->getMessage()], message: 'update-Guideline_And_Updates-error', code: 500);
         }
     }
 
@@ -315,7 +315,7 @@ class FileController extends Controller
             }
         
             $file_->update([
-                'category_id' => $request->input('category_id'),
+                'sub_category_id' => $request->input('category_id'),
                 'file_type' => $file_type,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),

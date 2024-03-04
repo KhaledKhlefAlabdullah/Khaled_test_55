@@ -133,6 +133,17 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For News
+            Route::group(['prefix' => 'news'],function(){
+
+                Route::post('/add', [PostController::class, 'add_news']);
+
+                Route::post('/edit/{id}', [PostController::class, 'edit_news']);
+
+                Route::delete('/delete/{id}', [PostController::class, 'destroy']);
+
+            });
+
         });
 
         // Routes for infrastructure provider role
@@ -249,8 +260,8 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
-        // Routes for all users expect Portal manager role
-        Route::middleware(['all-users-expect-portal-manager'])->group(function () {
+        // Routes for all users except Portal manager role
+        Route::middleware(['all-users-except-portal-manager'])->group(function () {
 
             // For profile functions
             Route::group(['prefix' => 'profile'], function () {
@@ -318,6 +329,29 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For News
+            Route::group(['prefix' => 'news'],function(){
+
+                Route::get('/',[PostController::class,'view_news']);
+
+                Route::post('/search/{query}',[PostController::class,'search_news']);
+
+            });
+
+            Route::group(['prefix' => 'posts'],function(){
+
+                Route::get('/',[PostController::class,'view_posts']);
+
+                Route::post('/search/{query}',[PostController::class,'search_posts']);
+
+                Route::post('/add',[PostController::class,'add_posts']);
+
+                Route::post('/edit/{id}',[PostController::class,'edit_posts']);
+
+                Route::delete('/delete/{id}',[PostController::class,'destroy']);
+
+
+            });
 
             // View Announcements
             Route::group(['prefix' => 'announcements'], function () {

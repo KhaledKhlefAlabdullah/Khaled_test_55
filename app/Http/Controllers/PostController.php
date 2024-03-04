@@ -29,10 +29,19 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($condations, $columns)
+    public function index($condations, $columns, $type = 'others')
     {
-        $posts = Post::where($condations)->select($columns)->get();
-
+        if($type == 'posts'){
+           $posts = Post::where($condations)
+           ->join('users','posts.user_id','=','users.id')
+           ->join('user_profiles','users.id','=','user_profiles.user_id')
+           ->join('categories','posts.category_id','=','categories.id')
+           ->select($columns)->get();
+        }
+        else{
+            $posts = Post::where($condations)->select($columns)->get();
+        }
+        
         return $posts;
     }
 
@@ -40,7 +49,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $category_id,$category_path)
+    public function store(Request $request, string $category,$category_path)
     {
         try {
 
@@ -62,6 +71,8 @@ class PostController extends Controller
 
             }
 
+            $category_id =  getIdByName(Category::class, $category);
+
             Post::create([
                 'user_id' => Auth::id(),
                 'category_id' => $category_id,
@@ -72,14 +83,15 @@ class PostController extends Controller
                 'is_priority' => $request->input('is_priority'),
                 'priority_count' =>  $request->input('priority_count'),
                 'is_general_news' => $request->input('is_general_news') ? $request->input('is_general_news') : false,
-                'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish'): true
+                'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish'): true,
+                'created_at' => now()
             ]);
 
             return api_response(message:'data-adding-success');
 
         }
         catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'data-adding-success',code:500);
+            return api_response(errors:[$e->getMessage()],message:'data-adding-error',code:500);
         }
     }
 
@@ -160,15 +172,21 @@ class PostController extends Controller
     {
         // Get the post by id and check if exists
         try {
+            
             $data = getAndCheckModelById(Post::class, $id);
+
+            if($data->media_url){
+                unlink(public_path($data->media_url));
+            }
+
+            // Delete the post
+            $data->delete();
+
+            return api_response(message:'data-deleted-success');
+
         } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
-        }
-
-        // Delete the post
-        $data->delete();
-
-        return response()->json(['message' => 'Post deleted successfully']);
+            return api_response(errors:[$e->getMessage()],message:'data-deleted-error',code:500);
+        }        
     }
 
     /**
@@ -474,7 +492,7 @@ class PostController extends Controller
     // Add article
     public function add_article(PostRequest $request)
     {
-        return $this->store($request, getIdByName(Category::class,'Articles'),'articles');
+        return $this->store($request,'Articles','articles');
     }
 
     // For News
@@ -498,7 +516,7 @@ class PostController extends Controller
      */
     public function add_news(PostRequest $request)
     {
-        return $this->store($request, getIdByName(Category::class,'News'),'news');
+        return $this->store($request, 'News','news');
     }
     
     /**
@@ -509,4 +527,37 @@ class PostController extends Controller
         return $this->update($request, $id,'news');
     }
     
+    // For posts
+    /**
+     * View posted posts in the portal ( Published date- Upvotes- publisher:name,profile image- content-Tag)					
+     */
+    public function view_posts()
+    {
+        return $this->index(['category_id' => getIdByName(Category::class,'posts')],['posts.id as post_id','posts.created_at','posts.priority_count','posts.body','posts.media_url','user_profiles.name','user_profiles.avatar_url','posts.tag'],type:'posts'); 
+    }
+
+     /**
+     * Search For an posts
+     */
+    public function search_posts(string $query)
+    {
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'posts')], $query);
+    }
+
+    /**
+     * Add posts
+     * Create a post (description- Tags -attach a file (img, video..etc) )					
+     */
+    public function add_posts(PostRequest $request)
+    {
+        return $this->store($request, 'posts','posts');
+    }
+    
+    /**
+     * Add posts
+     */
+    public function edit_posts(PostRequest $request,string $id)
+    {
+        return $this->update($request, $id,'posts');
+    }
 }

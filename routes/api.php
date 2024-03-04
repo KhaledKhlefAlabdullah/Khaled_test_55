@@ -135,6 +135,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/edit/{id}', [PostController::class, 'edit_news']);
 
+                Route::delete('/delete/{id}', [PostController::class, 'destroy']);
+
             });
 
         });
@@ -325,6 +327,21 @@ Route::group(['prefix' => 'api'], function () {
                 Route::get('/',[PostController::class,'view_news']);
 
                 Route::post('/search/{query}',[PostController::class,'search_news']);
+
+            });
+
+            Route::group(['prefix' => 'posts'],function(){
+
+                Route::get('/',[PostController::class,'view_posts']);
+
+                Route::post('/search/{query}',[PostController::class,'search_posts']);
+
+                Route::post('/add',[PostController::class,'add_posts']);
+
+                Route::post('/edit/{id}',[PostController::class,'edit_posts']);
+
+                Route::delete('/delete/{id}',[PostController::class,'destroy']);
+
 
             });
 

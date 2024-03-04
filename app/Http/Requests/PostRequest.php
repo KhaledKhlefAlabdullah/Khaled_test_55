@@ -25,6 +25,7 @@ class PostRequest extends BaseRequest
 
         return [
             'title' => ['sometimes', 'required', 'string', 'max:255'],
+            'tag' => ['sometimes', 'required', 'string', 'max:255'],
             'body' => ['sometimes', 'required', 'string'],
             'media' => ['sometimes', 'nullable', 'file','mimes:pdf,pptx,png,jpg,jpeg,etc'],
             'is_priority' => ['sometimes', 'nullable', 'boolean'],

@@ -25,6 +25,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
+use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -338,7 +339,7 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
-            Route::group(['prefix' => 'posts'],function(){
+            Route::group(['prefix' => 'connect'],function(){
 
                 Route::get('/',[PostController::class,'view_posts']);
 
@@ -350,6 +351,11 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::delete('/delete/{id}',[PostController::class,'destroy']);
 
+                Route::post('/filtering',[PostController::class,'filtering_posts']);
+
+                Route::post('/upvot/{id}',[PostController::class,'upvot_posts']);
+
+                Route::get('/users-profiles',[UserController::class,'same_subdomain_users']);
 
             });
 

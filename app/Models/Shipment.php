@@ -33,17 +33,17 @@ class Shipment extends Model
         return $this->belongsTo(Stakeholder::class, 'stakeholder_id');
     }
 
-    public function route_entity()
+    public function route()
     {
         return $this->belongsTo(Entity::class, 'route_id');
     }
 
-    public function product_entity()
+    public function product()
     {
         return $this->belongsTo(Entity::class, 'product_id');
     }
 
-    public function customer_entity()
+    public function customer()
     {
         return $this->belongsTo(Entity::class, 'customer_id');
     }

@@ -19,3 +19,13 @@ yarn-error.log
 /.vscode
 /docker/mysql
 run/var
+/images/
+/files/
+/videos/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.pdf
+*.docx

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AnnouncementsRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
@@ -30,10 +29,19 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($condations, $columns)
+    public function index($condations, $columns, $type = 'others')
     {
-        $posts = Post::where($condations)->select($columns)->get();
-
+        if($type == 'posts'){
+           $posts = Post::where($condations)
+           ->join('users','posts.user_id','=','users.id')
+           ->join('user_profiles','users.id','=','user_profiles.user_id')
+           ->join('categories','posts.category_id','=','categories.id')
+           ->select($columns)->get();
+        }
+        else{
+            $posts = Post::where($condations)->select($columns)->get();
+        }
+        
         return $posts;
     }
 
@@ -41,11 +49,13 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $category_id)
+    public function store(Request $request, string $category,$category_path)
     {
         try {
 
             $request->validated();
+
+            $file_path = null;
 
             $file_type = null;
 
@@ -55,11 +65,13 @@ class PostController extends Controller
 
                 $file_type = getMediaType($file);
 
-                $path = $file_type.'s/articles';
+                $path = $file_type.'s/'.$category_path;
 
                 $file_path = store_files($file,$path);
 
             }
+
+            $category_id =  getIdByName(Category::class, $category);
 
             Post::create([
                 'user_id' => Auth::id(),
@@ -71,14 +83,15 @@ class PostController extends Controller
                 'is_priority' => $request->input('is_priority'),
                 'priority_count' =>  $request->input('priority_count'),
                 'is_general_news' => $request->input('is_general_news') ? $request->input('is_general_news') : false,
-                'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish'): true
+                'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish'): true,
+                'created_at' => now()
             ]);
 
-            return api_response(message:'data-getting-success');
+            return api_response(message:'data-adding-success');
 
         }
         catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'data-adding-success',code:500);
+            return api_response(errors:[$e->getMessage()],message:'data-adding-error',code:500);
         }
     }
 
@@ -104,21 +117,52 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostRequest $request, string $id)
+    public function update(PostRequest $request, string $id,string $category_path)
     {
         // Get the post by id and check if exists
         try {
+
             $data = getAndCheckModelById(Post::class, $id);
+
+            $file_path = $data->media_url;
+
+            $file_type = $data->media_type;
+
+            if($request->media && is_null($file_path)){
+
+                $file = $request->media;
+
+                $file_type = getMediaType($file);
+
+                $path = $file_type.'s/'.$category_path;
+
+                $file_path = store_files($file,$path);
+            }
+            else if($request->media && !is_null($file_path)){
+
+                $file = $request->media;
+
+                $file_type = getMediaType($file);
+
+                $old_path = $data->media_url;
+
+                $new_path = $file_type.'s/'.$category_path;
+
+                $file_path = edit_file($old_path,$file,$new_path); 
+
+            }
+
+            $data->update([
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+                'media_url' => $file_path,
+                'media_type' => $file_type
+            ]);
+          
+            return api_response(message:'data-editing-success');
         } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
+            return api_response(errors:[$e->getMessage()],message:'data-editing-error',code:500);
         }
-        // Validate the request
-        $valid_date = $request->validated();
-
-        // Update the post
-        $data->update($valid_date);
-
-        return new PostResource($data);
     }
 
     /**
@@ -128,15 +172,21 @@ class PostController extends Controller
     {
         // Get the post by id and check if exists
         try {
+            
             $data = getAndCheckModelById(Post::class, $id);
+
+            if($data->media_url){
+                unlink(public_path($data->media_url));
+            }
+
+            // Delete the post
+            $data->delete();
+
+            return api_response(message:'data-deleted-success');
+
         } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
-        }
-
-        // Delete the post
-        $data->delete();
-
-        return response()->json(['message' => 'Post deleted successfully']);
+            return api_response(errors:[$e->getMessage()],message:'data-deleted-error',code:500);
+        }        
     }
 
     /**
@@ -436,20 +486,78 @@ class PostController extends Controller
     // Search for articale
     public function search_article(string $query)
     {
-        return search(Post::class, ['category_id' => getIdByName(Category::class, 'Article')], $query);
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'Articles')], $query);
     }
 
     // Add article
     public function add_article(PostRequest $request)
     {
-
-        return $this->store($request, getIdByName(Category::class,'Articles'));
-
+        return $this->store($request,'Articles','articles');
     }
 
     // For News
-    // View the News: News - date of publication -news source		
+    /**
+     * View the News: News - date of publication -news source		
+     */
     public function view_news(){
         return $this->index(['category_id' => getIdByName(Category::class,'News')],['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
-    }			
+    }	
+    
+    /**
+     * Search For an news
+     */
+    public function search_news(string $query)
+    {
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'News')], $query);
+    }
+
+    /**
+     * Add news
+     */
+    public function add_news(PostRequest $request)
+    {
+        return $this->store($request, 'News','news');
+    }
+    
+    /**
+     * Add news
+     */
+    public function edit_news(PostRequest $request,string $id)
+    {
+        return $this->update($request, $id,'news');
+    }
+    
+    // For posts
+    /**
+     * View posted posts in the portal ( Published date- Upvotes- publisher:name,profile image- content-Tag)					
+     */
+    public function view_posts()
+    {
+        return $this->index(['category_id' => getIdByName(Category::class,'posts')],['posts.id as post_id','posts.created_at','posts.priority_count','posts.body','posts.media_url','user_profiles.name','user_profiles.avatar_url','posts.tag'],type:'posts'); 
+    }
+
+     /**
+     * Search For an posts
+     */
+    public function search_posts(string $query)
+    {
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'posts')], $query);
+    }
+
+    /**
+     * Add posts
+     * Create a post (description- Tags -attach a file (img, video..etc) )					
+     */
+    public function add_posts(PostRequest $request)
+    {
+        return $this->store($request, 'posts','posts');
+    }
+    
+    /**
+     * Add posts
+     */
+    public function edit_posts(PostRequest $request,string $id)
+    {
+        return $this->update($request, $id,'posts');
+    }
 }

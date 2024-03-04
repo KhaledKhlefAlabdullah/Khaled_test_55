@@ -20,6 +20,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
+use App\Models\Post;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -240,8 +242,8 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
-        // Routes for all users expect Portal manager role
-        Route::middleware(['all-users-expect-portal-manager'])->group(function () {
+        // Routes for all users except Portal manager role
+        Route::middleware(['all-users-except-portal-manager'])->group(function () {
 
             // For profile functions
             Route::group(['prefix' => 'profile'], function () {
@@ -309,6 +311,12 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For News 
+            Route::group(['prefix' => 'news'],function(){
+
+                Route::get('/',[PostController::class,'view_news']);
+
+            });
 
         });
 

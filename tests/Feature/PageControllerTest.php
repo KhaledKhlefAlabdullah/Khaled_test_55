@@ -20,7 +20,7 @@ class PageControllerTest extends TestCase
             // Add other required fields here
         ]);
 
-        $response->assertStatus(200); // Assuming you expect a 200 OK response
+        $response->assertStatus(200); // Assuming you except a 200 OK response
         $this->assertDatabaseHas('pages', ['title' => 'temp', 'type' => 'hi']);
     }
 }

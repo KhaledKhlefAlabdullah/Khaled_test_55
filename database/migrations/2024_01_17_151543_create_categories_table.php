@@ -368,6 +368,20 @@ return new class extends Migration {
         ]);
 
         DB::table('categories')->insert([
+            'id' => '040e8400-e29b-41d4-a716-4466554400AR',
+            'name' => 'Articles',
+            'parent_id' => '039e8400-e29b-41d4-a716-446655440000', // Post
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '040e8400-e29b-41d4-a716-4466554400PO',
+            'name' => 'Posts',
+            'parent_id' => '039e8400-e29b-41d4-a716-446655440000', // Post
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
             'id' => '041e8400-e29b-41d4-a716-446655440000',
             'name' => 'Service',
             'parent_id' => null,

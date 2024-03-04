@@ -50,13 +50,13 @@ if (!function_exists('getAndCheckModelById')) {
 }
 
 if (!function_exists('getIdByName')) {
-    function getIdByName($model, $name, $attribute = 'name')
+    function getIdByName($model, $text, $attribute = 'name')
     {
 
-        $instance_id = $model::where($attribute, $name)->first()->id;
+        $instance_id = $model::where($attribute, $text)->first()->id;
 
         if (!$instance_id) {
-            throw new NotFoundResourceException($model . ' not found or there no ' . $name, 404);
+            throw new NotFoundResourceException($model . ' not found or there no ' . $text, 404);
         }
 
         return $instance_id;

@@ -412,6 +412,8 @@ Route::group(['prefix' => 'api'], function () {
                 // View Shipping details(Customer ID - Customer location -used shipping routes) on map
                 Route::get('view-shipping-details', [ShippingController::class, 'view_shipping_details']);
 
+                // View the current status of the Shipping
+                Route::get('view-status-shipping/{id}', [ShippingController::class, 'view_status_shipping']);
 
             });
 

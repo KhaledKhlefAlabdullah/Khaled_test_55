@@ -11,8 +11,14 @@ use function App\Helpers\stakeholder_id;
 
 class ShippingController extends Controller
 {
-    /*
-     * View Shipping details(Customer ID - Customer location -used shipping routes) on map
+    /**
+     * This function retrieves the shipping details for the current stakeholder.
+     * It uses the `stakeholder_id()` helper function to get the ID of the current stakeholder.
+     * The `Shipment` model with its associated `customer` and `route` relationships is queried.
+     * The `customer` and `route` relationships are limited to specific columns using the `with` method.
+     * The function returns the data in the expected format using the `api_response()` helper function.
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function view_shipping_details()
     {
@@ -20,17 +26,18 @@ class ShippingController extends Controller
             $stakeId = stakeholder_id();
 
 
-            $data = Shipment::where('stakeholder_id', $stakeId)
+            $shipments = Shipment::where('stakeholder_id', $stakeId)
                 ->with(['customer' => function ($query) {
-                    $query->select('public_id', 'name', 'location', 'from', 'to'); // select only these columns from customers table
+                    $query->select('id', 'name', 'public_id', 'location');
                 }, 'route' => function ($query) {
-                    $query->select('location', 'from', 'to', 'usage', 'is'); // select only these columns from routes table
+                    $query->select('id', 'public_id', 'from', 'to',);
                 }])
                 ->select('id', 'route_id', 'customer_id', 'location', 'name')
                 ->get();
 
+
             return api_response(
-                data: $data,
+                data: $shipments,
                 message: __('get-data-successfully')
             );
 
@@ -41,5 +48,11 @@ class ShippingController extends Controller
                 errors: [$e->getMessage()]
             );
         }
+    }
+
+
+    public function view_status_shipping(string $id)
+    {
+
     }
 }

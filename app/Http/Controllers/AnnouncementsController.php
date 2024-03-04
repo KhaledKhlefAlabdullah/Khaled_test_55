@@ -99,7 +99,7 @@ class AnnouncementsController extends Controller
     /**
      * Publish an announcement based on the provided request data.
      *
-     * This method expects 'id' and 'is_publish' in the request.
+     * This method excepts 'id' and 'is_publish' in the request.
      * It performs validation and publishes the announcement if everything is valid.
      *
      * @param \Illuminate\Http\Request $request

@@ -32,7 +32,7 @@ class PostController extends Controller
      */
     public function index($condations, $columns)
     {
-        $posts = Post::where($condations)->with('category')->select($columns)->get();
+        $posts = Post::where($condations)->select($columns)->get();
 
         return $posts;
     }
@@ -447,4 +447,9 @@ class PostController extends Controller
 
     }
 
+    // For News
+    // View the News: News - date of publication -news source		
+    public function view_news(){
+        return $this->index(['category_id' => getIdByName(Category::class,'News')],['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
+    }			
 }

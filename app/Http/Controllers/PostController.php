@@ -32,7 +32,7 @@ class PostController extends Controller
      */
     public function index($condations, $columns)
     {
-        $posts = Post::where($condations)->with('category')->select($columns)->get();
+        $posts = Post::where($condations)->select($columns)->get();
 
         return $posts;
     }
@@ -41,7 +41,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $page_id, string $category_id)
+    public function store(Request $request, string $category_id)
     {
         try {
 
@@ -63,7 +63,6 @@ class PostController extends Controller
 
             Post::create([
                 'user_id' => Auth::id(),
-                'page_id' => $page_id,
                 'category_id' => $category_id,
                 'title' => $request->input('title'),
                 'body' => $request->input('body'),
@@ -413,7 +412,6 @@ class PostController extends Controller
         }
     }
 
-
     // For Articles
     // View list of articles
     public function view_list_of_articles()
@@ -435,7 +433,7 @@ class PostController extends Controller
         return $this->show($id);
     }
 
-    // Search for article
+    // Search for articale
     public function search_article(string $query)
     {
         return search(Post::class, ['category_id' => getIdByName(Category::class, 'Article')], $query);
@@ -445,8 +443,13 @@ class PostController extends Controller
     public function add_article(PostRequest $request)
     {
 
-        return $this->store($request, getIdByName(Page::class,'Article','title'), getIdByName(Category::class,'Post'));
+        return $this->store($request, getIdByName(Category::class,'Articles'));
 
     }
 
+    // For News
+    // View the News: News - date of publication -news source		
+    public function view_news(){
+        return $this->index(['category_id' => getIdByName(Category::class,'News')],['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
+    }			
 }

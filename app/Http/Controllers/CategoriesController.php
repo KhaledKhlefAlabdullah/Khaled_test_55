@@ -22,7 +22,7 @@ class CategoriesController extends Controller
      */
     public function get_manula_and_plans_categories()
     {
-        return $this->categories_by_paarent_id(getIdByName(Category::class, 'Manuals And Plans'));
+        return $this->categories_by_paarent_id(getIdByName(Category::class, 'Manuals_And_Plans'));
     }
 
     /**

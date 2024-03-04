@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 return new class extends Migration {
     /**
@@ -31,12 +32,26 @@ return new class extends Migration {
 
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-4466554400MP',
-            'name' => 'ManualsAndPlans',
+            'name' => 'Manuals_And_Plans',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);
 
-        
+        $departments = [
+            'Flood Control Manuals',
+            'National Economic and Social Development Plan',
+            'Disaster Prevention and Mitigation Plans',
+            'Report Training Details and Status'
+        ];
+
+        foreach ($departments as $department) {
+            DB::table('categories')->insert([
+                'id' => Str::uuid(), // Generate a UUID for the department
+                'name' => $department,
+                'parent_id' => '003e8400-e29b-41d4-a716-4466554400MP',
+                'created_at' => now(),
+            ]);
+        }
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544EDU',
             'name' => 'Education',
@@ -53,21 +68,21 @@ return new class extends Migration {
 
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544GAU',
-            'name' => 'Guideline And Updates',
+            'name' => 'Guideline_And_Updates',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544ISR',
-            'name' => 'Infrastructure Reports',
+            'name' => 'Infrastructure_Reports',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544WLR',
-            'name' => 'Water Level Reports',
+            'name' => 'Water_Level_Reports',
             'parent_id' => '003e8400-e29b-41d4-a716-446655440000',
             'created_at' => now(),
         ]);
@@ -353,6 +368,20 @@ return new class extends Migration {
         ]);
 
         DB::table('categories')->insert([
+            'id' => '040e8400-e29b-41d4-a716-4466554400AR',
+            'name' => 'Articles',
+            'parent_id' => '039e8400-e29b-41d4-a716-446655440000', // Post
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
+            'id' => '040e8400-e29b-41d4-a716-4466554400PO',
+            'name' => 'Posts',
+            'parent_id' => '039e8400-e29b-41d4-a716-446655440000', // Post
+            'created_at' => now(),
+        ]);
+
+        DB::table('categories')->insert([
             'id' => '041e8400-e29b-41d4-a716-446655440000',
             'name' => 'Service',
             'parent_id' => null,
@@ -408,6 +437,12 @@ return new class extends Migration {
             'created_at' => now(),
         ]);
 
+        DB::table('categories')->insert([
+            'id' => '048e9200-e29b-41d4-a716-446655440000',
+            'name' => 'Announcements',
+            'parent_id' => null,
+            'created_at' => now(),
+        ]);
     }
 
     /**

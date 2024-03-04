@@ -20,6 +20,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
+use App\Models\Post;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -240,8 +242,8 @@ Route::group(['prefix' => 'api'], function () {
 
         });
 
-        // Routes for all users expect Portal manager role
-        Route::middleware(['all-users-expect-portal-manager'])->group(function () {
+        // Routes for all users except Portal manager role
+        Route::middleware(['all-users-except-portal-manager'])->group(function () {
 
             // For profile functions
             Route::group(['prefix' => 'profile'], function () {
@@ -297,9 +299,11 @@ Route::group(['prefix' => 'api'], function () {
 
                     Route::post('/search/{chat_id}/{query}',[MessageController::class,'search_message']);
 
-                    Route::get('/add',[MessageController::class,'store']);
+                    Route::post('/add',[MessageController::class,'store']);
 
-                    Route::post('/edit/{id}',[MessageController::class,'update']);
+                    Route::put('/edit/{id}',[MessageController::class,'update']);
+
+                    Route::delete('/delete/{id}',[MessageController::class,'destroy']);
 
                     Route::post('/set-starred/{message_id}',[MessageController::class,'set_message_starred']);
 
@@ -307,6 +311,12 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For News 
+            Route::group(['prefix' => 'news'],function(){
+
+                Route::get('/',[PostController::class,'view_news']);
+
+            });
 
         });
 

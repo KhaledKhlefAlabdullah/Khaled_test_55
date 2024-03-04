@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary()->unique();
             $table->string('user_id');
             $table->string('title');
-            $table->string('type')->unique();
+            $table->enum('type', ['About','Contact-Us','Webinar','General News'])->unique();
             $table->text('description')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('location')->nullable();

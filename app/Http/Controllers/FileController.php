@@ -19,7 +19,7 @@ use function App\Helpers\store_files;
 class FileController extends Controller
 {
     /**
-     * Retrieve and paginate Manuals And Plans files.
+     * Retrieve and paginate Manuals_And_Plans files.
      *
      * This function fetches files of type 'Manuals & Plans' from the database,
      * paginates the results, and transforms the file data using the specified
@@ -30,8 +30,7 @@ class FileController extends Controller
     {
         return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-4466554400MP']);
     }
-    /*
-*/
+
     /**
      * Get the educational files
      */
@@ -73,16 +72,16 @@ class FileController extends Controller
     }
 
     /**
-     * Get files 
+     * Get files
      */
     public function get_files(array $Conditions)
     {
         try {
 
             $files = File::where($Conditions)->join('categories','categories.id','=','files.sub_category_id')->when(Auth::check(), function ($query) {
-                return $query->addSelect('files.id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
+                return $query->addSelect('files.id','categories.id as category_id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
             }, function ($query) {
-                return $query->addSelect('files.id','categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
+                return $query->addSelect('files.id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
             })->get();
 
             return api_response($files, 'files-getting-success');
@@ -91,6 +90,7 @@ class FileController extends Controller
             return api_response(message: 'files-getting-error', errors: [$e->getMessage()], code: 500);
         }
     }
+
 
     /**
      * Download files
@@ -122,11 +122,11 @@ class FileController extends Controller
     }
 
     /**
-     * Add Manuals And Plans
+     * Add Manuals_And_Plans
      */
     public function add_Manuals_And_Plans(FileRequest $request)
     {
-        return $this->store($request, 'ManualsAndPlans');
+        return $this->store($request, 'Manuals_And_Plans');
     }
 
     /**
@@ -142,7 +142,7 @@ class FileController extends Controller
      */
     public function add_guidelines_and_updates_files(FileRequest $request)
     {
-        return $this->store($request, 'Guideline And Updates');
+        return $this->store($request, 'Guideline_And_Updates');
     }
 
     /**
@@ -150,7 +150,7 @@ class FileController extends Controller
      */
     public function add_nfrastructure_services_report_file(FileRequest $request)
     {
-        return $this->store($request, 'Infrastructure Reports');
+        return $this->store($request, 'Infrastructure_Reports');
     }
 
     /**
@@ -158,7 +158,7 @@ class FileController extends Controller
      */
     public function add_water_level_report_file(FileRequest $request)
     {
-        return $this->store($request, 'Water Level Reports');
+        return $this->store($request, 'Water_Level_Reports');
     }
 
     /**
@@ -171,6 +171,11 @@ class FileController extends Controller
             $request->validated();
 
             $file = $request->file;
+
+
+            $path = '/files/' . $file_type;
+
+            $path_ = '/files/' . $file_type;
 
             $category_id = getIdByName(Category::class, $file_type);
 
@@ -215,11 +220,11 @@ class FileController extends Controller
 
 
     /**
-     * edit Manuals And Plans
+     * edit Manuals_And_Plans
      */
     public function edit_Manuals_And_Plans(FileRequest $request, string $id)
     {
-        return $this->update($request, 'ManualsAndPlans', $id);
+        return $this->update($request, 'Manuals_And_Plans', $id);
     }
 
     /**
@@ -231,15 +236,15 @@ class FileController extends Controller
     }
 
     /**
-     * edit Guideline And Updates files
+     * edit Guideline_And_Updates files
      */
     public function edit_guidelines_and_updates_files(FileRequest $request, string $id)
     {
-        return $this->update($request, 'Guideline And Updates', $id);
+        return $this->update($request, 'Guideline_And_Updates', $id);
     }
 
     /**
-     * edit Guideline And Updates files
+     * edit Guideline_And_Updates files
      */
     public function update_guidelines_and_updates_files(Request $request, string $id)
     {
@@ -248,25 +253,31 @@ class FileController extends Controller
             // Get file by ID
             $file_ = getAndCheckModelById(File::class, $id);
 
-            $file = $request->file;
+            if ($request->hasFile('file')) {
 
-            $path = '/files/Guideline And Updates';
+                $newFile = $request->file('file');
+        
+                // Process and store the new file
+                $path = '/files/Guideline_And_Updates';
 
-            $old_path = $file_->media_url;
+                $file_path = edit_file($file_->media_url, $newFile, $path);
 
-            $new_file_path = edit_file($old_path, $file, $path);
+            } else {
+                // Keep the existing file path if no new file is uploaded
+                $file_path = $file_->media_url;
+            }            
 
             $file_->update([
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
-                'media_url' => $new_file_path,
+                'media_url' => $file_path,
             ]);
 
             return api_response(message: 'update-Guideline-And-Updates-success');
         } catch (Exception $e) {
 
-            return api_response(errors: [$e->getMessage()], message: 'update-Guideline And Updates-error', code: 500);
+            return api_response(errors: [$e->getMessage()], message: 'update-Guideline_And_Updates-error', code: 500);
         }
     }
 
@@ -284,22 +295,33 @@ class FileController extends Controller
             // Get file by ID
             $file_ = getAndCheckModelById(File::class, $id);
 
-            $file = $request->file;
+            $file_path = $file_->media_url;
 
-            $path = '/files/' . $file_type;
+            if ($request->hasFile('file')) {
 
-            $old_path = $file_->media_url;
+                $newFile = $request->file('file');
+        
+                // Process and store the new file
+                $path = '/files/' . $file_type;
 
-            $new_file_path = edit_file($old_path, $file, $path);
+                $file_path = edit_file($file_->media_url, $newFile, $path);
 
+                $file_type = getMediaType($newFile);
+            } else {
+                // Keep the existing file path if no new file is uploaded
+                $file_path = $file_->media_url;
+
+                $file_type = $file_->file_type;
+            }
+        
             $file_->update([
                 'category_id' => $request->input('category_id'),
                 'file_type' => $file_type,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
-                'media_url' => $new_file_path,
-                'media_type' => getMediaType($file)
+                'media_url' => $file_path,
+                'media_type' => $file_type
             ]);
 
 

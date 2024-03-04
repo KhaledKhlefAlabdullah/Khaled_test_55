@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+
+use function App\Helpers\api_response;
 use function App\Helpers\fake_register_request;
 use function App\Helpers\getAndCheckModelById;
 
@@ -71,6 +73,35 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Users in same subdomain 
+     */
+    public function same_subdomain_users()
+    {
+
+        try {
+            
+            // View Users list of the subdomain users (company name- email- account- industrial area- phone No.)
+            // Get the industrial area id to get the users belongs to this industrial area
+            $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;
+
+            // Get the users bleong to this subdomain
+            $subdomain_users = User::select('up.name','users.email','sk.tenant_company_state as acount','ia.name as industrial_area','up.phone_number')
+            ->join('user_profiles as up','users.id','=','up.user_id')
+            ->join('stakeholders as sk','users.id','=','sk.user_id')
+            ->join('industrial_areas as ia','sk.industrial_area_id','=','ia.id')
+            ->where('ia.id',$industrial_area_id)->get();
+
+            // return the result
+            return api_response(data:$subdomain_users,message:'same-subdomain-users-getting-success');
+
+        } catch (\Exception $e) {
+
+            return api_response(errors:[$e->getMessage()],message:'same-subdomain-users-getting-error',code:500);
+
+        }
+
+    }
 
     /**
      * Get subdomain user details

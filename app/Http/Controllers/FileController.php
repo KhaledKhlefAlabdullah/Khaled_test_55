@@ -315,7 +315,7 @@ class FileController extends Controller
             }
         
             $file_->update([
-                'category_id' => $request->input('category_id'),
+                'sub_category_id' => $request->input('category_id'),
                 'file_type' => $file_type,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),

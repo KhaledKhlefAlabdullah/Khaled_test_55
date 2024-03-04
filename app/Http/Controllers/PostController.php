@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AnnouncementsRequest;
 use App\Http\Requests\PostRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
@@ -41,11 +40,13 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $category_id)
+    public function store(Request $request, string $category_id,$category_path)
     {
         try {
 
             $request->validated();
+
+            $file_path = null;
 
             $file_type = null;
 
@@ -55,7 +56,7 @@ class PostController extends Controller
 
                 $file_type = getMediaType($file);
 
-                $path = $file_type.'s/articles';
+                $path = $file_type.'s/'.$category_path;
 
                 $file_path = store_files($file,$path);
 
@@ -74,7 +75,7 @@ class PostController extends Controller
                 'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish'): true
             ]);
 
-            return api_response(message:'data-getting-success');
+            return api_response(message:'data-adding-success');
 
         }
         catch(Exception $e){
@@ -104,21 +105,52 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostRequest $request, string $id)
+    public function update(PostRequest $request, string $id,string $category_path)
     {
         // Get the post by id and check if exists
         try {
+
             $data = getAndCheckModelById(Post::class, $id);
+
+            $file_path = $data->media_url;
+
+            $file_type = $data->media_type;
+
+            if($request->media && is_null($file_path)){
+
+                $file = $request->media;
+
+                $file_type = getMediaType($file);
+
+                $path = $file_type.'s/'.$category_path;
+
+                $file_path = store_files($file,$path);
+            }
+            else if($request->media && !is_null($file_path)){
+
+                $file = $request->media;
+
+                $file_type = getMediaType($file);
+
+                $old_path = $data->media_url;
+
+                $new_path = $file_type.'s/'.$category_path;
+
+                $file_path = edit_file($old_path,$file,$new_path); 
+
+            }
+
+            $data->update([
+                'title' => $request->input('title'),
+                'body' => $request->input('body'),
+                'media_url' => $file_path,
+                'media_type' => $file_type
+            ]);
+          
+            return api_response(message:'data-editing-success');
         } catch (NotFoundResourceException $e) {
-            return response()->json([$e->getMessage()], $e->getCode());
+            return api_response(errors:[$e->getMessage()],message:'data-editing-error',code:500);
         }
-        // Validate the request
-        $valid_date = $request->validated();
-
-        // Update the post
-        $data->update($valid_date);
-
-        return new PostResource($data);
     }
 
     /**
@@ -436,20 +468,45 @@ class PostController extends Controller
     // Search for articale
     public function search_article(string $query)
     {
-        return search(Post::class, ['category_id' => getIdByName(Category::class, 'Article')], $query);
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'Articles')], $query);
     }
 
     // Add article
     public function add_article(PostRequest $request)
     {
-
-        return $this->store($request, getIdByName(Category::class,'Articles'));
-
+        return $this->store($request, getIdByName(Category::class,'Articles'),'articles');
     }
 
     // For News
-    // View the News: News - date of publication -news source		
+    /**
+     * View the News: News - date of publication -news source		
+     */
     public function view_news(){
         return $this->index(['category_id' => getIdByName(Category::class,'News')],['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
-    }			
+    }	
+    
+    /**
+     * Search For an news
+     */
+    public function search_news(string $query)
+    {
+        return search(Post::class, ['category_id' => getIdByName(Category::class, 'News')], $query);
+    }
+
+    /**
+     * Add news
+     */
+    public function add_news(PostRequest $request)
+    {
+        return $this->store($request, getIdByName(Category::class,'News'),'news');
+    }
+    
+    /**
+     * Add news
+     */
+    public function edit_news(PostRequest $request,string $id)
+    {
+        return $this->update($request, $id,'news');
+    }
+    
 }

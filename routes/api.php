@@ -20,7 +20,6 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
-use App\Models\Post;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,6 +128,15 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+            // For News 
+            Route::group(['prefix' => 'news'],function(){
+
+                Route::post('/add', [PostController::class, 'add_news']);
+
+                Route::post('/edit/{id}', [PostController::class, 'edit_news']);
+
+            });
+
         });
 
         // Routes for inftrastructure provider role
@@ -194,18 +202,18 @@ Route::group(['prefix' => 'api'], function () {
 
                 // View list of Announcements
                 // View announcements list (publisher-published date-content )
-                Route::get('/view-list-of-announcements', [PostController::class, 'view_list_of_announcements']);
+                Route::get('/view-list-of-announcements', [AnnouncementsController::class, 'view_list_of_announcements']);
 
                 // View list of my Announcements
                 // View my Announcements list (content-last published date)
-                Route::get('/view-list-of-my-announcements', [PostController::class, 'view_list_of_my_announcements']);
+                Route::get('/view-list-of-my-announcements', [AnnouncementsController::class, 'view_list_of_my_announcements']);
 
                 // Publish an Announcements
                 // Publish an Announcement to be displayed to portal users
-                Route::put('/publish-an-announcements', [PostController::class, 'publish_an_announcements']);
+                Route::put('/publish-an-announcements', [AnnouncementsController::class, 'publish_an_announcements']);
 
                 // edit_announcements
-                Route::put('/edit-announcements', [PostController::class, 'edit_announcements']);
+                Route::put('/edit-announcements', [AnnouncementsController::class, 'edit_announcements']);
             });
             // Announcements End
 
@@ -315,6 +323,8 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'news'],function(){
 
                 Route::get('/',[PostController::class,'view_news']);
+
+                Route::post('/search/{query}',[PostController::class,'search_news']);
 
             });
 

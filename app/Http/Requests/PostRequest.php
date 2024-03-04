@@ -24,8 +24,6 @@ class PostRequest extends BaseRequest
     {
 
         return [
-            'page_id' => ['sometimes', 'required', 'uuid', 'exists:pages,id'],
-            'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
             'title' => ['sometimes', 'required', 'string', 'max:255'],
             'body' => ['sometimes', 'required', 'string'],
             'media' => ['sometimes', 'nullable', 'file','mimes:pdf,pptx,png,jpg,jpeg,etc'],

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Http\Requests\Posts\FilteringRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
@@ -31,17 +32,16 @@ class PostController extends Controller
      */
     public function index($condations, $columns, $type = 'others')
     {
-        if($type == 'posts'){
-           $posts = Post::where($condations)
-           ->join('users','posts.user_id','=','users.id')
-           ->join('user_profiles','users.id','=','user_profiles.user_id')
-           ->join('categories','posts.category_id','=','categories.id')
-           ->select($columns)->get();
-        }
-        else{
+        if ($type == 'posts') {
+            $posts = Post::where($condations)
+                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                ->join('categories', 'posts.category_id', '=', 'categories.id')
+                ->select($columns)->orderBy('posts.priority_count','desc')->get();
+        } else {
             $posts = Post::where($condations)->select($columns)->get();
         }
-        
+
         return $posts;
     }
 
@@ -49,7 +49,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $category,$category_path)
+    public function store(Request $request, string $category, $category_path)
     {
         try {
 
@@ -59,16 +59,15 @@ class PostController extends Controller
 
             $file_type = null;
 
-            if($request->media){
+            if ($request->media) {
 
                 $file = $request->media;
 
                 $file_type = getMediaType($file);
 
-                $path = $file_type.'s/'.$category_path;
+                $path = $file_type . 's/' . $category_path;
 
-                $file_path = store_files($file,$path);
-
+                $file_path = store_files($file, $path);
             }
 
             $category_id =  getIdByName(Category::class, $category);
@@ -83,15 +82,13 @@ class PostController extends Controller
                 'is_priority' => $request->input('is_priority'),
                 'priority_count' =>  $request->input('priority_count'),
                 'is_general_news' => $request->input('is_general_news') ? $request->input('is_general_news') : false,
-                'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish'): true,
+                'is_publish' =>  $request->input('is_publish') ? $request->input('is_publish') : true,
                 'created_at' => now()
             ]);
 
-            return api_response(message:'data-adding-success');
-
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'data-adding-error',code:500);
+            return api_response(message: 'data-adding-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'data-adding-error', code: 500);
         }
     }
 
@@ -106,18 +103,16 @@ class PostController extends Controller
             $data = getAndCheckModelById(Post::class, $id)->select('title', 'body', 'media_url')->first();
 
             return api_response(data: $data, message: 'data-getting-success');
-
         } catch (NotFoundResourceException $e) {
             return api_response(errors: [$e->getMessage()], message: 'data-getting-error', code: 500);
         }
-
     }
 
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostRequest $request, string $id,string $category_path)
+    public function update(PostRequest $request, string $id, string $category_path)
     {
         // Get the post by id and check if exists
         try {
@@ -128,17 +123,16 @@ class PostController extends Controller
 
             $file_type = $data->media_type;
 
-            if($request->media && is_null($file_path)){
+            if ($request->media && is_null($file_path)) {
 
                 $file = $request->media;
 
                 $file_type = getMediaType($file);
 
-                $path = $file_type.'s/'.$category_path;
+                $path = $file_type . 's/' . $category_path;
 
-                $file_path = store_files($file,$path);
-            }
-            else if($request->media && !is_null($file_path)){
+                $file_path = store_files($file, $path);
+            } else if ($request->media && !is_null($file_path)) {
 
                 $file = $request->media;
 
@@ -146,10 +140,9 @@ class PostController extends Controller
 
                 $old_path = $data->media_url;
 
-                $new_path = $file_type.'s/'.$category_path;
+                $new_path = $file_type . 's/' . $category_path;
 
-                $file_path = edit_file($old_path,$file,$new_path); 
-
+                $file_path = edit_file($old_path, $file, $new_path);
             }
 
             $data->update([
@@ -158,10 +151,10 @@ class PostController extends Controller
                 'media_url' => $file_path,
                 'media_type' => $file_type
             ]);
-          
-            return api_response(message:'data-editing-success');
+
+            return api_response(message: 'data-editing-success');
         } catch (NotFoundResourceException $e) {
-            return api_response(errors:[$e->getMessage()],message:'data-editing-error',code:500);
+            return api_response(errors: [$e->getMessage()], message: 'data-editing-error', code: 500);
         }
     }
 
@@ -172,21 +165,20 @@ class PostController extends Controller
     {
         // Get the post by id and check if exists
         try {
-            
+
             $data = getAndCheckModelById(Post::class, $id);
 
-            if($data->media_url){
+            if ($data->media_url) {
                 unlink(public_path($data->media_url));
             }
 
             // Delete the post
             $data->delete();
 
-            return api_response(message:'data-deleted-success');
-
+            return api_response(message: 'data-deleted-success');
         } catch (NotFoundResourceException $e) {
-            return api_response(errors:[$e->getMessage()],message:'data-deleted-error',code:500);
-        }        
+            return api_response(errors: [$e->getMessage()], message: 'data-deleted-error', code: 500);
+        }
     }
 
     /**
@@ -204,8 +196,14 @@ class PostController extends Controller
                 ->join('posts', 'categories.id', '=', 'posts.category_id')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-                ->select('posts.id', 'user_profiles.name', 'categories.name', 'posts.title',
-                    'posts.body', 'posts.media_url as image')
+                ->select(
+                    'posts.id',
+                    'user_profiles.name',
+                    'categories.name',
+                    'posts.title',
+                    'posts.body',
+                    'posts.media_url as image'
+                )
                 ->where(['categories.name' => 'news', 'posts.is_general_news' => true])
                 ->whereNull('posts.deleted_at')
                 ->get();
@@ -264,14 +262,12 @@ class PostController extends Controller
             return response()->json([
                 'message' => __('general-news-create-success')
             ], 200);
-
         } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-create-error')
             ], 500);
-
         }
     }
 
@@ -288,7 +284,6 @@ class PostController extends Controller
             if (is_null($request->image)) {
 
                 $image_path = $general_news->media_url;
-
             } else {
                 // get image from request
                 $new_image = $request->image;
@@ -317,15 +312,12 @@ class PostController extends Controller
 
                 'message' => __('general-news-edit-success')
             ], 200);
-
-
         } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-edit-error')
             ], 500);
-
         }
     }
 
@@ -353,14 +345,12 @@ class PostController extends Controller
             return response()->json([
                 'message' => __($message)
             ], 200);
-
         } catch (NotFoundResourceException $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('general-news-delete-error')
             ], $e->getCode());
-
         }
     }
 
@@ -428,7 +418,6 @@ class PostController extends Controller
                 ]);
 
                 $message = 'Successfully creating project description';
-
             } else {
 
                 // get image from request
@@ -447,13 +436,11 @@ class PostController extends Controller
                 ]);
 
                 $message = 'Successfully editing project description';
-
             }
 
             return response()->json([
                 'message' => __($message)
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -471,7 +458,6 @@ class PostController extends Controller
             $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')], ['id', 'title', 'created_at as date']);
 
             return api_response(data: $articles, message: 'articles-getting-success');
-
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'articles-getting-error', code: 500);
         }
@@ -492,17 +478,18 @@ class PostController extends Controller
     // Add article
     public function add_article(PostRequest $request)
     {
-        return $this->store($request,'Articles','articles');
+        return $this->store($request, 'Articles', 'articles');
     }
 
     // For News
     /**
      * View the News: News - date of publication -news source		
      */
-    public function view_news(){
-        return $this->index(['category_id' => getIdByName(Category::class,'News')],['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
-    }	
-    
+    public function view_news()
+    {
+        return $this->index(['category_id' => getIdByName(Category::class, 'News')], ['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
+    }
+
     /**
      * Search For an news
      */
@@ -516,27 +503,27 @@ class PostController extends Controller
      */
     public function add_news(PostRequest $request)
     {
-        return $this->store($request, 'News','news');
+        return $this->store($request, 'News', 'news');
     }
-    
+
     /**
      * Add news
      */
-    public function edit_news(PostRequest $request,string $id)
+    public function edit_news(PostRequest $request, string $id)
     {
-        return $this->update($request, $id,'news');
+        return $this->update($request, $id, 'news');
     }
-    
+
     // For posts
     /**
      * View posted posts in the portal ( Published date- Upvotes- publisher:name,profile image- content-Tag)					
      */
     public function view_posts()
     {
-        return $this->index(['category_id' => getIdByName(Category::class,'posts')],['posts.id as post_id','posts.created_at','posts.priority_count','posts.body','posts.media_url','user_profiles.name','user_profiles.avatar_url','posts.tag'],type:'posts'); 
+        return $this->index(['category_id' => getIdByName(Category::class, 'posts')], ['posts.id as post_id', 'posts.created_at', 'posts.priority_count', 'posts.body', 'posts.media_url', 'user_profiles.name', 'user_profiles.avatar_url', 'posts.tag'], type: 'posts');
     }
 
-     /**
+    /**
      * Search For an posts
      */
     public function search_posts(string $query)
@@ -550,14 +537,89 @@ class PostController extends Controller
      */
     public function add_posts(PostRequest $request)
     {
-        return $this->store($request, 'posts','posts');
+        return $this->store($request, 'posts', 'posts');
     }
-    
+
     /**
      * Add posts
      */
-    public function edit_posts(PostRequest $request,string $id)
+    public function edit_posts(PostRequest $request, string $id)
     {
-        return $this->update($request, $id,'posts');
+        return $this->update($request, $id, 'posts');
+    }
+
+    /**
+     * Filter Posts by: posting Date range- publisher- Tag					
+     */
+    public function filtering_posts(FilteringRequest $request)
+    {
+        try {
+
+            $posts = Post::query();
+
+            // Filter by posting date range
+            if ($request->has('date_range') && is_array($request->date_range) && count($request->date_range) === 2) {
+                // Extract start and end dates from the request array
+                // strtotime: it's to convert the string input to timestamp
+                $startDate = date('Y-m-d', strtotime($request->date_range[0]));
+                $endDate = date('Y-m-d', strtotime($request->date_range[1]));
+
+                // Ensure that start date is before end date
+                if ($startDate <= $endDate) {
+                    // Apply the date range filter
+                    $posts->whereRaw("DATE(posts.created_at) BETWEEN '$startDate' AND '$endDate'");
+                } else {
+                    // If the start date is after the end date, handle the error or return appropriate response
+                    return api_response(errors: ['Start date should be before or equal to end date.'], message: 'date-range-error', code: 400);
+                }
+            }
+
+            // Filter by publisher_name
+            if ($request->has('publisher_name')) {
+                // check whil the post has user and pass the query 
+                $posts->whereHas('users', function ($query) use ($request) {
+                    // check whil the users has user_profiles and pass the query
+                    $query->whereHas('user_profiles', function ($sub_query) use ($request) {
+                        // check the user_profiles.name if contain the request (publisher_name) by the query
+                        $sub_query->where('name', 'like', '%' . $request->publisher_name . '%');
+                    });
+                });
+            }
+
+            // Filter by tag
+            if ($request->has('tag')) {
+                $posts->where('tag','like', '%'. $request->tag .'%');
+            }
+
+            // Execute the query and retrieve filtered posts
+            $filtered_posts = $posts->join('users', 'posts.user_id', '=', 'users.id')
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->join('categories', 'posts.category_id', '=', 'categories.id')
+            ->select(['posts.id as post_id', 'posts.created_at', 'posts.priority_count', 'posts.body', 'posts.media_url', 'user_profiles.name', 'user_profiles.avatar_url', 'posts.tag'])->get();
+
+            return api_response(data: $filtered_posts, message: 'posts-filtered-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'data-filtering-error', code: 500);
+        }
+    }
+
+    /**
+     * Upvot posts
+     */
+    public function upvot_posts(string $id)
+    {
+        try{
+
+            $post = getAndCheckModelById(Post::class,$id);
+
+            $post->update([
+                'priority_count' => $post->priority_count+1
+            ]);
+            
+            return api_response(message:'post-upvoting-success');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'post-upvoting-error',code:500);
+        }
     }
 }

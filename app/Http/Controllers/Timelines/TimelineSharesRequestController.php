@@ -5,12 +5,19 @@ namespace App\Http\Controllers\Timelines;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Timelines\TimelineShareRequest;
 use App\Http\Resources\Timeline\TimelineShareRequestResource;
+use App\Models\Timelines\Timeline;
 use App\Models\Timelines\TimelineSharesRequest;
+use App\Models\UserProfile;
+use Exception;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+
+use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getIndustrialAreaID;
+use function App\Helpers\stakeholder_id;
 use function App\Helpers\transformCollection;
 
 class TimelineSharesRequestController extends Controller
@@ -19,27 +26,37 @@ class TimelineSharesRequestController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return AnonymousResourceCollection|JsonResource|TimelineShareRequestResource
      */
     public function index()
     {
-        // Get the ID of the currently authenticated user
-        $currentUserId = Auth::id();
+        try {
 
-        // Retrieve timeline share requests for the authenticated user
-        $timelineShareRequests = TimelineSharesRequest::
-        where(function ($query) use ($currentUserId) {
-            // Filter requests based on sender or receiver stakeholder ID matching the user's ID
-            $query->where('send_stakeholder_id', $currentUserId)
-                ->orWhere('receive_stakeholder_id', $currentUserId);
-        })
-            // Only consider accepted requests with a valid end date
-            ->where('status', 'accept')
-            ->whereDate('end_date', '>=', now())
-            ->get();
+            $share_requests = TimelineSharesRequest::select('timeline_id', 'sender.name', 'sender.avatar')
+                ->join('stakeholders', 'timeline_share_requests.send_stakeholder_id', '=', 'stakeholders.id')
+                ->join('user_profiles', 'stakeholders.user_id', '=', 'user_profiles.user_id')
+                ->where('receive_stakeholder_id', stakeholder_id());
 
-        // Transform the results using the specified resource class
-        return transformCollection($timelineShareRequests, TimelineShareRequestResource::class);
+            return api_response(data: $share_requests, message: 'share-requests-getting-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'share-requests-getting-error', code: 500);
+        }
+    }
+
+    /**
+     * Get the companies in the same industrial area 
+     */
+    public function get_companies_in_same_industrial_area()
+    {
+        try {
+
+            $compaies = UserProfile::select('stakeholders.id as stakeholder_id', 'user_profiles.name', 'user_profiles.avatar_url')
+                ->join('stakeholders', 'user_profiles.user_id', '=', 'stakeholders.user_id')
+                ->where('industrial_area_id', getIndustrialAreaID())->get();
+
+            return api_response(data: $compaies, message: 'compaies-getting-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'compaies-getting-error', code: 500);
+        }
     }
 
     /**
@@ -47,13 +64,53 @@ class TimelineSharesRequestController extends Controller
      */
     public function store(TimelineShareRequest $request)
     {
-        // Validate the request
-        $valid_data = $request->validated();
+        try {
 
-        // Create the timeline share request
-        $timelineShare = TimelineSharesRequest::create($valid_data);
+            // Validate the request
+            $valid_data = $request->validated();
 
-        return new TimelineShareRequestResource($timelineShare);
+            // Get the receiver id
+            $receiver_id = $request->input('receive_stakeholder_id');
+
+            // Get the timeline id
+            $timeline_id = Timeline::where('stakeholder_id', $receiver_id)->first()->id;
+
+            // Create the timeline share request
+            TimelineSharesRequest::create([
+                'timeline_id' => $timeline_id,
+                'send_stakeholder_id' => stakeholder_id(),
+                'receive_stakeholder_id' => $receiver_id,
+                'send_date' => now(),
+                'end_date' => now()->addDays(10)
+            ]);
+
+            return api_response(message: 'share-request-sending-success');
+        } catch (Exception $e) {
+
+            return api_response(errors: [$e->getMessage()], message: 'share-request-sending-error', code: 500);
+        }
+    }
+
+
+    /**
+     * Accept Or Reject Share Request 
+     */
+    public function accept_reject(TimelineShareRequest $request, string $share_request_id)
+    {
+        try{
+
+            $share_request = getAndCheckModelById(TimelineSharesRequest::class, $share_request_id);
+
+            $share_request->update([
+                'status' => $request->input('status')
+            ]);
+
+            return api_response(message:'share-request-accept-reject-success');
+        }
+        catch(Exception $e){
+
+            return api_response(errors:[$e->getMessage()],message:'share-request-accept-reject-error',code:500);
+        }
     }
 
     /**

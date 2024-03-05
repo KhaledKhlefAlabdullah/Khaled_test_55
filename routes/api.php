@@ -16,6 +16,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationRequestController;
 use App\Http\Controllers\ServiceController;use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\Timelines\TimelineController;
+use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
@@ -162,6 +164,32 @@ Route::group(['prefix' => 'api'], function () {
 
             // View list of Manuals and plans
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
+
+            // For timelines
+            Route::group(['prefix' => 'timelines'],function(){
+
+                // For View my timeline and the shared timelines
+                Route::get('/shared',[TimelineController::class,'index']);
+
+                // For view the compaies in same industrial area
+                Route::get('/companie',[TimelineSharesRequestController::class,'get_companies_in_same_industrial_area']);
+
+                Route::group(['prefix' => 'share-requests'],function(){
+
+                    // Get the share request
+                    Route::get('/',[TimelineSharesRequestController::class,'index']);
+
+                    // To send share timeline request
+                    Route::post('/send',[TimelineSharesRequestController::class,'store']);
+                
+                    // To send share timeline request
+                    Route::put('/accept-reject/{share_request_id}',[TimelineSharesRequestController::class,'accept_reject']);
+      
+                });
+                
+
+
+            });
         });
 
         // Routes for Government representative role

@@ -7,6 +7,7 @@ use App\Models\Shipment;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 use function App\Helpers\api_response;
+use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\stakeholder_id;
 
 class ShippingController extends Controller
@@ -51,7 +52,36 @@ class ShippingController extends Controller
     }
 
 
+    /**
+     * This method returns the status of a shipment by its id.
+     * It uses the getAndCheckModelById function to validate the id and retrieve the shipment model.
+     * It returns a JSON response with the data and a success message, or an error message and code if an exception occurs.
+     * @param string $id The id of the shipment to be viewed
+     * @return \Illuminate\Http\JsonResponse The JSON response with the data or the error
+     */
     public function view_status_shipping(string $id)
+    {
+        try {
+            $data = getAndCheckModelById(Shipment::class, $id);
+
+            return api_response(
+                data: $data,
+                message: __('get-data-successfully')
+            );
+        } catch (Exception $e) {
+            return api_response(
+                message: __('public-error'),
+                code: $e->getCode() ?? 404,
+                errors: [$e->getMessage()]
+            );
+        }
+    }
+
+
+    /**
+     * @return void
+     */
+    public function view_future_status_shipping()
     {
 
     }

@@ -46,8 +46,7 @@ class EmployeeController extends Controller
                 ->get();
 
             return $employees;
-        }
-        catch (Exception $e){
+        } catch (Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -60,20 +59,20 @@ class EmployeeController extends Controller
     /**
      * Get the related in formation for add new employee
      */
-    public function get_info(){
+    public function get_info()
+    {
 
-        try{
+        try {
 
-            $departments = Entity::where(['category_id' => getIdByName(Category::class,'Department'),'stakeholder_id' => stakeholder_id()])->select('id','name')->get();
+            $departments = Entity::where(['category_id' => getIdByName(Category::class, 'Department'), 'stakeholder_id' => stakeholder_id()])->select('id', 'name')->get();
 
-            $routes = Entity::where(['category_id' => getIdByName(Category::class,'Route'),'stakeholder_id' => stakeholder_id()])->select('id','name')->get();
+            $routes = Entity::where(['category_id' => getIdByName(Category::class, 'Route'), 'stakeholder_id' => stakeholder_id()])->select('id', 'name')->get();
 
-            $stations = Entity::where(['category_id' => getIdByName(Category::class,'Station'),'stakeholder_id' => stakeholder_id()])->select('id','name')->get();
+            $stations = Entity::where(['category_id' => getIdByName(Category::class, 'Station'), 'stakeholder_id' => stakeholder_id()])->select('id', 'name')->get();
 
-            return api_response(data:['departments' => $departments,'routes' => $routes,'stations' => $stations],message:'employee-info-getting-success');
-        }
-        catch(Exception $e){
-            return api_response(message:'employee-info-getting-error',errors:$e->getMessage(),code:500);
+            return api_response(data: ['departments' => $departments, 'routes' => $routes, 'stations' => $stations], message: 'employee-info-getting-success');
+        } catch (Exception $e) {
+            return api_response(message: 'employee-info-getting-error', errors: $e->getMessage(), code: 500);
         }
 
     }
@@ -81,16 +80,16 @@ class EmployeeController extends Controller
     /**
      * Create employee
      */
-    private function create_emplyee(
+    private function create_employee(
         $employee_number,
         $department_id,
         $station_id,
         $route_id,
         $residential_area_id,
         $is_leadership
-        )
+    )
     {
-        try{
+        try {
 
             $stakeholder_id = stakeholder_id();
 
@@ -106,9 +105,8 @@ class EmployeeController extends Controller
             ]);
 
             return $employee;
-        }
-        catch (\Exception $e){
-            return api_response(errors:$e->getMessage(),message:'employee-adding-error',code:500);
+        } catch (\Exception $e) {
+            return api_response(errors: $e->getMessage(), message: 'employee-adding-error', code: 500);
         }
     }
 
@@ -124,10 +122,9 @@ class EmployeeController extends Controller
             return response()->json([
                 'employees' => $employees,
                 'message' => __('Successfully getting employees details')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -143,10 +140,10 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             // Validate the request
             $request->validate([
-                'employee_number' => 'required|integer|unique:'.Employee::class,
+                'employee_number' => 'required|integer|unique:' . Employee::class,
                 'department_id' => 'required|string|exists:entities,id',
                 'station_id' => 'required|string|exists:entities,id',
                 'route_id' => 'required|string|exists:entities,id',
@@ -155,7 +152,7 @@ class EmployeeController extends Controller
             ]);
 
             // Create the employee
-            $employee = $this->create_emplyee(
+            $employee = $this->create_employee(
                 $request->input('employee_number'),
                 $request->input('department_id'),
                 $request->input('station_id'),
@@ -167,9 +164,8 @@ class EmployeeController extends Controller
             return response()->json([
                 'employee_data' => $employee,
                 'message' => __('Successfully adding new employee')
-            ],200);
-        }
-        catch (\Exception $e){
+            ], 200);
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There are problem in server side try another time')
@@ -203,12 +199,12 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,string $id)
+    public function update(Request $request, string $id)
     {
-        try{
+        try {
             // Validate the request
             $request->validate([
-                'employee_number' => 'required|integer|unique:'.Employee::class,
+                'employee_number' => 'required|integer|unique:' . Employee::class,
                 'department_id' => 'required|string|exists:entities,id',
                 'station_id' => 'required|string|exists:entities,id',
                 'route_id' => 'required|string|exists:entities,id',
@@ -216,7 +212,7 @@ class EmployeeController extends Controller
                 'is_leadership' => 'required|boolean'
             ]);
 
-            $employee = getAndCheckModelById(Employee::class,$id);
+            $employee = getAndCheckModelById(Employee::class, $id);
 
             // Create the employee
             $employee->update([
@@ -231,9 +227,8 @@ class EmployeeController extends Controller
             return response()->json([
                 'employee_data' => $employee,
                 'message' => __('Successfully adding new employee')
-            ],200);
-        }
-        catch (\Exception $e){
+            ], 200);
+        } catch (\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There are problem in server side try another time')
@@ -250,7 +245,7 @@ class EmployeeController extends Controller
         try {
 
             $employee = getAndCheckModelById(Employee::class, $id);
-                
+
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
@@ -301,8 +296,7 @@ class EmployeeController extends Controller
 
             // return response with the data
             return response()->download('employees.csv')->deleteFileAfterSend(true);
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -321,12 +315,12 @@ class EmployeeController extends Controller
 
             $request->validate([
                 'file' => 'required|file|mimes:csv,txt,xlsx|max:10048'
-                 ],[
-                    'file.required' => 'Please choose a file.',
-                    'file.file' => 'The uploaded file is not valid.',
-                    'file.mimes' => 'The file must be in CSV,XLSX or TXT file.',
-                    'file.max' => 'The file size must not exceed 10MB.',
-                ]);
+            ], [
+                'file.required' => 'Please choose a file.',
+                'file.file' => 'The uploaded file is not valid.',
+                'file.mimes' => 'The file must be in CSV,XLSX or TXT file.',
+                'file.max' => 'The file size must not exceed 10MB.',
+            ]);
 
             $file = $request->file('file');
 
@@ -340,12 +334,12 @@ class EmployeeController extends Controller
                     continue;
                 }
 
-                $this->create_emplyee(
+                $this->create_employee(
                     employee_number: $row[0],
-                    department_id: getIdByName(Entity::class,$row[4]),
-                    station_id: getIdByName(Entity::class,$row[5]),
-                    route_id: getIdByName(Entity::class,$row[6]),
-                    residential_area_id: getIdByName(Residential_area::class,$row[2]),
+                    department_id: getIdByName(Entity::class, $row[4]),
+                    station_id: getIdByName(Entity::class, $row[5]),
+                    route_id: getIdByName(Entity::class, $row[6]),
+                    residential_area_id: getIdByName(Residential_area::class, $row[2]),
                     is_leadership: $row[1] == '1' ? true : false
                 );
 
@@ -354,10 +348,9 @@ class EmployeeController extends Controller
             // return response with the data
             return response()->json([
                 'message' => __('Successfully adding data to database')
-            ],200);
+            ], 200);
 
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -365,6 +358,55 @@ class EmployeeController extends Controller
             ]);
         }
 
+    }
+
+
+    /**
+     * Returns a collection of employee resources with their related route, department, station and stakeholder information.
+     *
+     * @param int $id The stakeholder id
+     * @return EmployeeResource[]|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @throws Exception
+     */
+    public function view_employees_details()
+    {
+        try {
+            $id = stakeholder_id();
+
+            $employees = Employee::with([
+                'route:id,name,location,from,to,is_available',
+                'department:id,name',
+                'station:id,name,location',
+                'stakeholder'])
+                ->where('stakeholder_id', $id)
+                ->get();
+
+            return EmployeeResource::collection($employees);
+        } catch (Exception $e) {
+            return api_response(
+                message: __('public-error'),
+                code: $e->getCode() ?? 404,
+                errors: [$e->getMessage()]
+            );
+        }
+
+    }
+
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view_current_status_employees()
+    {
+        return api_response();
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view_future_status_employees()
+    {
+        return api_response();
     }
 }
 

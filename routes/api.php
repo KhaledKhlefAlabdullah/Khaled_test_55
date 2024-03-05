@@ -25,7 +25,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
-use App\Models\Post;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -135,7 +135,7 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // For News
-            Route::group(['prefix' => 'news'],function(){
+            Route::group(['prefix' => 'news'], function () {
 
                 Route::post('/add', [PostController::class, 'add_news']);
 
@@ -331,31 +331,31 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // For News
-            Route::group(['prefix' => 'news'],function(){
+            Route::group(['prefix' => 'news'], function () {
 
-                Route::get('/',[PostController::class,'view_news']);
+                Route::get('/', [PostController::class, 'view_news']);
 
-                Route::post('/search/{query}',[PostController::class,'search_news']);
+                Route::post('/search/{query}', [PostController::class, 'search_news']);
 
             });
 
-            Route::group(['prefix' => 'connect'],function(){
+            Route::group(['prefix' => 'connect'], function () {
 
-                Route::get('/',[PostController::class,'view_posts']);
+                Route::get('/', [PostController::class, 'view_posts']);
 
-                Route::post('/search/{query}',[PostController::class,'search_posts']);
+                Route::post('/search/{query}', [PostController::class, 'search_posts']);
 
-                Route::post('/add',[PostController::class,'add_posts']);
+                Route::post('/add', [PostController::class, 'add_posts']);
 
-                Route::post('/edit/{id}',[PostController::class,'edit_posts']);
+                Route::post('/edit/{id}', [PostController::class, 'edit_posts']);
 
-                Route::delete('/delete/{id}',[PostController::class,'destroy']);
+                Route::delete('/delete/{id}', [PostController::class, 'destroy']);
 
-                Route::post('/filtering',[PostController::class,'filtering_posts']);
+                Route::post('/filtering', [PostController::class, 'filtering_posts']);
 
-                Route::post('/upvot/{id}',[PostController::class,'upvot_posts']);
+                Route::post('/upvot/{id}', [PostController::class, 'upvot_posts']);
 
-                Route::get('/users-profiles',[UserController::class,'same_subdomain_users']);
+                Route::get('/users-profiles', [UserController::class, 'same_subdomain_users']);
 
             });
 
@@ -370,24 +370,35 @@ Route::group(['prefix' => 'api'], function () {
         Route::middleware(['infrastructure-provider-or-tenant-company'])->group(function () {
 
             // Employees
-            Route::group(['prefix' => 'employees'], function () {
+            Route::group(['prefix' => 'employees', 'controller' => EmployeeController::class], function () {
 
-                Route::get('/', [EmployeeController::class, 'index']);
+                Route::get('/', 'index');
 
-                Route::get('/related-info', [EmployeeController::class, 'get_info']);
+                Route::get('/related-info', 'get_info');
 
-                Route::get('/get-csv', [EmployeeController::class, 'export_csv_employees_file']);
+                Route::get('/get-csv', 'export_csv_employees_file');
 
-                Route::post('/upload-csv', [EmployeeController::class, 'import_csv_employees_file']);
+                Route::post('/upload-csv', 'import_csv_employees_file');
 
-                Route::get('/get-ifo', [EmployeeController::class, 'get_info']);
+                Route::get('/get-ifo', 'get_info');
 
-                Route::post('/add', [EmployeeController::class, 'store']);
+                Route::post('/add', 'store');
 
-                Route::put('/edit/{id}', [EmployeeController::class, 'update']);
+                Route::put('/edit/{id}', 'update');
 
-                Route::delete('/delete/{id}', [EmployeeController::class, 'destroy']);
+                Route::delete('/delete/{id}', 'destroy');
 
+                // View Employees details on map
+                // View Employees details
+                Route::get('view-employees-details', 'view_employees_details');
+
+                // View the current status of the Employees
+                // TODO: This case needs a flood api
+                Route::get('view-current-status-employees', 'view_current_status_employees');
+
+                // View the future status of the Employees | View the expected status for the Employees
+                // TODO: This case needs a flood api
+                Route::get('view-future-status-employees', 'view_future_status_employees');
             });
 
             // Suppliers
@@ -424,37 +435,42 @@ Route::group(['prefix' => 'api'], function () {
 
             });
 
+
             // Production Sites
-            Route::group(['prefix' => 'production-sites'], function () {
+            Route::group(['prefix' => 'production-sites', 'controller' => EntityController::class], function () {
                 // View my production sites details
-                Route::get('/', [EntityController::class, 'production_sites']);
+                Route::get('/', 'production_sites');
 
                 // View the current status of the Production site
                 // TODO: This case needs a flood api
-                Route::get('/view-status-production-site', [EntityController::class, 'view_status_production_site']);
+                Route::get('/view-status-production-site', 'view_status_production_site');
 
                 // View the future status of the Production site
                 // View the expected status of the Production site
                 // TODO: This case needs a flood api
-                Route::get('/view-future-status-production-site', [EntityController::class, 'view_future_status_production_site']);
+                Route::get('/view-future-status-production-site', 'view_future_status_production_site');
 
-                Route::post('/add', [EntityController::class, 'add_new_production_site']);
+                Route::post('/add', 'add_new_production_site');
 
-                Route::put('/edit/{id}', [EntityController::class, 'edit_production_site']);
+                Route::put('/edit/{id}', 'edit_production_site');
 
-                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
+                Route::delete('/delete/{id}', 'destroy');
 
             });
 
             // Shipping || Shipment
-            Route::group(['prefix' => 'shipping'], function () {
+            Route::group(['prefix' => 'shipping', 'controller' => ShippingController::class], function () {
                 // View Shipping details
                 // View Shipping details(Customer ID - Customer location -used shipping routes) on map
-                Route::get('view-shipping-details', [ShippingController::class, 'view_shipping_details']);
+                Route::get('view-shipping-details', 'view_shipping_details');
 
                 // View the current status of the Shipping
-                Route::get('view-status-shipping/{id}', [ShippingController::class, 'view_status_shipping']);
+                Route::get('view-status-shipping/{id}', 'view_status_shipping');
 
+                // View the future status of the Shipping
+                // View the expected status for the Shipping
+                // TODO: This case needs a flood api
+                Route::get('view-future-status-shipping', 'view_future_status_shipping');
             });
 
             // Customers routes

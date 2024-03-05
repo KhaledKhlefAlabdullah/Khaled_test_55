@@ -16,16 +16,20 @@ class EmployeeResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'route_id' => $this->route_id,
-            'department_id' => $this->department_id,
-            'station_id' => $this->station_id,
             'stakeholder_id' => $this->stakeholder_id,
-            'public_id' => $this->public_id,
-            'is_leader_shop' => $this->is_leader_shop,
-            'phone_number' => $this->phone_number,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
-
+            'route' => $this->whenLoaded('route', function () {
+                return $this->route->only(['name', 'location', 'from', 'to', 'is_available']);
+            }),
+            'department' => $this->whenLoaded('department', function () {
+                return $this->department->only(['name']);
+            }),
+            'station' => $this->whenLoaded('station', function () {
+                return $this->station->only(['name', 'location']);
+            }),
+            'is_leadership' => $this->is_leadership,
+            'residential_area_id' => $this->residential_area_id,
+            'employee_number' => $this->employee_number,
+            'created_at' => $this->created_at
         ];
     }
 }

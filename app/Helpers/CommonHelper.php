@@ -590,3 +590,17 @@ if(!function_exists('search')){
     }
 
 }
+/**
+ * Get the industrail area id 
+ */
+if(!function_exists('getIndustrialAreaID')){
+    function getIndustrialAreaID(){
+
+        $industrial_Area_id = Auth::user()->stakeholder->industrial_area_id;
+        if($industrial_Area_id)
+            return $industrial_Area_id;
+        else
+            return abort(code:500,message:'There no industrial area id for this user');
+
+    }
+}

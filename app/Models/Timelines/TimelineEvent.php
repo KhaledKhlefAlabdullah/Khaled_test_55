@@ -36,12 +36,7 @@ class TimelineEvent extends Model
     {
         return $this->belongsTo(Timeline::class, 'timeline_id');
     }
-
-    public function stakeholder()
-    {
-        return $this->belongsTo(Stakeholder::class, 'stakeholder_id');
-    }
-
+    
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_is');

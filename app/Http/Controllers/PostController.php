@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostRequest;
+use App\Http\Requests\Posts\PostRequest;
 use App\Http\Requests\Posts\FilteringRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
-use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Posts;
 
+
+use App\Http\Requests\BaseRequest;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 

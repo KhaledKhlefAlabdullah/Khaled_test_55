@@ -170,10 +170,9 @@ if (!function_exists('getMediaType')) {
 
         $ext = $file->getClientOriginalExtension();
 
-        if(in_array($ext,['jpg','jpeg','png','gif'])){
-           $type ='image';
-        }
-        elseif(in_array($ext ,['pdf','pptx'])){
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $type = 'image';
+        } elseif (in_array($ext, ['pdf', 'pptx'])) {
             $type = 'file';
         } else {
             $type = 'video';
@@ -306,10 +305,9 @@ if (!function_exists('stakeholder_id')) {
 
     function stakeholder_id()
     {
-        try{
+        try {
             return Auth::user()->stakeholder->id;
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return \response()->json([
                 'error' => __($e->getMessage()),
@@ -548,27 +546,28 @@ if (!function_exists('api_response')) {
 }
 
 // Search For any instance of any model
-if(!function_exists('search')){
+if (!function_exists('search')) {
 
     /**
      * @param mixed $model is the model will search about it
      * @param array $conditions it's the conditions to specifiy the search
      * @param mixed $query is the input parameter to search about it
      *
-     * @return array $results it's result on search process
+     * @return JsonResponse $results it's result on search process
      */
-    function search($model, $conditions, $query){
+    function search($model, $conditions, $query)
+    {
 
-        try{
+        try {
 
-           // Perform the search on your model
-            $results = $model::where(function($queryBuilder) use ($model, $query) {
+            // Perform the search on your model
+            $results = $model::where(function ($queryBuilder) use ($model, $query) {
                 $modelInstance = new $model(); // Create an instance of the model
                 $attributes = $modelInstance->getFillable(); // Get fillable attributes of the model
 
                 // Dynamically build the OR conditions for each attribute
                 foreach ($attributes as $attribute) {
-                    $queryBuilder->orWhere($attribute, 'like', '%'.$query.'%');
+                    $queryBuilder->orWhere($attribute, 'like', '%' . $query . '%');
                 }
             });
 
@@ -580,11 +579,10 @@ if(!function_exists('search')){
             // Execute the query and get the results
             $results = $results->get();
 
-            return api_response(data:$results,message:'search-success');
+            return api_response(data: $results, message: 'search-success');
 
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'search-error',code:500);
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'search-error', code: 500);
         }
 
     }

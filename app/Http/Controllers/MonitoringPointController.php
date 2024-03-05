@@ -111,7 +111,7 @@ class MonitoringPointController extends Controller
 
             $monitoring_points = MonitoringPoint::where('user_id', $user_id)
                 ->select('monitoring_points.id', 'monitoring_points.name', 'monitoring_points.location',
-                    'monitoring_points.point_type', 'monitoring_points.API_link')->get();
+                    'monitoring_points.point_type', 'monitoring_points.api_link')->get();
 
             return response()->json([
                 'data' => $monitoring_points,

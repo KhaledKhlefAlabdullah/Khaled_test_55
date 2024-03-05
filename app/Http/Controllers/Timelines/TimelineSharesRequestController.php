@@ -19,7 +19,7 @@ class TimelineSharesRequestController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return AnonymousResourceCollection|JsonResource|TimelineShareRequestResource
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function index()
     {

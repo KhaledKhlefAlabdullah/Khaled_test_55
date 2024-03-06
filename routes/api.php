@@ -404,6 +404,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [PostController::class, 'view_news']);
 
+                Route::get('/{id}', [PostController::class, 'show']);
+
                 Route::post('/search/{query}', [PostController::class, 'search_news']);
 
             });

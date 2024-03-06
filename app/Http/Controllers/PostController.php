@@ -98,7 +98,7 @@ class PostController extends Controller
         // Get Post by id and check if exist
         try {
 
-            $data = getAndCheckModelById(Post::class, $id)->select('title', 'body', 'media_url')->first();
+            $data = getAndCheckModelById(Post::class, $id)->select('id', 'title', 'body', 'media_url', 'is_priority', 'created_at')->first();
 
             return api_response(data: $data, message: 'data-getting-success');
         } catch (NotFoundResourceException $e) {
@@ -485,7 +485,7 @@ class PostController extends Controller
      */
     public function view_news()
     {
-        return $this->index(['category_id' => getIdByName(Category::class, 'News')], ['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
+        return $this->index(['category_id' => getIdByName(Category::class, 'News')], ['id', 'title','is_priority', 'created_at']);
     }
 
     /**

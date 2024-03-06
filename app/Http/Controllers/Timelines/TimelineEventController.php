@@ -17,7 +17,7 @@ class TimelineEventController extends Controller
      */
     public function index()
     {
-        $data = TimelineEvent::where('stakeholder_id', auth()->user()->id)
+        $data = TimelineEvent::where('timeline_id', )
             ->where('is_active', true)
             ->get();
 

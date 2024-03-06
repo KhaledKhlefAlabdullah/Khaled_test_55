@@ -48,15 +48,13 @@ class TimelineController extends Controller
                 'send_stakeholder_id' => stakeholder_id(),
                 'status' => 'accept'
             ])->pluck('timeline_id');
-
             // Retrieve your own timeline ID
             $my_timeline_id = Timeline::where('stakeholder_id', stakeholder_id())->value('id');
 
             // Combine your own timeline ID with the accepted timelines
             $timeline_ids = $accepted_timelines->push($my_timeline_id)->toArray();
 
-            // Retrieve timeline events for the combined timeline IDs
-            $timelines = TimelineEvent::select('up.name as company_name','sk.tenant_company_state as company_state','tls.id as timeline_id')
+            $timelines = TimelineEvent::select('up.name as company_name', 'sk.tenant_company_state as company_state', 'tls.id as timeline_id')
                 ->selectRaw('GROUP_CONCAT(timeline_events.id) as events_ids')
                 ->selectRaw('GROUP_CONCAT(timeline_events.title) as events_titles')
                 ->selectRaw('GROUP_CONCAT(c.name) as events_categories')
@@ -66,10 +64,10 @@ class TimelineController extends Controller
                 ->selectRaw('GROUP_CONCAT(timeline_events.production_percentage) as events_production_percentages')
                 ->selectRaw('GROUP_CONCAT(timeline_events.is_active) as events_is_active')
                 ->selectRaw('GROUP_CONCAT(timeline_events.updated_at) as events_updated_at')
-                ->join('timelines as tls', 'timeline_events.timeline_id', '=', 'tls.id')
-                ->join('stakeholders as sk', 'tls.stakeholder_id', '=', 'sk.id')
-                ->join('categories as c', 'timeline_events.category_id', '=', 'c.id')
-                ->join('user_profiles as up', 'sk.user_id', '=', 'up.user_id')
+                ->leftJoin('timelines as tls', 'timeline_events.timeline_id', '=', 'tls.id')
+                ->leftJoin('stakeholders as sk', 'tls.stakeholder_id', '=', 'sk.id')
+                ->leftJoin('categories as c', 'timeline_events.category_id', '=', 'c.id')
+                ->leftJoin('user_profiles as up', 'sk.user_id', '=', 'up.user_id')
                 ->whereIn('tls.id', $timeline_ids)
                 ->where('sk.industrial_area_id', $industrial_area_id)
                 ->groupBy('up.name', 'sk.tenant_company_state', 'tls.id')

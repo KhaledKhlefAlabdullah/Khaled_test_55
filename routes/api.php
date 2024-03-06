@@ -22,6 +22,7 @@ use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Timelines\TimelineController;
+use App\Http\Controllers\Timelines\TimelineEventController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
@@ -192,7 +193,12 @@ Route::group(['prefix' => 'api'], function () {
 
                 });
 
+                // For Events
+                Route::group(['prefix' => 'events'],function(){
 
+                    Route::get('/',[TimelineEventController::class,'index']);
+
+                });
 
             });
 
@@ -251,9 +257,6 @@ Route::group(['prefix' => 'api'], function () {
 
             // Manuals & Plans
             Route::group(['prefix' => 'manuals-and-plans'], function () {
-
-
-                Route::get('/categories', [CategoriesController::class, 'get_manula_and_plans_categories']);
 
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
@@ -373,7 +376,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/search/{query}', [PostController::class, 'search_article']);
 
-                Route::get('/{id}', [PostController::class, 'view_article']);
+                Route::get('/{id}', [PostController::class, 'show']);
 
             });
 
@@ -407,6 +410,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/', [PostController::class, 'view_news']);
 
+                Route::get('/{id}', [PostController::class, 'show']);
+
                 Route::post('/search/{query}', [PostController::class, 'search_news']);
 
             });
@@ -435,6 +440,15 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'announcements'], function () {
                 // View Announcements
                 Route::get('/view-announcements', [AnnouncementsController::class, 'view_announcements']);
+            });
+
+            // To get the related categories
+            Route::group(['prefix' => 'categories'],function(){
+
+                Route::get('/manuals-and-plans', [CategoriesController::class, 'get_manula_and_plans_categories']);
+
+                Route::get('/events', [CategoriesController::class, 'get_events_categories']);
+
             });
         });
 

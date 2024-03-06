@@ -6,7 +6,6 @@ use App\Http\Requests\Posts\PostRequest;
 use App\Http\Requests\Posts\FilteringRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Models\Category;
-use App\Models\Page;
 use App\Models\Post;
 use App\Models\User;
 use Exception;
@@ -99,7 +98,7 @@ class PostController extends Controller
         // Get Post by id and check if exist
         try {
 
-            $data = getAndCheckModelById(Post::class, $id)->select('title', 'body', 'media_url')->first();
+            $data = getAndCheckModelById(Post::class, $id)->select('id', 'title', 'body', 'media_url', 'is_priority', 'created_at')->first();
 
             return api_response(data: $data, message: 'data-getting-success');
         } catch (NotFoundResourceException $e) {
@@ -454,18 +453,12 @@ class PostController extends Controller
     {
         try {
 
-            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')], ['id', 'title', 'created_at as date']);
+            $articles = $this->index(['category_id' => getIdByName(Category::class, 'Articles')], ['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
 
             return api_response(data: $articles, message: 'articles-getting-success');
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'articles-getting-error', code: 500);
         }
-    }
-
-    // Get the article details
-    public function view_article(string $id)
-    {
-        return $this->show($id);
     }
 
     // Search for articale

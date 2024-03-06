@@ -26,7 +26,6 @@ class TimelineSharesRequestController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function index()
     {
@@ -35,9 +34,10 @@ class TimelineSharesRequestController extends Controller
             $share_requests = TimelineSharesRequest::select('timeline_id', 'sender.name', 'sender.avatar')
                 ->join('stakeholders', 'timeline_share_requests.send_stakeholder_id', '=', 'stakeholders.id')
                 ->join('user_profiles', 'stakeholders.user_id', '=', 'user_profiles.user_id')
-                ->where('receive_stakeholder_id', stakeholder_id());
+                ->where('receive_stakeholder_id', stakeholder_id())->get();
 
             return api_response(data: $share_requests, message: 'share-requests-getting-success');
+
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'share-requests-getting-error', code: 500);
         }

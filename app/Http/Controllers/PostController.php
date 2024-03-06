@@ -461,12 +461,6 @@ class PostController extends Controller
         }
     }
 
-    // Get the article details
-    public function view_article(string $id)
-    {
-        return $this->show($id);
-    }
-
     // Search for articale
     public function search_article(string $query)
     {

@@ -22,6 +22,7 @@ use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Timelines\TimelineController;
+use App\Http\Controllers\Timelines\TimelineEventController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
@@ -192,7 +193,12 @@ Route::group(['prefix' => 'api'], function () {
 
                 });
 
+                // For Events
+                Route::group(['prefix' => 'events'],function(){
 
+                    Route::get('/',[TimelineEventController::class,'index']);
+
+                });
 
             });
 
@@ -370,7 +376,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/search/{query}', [PostController::class, 'search_article']);
 
-                Route::get('/{id}', [PostController::class, 'view_article']);
+                Route::get('/{id}', [PostController::class, 'show']);
 
             });
 

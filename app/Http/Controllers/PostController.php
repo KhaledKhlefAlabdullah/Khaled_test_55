@@ -6,7 +6,6 @@ use App\Http\Requests\Posts\PostRequest;
 use App\Http\Requests\Posts\FilteringRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Models\Category;
-use App\Models\Page;
 use App\Models\Post;
 use App\Models\User;
 use Exception;
@@ -454,7 +453,7 @@ class PostController extends Controller
     {
         try {
 
-            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')], ['id', 'title', 'created_at as date']);
+            $articles = $this->index(['category_id' => getIdByName(Category::class, 'Articles')], ['id', 'title', 'created_at as date']);
 
             return api_response(data: $articles, message: 'articles-getting-success');
         } catch (Exception $e) {

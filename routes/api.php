@@ -208,9 +208,6 @@ Route::group(['prefix' => 'api'], function () {
             // Manuals & Plans
             Route::group(['prefix' => 'manuals-and-plans'], function () {
 
-
-                Route::get('/categories', [CategoriesController::class, 'get_manula_and_plans_categories']);
-
                 Route::post('/add', [FileController::class, 'add_manuals_and_plans']);
 
                 Route::post('/edit/{id}', [FileController::class, 'edit_manuals_and_plans']);
@@ -391,6 +388,15 @@ Route::group(['prefix' => 'api'], function () {
             Route::group(['prefix' => 'announcements'], function () {
                 // View Announcements
                 Route::get('/view-announcements', [AnnouncementsController::class, 'view_announcements']);
+            });
+
+            // To get the related categories
+            Route::group(['prefix' => 'categories'],function(){
+
+                Route::get('/manuals-and-plans', [CategoriesController::class, 'get_manula_and_plans_categories']);
+
+                Route::get('/events', [CategoriesController::class, 'get_events_categories']);
+
             });
         });
 

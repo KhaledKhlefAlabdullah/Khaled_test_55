@@ -453,7 +453,7 @@ class PostController extends Controller
     {
         try {
 
-            $articles = $this->index(['category_id' => getIdByName(Category::class, 'Articles')], ['id', 'title', 'created_at as date']);
+            $articles = $this->index(['category_id' => getIdByName(Category::class, 'Articles')], ['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
 
             return api_response(data: $articles, message: 'articles-getting-success');
         } catch (Exception $e) {
@@ -479,7 +479,7 @@ class PostController extends Controller
      */
     public function view_news()
     {
-        return $this->index(['category_id' => getIdByName(Category::class, 'News')], ['id', 'title','is_priority', 'created_at']);
+        return $this->index(['category_id' => getIdByName(Category::class, 'News')], ['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
     }
 
     /**

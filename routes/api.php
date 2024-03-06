@@ -17,12 +17,14 @@ use App\Http\Controllers\Notification\NotificationsSettingController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationRequestController;
+use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StakeholderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\Timelines\TimelineController;
 use App\Http\Controllers\Timelines\TimelineEventController;
+use App\Http\Controllers\Timelines\TimelineQuiresController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
@@ -198,10 +200,29 @@ Route::group(['prefix' => 'api'], function () {
 
                     Route::get('/{id}',[TimelineEventController::class,'show']);
 
+                    Route::post('/add',[TimelineEventController::class,'store']);
+                    
+                    Route::put('/edit/{id}',[TimelineEventController::class,'update']);
+
+                    Route::delete('/delete/{id}',[TimelineEventController::class,'destroy']);
+
+                    // For inquiries
+                    Route::group(['prefix' => 'inquiries'],function(){
+
+                        Route::post('/add',[TimelineQuiresController::class,'store']);
+
+                    });
+
                 });
 
             });
 
+            // For Resouces
+            Route::group(['prefix' => 'resources'],function(){
+
+                Route::get('/',[ResourceController::class,'index']);
+
+            });
 
             Route::group(['prefix' => 'status-report', 'controller' => \App\Http\Controllers\StatusReportController::class], function () {
                 // Generate & Preview Status report

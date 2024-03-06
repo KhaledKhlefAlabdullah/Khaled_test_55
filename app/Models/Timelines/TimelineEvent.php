@@ -3,6 +3,7 @@
 namespace App\Models\Timelines;
 
 use App\Models\Category;
+use App\Models\Resource;
 use App\Models\Stakeholder;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,7 +23,6 @@ class TimelineEvent extends Model
 
     protected $fillable = [
         'timeline_id',
-        'stakeholder_id',
         'category_id',
         'title',
         'start_date',
@@ -45,5 +45,10 @@ class TimelineEvent extends Model
     public function timeline_quires()
     {
         return $this->hasMany(TimelineQuire::class, 'timeline_event_id');
+    }
+
+    public function resources()
+    {
+        return $this->belongsToMany(Resource::class,'event_resources','event_id','resource_id');
     }
 }

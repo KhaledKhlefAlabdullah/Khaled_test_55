@@ -5,6 +5,8 @@ namespace App\Http\Requests\Timelines;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+use function App\Helpers\stakeholder_id;
+
 class TimelineQuiresRequest extends FormRequest
 {
     /**
@@ -18,7 +20,7 @@ class TimelineQuiresRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'stakeholder_id' => auth()->user()->id,
+            'stakeholder_id' => stakeholder_id(),
         ]);
     }
 
@@ -30,8 +32,8 @@ class TimelineQuiresRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'timeline_event_id' => ['required', 'uuid', 'exists:timeline_events,id'],
-            'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
+            'timeline_event_id' => ['required', 'string', 'exists:timeline_events,id'],
+            'stakeholder_id' => ['required', 'string', 'exists:stakeholders,id'],
             'inquiry' => ['required', 'string', 'max:255'],
         ];
     }

@@ -22,19 +22,30 @@ class CategoriesController extends Controller
      */
     public function get_manula_and_plans_categories()
     {
-        return $this->categories_by_paarent_id(getIdByName(Category::class, 'Manuals_And_Plans'));
+        return $this->categories_by_parent_name('Manuals_And_Plans');
+    }
+
+    /**
+     * Get the categories for timeline events
+     */
+    public function get_events_categories()
+    {
+        return $this->categories_by_parent_name('Timeline Event');
     }
 
     /**
      * Get the categories by parent id
      */
-    public function categories_by_paarent_id(string $parent_id)
+    public function categories_by_parent_name(string $parent_name)
     {
         try {
+
+            $parent_id = getIdByName(Category::class,$parent_name);
 
             $categories = Category::where('parent_id', $parent_id)->select('id', 'name')->get();
 
             return api_response(data: $categories, message: 'categories-getting-error');
+
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'categories-getting-error', code: 500);
         }

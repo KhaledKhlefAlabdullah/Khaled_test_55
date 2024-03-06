@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -37,14 +38,14 @@ return new class extends Migration {
             'created_at' => now(),
         ]);
 
-        $departments = [
+        $departments_for_manuals_and_plans = [
             'Flood Control Manuals',
             'National Economic and Social Development Plan',
             'Disaster Prevention and Mitigation Plans',
             'Report Training Details and Status'
         ];
 
-        foreach ($departments as $department) {
+        foreach ($departments_for_manuals_and_plans as $department) {
             DB::table('categories')->insert([
                 'id' => Str::uuid(), // Generate a UUID for the department
                 'name' => $department,
@@ -52,6 +53,7 @@ return new class extends Migration {
                 'created_at' => now(),
             ]);
         }
+
         DB::table('categories')->insert([
             'id' => '003e8400-e29b-41d4-a716-44665544EDU',
             'name' => 'Education',
@@ -102,10 +104,10 @@ return new class extends Migration {
         ]);
 
         DB::table('categories')->insert([
-                'id' => '005e8400-e29b-4154-a716-446655440000',
-                'name' => 'Project Description',
-                'parent_id' => null,
-                'created_at' => now(),
+            'id' => '005e8400-e29b-4154-a716-446655440000',
+            'name' => 'Project Description',
+            'parent_id' => null,
+            'created_at' => now(),
         ]);
 
         DB::table('categories')->insert([
@@ -124,61 +126,30 @@ return new class extends Migration {
 
 
         DB::table('categories')->insert([
-            'id' => '009e8400-e29b-41d4-a716-446655440000',
+            'id' => '009e8400-e29b-41d4-a716-446655440TLE',
             'name' => 'Timeline Event',
             'parent_id' => null,
             'created_at' => now(),
         ]);
 
-        // Insert Primary categories
-        DB::table('categories')->insert([
-            'id' => '010e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Normal Production Rate',
-            'parent_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline Event
-            'created_at' => now(),
-        ]);
+        $departments_for_timeline_events = [
+            'Normal Production Rate',
+            'Extra Production Rate',
+            'Low Production Rate',
+            'Halted Production',
+            'Evacuating',
+            'Maintenance',
+            'Relocation'
+        ];
 
-        DB::table('categories')->insert([
-            'id' => '011e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Extra Production Rate',
-            'parent_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline Event
-            'created_at' => now(),
-        ]);
-
-        DB::table('categories')->insert([
-            'id' => '012e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Low Production Rate',
-            'parent_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline Event
-            'created_at' => now(),
-        ]);
-
-        DB::table('categories')->insert([
-            'id' => '013e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Halted Production',
-            'parent_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline Event
-            'created_at' => now(),
-        ]);
-
-        DB::table('categories')->insert([
-            'id' => '014e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Evacuating',
-            'parent_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline Event
-            'created_at' => now(),
-        ]);
-
-        DB::table('categories')->insert([
-            'id' => '015e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Maintenance',
-            'parent_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline Event
-            'created_at' => now(),
-        ]);
-
-        DB::table('categories')->insert([
-            'id' => '016e8400-e29b-41d4-a716-446655440000',
-            'name' => 'Relocation',
-            'parent_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline Event
-            'created_at' => now(),
-        ]);
+        foreach($departments_for_timeline_events as $department){
+            DB::table('categories')->insert([
+                'id' => Str::uuid(),
+                'name' => $department,
+                'parent_id' => '009e8400-e29b-41d4-a716-446655440TLE',//Time line event
+                'created_at' => now()
+            ]);
+        }
 
         DB::table('categories')->insert([
             'id' => '017e8400-e29b-41d4-a716-446655440000',
@@ -443,6 +414,7 @@ return new class extends Migration {
             'parent_id' => null,
             'created_at' => now(),
         ]);
+
     }
 
     /**

@@ -103,4 +103,9 @@ class Stakeholder extends Model
     {
         return $this->belongsTo(IndustrialArea::class, 'industrial_area_id');
     }
+
+    public function resources()
+    {
+        return $this->hasMany(Resource::class,'stakeholder_id');
+    }
 }

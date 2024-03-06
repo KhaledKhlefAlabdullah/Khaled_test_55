@@ -30,17 +30,17 @@ class Employee extends Model
         return $this->belongsTo(Stakeholder::class, 'stakeholder_id');
     }
 
-    public function route_entity()
+    public function route()
     {
         return $this->belongsTo(Entity::class, 'route_id');
     }
 
-    public function department_entity()
+    public function department()
     {
         return $this->belongsTo(Entity::class, 'department_id');
     }
 
-    public function station_entity()
+    public function station()
     {
         return $this->belongsTo(Entity::class, 'station_id');
     }

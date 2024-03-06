@@ -6,7 +6,6 @@ use App\Http\Requests\Posts\PostRequest;
 use App\Http\Requests\Posts\FilteringRequest;
 use App\Http\Requests\Posts\GeneralNewsRequest;
 use App\Models\Category;
-use App\Models\Page;
 use App\Models\Post;
 use App\Models\User;
 use Exception;
@@ -36,7 +35,7 @@ class PostController extends Controller
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                 ->join('categories', 'posts.category_id', '=', 'categories.id')
-                ->select($columns)->orderBy('posts.priority_count','desc')->get();
+                ->select($columns)->orderBy('posts.priority_count', 'desc')->get();
         } else {
             $posts = Post::where($condations)->select($columns)->get();
         }
@@ -99,7 +98,17 @@ class PostController extends Controller
         // Get Post by id and check if exist
         try {
 
-            $data = getAndCheckModelById(Post::class, $id)->select('title', 'body', 'media_url')->first();
+            $data = getAndCheckModelById(Post::class, $id);
+
+            $data = [
+                'id' => $data->id,
+                'title' => $data->title,
+                'body' => $data->body,
+                'media_url' => $data->media_url,
+                'is_priority' => $data->is_priority,
+                'created_at' => $data->created_at
+
+            ];
 
             return api_response(data: $data, message: 'data-getting-success');
         } catch (NotFoundResourceException $e) {
@@ -454,18 +463,12 @@ class PostController extends Controller
     {
         try {
 
-            $articles = $this->index(['page_id' => getIdByName(Page::class, 'Article', 'title')], ['id', 'title', 'created_at as date']);
+            $articles = $this->index(['category_id' => getIdByName(Category::class, 'Articles')], ['id', 'title', 'body', 'media_url', 'is_priority', 'created_at']);
 
             return api_response(data: $articles, message: 'articles-getting-success');
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'articles-getting-error', code: 500);
         }
-    }
-
-    // Get the article details
-    public function view_article(string $id)
-    {
-        return $this->show($id);
     }
 
     // Search for articale
@@ -587,14 +590,14 @@ class PostController extends Controller
 
             // Filter by tag
             if ($request->has('tag')) {
-                $posts->where('tag','like', '%'. $request->tag .'%');
+                $posts->where('tag', 'like', '%' . $request->tag . '%');
             }
 
             // Execute the query and retrieve filtered posts
             $filtered_posts = $posts->join('users', 'posts.user_id', '=', 'users.id')
-            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-            ->join('categories', 'posts.category_id', '=', 'categories.id')
-            ->select(['posts.id as post_id', 'posts.created_at', 'posts.priority_count', 'posts.body', 'posts.media_url', 'user_profiles.name', 'user_profiles.avatar_url', 'posts.tag'])->get();
+                ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+                ->join('categories', 'posts.category_id', '=', 'categories.id')
+                ->select(['posts.id as post_id', 'posts.created_at', 'posts.priority_count', 'posts.body', 'posts.media_url', 'user_profiles.name', 'user_profiles.avatar_url', 'posts.tag'])->get();
 
             return api_response(data: $filtered_posts, message: 'posts-filtered-success');
         } catch (Exception $e) {
@@ -607,18 +610,17 @@ class PostController extends Controller
      */
     public function upvot_posts(string $id)
     {
-        try{
+        try {
 
-            $post = getAndCheckModelById(Post::class,$id);
+            $post = getAndCheckModelById(Post::class, $id);
 
             $post->update([
-                'priority_count' => $post->priority_count+1
+                'priority_count' => $post->priority_count + 1
             ]);
-            
-            return api_response(message:'post-upvoting-success');
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'post-upvoting-error',code:500);
+
+            return api_response(message: 'post-upvoting-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'post-upvoting-error', code: 500);
         }
     }
 }

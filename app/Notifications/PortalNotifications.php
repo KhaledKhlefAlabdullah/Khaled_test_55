@@ -26,7 +26,7 @@ class PortalNotifications extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(array $viaChannels = ['database'],$user_profile, string $message,$receivers)
+    public function __construct(string $message, $receivers, $user_profile, array $viaChannels = ['database'])
     {
         $this->viaChannels = $viaChannels;
         $this->user_profile = $user_profile;
@@ -61,31 +61,29 @@ class PortalNotifications extends Notification
      */
     public function toMail(object $notifiable)
     {
-        try{
+        try {
             // Take the receiver mails
             $mails = $this->receivers->pluck('email')->toArray();
 
             // send the notifications to all mails
-            $succes = send_mail($this->message,$mails);
+            $succes = send_mail($this->message, $mails);
 
-            if($succes){
+            if ($succes) {
                 return (new PortalMails('testing message'))->to($notifiable);
             }
-        } 
-        catch (Exception $e) {
+        } catch (Exception $e) {
             // Handle any exceptions that occur during mail sending
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('Could not send the email'),
             ], 500);
         }
-    
+
         // If mail sending fails, return an appropriate response
         return response()->json([
             'error' => __('Could not send the email'),
         ], 500);
     }
-
 
 
     /**

@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Timelines\TimelineQuiresRequest;
 use App\Http\Resources\Timeline\TimelineQuireResource;
 use App\Models\Timelines\TimelineQuire;
+use Exception;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+
+use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\transformCollection;
 
@@ -29,13 +32,20 @@ class TimelineQuiresController extends Controller
      */
     public function store(TimelineQuiresRequest $request)
     {
-        // validate the request
-        $valid_data = $request->validated();
+        try{
+            // validate the request
+            $valid_data = $request->validated();
 
-        // create the timeline quire
-        $timeline_quire = TimelineQuire::create($valid_data);
+            // create the timeline quire
+            TimelineQuire::create($valid_data);
 
-        return new TimelineQuireResource($timeline_quire);
+            return api_response(message:'inquiry-adding-success');
+        }
+        catch(Exception $e){
+
+            return api_response(errors:[$e->getMessage()],message:'inquiry-adding-error',code:500);
+        }
+        
     }
 
     /**

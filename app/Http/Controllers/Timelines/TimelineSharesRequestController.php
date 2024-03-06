@@ -34,16 +34,17 @@ class TimelineSharesRequestController extends Controller
             $share_requests = TimelineSharesRequest::select('timeline_id', 'sender.name', 'sender.avatar')
                 ->join('stakeholders', 'timeline_share_requests.send_stakeholder_id', '=', 'stakeholders.id')
                 ->join('user_profiles', 'stakeholders.user_id', '=', 'user_profiles.user_id')
-                ->where('receive_stakeholder_id', stakeholder_id());
+                ->where('receive_stakeholder_id', stakeholder_id())->get();
 
             return api_response(data: $share_requests, message: 'share-requests-getting-success');
+
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'share-requests-getting-error', code: 500);
         }
     }
 
     /**
-     * Get the companies in the same industrial area 
+     * Get the companies in the same industrial area
      */
     public function get_companies_in_same_industrial_area()
     {
@@ -93,7 +94,7 @@ class TimelineSharesRequestController extends Controller
 
 
     /**
-     * Accept Or Reject Share Request 
+     * Accept Or Reject Share Request
      */
     public function accept_reject(TimelineShareRequest $request, string $share_request_id)
     {

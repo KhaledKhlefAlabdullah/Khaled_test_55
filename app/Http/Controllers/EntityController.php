@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Exception;
 
+use function App\Helpers\api_response;
 use function App\Helpers\count_items;
 use function App\Helpers\find_and_update;
 use function App\Helpers\getAndCheckModelById;
@@ -145,14 +146,14 @@ class EntityController extends Controller
                 'usage' => 'required|string|in:Employees transportation,Shipping,Supplies,waste'
             ]);
 
-            $category_id = getIdByName(Category::class,'Route');
+            $category_id = getIdByName(Category::class, 'Route');
 
-            $routes_count = count_items(Entity::class,['stakeholder_id' => stakeholder_id(),'category_id' => $category_id]);
-            
+            $routes_count = count_items(Entity::class, ['stakeholder_id' => stakeholder_id(), 'category_id' => $category_id]);
+
             Entity::create([
-                'stakeholder_id' =>  stakeholder_id(),
-                'category_id' =>  $category_id,
-                'public_id' => $routes_count.'R',
+                'stakeholder_id' => stakeholder_id(),
+                'category_id' => $category_id,
+                'public_id' => $routes_count . 'R',
                 'from' => $request->input('from'),
                 'to' => $request->input('to'),
                 'usage' => $request->input('usage'),
@@ -238,12 +239,12 @@ class EntityController extends Controller
 
             $category_id = getIdByName(Category::class, 'Production Site');
 
-            $production_sites_count = count_items(Entity::class,['stakeholder_id' => stakeholder_id(),'category_id' => $category_id]);
-            
+            $production_sites_count = count_items(Entity::class, ['stakeholder_id' => stakeholder_id(), 'category_id' => $category_id]);
+
             Entity::create([
                 'stakeholder_id' => stakeholder_id(),
                 'category_id' => $category_id,
-                'public_id' => $production_sites_count.'PS',
+                'public_id' => $production_sites_count . 'PS',
                 'name' => $request->input('name'),
                 'location' => $request->input('location'),
                 'is_available' => true
@@ -273,7 +274,7 @@ class EntityController extends Controller
                 'location' => 'required|string'
             ]);
 
-            find_and_update(Entity::class, $id, ['name', 'location'], ['name' =>$request->input('name'), 'location' =>$request->input('location')]);
+            find_and_update(Entity::class, $id, ['name', 'location'], ['name' => $request->input('name'), 'location' => $request->input('location')]);
 
             return response()->json([
                 'message' => __('Successfully editing the production site details')
@@ -297,8 +298,8 @@ class EntityController extends Controller
                 ->join('shipments', 'customers.id', '=', 'shipments.customer_id')
                 ->join('entities as products', 'shipments.product_id', '=', 'products.id')
                 ->join('entities as routes', 'shipments.route_id', '=', 'routes.id')
-                ->select('customers.id as customer_id','shipments.id as shipment_id','customers.name as customer_name',
-                    'customers.public_id as id', 'products.name as shipped_product', 'shipments.location','customers.phone_number as phone', 'routes.public_id as route')
+                ->select('customers.id as customer_id', 'shipments.id as shipment_id', 'customers.name as customer_name',
+                    'customers.public_id as id', 'products.name as shipped_product', 'shipments.location', 'customers.phone_number as phone', 'routes.public_id as route')
                 ->where('customers.stakeholder_id', stakeholder_id())
                 ->whereNull('customers.deleted_at')
                 ->get();
@@ -319,19 +320,19 @@ class EntityController extends Controller
     /**
      * Get the products for customers
      */
-    public function get_products(){
-        try{
+    public function get_products()
+    {
+        try {
 
-            $category_id = getIdByName(Category::class,'Product');
+            $category_id = getIdByName(Category::class, 'Product');
 
-            $products = Entity::where(['stakeholder_id' => stakeholder_id(),'category_id' => $category_id ])->select('entities.id','entities.name')->get();
+            $products = Entity::where(['stakeholder_id' => stakeholder_id(), 'category_id' => $category_id])->select('entities.id', 'entities.name')->get();
 
             return response()->json([
                 'data' => $products,
                 'message' => __('products-getting-success')
             ]);
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('products-getting-error')
@@ -342,54 +343,55 @@ class EntityController extends Controller
     /**
      * Add new customer
      */
-    public function add_customer(CustomersRequest $request){
-        try{
+    public function add_customer(CustomersRequest $request)
+    {
+        try {
 
-            $customers_count = count_items(Entity::class,['stakeholder_id' => stakeholder_id(),'category_id' => getIdByName(Category::class,'Customer')]);
-            
+            $customers_count = count_items(Entity::class, ['stakeholder_id' => stakeholder_id(), 'category_id' => getIdByName(Category::class, 'Customer')]);
+
             $customer = Entity::create([
                 'stakeholder_id' => stakeholder_id(),
-                'category_id' => getIdByName(Category::class,'Customer'),
+                'category_id' => getIdByName(Category::class, 'Customer'),
                 'name' => $request->input('customer_name'),
-                'public_id' => $customers_count."C",
+                'public_id' => $customers_count . "C",
                 'phone_number' => $request->input('phone_number'),
             ]);
 
-            $shipments_count = count_items(Shipment::class,['customer_id' => $customer->id,'stakeholder_id' => stakeholder_id()]);
+            $shipments_count = count_items(Shipment::class, ['customer_id' => $customer->id, 'stakeholder_id' => stakeholder_id()]);
 
             Shipment::create([
                 'route_id' => $request->input('reoute_id'),
                 'product_id' => $request->input('shiped_product_id'),
                 'customer_id' => $customer->id,
                 'stakeholder_id' => stakeholder_id(),
-                'public_id' => $shipments_count.'SH',
-                'name' => $customer->name.'-Shipment',
+                'public_id' => $shipments_count . 'SH',
+                'name' => $customer->name . '-Shipment',
                 'location' => $request->input('location'),
                 'contact_info' => $customer->phone_number
             ]);
 
             return response()->json([
                 'message' => __('customer-creating-success')
-            ],200);
+            ], 200);
 
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('customer-creating-error')
             ], 500);
         }
     }
-    
+
     /**
      * Eedit Customer details
      */
-    public function edit_customer(CustomersRequest $request,string $customer_id,string $shipment_id){
-        try{
+    public function edit_customer(CustomersRequest $request, string $customer_id, string $shipment_id)
+    {
+        try {
 
-            $customer = getAndCheckModelById(Entity::class,$customer_id);
+            $customer = getAndCheckModelById(Entity::class, $customer_id);
 
-            $shipment = getAndCheckModelById(Shipment::class,$shipment_id);
+            $shipment = getAndCheckModelById(Shipment::class, $shipment_id);
 
             $customer->update([
                 'name' => $request->input('customer_name'),
@@ -400,23 +402,47 @@ class EntityController extends Controller
                 'route_id' => $request->input('reoute_id'),
                 'product_id' => $request->input('shiped_product_id'),
                 'customer_id' => $customer->id,
-                'name' => $customer->name.'-Shipment',
+                'name' => $customer->name . '-Shipment',
                 'location' => $request->input('location'),
                 'contact_info' => $customer->phone_number
             ]);
-          
+
             return response()->json([
                 'message' => __('customer-editing-success')
-            ],200);
+            ], 200);
 
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('customer-editing-error')
             ], 500);
         }
     }
+
+
+    /**
+     * This case needs a flood api.
+     * View the current status of the Production site (how many days are expected for the flood to reach the site)
+     * @return array
+     */
+    public function view_status_production_site()
+    {
+        return api_response();
+    }
+
+
+    /*
+     * view_future_status_production_site
+     *
+     */
+
+    public function view_future_status_production_site()
+    {
+        return api_response();
+
+    }
+
+
 
 
 

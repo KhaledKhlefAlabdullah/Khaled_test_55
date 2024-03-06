@@ -26,6 +26,7 @@ class TimelineSharesRequestController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function index()
     {
@@ -43,7 +44,7 @@ class TimelineSharesRequestController extends Controller
     }
 
     /**
-     * Get the companies in the same industrial area 
+     * Get the companies in the same industrial area
      */
     public function get_companies_in_same_industrial_area()
     {
@@ -93,7 +94,7 @@ class TimelineSharesRequestController extends Controller
 
 
     /**
-     * Accept Or Reject Share Request 
+     * Accept Or Reject Share Request
      */
     public function accept_reject(TimelineShareRequest $request, string $share_request_id)
     {

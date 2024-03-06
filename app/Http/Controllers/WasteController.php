@@ -9,6 +9,7 @@ use App\Models\Waste;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\stakeholder_id;
@@ -85,23 +86,22 @@ class WasteController extends Controller
      */
     public function get_desposal_locations()
     {
-        try{
+        try {
 
-            $category_id = getIdByName(Category::class,'Waste Disposal Site');
+            $category_id = getIdByName(Category::class, 'Waste Disposal Site');
 
-            $disposal_sites = Entity::where('category_id',$category_id)->select('id','name')->get();
+            $disposal_sites = Entity::where('category_id', $category_id)->select('id', 'name')->get();
 
             return response()->json([
                 'data' => $disposal_sites,
                 'message' => __('deisposal-get-success')
             ]);
 
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('deisposal-get-error')
-            ],200);
+            ], 200);
         }
     }
 
@@ -177,5 +177,22 @@ class WasteController extends Controller
                 'message' => __('waste-delete-error')
             ], 404);
         }
+    }
+
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view_current_status_wastes()
+    {
+        return api_response();
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function view_future_status_wastes()
+    {
+        return api_response();
     }
 }

@@ -186,14 +186,58 @@ Route::group(['prefix' => 'api'], function () {
 
                     // To send share timeline request
                     Route::post('/send',[TimelineSharesRequestController::class,'store']);
-                
+
                     // To send share timeline request
                     Route::put('/accept-reject/{share_request_id}',[TimelineSharesRequestController::class,'accept_reject']);
-      
+
                 });
-                
 
 
+
+            });
+
+
+            Route::group(['prefix' => 'status-report', 'controller' => \App\Http\Controllers\StatusReportController::class], function () {
+                // Generate & Preview Status report
+                /**
+                 * I want to Generate a report that includes all details about my company status including:
+                 * 1- Company Name
+                 * 2- Date
+                 * 3- Map image: displaying the company's production sites and flood water level in the surrounding area
+                 * 4- Company operational status: Operating,Evacuating, Trapped or Evacuated
+                 * 5- Monitoring graphs: displaying water level in monitoring points and dams (observation + prediction) example
+                 * 6- Business Resources:
+                 * 6.1.Production sites: Safe Production sites - Not Safe Production Sites- Impacted Date
+                 * 6.2.Suppliers: Material : Safe suppliers - Not Safe suppliers - Impacted date
+                 * 6.3.Employees: Department : Safe Staff+leaders - Not Safe Staff +Leaders - Impacted Date
+                 * 6.4.Shipments: Product : Safe Customers - Not Safe Customers
+                 * 6.5. Wastes: Safe Wastes - Not Safe Wastes - Impacted Date
+                 * 7- Infrastructure Services Status:
+                 * 7.1. Service name - Status (available,partially interrupted , interrupted) - Stop date -Start date - Last updated
+                 */
+                Route::get('generate-preview-status-report', 'generate_preview_status_report');
+
+
+                // Select displayed sections in Status Report
+                /**
+                 * I want to Check/Uncheck sections that are going to be displayed status report which includes:
+                 * 1- Monitoring
+                 * 1.1.Monitoring points
+                 * 1.2. Dams
+                 * 2. Business Recources
+                 * 2.1. Production site
+                 * 2.2. Employees
+                 * 2.3. Suppliers
+                 * 2.4. Shipments
+                 * 2.5. Wastes
+                 * 3. Infrastructure Services Status
+                 */
+                Route::get('select-displayed-sections-in-report', 'select_displayed_sections_in_report');
+
+
+                // Download Status Report
+                // Download Generated Status report as a PDF
+                Route::get('download-status-report', 'download_status_report');
             });
         });
 
@@ -436,15 +480,26 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // Suppliers
-            Route::group(['prefix' => 'suppliers'], function () {
+            Route::group(['prefix' => 'suppliers', 'controller' => SupplierController::class], function () {
 
-                Route::get('/', [SupplierController::class, 'index']);
+                // View Supplier details
+                // View Supplier details (Supplier ID- Supplier location - Used supply routes) on map or not map
+                Route::get('/', 'index');
 
-                Route::post('/add', [SupplierController::class, 'store']);
+                Route::post('/add', 'store');
 
-                Route::put('/edit/{id}', [SupplierController::class, 'update']);
+                Route::put('/edit/{id}', 'update');
 
-                Route::delete('/delete/{id}', [SupplierController::class, 'destroy']);
+                Route::delete('/delete/{id}', 'destroy');
+
+                // View the current status of the Supplier
+                // TODO: This case needs a flood api
+                Route::get('view-current-status-suppliers', 'view_current_status_suppliers');
+
+                // View the future status of the supplier
+                // TODO: This case needs a flood api
+                Route::get('view-future-status-suppliers', 'view_future_status_suppliers');
+
 
             });
 
@@ -529,17 +584,27 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // Wastes Routes
-            Route::group(['prefix' => 'wastes'], function () {
+            Route::group(['prefix' => 'wastes', 'controller' => WasteController::class], function () {
 
-                Route::get('/', [WasteController::class, 'index']);
+                // View waste details
+                // View waste disposal details ( waste ID,used routes , disposal location) on map
+                Route::get('/', 'index');
 
-                Route::get('/disposal-sites', [WasteController::class, 'get_desposal_locations']);
+                Route::get('/disposal-sites', 'get_desposal_locations');
 
-                Route::post('/add', [WasteController::class, 'store']);
+                Route::post('/add', 'store');
 
-                Route::put('/edit/{id}', [WasteController::class, 'update']);
+                Route::put('/edit/{id}', 'update');
 
-                Route::delete('/delete/{id}', [WasteController::class, 'destroy']);
+                Route::delete('/delete/{id}', 'destroy');
+
+                // View the current status of the waste
+                // TODO: This case needs a flood api
+                Route::get('view-current-status-wastes', 'view_current_status_wastes');
+
+                // View the future status of the waste
+                // TODO: This case needs a flood api
+                Route::get('view-future-status-wastes', 'view_future_status_wastes');
 
             });
 

@@ -56,7 +56,7 @@ class Stakeholder extends Model
 
     public function timelines()
     {
-        return $this->hasMany(Timeline::class, 'stakeholder_id');
+        return $this->hasOne(Timeline::class, 'stakeholder_id');
     }
 
     public function sent_time_line_share_requests()
@@ -67,11 +67,6 @@ class Stakeholder extends Model
     public function reciver_time_line_share_requests()
     {
         return $this->hasMany(TimelineSharesRequest::class, 'receive_stakeholder_id');
-    }
-
-    public function timeline_events()
-    {
-        return $this->hasMany(TimelineEvent::class, 'stakeholder_id');
     }
 
     public function timeline_quires()

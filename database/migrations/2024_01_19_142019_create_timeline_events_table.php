@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('timeline_events', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('timeline_id');
-            $table->string('stakeholder_id');
             $table->string('category_id');
             $table->string('title');
             $table->date('start_date');
@@ -23,7 +22,6 @@ return new class extends Migration
             $table->double('production_percentage');
             $table->boolean('is_active')->default(false);
             $table->foreign('timeline_id')->references('id')->on('timelines')->onDelete('cascade');
-            $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

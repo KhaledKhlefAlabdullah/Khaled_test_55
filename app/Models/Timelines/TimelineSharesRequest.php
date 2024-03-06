@@ -20,14 +20,12 @@ class TimelineSharesRequest extends Model
 
 
     protected $fillable = [
-        'user_id',
-        'parent_id',
-        'representative_government_agency',
-        'tenant_company_state',
-        'company_representative_name',
-        'job_title',
-        'infrastructures_state',
-        'infrastructure_type'
+        'timeline_id',
+        'send_stakeholder_id',
+        'receive_stakeholder_id',
+        'status',
+        'send_date',
+        'end_date'
     ];
 
     public function timeline()

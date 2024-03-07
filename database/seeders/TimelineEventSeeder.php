@@ -16,7 +16,6 @@ class TimelineEventSeeder extends Seeder
         TimelineEvent::create([
             'id' => "00000701-7b19-4fa9-a77f-2a76172f5b99",
             'timeline_id' => 'abcdfs01-7b19-4fa9-a77f-2a76172f5b99',
-            'stakeholder_id' => '2r97a6d-5238-4fa9-a77f-2a76172f5b58',
             'category_id' => '009e8400-e29b-41d4-a716-446655440000', // Timeline category
             'title' => 'Event Title 1',
             'start_date' => '2024-01-28 12:29:13',
@@ -31,7 +30,6 @@ class TimelineEventSeeder extends Seeder
         TimelineEvent::create([
             'id' => "00000702-7b19-4fa9-a77f-2a76172f5b99",
             'timeline_id' => 'abcdfs02-7b19-4fa9-a77f-2a76172f5b99',
-            'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
             'category_id' => '010e8400-e29b-41d4-a716-446655440000', // Timeline category_id
             'title' => 'Event Title 2',
             'start_date' => '2024-02-08 12:29:01',
@@ -46,7 +44,6 @@ class TimelineEventSeeder extends Seeder
         TimelineEvent::create([
             'id' => "00000703-7b19-4fa9-a77f-2a76172f5b99",
             'timeline_id' => 'abcdfs01-7b19-4fa9-a77f-2a76172f5b99',
-            'stakeholder_id' => '2r97a6d-5238-4fa9-a77f-2a76172f5b58',
             'category_id' => '011e8400-e29b-41d4-a716-446655440000', // Timeline category
             'title' => 'Event Title 3',
             'start_date' => '2024-02-02 12:29:01',
@@ -61,7 +58,6 @@ class TimelineEventSeeder extends Seeder
         TimelineEvent::create([
             'id' => "00000704-7b19-4fa9-a77f-2a76172f5b99",
             'timeline_id' => 'abcdfs02-7b19-4fa9-a77f-2a76172f5b99',
-            'stakeholder_id' => '1r97a6d-5236-4fa9-a77f-2a76172f5b58',
             'category_id' => '012e8400-e29b-41d4-a716-446655440000', // Timeline category_id
             'title' => 'Event Title 4',
             'start_date' => '2024-02-16 12:29:01',

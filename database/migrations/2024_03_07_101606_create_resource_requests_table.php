@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreign('receiver_stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->foreign('resource_id')->references('id')->on('resources')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

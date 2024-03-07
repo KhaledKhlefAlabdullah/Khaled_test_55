@@ -18,6 +18,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegistrationRequestController;
 use App\Http\Controllers\ResourceController;
+use App\Http\Controllers\ResourceRequestController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\StakeholderController;
@@ -222,8 +223,15 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/',[ResourceController::class,'index']);
 
-                Route::get('/g',function(){
-                    return Resource::where('id','00c6fd28-dbb2-11ee-8054-74d4dd06ac12')->value('quantity');
+                // For Resouces Requests
+                Route::group(['prefix' => 'requests'],function(){
+
+                    Route::get('/',[ResourceRequestController::class,'index']);
+
+                    Route::post('/send',[ResourceRequestController::class,'store']);
+                    
+                    Route::put('/accept-reject/{id}',[ResourceRequestController::class,'accept_reject']);
+
                 });
             });
 

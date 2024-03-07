@@ -19,9 +19,10 @@ class ResourceRequestsRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $this->merge([
-            'sender_stakeholder_id' => stakeholder_id(),
-        ]);
+        // $this->merge([
+        //     'sender_stakeholder_id' => stakeholder_id(),
+        //     'receiver_stakeholder_id' => $this->get_receiver_id()
+        // ]);
     }
 
     /**
@@ -31,16 +32,25 @@ class ResourceRequestsRequest extends FormRequest
      */
     public function rules(): array
     {   
+        if($this->isMethod('put')){
+            return [
+                'state' => ['boolean']
+            ];
+        }
         
         return [
-            'sender_stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
-            'receiver_stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
-            'resource_id' => ['required', 'uuid', 'exists:resources,id'],
-            'quantity' => ['required', 'float','max:'.$this->get_resource_quantity()]
+            'sender_stakeholder_id' => ['required', 'string', 'exists:stakeholders,id'],
+            'receiver_stakeholder_id' => ['required', 'string', 'exists:stakeholders,id'],
+            'resource_id' => ['required', 'string', 'exists:resources,id'],
+            'quantity' => ['required', 'numeric','max:'.$this->get_resource_quantity()]
         ];
     }
 
     public function get_resource_quantity(){
-        return Resource::where('id',request()->input('resource_id'))->quantity;
+        return Resource::findOrFail(request()->input('resource_id'))->value('quantity');
+    }
+
+    public function get_receiver_id(){
+        return Resource::findOrFail(request()->input('resource_id'))->value('stakeholder_id');
     }
 }

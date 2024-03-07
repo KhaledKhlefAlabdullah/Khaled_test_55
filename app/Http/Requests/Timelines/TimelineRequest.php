@@ -5,6 +5,8 @@ namespace App\Http\Requests\Timelines;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+use function App\Helpers\stakeholder_id;
+
 class TimelineRequest extends FormRequest
 {
     /**
@@ -18,7 +20,7 @@ class TimelineRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'stakeholder_id' => auth()->user()->id,
+            'stakeholder_id' => stakeholder_id(),
         ]);
     }
 

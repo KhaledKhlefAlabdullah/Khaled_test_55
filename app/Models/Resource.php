@@ -32,4 +32,8 @@ class Resource extends Model
     {
         return $this->belongsTo(Stakeholder::class,'stakeholder_id');
     }
+
+    public function resource_requests(){
+        return $this->hasMany(ResourceRequest::class,'resource_id');
+    }
 }

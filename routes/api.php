@@ -30,7 +30,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
-
+use App\Models\Resource;
 
 /*
 |--------------------------------------------------------------------------
@@ -222,6 +222,9 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/',[ResourceController::class,'index']);
 
+                Route::get('/g',function(){
+                    return Resource::where('id','00c6fd28-dbb2-11ee-8054-74d4dd06ac12')->quantity;
+                });
             });
 
             Route::group(['prefix' => 'status-report', 'controller' => \App\Http\Controllers\StatusReportController::class], function () {

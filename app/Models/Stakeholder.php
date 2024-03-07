@@ -108,4 +108,15 @@ class Stakeholder extends Model
     {
         return $this->hasMany(Resource::class,'stakeholder_id');
     }
+
+    public function sender_stakeholder_requests()
+    {
+        return $this->hasMany(ResourceRequest::class, 'sender_stakeholder_id');
+    }
+
+    public function receiver_stakeholder_requests()
+    {
+        return $this->hasMany(ResourceRequest::class, 'receiver_stakeholder_id');
+    }
+
 }

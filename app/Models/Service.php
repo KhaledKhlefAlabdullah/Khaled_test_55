@@ -23,7 +23,6 @@ class Service extends Model
         'stakeholder_id',
         'category_id',
         'infrastructures_state',
-        
         'description',
         'start_date',
         'end_date',

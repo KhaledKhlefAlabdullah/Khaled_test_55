@@ -223,7 +223,7 @@ Route::group(['prefix' => 'api'], function () {
                 Route::get('/',[ResourceController::class,'index']);
 
                 Route::get('/g',function(){
-                    return Resource::where('id','00c6fd28-dbb2-11ee-8054-74d4dd06ac12')->quantity;
+                    return Resource::where('id','00c6fd28-dbb2-11ee-8054-74d4dd06ac12')->value('quantity');
                 });
             });
 

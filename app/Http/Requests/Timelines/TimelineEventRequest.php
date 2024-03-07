@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests\Timelines;
 
+use App\Models\Timelines\Timeline;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+
+use function App\Helpers\stakeholder_id;
 
 class TimelineEventRequest extends FormRequest
 {
@@ -15,13 +18,6 @@ class TimelineEventRequest extends FormRequest
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'stakeholder_id' => auth()->user()->id,
-        ]);
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -31,25 +27,25 @@ class TimelineEventRequest extends FormRequest
     {
         if ($this->isMethod('PUT')) {
             return [
-                'category_id' => ['sometimes', 'required', 'uuid', 'exists:categories,id'],
+                'category_id' => ['sometimes', 'required', 'string', 'exists:categories,id'],
                 'title' => ['sometimes', 'required', 'string', 'max:255'],
                 'start_date' => ['sometimes', 'required', 'date', 'after_or_equal:now'],
                 'end_date' => ['sometimes', 'required', 'date', 'after:start_date'],
                 'description' => ['nullable', 'string'],
                 'production_percentage' => ['sometimes', 'required', 'numeric', 'min:0', 'max:100'],
                 'is_active' => ['sometimes', 'required', 'boolean'],
+                'resources' => ['sometimes','required','array']
             ];
         }
         return [
-            'timeline_id' => ['required', 'uuid', 'exists:timelines,id'],
-            'stakeholder_id' => ['required', 'uuid', 'exists:stakeholders,id'],
-            'category_id' => ['required', 'uuid', 'exists:categories,id'],
+            'category_id' => ['required', 'string', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:255'],
             'start_date' => ['required', 'date', 'after_or_equal:now'],
             'end_date' => ['required', 'date', 'after:start_date'],
             'description' => ['nullable', 'string'],
             'production_percentage' => ['required', 'numeric', 'min:0'],
             'is_active' => ['sometimes', 'required', 'boolean'],
+            'resources' => ['required','array']
         ];
     }
 

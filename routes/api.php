@@ -201,7 +201,7 @@ Route::group(['prefix' => 'api'], function () {
                     Route::get('/{id}',[TimelineEventController::class,'show']);
 
                     Route::post('/add',[TimelineEventController::class,'store']);
-                    
+
                     Route::put('/edit/{id}',[TimelineEventController::class,'update']);
 
                     Route::delete('/delete/{id}',[TimelineEventController::class,'destroy']);
@@ -709,6 +709,12 @@ Route::group(['prefix' => 'api'], function () {
 
     // View list of educational files
     Route::get('/educational-files', [FileController::class, 'view_educational_files']);
+
+
+    Route::get('/play', function () {
+        event(new \App\Events\PlaygroundEvent());
+    });
+
 
 
     require __DIR__ . '/auth.php';

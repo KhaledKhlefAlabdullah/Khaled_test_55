@@ -2,24 +2,32 @@
 
 namespace App\Events;
 
+use http\Env\Request;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Http\Response;
 use Illuminate\Queue\SerializesModels;
 
-class ChatMessageEvent
+class ChatEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    private Response $response;
+
     /**
      * Create a new event instance.
+     * @param string $message
      */
-    public function __construct(string $message)
+    public function __construct(Request $request)
     {
-        $this->message = $message;
+        $this->response = [
+            'message' => $request['message'],
+            'received_id' => $request['received_id'],
+            'sender_id' => auth()->id()
+        ];
     }
 
     /**
@@ -30,19 +38,20 @@ class ChatMessageEvent
     public function broadcastOn(): array
     {
         return [
-            new Channel('public.chat.1'),
+            new PrivateChannel('chat.' . $this->response['received_id']),
         ];
     }
 
     public function broadcastAs()
     {
-        return 'chat-message';
+        return 'Chat';
     }
 
     public function broadcastWith()
     {
         return [
-            'message' => $this->message
+            'message' => $this->message,
+            'sender_id' => $this->sender_id
         ];
     }
 }

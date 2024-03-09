@@ -422,6 +422,8 @@ Route::group(['prefix' => 'api'], function () {
 
                     Route::post('/set-starred/{message_id}', [MessageController::class, 'set_message_starred']);
 
+                    Route::post('send-message', [MessageController::class, 'send_message']);
+
                 });
 
             });

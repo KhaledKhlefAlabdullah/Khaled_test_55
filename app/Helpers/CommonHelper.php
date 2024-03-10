@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Events\NotificationsEvent;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Mail\PortalMails;
 use App\Models\Notifications\NotificationsSetting;
@@ -384,8 +385,9 @@ if (!function_exists('send_notifications')) {
             ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_URL')
             ->first();
 
-        Notification::send($receivers, new PortalNotifications($viaChanel, $user_profile, $message, $receivers));
+        Notification::send($receivers, new PortalNotifications($user_profile, $message, $receivers,$viaChanel));
 
+        event(new NotificationsEvent($receivers,$message));
     }
 }
 

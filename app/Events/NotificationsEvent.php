@@ -37,9 +37,9 @@ class NotificationsEvent implements ShouldBroadcast
     {
         $chanels = [];
         foreach($this->receivers as $receiver){
-            array_push($chanels,new PrivateChannel('Notificatio-to-user-id'.$receiver->id));
+            $chanels[] = new PrivateChannel('Notificatio-to-user-id'.$receiver->id);
         }
-        
+
         return $chanels;
     }
 }

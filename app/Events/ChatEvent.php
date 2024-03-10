@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use http\Env\Request;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -44,7 +43,7 @@ class ChatEvent implements ShouldBroadcast
 
     public function broadcastAs()
     {
-        return 'Chat';
+        return 'Chat'; // App\Event\ChatEvent
     }
 
     public function broadcastWith()

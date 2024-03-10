@@ -726,7 +726,6 @@ Route::group(['prefix' => 'api'], function () {
     // });
 
 
-
     require __DIR__ . '/auth.php';
 
 });

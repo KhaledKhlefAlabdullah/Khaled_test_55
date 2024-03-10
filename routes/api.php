@@ -721,9 +721,9 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/educational-files', [FileController::class, 'view_educational_files']);
 
 
-    Route::get('/play', function () {
-        event(new \App\Events\PlaygroundEvent());
-    });
+    // Route::get('/play', function () {
+    //     event(new \App\Events\PlaygroundEvent());
+    // });
 
 
 

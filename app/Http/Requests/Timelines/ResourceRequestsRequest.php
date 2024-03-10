@@ -19,10 +19,11 @@ class ResourceRequestsRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        // $this->merge([
-        //     'sender_stakeholder_id' => stakeholder_id(),
-        //     'receiver_stakeholder_id' => $this->get_receiver_id()
-        // ]);
+        if(!$this->isMethod('put'))
+            $this->merge([
+                'sender_stakeholder_id' => stakeholder_id(),
+                'receiver_stakeholder_id' => $this->get_receiver_id()
+            ]);
     }
 
     /**

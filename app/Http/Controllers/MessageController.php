@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ChatEvent;
 use App\Http\Requests\Message\MessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Exception;
+use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
 use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
@@ -93,9 +95,9 @@ class MessageController extends Controller
             $media_ur = null;
 
             $file_type ='text';
-            
+
             if($request->has('media')){
-    
+
                 $file = $request->media;
 
                 $file_type = getMediaType($file);
@@ -182,6 +184,37 @@ class MessageController extends Controller
         catch(Exception $e){
             return api_response(errors:[$e->getMessage()],message:'message-delete-error',code:500);
         }
-        
+
     }
+
+
+    /**
+     *
+     */
+    public function send_message(Request $request)
+    {
+        $data = $request->only(['message', 'sender_id']);
+        // send event for receiver user but not to current user
+        broadcast(new ChatEvent($data))->toOthers(); //
+
+        return api_response(
+            message: __('send-message-successfully')
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

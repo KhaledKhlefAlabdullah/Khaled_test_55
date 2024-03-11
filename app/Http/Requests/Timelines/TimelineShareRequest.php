@@ -25,7 +25,7 @@ class TimelineShareRequest extends FormRequest
     {
         if ($this->method() === 'PUT') {
             return [
-                'status' => ['sometimes', 'required', 'string', 'in:accept,reject,pending'],
+                'status' => ['sometimes', 'required', 'boolean'],
             ];
         }
         return [

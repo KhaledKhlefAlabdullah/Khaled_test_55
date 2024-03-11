@@ -42,7 +42,7 @@ class CategoriesController extends Controller
 
             $parent_id = getIdByName(Category::class,$parent_name);
 
-            $categories = Category::where('parent_id', $parent_id)->select('id', 'name')->get();
+            $categories = Category::where('parent_id', $parent_id)->select('id', 'name','color')->get();
 
             return api_response(data: $categories, message: 'categories-getting-error');
 

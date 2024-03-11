@@ -19,7 +19,7 @@ class ResourceRequestsRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        if(!$this->isMethod('put'))
+        if($this->isMethod('post'))
             $this->merge([
                 'sender_stakeholder_id' => stakeholder_id(),
                 'receiver_stakeholder_id' => $this->get_receiver_id()

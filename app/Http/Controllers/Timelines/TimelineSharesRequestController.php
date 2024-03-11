@@ -31,10 +31,11 @@ class TimelineSharesRequestController extends Controller
     {
         try {
 
-            $share_requests = TimelineSharesRequest::select('timeline_id', 'sender.name', 'sender.avatar')
-                ->join('stakeholders', 'timeline_share_requests.send_stakeholder_id', '=', 'stakeholders.id')
-                ->join('user_profiles', 'stakeholders.user_id', '=', 'user_profiles.user_id')
-                ->where('receive_stakeholder_id', stakeholder_id())->get();
+            $share_requests = TimelineSharesRequest::select('timeline_id', 'sender.name', 'sender.avatar_URL')
+                ->join('stakeholders', 'timeline_shares_requests.send_stakeholder_id', '=', 'stakeholders.id')
+                ->leftJoin('user_profiles as sender', 'stakeholders.user_id', '=', 'sender.user_id')
+                ->where('timeline_shares_requests.receive_stakeholder_id', stakeholder_id())
+                ->get();
 
             return api_response(data: $share_requests, message: 'share-requests-getting-success');
 

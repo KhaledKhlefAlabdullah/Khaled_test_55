@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Resource\ResourceRequest;
 use App\Models\Resource;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
 
 use function App\Helpers\api_response;
+use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\stakeholder_id;
 
 class ResourceController extends Controller
@@ -19,7 +21,7 @@ class ResourceController extends Controller
     {
         try{
 
-            $resources = Resource::select('id','resource','quantity')->where('stakeholder_id',stakeholder_id())->get();
+            $resources = Resource::select('id','resource','quantity','notes')->where('stakeholder_id',stakeholder_id())->get();
 
             return api_response(data:$resources,message:'resources-getting-success');
         }
@@ -30,19 +32,21 @@ class ResourceController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ResourceRequest $request)
     {
-        //
+        try{
+
+            $validatedData = $request->validated();
+
+            Resource::create($validatedData);
+
+            return api_response(message:'resource-creatting-success');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'resource-creatting-error',code:500);
+        }
     }
 
     /**
@@ -54,26 +58,41 @@ class ResourceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Resource $resource)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Resource $resource)
+    public function update(ResourceRequest $request, string $id)
     {
-        //
+        try{
+
+            $validatedData = $request->validated();
+
+            $resource = getAndCheckModelById(Resource::class,$id);
+
+            $resource->update($validatedData);
+
+            return api_response(message:'resource-updatting-success');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'resource-updatting-error',code:500);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Resource $resource)
+    public function destroy(string $id)
     {
-        //
+        try{
+
+            $resource = getAndCheckModelById(Resource::class,$id);
+
+            $resource->delete();
+
+            return api_response(message:'resource-deleting-success');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'resource-deleting-error',code:500);
+        }
     }
 }

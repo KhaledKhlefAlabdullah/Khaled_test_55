@@ -388,7 +388,7 @@ if (!function_exists('send_notifications')) {
     {
         $user_profile = Auth::user()
             ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-            ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_URL')
+            ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_url')
             ->first();
 
         Notification::send($receivers, new PortalNotifications($user_profile, $message, $receivers,$viaChanel));

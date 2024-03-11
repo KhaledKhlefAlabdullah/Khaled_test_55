@@ -20,7 +20,7 @@ class UserProfile extends Model
         'user_id',
         'name',
         'contact_person',
-        'avatar_URL',
+        'avatar_url',
         'location',
         'phone_number'
     ];

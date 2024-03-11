@@ -51,7 +51,7 @@ class PortalNotifications extends Notification
     {
         return [
             'sender_name' => $this->user_profile->name,
-            'sender_image' => $this->user_profile->avatar_URL,
+            'sender_image' => $this->user_profile->avatar_url,
             'message' => __($this->message)
         ];
     }

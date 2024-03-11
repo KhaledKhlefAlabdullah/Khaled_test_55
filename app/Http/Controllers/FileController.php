@@ -40,6 +40,20 @@ class FileController extends Controller
     }
 
     /**
+     * Get the educational files versions
+     */
+    public function view_educational_files_versions()
+    {
+        try{
+
+            return api_response(message:'educational-file-versions-getting-success');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'educational-file-versions-getting-error',code:500);
+        }
+    }
+
+    /**
      * Get the Guide lines files
      */
     public function view_guidelines_and_updates()
@@ -78,8 +92,8 @@ class FileController extends Controller
     {
         try {
 
-            $files = File::where($Conditions)->join('categories','categories.id','=','files.sub_category_id')->when(Auth::check(), function ($query) {
-                return $query->addSelect('files.id','categories.id as category_id','categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
+            $files = File::where($Conditions)->join('categories', 'categories.id', '=', 'files.sub_category_id')->when(Auth::check(), function ($query) {
+                return $query->addSelect('files.id', 'categories.id as category_id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
             }, function ($query) {
                 return $query->addSelect('files.id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
             })->get();
@@ -256,16 +270,15 @@ class FileController extends Controller
             if ($request->hasFile('file')) {
 
                 $newFile = $request->file('file');
-        
+
                 // Process and store the new file
                 $path = '/files/Guideline_And_Updates';
 
                 $file_path = edit_file($file_->media_url, $newFile, $path);
-
             } else {
                 // Keep the existing file path if no new file is uploaded
                 $file_path = $file_->media_url;
-            }            
+            }
 
             $file_->update([
                 'title' => $request->input('title'),
@@ -300,7 +313,7 @@ class FileController extends Controller
             if ($request->hasFile('file')) {
 
                 $newFile = $request->file('file');
-        
+
                 // Process and store the new file
                 $path = '/files/' . $file_type;
 
@@ -313,7 +326,7 @@ class FileController extends Controller
 
                 $file_type = $file_->file_type;
             }
-        
+
             $file_->update([
                 'sub_category_id' => $request->input('category_id'),
                 'file_type' => $file_type,

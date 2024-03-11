@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('name')->unique();
+            $table->string('color')->nullable();
             $table->uuid('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
@@ -142,11 +143,22 @@ return new class extends Migration
             'Relocation'
         ];
 
-        foreach($departments_for_timeline_events as $department){
+        $colors = [
+            '#D0B2D0',
+            '#4CC884',
+            '#F9B57D',
+            '#FF4C4C',
+            '#FFFF00',
+            '#7DA3BB',
+            '#9B9B9B',
+        ];
+
+        foreach ($departments_for_timeline_events as $index => $department) {
             DB::table('categories')->insert([
                 'id' => Str::uuid(),
                 'name' => $department,
-                'parent_id' => '009e8400-e29b-41d4-a716-446655440TLE',//Time line event
+                'color' => $colors[$index],
+                'parent_id' => '009e8400-e29b-41d4-a716-446655440TLE', //Time line event
                 'created_at' => now()
             ]);
         }
@@ -414,7 +426,6 @@ return new class extends Migration
             'parent_id' => null,
             'created_at' => now(),
         ]);
-
     }
 
     /**

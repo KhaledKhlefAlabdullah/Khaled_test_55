@@ -140,14 +140,14 @@ if (!function_exists('fake_register_request')) {
     }
 }
 
+/**
+ * This function is used to store files 
+ * @param mixed $file the file i want to store it
+ * @param string $path the path where i want to save it
+ * @return string $path+fileName
+ */
 if (!function_exists('store_files')) {
-    /*
-     * This function is used to get and check if a model exists by ID
-     * @param string $model
-     * @param string $id
-     *
-     * @throws NotFoundResourceException
-     */
+   
     function store_files($file, $path): string
     {
         // get file extension
@@ -182,7 +182,13 @@ if (!function_exists('getMediaType')) {
         return $type;
     }
 }
-
+/**
+ * This function is used to update files 
+ * @param string $old_path the old path where the file sotred
+ * @param string $new_path the new path where i want to save the new file
+ * @param mixed $file the file i want to store it
+ * @return string $new_file_path+fileName
+ */
 if (!function_exists('edit_file')) {
 
     function edit_file($old_file_path, $new_file, $path): string

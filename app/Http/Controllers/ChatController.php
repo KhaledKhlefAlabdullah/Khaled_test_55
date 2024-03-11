@@ -31,7 +31,7 @@ class ChatController extends Controller
             ->join('chat_members as cm', 'chats.id', '=', 'cm.chat_id')
             ->join('users as u', 'cm.user_id', '=', 'u.id')
             ->join('user_profiles as up', 'u.id', '=', 'up.user_id')
-            ->select('chats.id as chat_id', 'u.id as user_id', 'up.name as user_name', 'up.avatar_URL as avatar_URL')
+            ->select('chats.id as chat_id', 'u.id as user_id', 'up.name as user_name', 'up.avatar_url as avatar_url')
             ->where('u.id', '<>', Auth::id())
             ->get();
 

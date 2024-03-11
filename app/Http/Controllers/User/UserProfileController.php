@@ -46,7 +46,7 @@ class UserProfileController extends Controller
                     $user_profile = DB::table('users')
                         ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                         ->select('user_profiles.name as name', 'users.email as email', 'user_profiles.contact_person  as contact_person',
-                            'user_profiles.location as location', 'user_profiles.avatar_URL  as profile_image')->where('users.id', '=', $user_id)->get();
+                            'user_profiles.location as location', 'user_profiles.avatar_url  as profile_image')->where('users.id', '=', $user_id)->get();
                     break;
                 case 'Tenant_company':
 
@@ -63,7 +63,7 @@ class UserProfileController extends Controller
                         ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                         ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
                         ->select('user_profiles.name as name', 'users.email as email', 'user_profiles.phone_number as phone',
-                            'user_profiles.location as location', 'user_profiles.avatar_URL  as profile_image', 'stakeholders.company_representative_name as company_representative_name',
+                            'user_profiles.location as location', 'user_profiles.avatar_url  as profile_image', 'stakeholders.company_representative_name as company_representative_name',
                             'stakeholders.job_title as job_title')->where('users.id', '=', $user_id)->get();
                     break;
                 case 'Infrastructure_provider':
@@ -81,7 +81,7 @@ class UserProfileController extends Controller
                         ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                         ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
                         ->select('user_profiles.name as name', 'users.email as email', 'stakeholders.infrastructure_type as infrastructure_type',
-                            'user_profiles.phone_number as phone', 'user_profiles.avatar_URL  as profile_image', 'user_profiles.location as location', 'user_profiles.contact_person as contact_person')
+                            'user_profiles.phone_number as phone', 'user_profiles.avatar_url  as profile_image', 'user_profiles.location as location', 'user_profiles.contact_person as contact_person')
                         ->where('users.id', '=', $user_id)->get();
 
                     break;
@@ -99,7 +99,7 @@ class UserProfileController extends Controller
                         ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
                         ->join('stakeholders', 'users.id', '=', 'stakeholders.user_id')
                         ->select('user_profiles.name as name', 'users.email as email', 'user_profiles.phone_number as phone',
-                            'user_profiles.location as location', 'user_profiles.avatar_URL  as profile_image', 'stakeholders.representative_government_agency as representative_government_agency')
+                            'user_profiles.location as location', 'user_profiles.avatar_url  as profile_image', 'stakeholders.representative_government_agency as representative_government_agency')
                         ->where('users.id', '=', $user_id)->get();
 
                     break;
@@ -166,7 +166,7 @@ class UserProfileController extends Controller
             $user->user_profile()->update([
                 'name' => $request->input('name'),
                 'location' => $request->input('location'),
-                'avatar_URL' => $file_path
+                'avatar_url' => $file_path
             ]);
 
             // check user type to update the user profile details because every user type has different details

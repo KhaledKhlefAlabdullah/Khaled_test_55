@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('stakeholder_id');
             $table->string('resource');
             $table->float('quantity');
+            $table->string('notes')->nullable();
             $table->boolean('is_available')->default(true); // Set default value to boolean true
             $table->foreign('stakeholder_id')->references('id')->on('stakeholders')->onDelete('cascade');
             $table->timestamps();

@@ -20,7 +20,8 @@ class Resource extends Model
         'stakeholder_id',
         'resource',
         'quantity',
-        'is_avilable'
+        'is_avilable',
+        'notes'
     ];
 
     public function event()

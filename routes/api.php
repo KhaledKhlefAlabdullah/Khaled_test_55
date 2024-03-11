@@ -223,6 +223,12 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::get('/',[ResourceController::class,'index']);
 
+                Route::post('/add',[ResourceController::class,'store']);
+
+                Route::put('/edit/{id}',[ResourceController::class,'update']);
+
+                Route::delete('/delete/{id}',[ResourceController::class,'destroy']);
+
                 // For Resouces Requests
                 Route::group(['prefix' => 'requests'],function(){
 

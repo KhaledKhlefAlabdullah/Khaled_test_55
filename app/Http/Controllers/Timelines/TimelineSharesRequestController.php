@@ -31,10 +31,10 @@ class TimelineSharesRequestController extends Controller
     {
         try {
 
-            $share_requests = TimelineSharesRequest::select('timeline_shares_requests.id as share_request_id','timeline_id', 'sender.name', 'sender.avatar_url')
+            $share_requests = TimelineSharesRequest::select('timeline_shares_requests.id as share_request_id','timeline_id','timeline_shares_requests.status', 'sender.name', 'sender.avatar_url')
                 ->join('stakeholders', 'timeline_shares_requests.send_stakeholder_id', '=', 'stakeholders.id')
                 ->leftJoin('user_profiles as sender', 'stakeholders.user_id', '=', 'sender.user_id')
-                ->where('timeline_shares_requests.receive_stakeholder_id', stakeholder_id())
+                ->where(['timeline_shares_requests.receive_stakeholder_id' => stakeholder_id(),'timeline_shares_requests.status' => 'pending'])
                 ->whereNull('timeline_shares_requests.deleted_at')
                 ->get();
 

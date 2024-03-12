@@ -733,6 +733,8 @@ Route::group(['prefix' => 'api'], function () {
     //     event(new \App\Events\PlaygroundEvent());
     // });
 
+    // todo ** complete here tomoro
+    Route::get('/test',[FileController::class,'generatePDF']);
 
     require __DIR__ . '/auth.php';
 

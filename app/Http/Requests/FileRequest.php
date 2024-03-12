@@ -25,7 +25,8 @@ class FileRequest extends BaseRequest
             'category_id' => ['required','string','exists:categories,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
-            'version' => ['nullable', 'string', 'max:100'],
+            'version' => ['sometimes','required', 'string'],
+            'version_id' => ['sometimes','string','required','exists:files,version_id'],
             'file' => ['sometimes', 'mimes:pdf,pptx,jpg,jpeg,png,gif,mp4,mp3'],
             'update_frequency' => ['sometimes', 'in:daily,weekly,monthly'],
         ];

@@ -65,6 +65,8 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
+                Route::get('/versions/{version_id}',[FileController::class,'view_educational_files_versions']);
+
             });
 
             Route::group(['prefix' => 'industrial-areas'], function () {

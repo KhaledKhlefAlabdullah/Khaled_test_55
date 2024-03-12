@@ -29,7 +29,7 @@ class TimelineEventRequest extends FormRequest
             return [
                 'category_id' => ['sometimes', 'required', 'string', 'exists:categories,id'],
                 'title' => ['sometimes', 'required', 'string', 'max:255'],
-                'start_date' => ['sometimes', 'required', 'date', 'after_or_equal:now'],
+                'start_date' => ['sometimes', 'required', 'date'],//, 'after_or_equal:now'],
                 'end_date' => ['sometimes', 'required', 'date', 'after:start_date'],
                 'description' => ['nullable', 'string'],
                 'production_percentage' => ['sometimes', 'required', 'numeric', 'min:0', 'max:100'],
@@ -40,7 +40,7 @@ class TimelineEventRequest extends FormRequest
         return [
             'category_id' => ['required', 'string', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:255'],
-            'start_date' => ['required', 'date', 'after_or_equal:now'],
+            'start_date' => ['required', 'date'],//, 'after_or_equal:now'],
             'end_date' => ['required', 'date', 'after:start_date'],
             'description' => ['nullable', 'string'],
             'production_percentage' => ['required', 'numeric', 'min:0'],

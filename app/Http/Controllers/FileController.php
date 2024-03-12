@@ -9,6 +9,7 @@ use App\Models\File;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
@@ -40,16 +41,22 @@ class FileController extends Controller
     }
 
     /**
-     * Get the educational files versions
+     * Get the educational file versions
      */
-    public function view_educational_files_versions()
+    public function view_educational_files_versions(string $version_id)
     {
-        try{
+        try {
 
-            return api_response(message:'educational-file-versions-getting-success');
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'educational-file-versions-getting-error',code:500);
+            $files = File::where(['version_id' => $version_id])->join('categories', 'categories.id', '=', 'files.sub_category_id')->when(Auth::check(), function ($query) {
+                return $query->addSelect('files.id', 'categories.id as category_id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.version', 'files.media_url', 'files.created_at');
+            }, function ($query) {
+                return $query->addSelect('files.id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.version', 'files.created_at');
+            })->orderBy('files.created_at', 'desc')->get();
+
+
+            return api_response($files, 'educational-file-versions-getting-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'educational-file-versions-getting-error', code: 500);
         }
     }
 
@@ -148,7 +155,7 @@ class FileController extends Controller
      */
     public function add_educational_files(FileRequest $request)
     {
-        return $this->store($request, 'Educational');
+        return $this->store($request, 'Education');
     }
 
     /**
@@ -186,16 +193,20 @@ class FileController extends Controller
 
             $file = $request->file;
 
-
-            $path = '/files/' . $file_type;
-
-            $path_ = '/files/' . $file_type;
-
             $category_id = getIdByName(Category::class, $file_type);
 
-            $path_ = '/files/' . $file_type;
+            $path = store_files($file, '/files/' . $file_type);
 
-            $path = store_files($file, $path_);
+            if ($file_type == 'Education' && !$request->has('version_id')) {
+                $version_id = Str::uuid();
+                $version = '1';
+            } elseif ($file_type == 'Education' && $request->has('version_id')) {
+                $version_id = $request->input('version_id');
+                $version = $request->input('version');
+            } else {
+                $version_id = null;
+                $version = null;
+            }
 
             File::create([
                 'user_id' => Auth::id(),
@@ -203,7 +214,8 @@ class FileController extends Controller
                 'sub_category_id' => $request->input('category_id'),
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
-                'version' => $request->input('version'),
+                'version' => $version,
+                'version_id' => $version_id,
                 'media_url' => $path,
                 'media_type' => getMediaType($file)
             ]);

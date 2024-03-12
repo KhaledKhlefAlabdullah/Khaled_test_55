@@ -15,9 +15,10 @@ return new class extends Migration {
             $table->string('user_id');
             $table->string('main_category_id');
             $table->string('sub_category_id');
+            $table->string('version_id')->nullable();
             $table->string('title');
             $table->text('description');
-            $table->string('version')->nullable();
+            $table->inte('version')->nullable();
             $table->string('media_url')->nullable();
             $table->enum('media_type', ['image', 'video', 'file'])->nullable();
             $table->enum('update_frequency', ['daily', 'weekly', 'monthly'])->nullable();

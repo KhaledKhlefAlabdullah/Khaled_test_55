@@ -10,14 +10,13 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use TCPDF;
-
 use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\getMediaType;
 use function App\Helpers\store_files;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FileController extends Controller
 {
@@ -386,44 +385,19 @@ class FileController extends Controller
         return api_response(message: 'file-delete-success');
     }
 
-    // todo ** complete here tomoro
-    public function generatePDF()
-    {
-        // إنشاء ملف PDF جديد
-        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
-
-        // تعيين معلومات الملف
-        $pdf->SetCreator('ROJANA Water Information Report');
-        $pdf->SetAuthor('Your Name');
-        $pdf->SetTitle('ROJANA Water Information Report - October 2, 2018');
-        $pdf->SetSubject('Water Information Report');
-        $pdf->SetKeywords('ROJANA, Water, Information, Report');
-
-        // إضافة صفحة جديدة
-        $pdf->AddPage();
-
-        // تنسيق النص وإضافته إلى الملف
-        $pdf->SetFont('helvetica', '', 12);
-        $pdf->Cell(0, 10, 'ROJANA Water Information Report - October 2, 2018', 0, 1, 'C');
-        $pdf->Ln();
-
-        // إضافة محتوى الملف من النصوص والبيانات المقدمة في الملف الأصلي
-        $pdf->Cell(0, 10, 'Storm Tracking', 0, 1);
-        $pdf->Cell(0, 10, 'The moderate monsoon trough lies across the North, the upper Central and the Northeast into the low-pressure cell over Cambodia.', 0, 1);
-        $pdf->Cell(0, 10, 'Meanwhile, the southwest monsoon prevails over the Andaman Sea, the South and the Gulf. Continuous rainfalls will be likely in the overall country, and isolated heavy rains are possible for the North, the Northeast, the Central including Bangkok and its vicinity, the East and the South.', 0, 1);
-        $pdf->Ln();
-
-        // إضافة بيانات الأمطار المتراكمة
-        $pdf->Cell(0, 10, 'Accumulated Rainfall', 0, 1);
-        $pdf->Cell(0, 10, 'Upper Ping: 771 mm', 0, 1);
-        $pdf->Cell(0, 10, 'Upper Nan: 820 mm', 0, 1);
-        $pdf->Cell(0, 10, 'Upper Pasak: 620 mm', 0, 1);
-        $pdf->Cell(0, 10, 'Upper Chaopraya: 662 mm', 0, 1);
-        $pdf->Cell(0, 10, 'Lower Chaopraya: 635 mm', 0, 1);
-        $pdf->Ln();
-
-        // إرسال الملف كملف PDF
-        $pdf->Output('ROJANA_Water_Information_Report.pdf', 'D');
+    /**
+     * Generet reports pdf files
+     */
+    public function generatePDF(){
+        try{
+            $data = [];
+            $pdf = Pdf::loadView('pdf.report', $data);
+            return $pdf->download('invoice.pdf');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'report-generatting-error',code:500);
+        }
     }
+
 }
 

@@ -40,7 +40,7 @@ class PortalMails extends Mailable
     {
         // todo we have to customize maile view
         return new Content(
-            view: 'maile_view',
+            view: 'mail.maile_view',
         );
     }
 

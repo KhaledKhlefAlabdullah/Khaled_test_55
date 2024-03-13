@@ -58,6 +58,7 @@ class TimelineController extends Controller
                 ->selectRaw('GROUP_CONCAT(timeline_events.id) as events_ids')
                 ->selectRaw('GROUP_CONCAT(timeline_events.title) as events_titles')
                 ->selectRaw('GROUP_CONCAT(c.name) as events_categories')
+                ->selectRaw('GROUP_CONCAT(c.color) as events_colors')
                 ->selectRaw('GROUP_CONCAT(timeline_events.description) as events_descriptions')
                 ->selectRaw('GROUP_CONCAT(timeline_events.start_date) as events_start_dates')
                 ->selectRaw('GROUP_CONCAT(timeline_events.end_date) as events_end_dates')
@@ -73,6 +74,7 @@ class TimelineController extends Controller
                 ->groupBy('up.name', 'sk.tenant_company_state', 'tls.id')
                 ->get();
 
+            return $timelines;
             $data = $timelines->map(function ($items) {
                 return [
                     'company_name' => $items->timeline_id == Auth::user()->stakeholder->timelines->id ? 'My company' : $items->company_name,
@@ -83,6 +85,7 @@ class TimelineController extends Controller
                             'event_id' => $id,
                             'event_title' => explode(',', $items->events_titles)[$index],
                             'event_category' => explode(',', $items->events_categories)[$index],
+                            'event_color' => explode(',', $items->events_colors)[$index],
                             'event_description' => explode(',', $items->events_descriptions)[$index],
                             'event_start_date' => explode(',', $items->events_start_dates)[$index],
                             'event_end_date' => explode(',', $items->events_end_dates)[$index],

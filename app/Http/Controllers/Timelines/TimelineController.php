@@ -74,7 +74,6 @@ class TimelineController extends Controller
                 ->groupBy('up.name', 'sk.tenant_company_state', 'tls.id')
                 ->get();
 
-            return $timelines;
             $data = $timelines->map(function ($items) {
                 return [
                     'company_name' => $items->timeline_id == Auth::user()->stakeholder->timelines->id ? 'My company' : $items->company_name,

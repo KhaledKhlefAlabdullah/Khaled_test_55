@@ -390,12 +390,29 @@ class FileController extends Controller
      */
     public function generatePDF(){
         try{
-            $data = [];
+            $data = [
+
+            ];
             $pdf = Pdf::loadView('pdf.report', $data);
             return $pdf->download('invoice.pdf');
         }
         catch(Exception $e){
             return api_response(errors:[$e->getMessage()],message:'report-generatting-error',code:500);
+        }
+    }
+
+    /**
+     * Get report information details
+     */
+    public function get_info(){
+        try{
+
+            $info = "" ;
+
+            return $info;
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'getting-report-info-erroe',code:500);
         }
     }
 

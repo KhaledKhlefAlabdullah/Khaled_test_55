@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('name')->unique();
-            $table->string('color')->nullable();
+            $table->string('color')->nullable()->default('#D0B2D0');
             $table->uuid('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();

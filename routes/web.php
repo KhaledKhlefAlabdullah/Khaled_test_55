@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/t', 'welcome')->name('home');
+Route::get('/', function () {
+    return view('pdf.report');
+})->name('home');
 
 //Route::get('/download-educational-file',[FileController::class,'download_files']);
 

@@ -237,7 +237,7 @@ Route::group(['prefix' => 'api'], function () {
                     Route::get('/',[ResourceRequestController::class,'index']);
 
                     Route::post('/send',[ResourceRequestController::class,'store']);
-                    
+
                     Route::put('/accept-reject/{id}',[ResourceRequestController::class,'accept_reject']);
 
                 });
@@ -728,10 +728,6 @@ Route::group(['prefix' => 'api'], function () {
     // View list of educational files
     Route::get('/educational-files', [FileController::class, 'view_educational_files']);
 
-
-    // Route::get('/play', function () {
-    //     event(new \App\Events\PlaygroundEvent());
-    // });
 
     // todo ** complete here tomoro
     Route::get('/test',[FileController::class,'generatePDF']);

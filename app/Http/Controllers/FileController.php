@@ -16,6 +16,7 @@ use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\getMediaType;
 use function App\Helpers\store_files;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FileController extends Controller
 {
@@ -383,4 +384,20 @@ class FileController extends Controller
 
         return api_response(message: 'file-delete-success');
     }
+
+    /**
+     * Generet reports pdf files
+     */
+    public function generatePDF(){
+        try{
+            $data = [];
+            $pdf = Pdf::loadView('pdf.report', $data);
+            return $pdf->download('invoice.pdf');
+        }
+        catch(Exception $e){
+            return api_response(errors:[$e->getMessage()],message:'report-generatting-error',code:500);
+        }
+    }
+
 }
+

@@ -6,6 +6,8 @@ use App\Http\Requests\FileRequest;
 use App\Http\Resources\FileResource;
 use App\Models\Category;
 use App\Models\File;
+use App\Models\Stakeholder;
+use App\Models\UserProfile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +17,11 @@ use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
 use function App\Helpers\getIdByName;
 use function App\Helpers\getMediaType;
+use function App\Helpers\stakeholder_id;
 use function App\Helpers\store_files;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class FileController extends Controller
 {
@@ -388,33 +393,71 @@ class FileController extends Controller
     /**
      * Generet reports pdf files
      */
-    public function generatePDF(){
-        try{
-            $data = [
+    public function generatePDF()
+    {
+        try {
 
-            ];
-            $pdf = Pdf::loadView('pdf.report', $data);
-            return $pdf->download('invoice.pdf');
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'report-generatting-error',code:500);
+            $templateProcessor = new TemplateProcessor(public_path('files/ReportsTemplet/companyReport.docx'));
+
+            $templateProcessor->setValues(
+                array(
+                    'company_name' => 'ss',
+                    'date' => 'ss',
+                    'company_operational_status' => 'ss',
+                    'monitoring_graphs' => 'ss',
+                    'production_sites' => 'ss',
+                    'Suppliers' => 'ss',
+                    'Employees' => 'ss',
+                    'Shipments' => 'ss',
+                    'Wastes' => 'ss',
+                    'infrastructure_services_status' => 'ss'
+                )
+            );
+
+            $templateProcessor->setImageValue('map_image', array('path' => '', 'width' => 100, 'height' => 100));
+            
+            return response()->download('files/ReportsTemplet/companyReport.pdf');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'report-generatting-error', code: 500);
         }
     }
 
     /**
      * Get report information details
      */
-    public function get_info(){
-        try{
+    public function get_info()
+    {
+        try {
 
-            $info = "" ;
+            $name = UserProfile::where('user_id', Auth::id())->first()->name;
+            $company_state = Stakeholder::findOrFail(stakeholder_id())->tenant_company_state;
+
+            $info = [
+                'company_name' => $name,
+                'date' => now()->format('d/m/y'),
+                //3- Map image: displaying the company's production sites and flood water level in the surrounding area
+                'map_image' => '',
+                //4- Company operational status: Operating,Evacuating, Trapped or Evacuated 
+                'company_operational_status' => $company_state,
+                //5- Monitoring graphs: displaying water level in monitoring points and dams (observation + prediction) example
+                'monitoring_graphs' => '',
+                //6.1.Production sites: Safe Production sites - Not Safe Production Sites- Impacted Date
+                'production_sites' => '',
+                //6.2.Suppliers: Material : Safe suppliers - Not Safe suppliers - Impacted date
+                'Suppliers' => '',
+                //6.3.Employees: Department : Safe Staff+leaders - Not Safe Staff +Leaders - Impacted Date
+                'Employees' => '',
+                //6.4.Shipments: Product : Safe Customers - Not Safe Customers
+                'Shipments' => '',
+                //6.5. Wastes: Safe Wastes - Not Safe Wastes - Impacted Date
+                'Wastes' => '',
+                //7.1. Service name - Status (available,partially interrupted , interrupted) - Stop date -Start date - Last updated"					
+                'infrastructure_services_status' => ''
+            ];
 
             return $info;
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'getting-report-info-erroe',code:500);
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'getting-report-info-erroe', code: 500);
         }
     }
-
 }
-

@@ -44,6 +44,12 @@ class TimelineEventController extends Controller
 
             $timeline_id = Timeline::where('stakeholder_id', stakeholder_id())->value('id');
 
+            if(is_null($timeline_id)){
+                $timeline_id = Timeline::create([
+                    'stakeholder_id'=>stakeholder_id()
+                ])->id;
+            }
+
             $event = TimelineEvent::create([
                 'timeline_id' => $timeline_id,
                 'category_id' => $request->input('category_id'),

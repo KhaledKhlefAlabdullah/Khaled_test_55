@@ -31,15 +31,14 @@ class TimelineSharesRequestController extends Controller
     {
         try {
 
-            $share_requests = TimelineSharesRequest::select('timeline_shares_requests.id as share_request_id','timeline_id','timeline_shares_requests.status', 'sender.name', 'sender.avatar_url')
+            $share_requests = TimelineSharesRequest::select('timeline_shares_requests.id as share_request_id', 'timeline_id', 'timeline_shares_requests.status', 'sender.name', 'sender.avatar_url')
                 ->join('stakeholders', 'timeline_shares_requests.send_stakeholder_id', '=', 'stakeholders.id')
                 ->leftJoin('user_profiles as sender', 'stakeholders.user_id', '=', 'sender.user_id')
-                ->where(['timeline_shares_requests.receive_stakeholder_id' => stakeholder_id(),'timeline_shares_requests.status' => 'pending'])
+                ->where(['timeline_shares_requests.receive_stakeholder_id' => stakeholder_id(), 'timeline_shares_requests.status' => 'pending'])
                 ->whereNull('timeline_shares_requests.deleted_at')
                 ->get();
 
             return api_response(data: $share_requests, message: 'share-requests-getting-success');
-
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'share-requests-getting-error', code: 500);
         }
@@ -54,8 +53,9 @@ class TimelineSharesRequestController extends Controller
 
             $compaies = UserProfile::select('stakeholders.id as stakeholder_id', 'user_profiles.name', 'user_profiles.avatar_url')
                 ->join('stakeholders', 'user_profiles.user_id', '=', 'stakeholders.user_id')
-                ->where('industrial_area_id', getIndustrialAreaID())
-                ->whereNot('stakeholders.id',stakeholder_id())->get();
+                ->join('users', 'stakeholders.user_id', 'users.id')
+                ->where(['stakeholders.industrial_area_id' => getIndustrialAreaID(),'users.stakeholder_type' => 'Tenant_company'])
+                ->whereNot('stakeholders.id', stakeholder_id())->get();
 
             return api_response(data: $compaies, message: 'compaies-getting-success');
         } catch (Exception $e) {
@@ -79,8 +79,8 @@ class TimelineSharesRequestController extends Controller
             // Get the timeline id
             $timeline_id = Timeline::where('stakeholder_id', $receiver_id)->first()->id;
 
-            if(is_null($timeline_id)){
-                return api_response(errors:['there no timeline for this stakeholder'],message:'this stakeholder dont have any timeline event eaite',code:404);
+            if (is_null($timeline_id)) {
+                return api_response(errors: ['there no timeline for this stakeholder'], message: 'this stakeholder dont have any timeline event eaite', code: 404);
             }
 
             // Create the timeline share request
@@ -105,7 +105,7 @@ class TimelineSharesRequestController extends Controller
      */
     public function accept_reject(TimelineShareRequest $request, string $share_request_id)
     {
-        try{
+        try {
 
             $share_request = getAndCheckModelById(TimelineSharesRequest::class, $share_request_id);
 
@@ -113,11 +113,10 @@ class TimelineSharesRequestController extends Controller
                 'status' => $request->input('status') ? 'accept' : 'reject'
             ]);
 
-            return api_response(message:'share-request-accept-reject-success');
-        }
-        catch(Exception $e){
+            return api_response(message: 'share-request-accept-reject-success');
+        } catch (Exception $e) {
 
-            return api_response(errors:[$e->getMessage()],message:'share-request-accept-reject-error',code:500);
+            return api_response(errors: [$e->getMessage()], message: 'share-request-accept-reject-error', code: 500);
         }
     }
 

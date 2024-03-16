@@ -54,7 +54,8 @@ class TimelineSharesRequestController extends Controller
 
             $compaies = UserProfile::select('stakeholders.id as stakeholder_id', 'user_profiles.name', 'user_profiles.avatar_url')
                 ->join('stakeholders', 'user_profiles.user_id', '=', 'stakeholders.user_id')
-                ->where('industrial_area_id', getIndustrialAreaID())->get();
+                ->where('industrial_area_id', getIndustrialAreaID())
+                ->whereNot('stakeholders.id',stakeholder_id())->get();
 
             return api_response(data: $compaies, message: 'compaies-getting-success');
         } catch (Exception $e) {

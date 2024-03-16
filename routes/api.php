@@ -31,7 +31,6 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
-use App\Models\Resource;
 
 /*
 |--------------------------------------------------------------------------

@@ -78,6 +78,10 @@ class TimelineSharesRequestController extends Controller
             // Get the timeline id
             $timeline_id = Timeline::where('stakeholder_id', $receiver_id)->first()->id;
 
+            if(is_null($timeline_id)){
+                return api_response(errors:['there no timeline for this stakeholder'],message:'this stakeholder dont have any timeline event eaite',code:404);
+            }
+
             // Create the timeline share request
             TimelineSharesRequest::create([
                 'timeline_id' => $timeline_id,

@@ -47,7 +47,7 @@ class NotificationsSettingController extends Controller
                 ->selectRaw('GROUP_CONCAT(notifications_settings.is_on) as on_off')
                 // Filter the results by user ID
                 ->where('notifications_settings.user_id', '=', $user_id)
-                ->leftJoin('monitoring_points_notification_settings', 'notifications_settings.id', '=', 'monitoring_points_notification_settings.notifications_setting_id')
+                ->leftJoin('monitoring_points_notification_settings', 'notifications_settings.id', '=', 'monitoring_points_notification_settings.notification_setting_id')
                 ->leftJoin('monitoring_points', 'monitoring_points_notification_settings.monitoring_point_id', '=', 'monitoring_points.id')
                 ->leftJoin('dams_notification_settings','notifications_settings.id','=','dams_notification_settings.notification_setting_id')
                 ->leftJoin('dams','dams_notification_settings.dam_id','=','dams.id')

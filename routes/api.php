@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\FileController;
@@ -553,23 +554,23 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // Materials
-            Route::group(['prefix' => 'materials'], function () {
+            Route::group(['prefix' => 'materials','controller' => EntityController::class], function () {
 
-                Route::get('/', [EntityController::class, 'get_materials']);
+                Route::get('/', 'get_materials');
 
-                Route::post('/add', [EntityController::class, 'add_new_material']);
+                Route::post('/add', 'add_new_material');
             });
 
             // Routes
-            Route::group(['prefix' => 'routes'], function () {
+            Route::group(['prefix' => 'routes', 'controller' => EntityController::class], function () {
 
-                Route::get('/', [EntityController::class, 'get_routes']);
+                Route::get('/', 'get_routes');
 
-                Route::post('/add', [EntityController::class, 'add_new_route']);
+                Route::post('/add', 'add_new_route');
 
-                Route::put('/edit/{id}', [EntityController::class, 'edit_route_details']);
+                Route::put('/edit/{id}', 'edit_route_details');
 
-                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
+                Route::delete('/delete/{id}', 'destroy');
 
             });
 
@@ -612,23 +613,23 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // Customers routes
-            Route::group(['prefix' => 'customers'], function () {
+            Route::group(['prefix' => 'customers','controller' => EntityController::class], function () {
 
-                Route::get('/', [EntityController::class, 'get_customers']);
+                Route::get('/', 'get_customers');
 
-                Route::post('/add', [EntityController::class, 'add_customer']);
+                Route::post('/add', 'add_customer');
 
-                Route::put('/edit/{customer_id}/{shipment_id}', [EntityController::class, 'edit_customer']);
+                Route::put('/edit/{customer_id}/{shipment_id}', 'edit_customer');
 
-                Route::delete('/delete/{id}', [EntityController::class, 'destroy']);
+                Route::delete('/delete/{id}', 'destroy');
 
             });
 
 
             // Products routes
-            Route::group(['prefix' => 'products'], function () {
+            Route::group(['prefix' => 'products', 'controller' => EntityController::class], function () {
 
-                Route::get('/', [EntityController::class, 'get_products']);
+                Route::get('/', 'get_products');
 
             });
 
@@ -658,36 +659,38 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // for custom monitoring points
-            Route::group(['prefix' => 'custom-monitoring-points'], function () {
+            Route::group(['prefix' => 'custom-monitoring-points', 'controller' => MonitoringPointController::class], function () {
 
-                Route::post('/add', [MonitoringPointController::class, 'add_monitoring_point']);
+                Route::post('/add', 'add_monitoring_point');
 
-                Route::put('/edit/{id}', [MonitoringPointController::class, 'edit_monitoring_point_details']);
+                Route::put('/edit/{id}', 'edit_monitoring_point_details');
 
-                Route::delete('/delete/{id}', [MonitoringPointController::class, 'destroy']);
+                Route::delete('/delete/{id}', 'destroy');
 
             });
 
             // for notifications settings
-            Route::group(['prefix' => 'notifications-settings'], function () {
+            Route::group(['prefix' => 'notifications-settings', 'controller' => NotificationsSettingController::class], function () {
 
-                Route::get('/', [NotificationsSettingController::class, 'index']);
+                Route::get('/', 'index');
 
-                Route::put('/edit/{id}', [NotificationsSettingController::class, 'update']);
+                Route::put('/edit/{id}', 'update');
 
             });
 
+            // Get the Monitoring points belong to industrial are
+            Route::get('/monitoring-points',[MonitoringPointController::class,'index']);
+
         });
 
-
         // For all authenticated users
-        Route::group(['prefix' => 'notifications'], function () {
+        Route::group(['prefix' => 'notifications' ,'controller' => NotificationController::class], function () {
 
-            Route::get('/', [NotificationController::class, 'index']);
+            Route::get('/', 'index');
 
-            Route::put('/marked-read/{id}', [NotificationController::class, 'marked_as_read']);
+            Route::put('/marked-read/{id}', 'marked_as_read');
 
-            Route::delete('/delete/{id}', [NotificationController::class, 'destroy']);
+            Route::delete('/delete/{id}', 'destroy');
 
         });
 

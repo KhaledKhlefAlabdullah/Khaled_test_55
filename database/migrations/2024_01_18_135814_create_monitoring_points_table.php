@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('monitoring_points', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->string('user_id');
+            $table->string('industrial_area_id');
             $table->string('name');
             $table->string('location');
             $table->enum('point_type', ['normal', 'high', 'dangerous'])->default('normal');
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->string('discharge')->nullable();
             $table->string('source')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('industrial_area_id')->references('id')->on('industrial_areas')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

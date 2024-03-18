@@ -20,6 +20,7 @@ class MonitoringPoint extends Model
 
     protected $fillable = [
         'user_id',
+        'industrial_area_id',
         'name',
         'location',
         'point_type',

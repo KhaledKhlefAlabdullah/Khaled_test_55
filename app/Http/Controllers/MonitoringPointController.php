@@ -11,8 +11,12 @@ use App\Policies\User_policies;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+
+use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getIndustrialAreaID;
 use function App\Helpers\transformCollection;
 
 class MonitoringPointController extends Controller
@@ -22,10 +26,19 @@ class MonitoringPointController extends Controller
      */
     public function index()
     {
-        // Get all monitoring points
-        $monitoring_points = MonitoringPoint::all();
+        try {
 
-        return transformCollection($monitoring_points, MonitoringPointResource::class);
+            $industrial_area_id = getIndustrialAreaID();
+
+            $monitoring_points = MonitoringPoint::where('industrial_area_id', $industrial_area_id)
+                ->select('monitoring_points.id', 'monitoring_points.name', 'monitoring_points.location',
+                    'monitoring_points.point_type', 'monitoring_points.api_link')->get();
+
+            return api_response(data:$monitoring_points,message:'monitoring-get-success');
+
+        } catch (\Exception $e) {
+            return api_response(errors: __($e->getMessage()),message:'monitoring-get-error',code:500);
+        }
     }
 
 
@@ -113,16 +126,10 @@ class MonitoringPointController extends Controller
                 ->select('monitoring_points.id', 'monitoring_points.name', 'monitoring_points.location',
                     'monitoring_points.point_type', 'monitoring_points.api_link')->get();
 
-            return response()->json([
-                'data' => $monitoring_points,
-                'message' => __('monitoring-get-success')
-            ], 200);
+            return api_response(data:$monitoring_points,message:'monitoring-get-success');
 
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('monitoring-get-error')
-            ], 500);
+            return api_response(errors: __($e->getMessage()),message:'monitoring-get-error',code:500);
         }
     }
 
@@ -142,6 +149,7 @@ class MonitoringPointController extends Controller
             // create new main monitoring point
             MonitoringPoint::create([
                 'user_id' => $user_id,
+                'industrial_area_id' => getIndustrialAreaID(),
                 'name' => $request->input('name'),
                 'location' => $request->input('location'),
                 'point_type' => $request->input('level'),
@@ -150,15 +158,10 @@ class MonitoringPointController extends Controller
             ]);
 
             // return response with success message
-            return response()->json([
-                'message' => __('main-monitoring-point-success')
-            ], 200);
+            return api_response('main-monitoring-point-success');
 
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => __($e->getMessage()),
-                'message' => __('main-monitoring-point-error')
-            ], 500);
+            return api_response()->json(errors:$e->getMessage(),message: 'main-monitoring-point-error',code: 500);
         }
     }
 

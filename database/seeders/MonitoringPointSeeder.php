@@ -17,6 +17,7 @@ class MonitoringPointSeeder extends Seeder
             [
                 'id' => '119976d-5238-4fa9-a77f-2a76172f5b22',
                 'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // portal manager
+                'industrial_area_id' => '45c97a6d-7b19-4fa9-a77f-2a76172f5b97' ,
                 'name' => 'Monitoring Point 1',
                 'location' => 'Coordinates: [latitude, longitude]',
                 'point_type' => 'normal',
@@ -31,6 +32,7 @@ class MonitoringPointSeeder extends Seeder
             [
                 'id' => '229976d-5238-4fa9-a77f-2a76172f5b22',
                 'user_id' => '12c97a6d-7b19-4fa9-a77f-2a76172f5b58', // tenant company
+                'industrial_area_id' => '45c97a6d-7b19-4fa9-a77f-2a76172f5b97' ,
                 'name' => 'Monitoring Point 2',
                 'location' => 'Coordinates: [latitude, longitude]',
                 'point_type' => 'high',

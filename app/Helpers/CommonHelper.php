@@ -115,8 +115,7 @@ if (!function_exists('fake_register_request')) {
         $location = null,
         $representative_name = null,
         $job_title = null
-    ): Response|JsonResponse|RedirectResponse
-    {
+    ): Response|JsonResponse|RedirectResponse {
         $requestData = [
             'industrial_area_id' => $industrial_area_id,
             'name' => $name,
@@ -147,7 +146,7 @@ if (!function_exists('fake_register_request')) {
  * @return string $path+fileName
  */
 if (!function_exists('store_files')) {
-   
+
     function store_files($file, $path): string
     {
         // get file extension
@@ -161,7 +160,6 @@ if (!function_exists('store_files')) {
 
         // return the path and file name
         return $path . '/' . $file_name;
-
     }
 }
 
@@ -197,7 +195,6 @@ if (!function_exists('edit_file')) {
         if (file_exists($old_file_path)) {
 
             unlink(public_path($old_file_path));
-
         }
 
         // Store the new file
@@ -205,7 +202,6 @@ if (!function_exists('edit_file')) {
 
         return $new_file_path;
     }
-
 }
 
 
@@ -243,7 +239,6 @@ if (!function_exists('edit_page_details')) {
                     'start_time' => $request->input('start_time'),
                     'end_time' => $request->input('end_time'),
                 ]);
-
             } else {
 
                 // if it's not empty and there already page in database update the page with the validated data
@@ -255,7 +250,6 @@ if (!function_exists('edit_page_details')) {
                     'start_time' => is_null($request->input('start_time')) ? $page->start_time : $request->input('start_time'),
                     'end_time' => is_null($request->input('end_time')) ? $page->end_time : $request->input('end_time')
                 ]);
-
             }
 
             //            $data = [
@@ -268,16 +262,13 @@ if (!function_exists('edit_page_details')) {
             return response()->json([
                 'message' => __('Successfully editing contact us page details'),
             ], 200);
-
         } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('There error in adding the page details'),
             ], 500);
-
         }
     }
-
 }
 
 if (!function_exists('send_mail')) {
@@ -295,13 +286,11 @@ if (!function_exists('send_mail')) {
             Mail::to($receiver)->send(new PortalMails($mail_message));
 
             return true;
-
         } catch (Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
                 'message' => __('Cold not sending the email'),
             ], 500);
-
         }
     }
 }
@@ -322,7 +311,6 @@ if (!function_exists('stakeholder_id')) {
             ], 500);
         }
     }
-
 }
 
 /**
@@ -346,8 +334,6 @@ if (!function_exists('get_instances_with_value')) {
 
         return $instance;
     }
-
-
 }
 
 
@@ -391,9 +377,9 @@ if (!function_exists('send_notifications')) {
             ->select('users.email', 'user_profiles.name', 'user_profiles.avatar_url')
             ->first();
 
-        Notification::send($receivers, new PortalNotifications($user_profile, $message, $receivers,$viaChanel));
+        Notification::send($receivers, new PortalNotifications($user_profile, $message, $receivers, $viaChanel));
 
-        event(new NotificationsEvent($receivers,$message));
+        event(new NotificationsEvent($receivers, $message));
     }
 }
 
@@ -486,7 +472,6 @@ if (!function_exists('add_notifications_settings')) {
             ], 500);
         }
     }
-
 }
 
 /**
@@ -501,7 +486,6 @@ if (!function_exists('count_items')) {
             $item_count = $model::where($validations)->get()->count();
 
             return $item_count + 1;
-
         } catch (\Mockery\Exception $e) {
             return response()->json([
                 'error' => __($e->getMessage()),
@@ -509,7 +493,6 @@ if (!function_exists('count_items')) {
             ], 500);
         }
     }
-
 }
 
 
@@ -588,25 +571,26 @@ if (!function_exists('search')) {
             $results = $results->get();
 
             return api_response(data: $results, message: 'search-success');
-
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'search-error', code: 500);
         }
-
     }
-
 }
 /**
  * Get the industrail area id 
+ * @return string auth user industrial area id 
  */
-if(!function_exists('getIndustrialAreaID')){
-    function getIndustrialAreaID(){
+if (!function_exists('getIndustrialAreaID')) {
+    function getIndustrialAreaID()
+    {
 
-        $industrial_Area_id = Auth::user()->stakeholder->industrial_area_id;
-        if($industrial_Area_id)
+        if (Auth::user()->stakeholder_type == 'Industrial_area_representative' || Auth::user()->stakeholder_type == 'Government_representative')
+            $industrial_Area_id = Auth::user()->industrial_area_id;
+        else
+            $industrial_Area_id = Auth::user()->stakeholder->industrial_area_id;
+        if ($industrial_Area_id)
             return $industrial_Area_id;
         else
-            return abort(code:500,message:'There no industrial area id for this user');
-
+            return abort(code: 500, message: 'There no industrial area id for this user');
     }
 }

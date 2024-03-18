@@ -414,9 +414,28 @@ class FileController extends Controller
                 )
             );
 
-            $templateProcessor->setImageValue('map_image', array('path' => '', 'width' => 100, 'height' => 100));
+            $data = [
+                ['station' => 'C.2, Nakhonsawan Province', 'discharge' => '> 3,590', 'water_level' => '> 556', 'crisis_point' => '09/12 - 1,783'],
+                ['station' => 'Chaopraya Dam', 'discharge' => '> 2,840', 'water_level' => '> 2.00', 'crisis_point' => '09/13 - 1,851'],
+                ['station' => 'RAMA VI Dam', 'discharge' => '', 'water_level' => '', 'crisis_point' => 'Yesterday - 1,698'],
+                ['station' => 'C.54, Samutprakran Province', 'discharge' => '', 'water_level' => '', 'crisis_point' => 'Today - 1,799'],
+            ];
             
-            return response()->download('files/ReportsTemplet/companyReport.pdf');
+            $rows = '';
+            foreach ($data as $row) {
+                $rows .= "<w:tr><w:tc><w:p><w:r><w:t>{$row['station']}</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t>{$row['discharge']}</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t>{$row['water_level']}</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t>{$row['crisis_point']}</w:t></w:r></w:p></w:tc></w:tr>";
+            }
+
+            $templateProcessor->setValue('table_data', $rows);
+            
+            $templateProcessor->saveAs('files/ReportsTemplet/companyReport_updated.docx');
+            // $templateProcessor->setImageValue('map_image', array('path' => public_path('/images/profile_images/defualt_user_avatar.png'), 'width' => 100, 'height' => 100));
+            
+            // return response()->download('files/ReportsTemplet/companyReport.docx');
+            // $templateProcessor->saveAs('files/ReportsTemplet/companyReport.pdf');
+    
+            // Download the generated PDF
+            return response()->download('files/ReportsTemplet/companyReport.pdf')->deleteFileAfterSend(true);
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'report-generatting-error', code: 500);
         }
@@ -435,22 +454,31 @@ class FileController extends Controller
             $info = [
                 'company_name' => $name,
                 'date' => now()->format('d/m/y'),
+                
                 //3- Map image: displaying the company's production sites and flood water level in the surrounding area
                 'map_image' => '',
+                
                 //4- Company operational status: Operating,Evacuating, Trapped or Evacuated 
                 'company_operational_status' => $company_state,
+                
                 //5- Monitoring graphs: displaying water level in monitoring points and dams (observation + prediction) example
                 'monitoring_graphs' => '',
+                
                 //6.1.Production sites: Safe Production sites - Not Safe Production Sites- Impacted Date
                 'production_sites' => '',
+                
                 //6.2.Suppliers: Material : Safe suppliers - Not Safe suppliers - Impacted date
                 'Suppliers' => '',
+                
                 //6.3.Employees: Department : Safe Staff+leaders - Not Safe Staff +Leaders - Impacted Date
                 'Employees' => '',
+                
                 //6.4.Shipments: Product : Safe Customers - Not Safe Customers
                 'Shipments' => '',
+                
                 //6.5. Wastes: Safe Wastes - Not Safe Wastes - Impacted Date
                 'Wastes' => '',
+                
                 //7.1. Service name - Status (available,partially interrupted , interrupted) - Stop date -Start date - Last updated"					
                 'infrastructure_services_status' => ''
             ];

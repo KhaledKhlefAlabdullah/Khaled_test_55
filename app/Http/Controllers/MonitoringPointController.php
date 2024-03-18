@@ -8,6 +8,7 @@ use App\Http\Resources\MonitoringPointResource;
 use App\Models\MonitoringPoint;
 use App\Models\User;
 use App\Policies\User_policies;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -79,19 +80,18 @@ class MonitoringPointController extends Controller
     {
         // Get the monitoring point by ID
         try {
+
+            $validatedData = $request->validated();
+
             $monitoring_point = getAndCheckModelById(MonitoringPoint::class, $id);
 
-        } catch (NotFoundResourceException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+            $monitoring_point->update($validatedData);
+
+            return api_response(message:'monitoring-point-updating-success');
+            
+        } catch (Exception $e) {
+            return api_response(errors:$e->getMessage(),message:'monitoring-point-updating-error',code:500);
         }
-
-        // Validate the data
-        $valid_data = $request->validated();
-
-        // Update the monitoring point
-        $monitoring_point->update($valid_data);
-
-        return new MonitoringPointResource($monitoring_point);
     }
 
     /**
@@ -104,13 +104,13 @@ class MonitoringPointController extends Controller
             $monitoring_point = getAndCheckModelById(MonitoringPoint::class, $id);
 
         } catch (NotFoundResourceException $e) {
-            return response()->json(['message' => $e->getMessage()], $e->getCode());
+            return api_response(message: 'monitoring-point-deleting-error', errors:$e->getMessage(),code:404);
         }
 
         // Delete the monitoring point
         $monitoring_point->delete();
 
-        return response()->json(['message' => 'Monitoring point deleted successfully']);
+        return api_response('monitoring-point-deleting-success');
     }
 
     /**

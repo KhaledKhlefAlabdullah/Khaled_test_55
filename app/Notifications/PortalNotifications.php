@@ -26,7 +26,7 @@ class PortalNotifications extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct(string $message, $receivers, $user_profile, array $viaChannels = ['database'])
+    public function __construct($user_profile,string $message, $receivers,  array $viaChannels = ['database'])
     {
         $this->viaChannels = $viaChannels;
         $this->user_profile = $user_profile;
@@ -50,7 +50,7 @@ class PortalNotifications extends Notification
     public function toDatabase(object $notifiable)
     {
         return [
-            'sender_name' => $this->user_profile->name,
+            'sender_name' => $this->user_profile,
             'sender_image' => $this->user_profile->avatar_url,
             'message' => __($this->message)
         ];

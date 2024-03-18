@@ -24,8 +24,6 @@ return new class extends Migration {
             $table->date('stop_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
-
             $table->foreign('natural_disaster_id')->references('id')->on('natural_disasters')->onDelete('cascade');
             $table->foreign('entity_id')->references('id')->on('entities')->onDelete('cascade');
             $table->foreign('shipment_id')->references('id')->on('shipments')->onDelete('cascade');

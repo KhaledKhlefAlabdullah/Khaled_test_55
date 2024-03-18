@@ -238,7 +238,7 @@ class PostController extends Controller
             ]);
 
             // get category id where category is news
-            $category_id = Category::where('name', 'news')->first()->id;
+            $category_id = getIdByName(Category::class, 'News');
 
             // get auth user id as author
             $user_id = Auth::id();
@@ -264,7 +264,7 @@ class PostController extends Controller
             ]);
 
             // Send notification after add new general news
-            send_notifications(User::all(), ['database', 'mail'], config('golbals.new-generalNews'));
+            send_notifications(User::all(), config('golbals.new-generalNews'), ['database']);
 
             // return response with created data
             return response()->json([

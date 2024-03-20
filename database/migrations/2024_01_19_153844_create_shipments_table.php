@@ -14,9 +14,9 @@ return new class extends Migration {
             $table->uuid('id')->primary()->unique();
             $table->string('route_id');
             $table->string('product_id');
-            $table->string('customer_id');
+            $table->string('customer_id', 36);
             $table->string('stakeholder_id');
-            $table->string('public_id');
+            $table->string('public_id', 36);
             $table->string('name');
             $table->text('description')->nullable();
             $table->text('location');

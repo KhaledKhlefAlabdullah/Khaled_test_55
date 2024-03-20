@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('resources', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->string('stakeholder_id');
-            $table->string('resource');
+            $table->string('stakeholder_id', 36);
+            $table->string('resource', 36);
             $table->float('quantity');
             $table->string('notes')->nullable();
             $table->boolean('is_available')->default(true); // Set default value to boolean true

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('dams_notification_settings', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->string('dam_id');
-            $table->string('notification_setting_id');
+            $table->string('dam_id', 36);
+            $table->string('notification_setting_id', 36);
             $table->foreign('dam_id')->references('id')->on('dams')->onDelete('cascade');
             $table->foreign('notification_setting_id')->references('id')->on('notifications_settings')->onDelete('cascade');
             $table->timestamps();

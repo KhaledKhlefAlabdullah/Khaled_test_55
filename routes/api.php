@@ -65,7 +65,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 
-                Route::get('/versions/{version_id}',[FileController::class,'view_educational_files_versions']);
+                Route::get('/versions/{version_id}', [FileController::class, 'view_educational_files_versions']);
 
             });
 
@@ -177,42 +177,42 @@ Route::group(['prefix' => 'api'], function () {
             Route::get('/manuals-and-plans', [FileController::class, 'view_manuals_and_plans'])->name('file.view_manuals_and_plans');
 
             // For timelines
-            Route::group(['prefix' => 'timelines'],function(){
+            Route::group(['prefix' => 'timelines'], function () {
 
                 // For View my timeline and the shared timelines
-                Route::get('/shared',[TimelineController::class,'index']);
+                Route::get('/shared', [TimelineController::class, 'index']);
 
                 // For view the compaies in same industrial area
-                Route::get('/companies',[TimelineSharesRequestController::class,'get_companies_in_same_industrial_area']);
+                Route::get('/companies', [TimelineSharesRequestController::class, 'get_companies_in_same_industrial_area']);
 
-                Route::group(['prefix' => 'share-requests'],function(){
+                Route::group(['prefix' => 'share-requests'], function () {
 
                     // Get the share request
-                    Route::get('/',[TimelineSharesRequestController::class,'index']);
+                    Route::get('/', [TimelineSharesRequestController::class, 'index']);
 
                     // To send share timeline request
-                    Route::post('/send',[TimelineSharesRequestController::class,'store']);
+                    Route::post('/send', [TimelineSharesRequestController::class, 'store']);
 
                     // To send share timeline request
-                    Route::put('/accept-reject/{share_request_id}',[TimelineSharesRequestController::class,'accept_reject']);
+                    Route::put('/accept-reject/{share_request_id}', [TimelineSharesRequestController::class, 'accept_reject']);
 
                 });
 
                 // For Events
-                Route::group(['prefix' => 'events'],function(){
+                Route::group(['prefix' => 'events'], function () {
 
-                    Route::get('/{id}',[TimelineEventController::class,'show']);
+                    Route::get('/{id}', [TimelineEventController::class, 'show']);
 
-                    Route::post('/add',[TimelineEventController::class,'store']);
+                    Route::post('/add', [TimelineEventController::class, 'store']);
 
-                    Route::put('/edit/{id}',[TimelineEventController::class,'update']);
+                    Route::put('/edit/{id}', [TimelineEventController::class, 'update']);
 
-                    Route::delete('/delete/{id}',[TimelineEventController::class,'destroy']);
+                    Route::delete('/delete/{id}', [TimelineEventController::class, 'destroy']);
 
                     // For inquiries
-                    Route::group(['prefix' => 'inquiries'],function(){
+                    Route::group(['prefix' => 'inquiries'], function () {
 
-                        Route::post('/add',[TimelineQuiresController::class,'store']);
+                        Route::post('/add', [TimelineQuiresController::class, 'store']);
 
                     });
 
@@ -221,24 +221,24 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // For Resouces
-            Route::group(['prefix' => 'resources'],function(){
+            Route::group(['prefix' => 'resources'], function () {
 
-                Route::get('/',[ResourceController::class,'index']);
+                Route::get('/', [ResourceController::class, 'index']);
 
-                Route::post('/add',[ResourceController::class,'store']);
+                Route::post('/add', [ResourceController::class, 'store']);
 
-                Route::put('/edit/{id}',[ResourceController::class,'update']);
+                Route::put('/edit/{id}', [ResourceController::class, 'update']);
 
-                Route::delete('/delete/{id}',[ResourceController::class,'destroy']);
+                Route::delete('/delete/{id}', [ResourceController::class, 'destroy']);
 
                 // For Resouces Requests
-                Route::group(['prefix' => 'requests'],function(){
+                Route::group(['prefix' => 'requests'], function () {
 
-                    Route::get('/',[ResourceRequestController::class,'index']);
+                    Route::get('/', [ResourceRequestController::class, 'index']);
 
-                    Route::post('/send',[ResourceRequestController::class,'store']);
+                    Route::post('/send', [ResourceRequestController::class, 'store']);
 
-                    Route::put('/accept-reject/{id}',[ResourceRequestController::class,'accept_reject']);
+                    Route::put('/accept-reject/{id}', [ResourceRequestController::class, 'accept_reject']);
 
                 });
             });
@@ -425,7 +425,7 @@ Route::group(['prefix' => 'api'], function () {
                 Route::get('/', [ChatController::class, 'get_users_in_same_industrial_area']);
 
                 Route::get('/my', [ChatController::class, 'index']);
-                
+
                 // For chats messages
                 Route::group(['prefix' => 'messages'], function () {
 
@@ -487,7 +487,7 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // To get the related categories
-            Route::group(['prefix' => 'categories'],function(){
+            Route::group(['prefix' => 'categories'], function () {
 
                 Route::get('/manuals-and-plans', [CategoriesController::class, 'get_manula_and_plans_categories']);
 
@@ -556,7 +556,7 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // Materials
-            Route::group(['prefix' => 'materials','controller' => EntityController::class], function () {
+            Route::group(['prefix' => 'materials', 'controller' => EntityController::class], function () {
 
                 Route::get('/', 'get_materials');
 
@@ -615,7 +615,7 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // Customers routes
-            Route::group(['prefix' => 'customers','controller' => EntityController::class], function () {
+            Route::group(['prefix' => 'customers', 'controller' => EntityController::class], function () {
 
                 Route::get('/', 'get_customers');
 
@@ -681,12 +681,12 @@ Route::group(['prefix' => 'api'], function () {
             });
 
             // Get the Monitoring points belong to industrial are
-            Route::get('/monitoring-points',[MonitoringPointController::class,'index']);
+            Route::get('/monitoring-points', [MonitoringPointController::class, 'index']);
 
         });
 
         // For all authenticated users
-        Route::group(['prefix' => 'notifications' ,'controller' => NotificationController::class], function () {
+        Route::group(['prefix' => 'notifications', 'controller' => NotificationController::class], function () {
 
             Route::get('/', 'index');
 
@@ -734,7 +734,11 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/test',[FileController::class,'generatePDF']);
+    Route::get('/test', [FileController::class, 'generatePDF']);
+
+
+    Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
+
 
     require __DIR__ . '/auth.php';
 

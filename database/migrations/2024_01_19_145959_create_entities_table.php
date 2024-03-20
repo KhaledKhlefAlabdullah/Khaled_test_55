@@ -21,9 +21,9 @@ return new  class extends Migration {
             $table->text('from')->nullable();
             $table->text('to')->nullable();
             $table->string('usage')->nullable();
-            $table->boolean('quantity')->nullable();
+            $table->float('quantity')->nullable();
             $table->boolean('is_available')->nullable();
-            $table->boolean('available_quantity')->nullable();
+            $table->float('available_quantity')->nullable();
             $table->text('note')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

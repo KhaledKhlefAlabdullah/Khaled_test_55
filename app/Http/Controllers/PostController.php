@@ -590,9 +590,9 @@ class PostController extends Controller
             // Filter by publisher_name
             if ($request->has('publisher_name')) {
                 // check whil the post has user and pass the query 
-                $posts->whereHas('users', function ($query) use ($request) {
+                $posts->whereHas('user', function ($query) use ($request) {
                     // check whil the users has user_profiles and pass the query
-                    $query->whereHas('user_profiles', function ($sub_query) use ($request) {
+                    $query->whereHas('user_profile', function ($sub_query) use ($request) {
                         // check the user_profiles.name if contain the request (publisher_name) by the query
                         $sub_query->where('name', 'like', '%' . $request->publisher_name . '%');
                     });

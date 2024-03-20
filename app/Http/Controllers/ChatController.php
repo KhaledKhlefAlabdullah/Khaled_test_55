@@ -29,9 +29,9 @@ class ChatController extends Controller
                 ->where(['stakeholders.industrial_area_id' => getIndustrialAreaID()])
                 ->whereNot('stakeholders.id', stakeholder_id())->get();
 
-            return api_response(data: $compaies, message: 'compaies-getting-success');
+            return api_response(data: $compaies, message: 'companies-getting-success');
         } catch (Exception $e) {
-            return api_response(errors: [$e->getMessage()], message: 'compaies-getting-error', code: 500);
+            return api_response(errors: [$e->getMessage()], message: 'companies-getting-error', code: 500);
         }
     }
 

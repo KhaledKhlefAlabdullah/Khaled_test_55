@@ -17,6 +17,9 @@ use function App\Helpers\getAndCheckModelById;
 
 class UserController extends Controller
 {
+
+    
+
     public function index()
     {
         try {

@@ -183,7 +183,7 @@ Route::group(['prefix' => 'api'], function () {
                 Route::get('/shared',[TimelineController::class,'index']);
 
                 // For view the compaies in same industrial area
-                Route::get('/companie',[TimelineSharesRequestController::class,'get_companies_in_same_industrial_area']);
+                Route::get('/companies',[TimelineSharesRequestController::class,'get_companies_in_same_industrial_area']);
 
                 Route::group(['prefix' => 'share-requests'],function(){
 
@@ -422,8 +422,10 @@ Route::group(['prefix' => 'api'], function () {
 
             Route::group(['prefix' => 'chats'], function () {
 
-                Route::get('/', [ChatController::class, 'index']);
+                Route::get('/', [ChatController::class, 'get_users_in_same_industrial_area']);
 
+                Route::get('/my', [ChatController::class, 'index']);
+                
                 // For chats messages
                 Route::group(['prefix' => 'messages'], function () {
 

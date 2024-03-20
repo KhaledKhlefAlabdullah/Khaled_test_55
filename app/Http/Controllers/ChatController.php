@@ -5,14 +5,37 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Chat\ChatResource;
 use App\Models\Chat;
 use App\Models\User;
+use App\Models\UserProfile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use function App\Helpers\api_response;
+use function App\Helpers\getIndustrialAreaID;
+use function App\Helpers\stakeholder_id;
 
 class ChatController extends Controller
 {
+
+    /**
+     * Get the users in same industrial are
+     */
+    public function get_users_in_same_industrial_area(){
+        try {
+
+            $compaies = UserProfile::select('stakeholders.id as stakeholder_id','stakeholders.tenant_company_state as state', 'user_profiles.name', 'user_profiles.avatar_url')
+                ->join('stakeholders', 'user_profiles.user_id', '=', 'stakeholders.user_id')
+                ->join('users', 'stakeholders.user_id', 'users.id')
+                ->where(['stakeholders.industrial_area_id' => getIndustrialAreaID()])
+                ->whereNot('stakeholders.id', stakeholder_id())->get();
+
+            return api_response(data: $compaies, message: 'compaies-getting-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'compaies-getting-error', code: 500);
+        }
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -20,7 +43,7 @@ class ChatController extends Controller
     {
         try{
 
-            $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;
+            $industrial_area_id = getIndustrialAreaID();
 
             // Get a list of all chats
             $chatIds = DB::table('chat_members')

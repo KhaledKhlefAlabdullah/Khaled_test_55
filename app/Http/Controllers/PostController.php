@@ -70,10 +70,20 @@ class PostController extends Controller
 
             $category_id =  getIdByName(Category::class, $category);
 
+
+
+            if($category == 'posts'){
+                $user_name = Auth::user()->user_profile->name;
+                $title = is_null($user_name) ? 'anonnemoce post title' : $user_name.'posts title';
+            }
+            else{
+                $title = $request->input('title');
+            }
+
             Post::create([
                 'user_id' => Auth::id(),
                 'category_id' => $category_id,
-                'title' => $request->input('title'),
+                'title' => $title,
                 'body' => $request->input('body'),
                 'media_url' => $file_path,
                 'media_type' => $file_type,

@@ -84,6 +84,7 @@ class PostController extends Controller
                 'user_id' => Auth::id(),
                 'category_id' => $category_id,
                 'title' => $title,
+                'tag' => $request->input('tag'),
                 'body' => $request->input('body'),
                 'media_url' => $file_path,
                 'media_type' => $file_type,

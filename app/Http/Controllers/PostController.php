@@ -533,7 +533,7 @@ class PostController extends Controller
      */
     public function view_posts()
     {
-        return $this->index(['category_id' => getIdByName(Category::class, 'posts')], ['posts.id as post_id', 'posts.created_at', 'posts.priority_count', 'posts.body', 'posts.media_url', 'user_profiles.name', 'user_profiles.avatar_url', 'posts.tag'], type: 'posts');
+        return $this->index(['category_id' => getIdByName(Category::class, 'posts')], ['users.id as user_id','posts.id as post_id', 'posts.created_at', 'posts.priority_count', 'posts.body', 'posts.media_url', 'user_profiles.name', 'user_profiles.avatar_url', 'posts.tag'], type: 'posts');
     }
 
     /**

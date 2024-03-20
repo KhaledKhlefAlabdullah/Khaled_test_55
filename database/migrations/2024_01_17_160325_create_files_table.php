@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->string('user_id');
             $table->string('main_category_id');
             $table->string('sub_category_id');
-            $table->string('version_id')->nullable();
             $table->string('title');
             $table->text('description');
             $table->string('version')->nullable();

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['id', 'parent_id']);
         });
 
         // Insert statements for all categories

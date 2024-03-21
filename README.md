@@ -46,7 +46,18 @@ Follow the instructions below to set up and run the project locally.
    php artisan migrate --seed
    ```
 
-3. The Laravel application should now be running at [http://localhost:8080](http://localhost:8080).
+3. Run:
+
+   ```bash
+   npm install
+   ```
+
+4. Run Server:
+   ```bash
+   php artisan serv
+   ```
+
+5. The Laravel application should now be running at [http://localhost:8080](http://localhost:8080).
 
 
 ### Troubleshooting

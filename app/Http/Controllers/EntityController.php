@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomersRequest;
 use App\Http\Requests\EntityRequest;
-use App\Http\Requests\MaterialRequest;
 use App\Http\Resources\EntityResource;
 use App\Models\Category;
 use App\Models\Entity;
@@ -423,7 +422,6 @@ class EntityController extends Controller
     /**
      * This case needs a flood api.
      * View the current status of the Production site (how many days are expected for the flood to reach the site)
-     * @return array
      */
     public function view_status_production_site()
     {

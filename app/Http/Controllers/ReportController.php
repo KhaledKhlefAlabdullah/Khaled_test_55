@@ -10,6 +10,7 @@ class ReportController extends Controller
 {
     public function generateReport()
     {
+
         $options = new Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isRemoteEnabled', true);

@@ -370,25 +370,17 @@ class EmployeeController extends Controller
      */
     public function view_employees_details()
     {
-        try {
-            $id = stakeholder_id();
+        $id = stakeholder_id();
 
-            $employees = Employee::with([
-                'route:id,name,location,from,to,is_available',
-                'department:id,name',
-                'station:id,name,location',
-                'stakeholder'])
-                ->where('stakeholder_id', $id)
-                ->get();
+        $employees = Employee::with([
+            'route:id,name,location,from,to,is_available',
+            'department:id,name',
+            'station:id,name,location',
+            'stakeholder'])
+            ->where('stakeholder_id', $id)
+            ->get();
 
-            return EmployeeResource::collection($employees);
-        } catch (Exception $e) {
-            return api_response(
-                message: __('public-error'),
-                code: $e->getCode() ?? 404,
-                errors: [$e->getMessage()]
-            );
-        }
+        return EmployeeResource::collection($employees);
 
     }
 

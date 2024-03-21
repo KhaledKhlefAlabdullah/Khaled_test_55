@@ -737,7 +737,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/test', [FileController::class, 'generatePDF']);
 
 
-    Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
+//    Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
+    Route::get('report', function () {
+        return view('report-page-1');
+    });
 
 
     require __DIR__ . '/auth.php';

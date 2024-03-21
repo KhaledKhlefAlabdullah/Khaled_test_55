@@ -189,13 +189,20 @@ class MessageController extends Controller
 
 
     /**
+     * Handles the sending of a chat message.
      *
+     * This method captures the message and sender's ID from the request,
+     * broadcasts the message to other users except the sender, and
+     * returns a success response.
+     *
+     * @param Request $request The incoming request with message and sender_id.
+     * @return \Illuminate\Http\JsonResponse
      */
     public function send_message(Request $request)
     {
-        $data = $request->only(['message', 'sender_id']);
+        $data = $request->only(['message', 'received_id']);
         // send event for receiver user but not to current user
-        broadcast(new ChatEvent($data))->toOthers(); //
+        broadcast(new ChatEvent($data))->toOthers();
 
         return api_response(
             message: __('send-message-successfully')

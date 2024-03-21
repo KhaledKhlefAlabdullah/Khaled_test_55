@@ -167,6 +167,7 @@ class PostController extends Controller
             $data->update([
                 'title' => $request->input('title'),
                 'body' => $request->input('body'),
+                'tag' => $request->input('tag'),
                 'media_url' => $file_path,
                 'media_type' => $file_type
             ]);

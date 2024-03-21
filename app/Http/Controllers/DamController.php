@@ -6,11 +6,27 @@ use App\Http\Requests\Dam\StoreDamRequest;
 use App\Http\Requests\Dam\UpdateDamRequest;
 use App\Http\Resources\DamResource;
 use App\Models\Dam;
+use Exception;
+use Illuminate\Support\Facades\Http;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\getAndCheckModelById;
 
 class DamController extends Controller
 {
+
+    /**
+     * Get Dams data
+     */
+    public function getData(){
+        try{
+            $data = Http::get('https://water.egat.co.th/API/1day/QwkOf1eK2rJy4Hu7bT8mGn5Vv4cF9pRa5Eq6xD2gZu3XkSeZ3j');
+            return $data;
+        }
+        catch(Exception $e){
+
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DamController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\FileController;
@@ -474,7 +475,7 @@ Route::group(['prefix' => 'api'], function () {
 
                 Route::post('/filtering', [PostController::class, 'filtering_posts']);
 
-                Route::post('/upvot/{id}', [PostController::class, 'upvot_posts']);
+                Route::put('/upvot/{id}', [PostController::class, 'upvot_posts']);
 
                 Route::get('/users-profiles', [UserController::class, 'same_subdomain_users']);
 
@@ -739,3 +740,4 @@ Route::group(['prefix' => 'api'], function () {
     require __DIR__ . '/auth.php';
 
 });
+Route::get('/',[DamController::class,'getData']);

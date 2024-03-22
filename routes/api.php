@@ -739,23 +739,14 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/test',[FileController::class,'generatePDF']);
-    Route::get('/get-dams',[DamController::class,'getDamsData']);
-    Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
+    Route::get('/test', [FileController::class, 'generatePDF']);
+    Route::get('/get-dams', [DamController::class, 'getDamsData']);
+    Route::get('/get-weather', [WeatherController::class, 'getWeatherData']);
 
 //Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
     Route::get('report', function () {
         return view('report-page-1');
     });
-
-    Route::post('chat', function (Request $request) {
-        $message = $request->input('message');
-        $receivedId = $request->input('received_id');
-
-        // Pass the Request object directly
-        broadcast(new ChatEvent($request))->toOthers();
-    });
-
 
 
     require __DIR__ . '/auth.php';

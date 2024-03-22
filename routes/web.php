@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/download-educational-file',[FileController::class,'download_files']);
 
 
-Route::get('/test',[FileController::class,'generatePDF']);
+Route::get('/test', [FileController::class, 'generate_pdf']);
 
 //Route::get('/get-csv', [\App\Http\Controllers\EmployeeController::class,'export_csv_employees_file']);
 

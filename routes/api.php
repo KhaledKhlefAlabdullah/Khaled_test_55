@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ChatEvent;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -31,6 +32,8 @@ use App\Http\Controllers\Timelines\TimelineQuiresController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
 use App\Http\Controllers\WeatherController;
@@ -736,14 +739,15 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/test',[FileController::class,'generatePDF']);
-    Route::get('/get-dams',[DamController::class,'getDamsData']);
-    Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
+    Route::get('/test', [FileController::class, 'generatePDF']);
+    Route::get('/get-dams', [DamController::class, 'getDamsData']);
+    Route::get('/get-weather', [WeatherController::class, 'getWeatherData']);
 
 //Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
     Route::get('report', function () {
         return view('report-page-1');
     });
+
 
     require __DIR__ . '/auth.php';
 

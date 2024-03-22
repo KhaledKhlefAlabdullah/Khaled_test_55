@@ -7,7 +7,6 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\DamController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
@@ -32,8 +31,6 @@ use App\Http\Controllers\Timelines\TimelineQuiresController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
 use App\Http\Controllers\WeatherController;
@@ -739,14 +736,9 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/report',[FileController::class,'generatePDF']);
-    Route::get('/get-dams',[DamController::class,'getDamsData']);
-    Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
-
-//Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
-    Route::get('report', function () {
-        return view('report-page-1');
-    });
+    Route::get('/report', [FileController::class, 'generate_pdf']);
+    Route::get('/get-dams', [DamController::class, 'get_dams_data']);
+    Route::get('/get-weather', [WeatherController::class, 'get_weather_data']);
 
 
     require __DIR__ . '/auth.php';

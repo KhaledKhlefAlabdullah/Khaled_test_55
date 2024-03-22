@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ChatEvent;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -31,6 +32,8 @@ use App\Http\Controllers\Timelines\TimelineQuiresController;
 use App\Http\Controllers\Timelines\TimelineSharesRequestController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
 
@@ -743,8 +746,17 @@ Route::group(['prefix' => 'api'], function () {
         return view('report-page-1');
     });
 
+    Route::post('chat', function (Request $request) {
+        $message = $request->input('message');
+        $receivedId = $request->input('received_id');
+
+        // Pass the Request object directly
+        broadcast(new ChatEvent($request))->toOthers();
+    });
+
+
 
     require __DIR__ . '/auth.php';
 
 });
-Route::get('/',[DamController::class,'getData']);
+Route::get('/', [DamController::class, 'getData']);

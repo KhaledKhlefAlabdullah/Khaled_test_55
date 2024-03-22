@@ -59,7 +59,7 @@ class DamController extends Controller
                     }
                 }
             }
-            return api_response(message:'adding-dams-success');
+            return api_response(data:Dam::all(),message:'adding-dams-success');
         } catch (Exception $e) {
             return api_response(errors: $e->getMessage(), message: 'adding-dams-error', code: 500);
         }

@@ -21,7 +21,8 @@ class WeatherController extends Controller
             $xml = $weather->getBody()->getContents();
 
             $array = json_decode(json_encode(simplexml_load_string($xml)), true); // Convert XML to an array
-            $json = json_encode($array, JSON_PRETTY_PRINT);
+            // encode the json to store in database
+            //$json = json_encode($array, JSON_PRETTY_PRINT);
             return api_response(data:$array,message:'getting-weather-data-success');
         }
         catch(Exception $e){

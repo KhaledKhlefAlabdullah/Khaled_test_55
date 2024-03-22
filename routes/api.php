@@ -739,9 +739,9 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/test', [FileController::class, 'generatePDF']);
-    Route::get('/get-dams', [DamController::class, 'getDamsData']);
-    Route::get('/get-weather', [WeatherController::class, 'getWeatherData']);
+    Route::get('/test', [FileController::class, 'generate_pdf']);
+    Route::get('/get-dams', [DamController::class, 'get_dams_data']);
+    Route::get('/get-weather', [WeatherController::class, 'get_weather_data']);
 
 
     require __DIR__ . '/auth.php';

@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->uuid('id')->primary()->unique();
             $table->string('route_id');
             $table->string('material_id');
-            $table->string('stakeholder_id');
-            $table->string('public_id');
+            $table->string('stakeholder_id', 36);
+            $table->string('public_id', 36);
             $table->text('location');
             $table->text('contact_info');
             $table->boolean('is_available')->default(true);

@@ -12,10 +12,10 @@ return new  class extends Migration {
     {
         Schema::create('entities', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
-            $table->string('stakeholder_id');
+            $table->string('stakeholder_id', 36);
             $table->string('category_id');
             $table->string('name')->nullable();
-            $table->string('public_id');
+            $table->string('public_id', 36);
             $table->string('phone_number')->nullable();
             $table->text('location')->nullable();
             $table->text('from')->nullable();

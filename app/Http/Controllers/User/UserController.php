@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\Notifications\Notification;
+use App\Models\Notifications;
 use App\Models\User;
-use App\Notifications\PostsNotifications;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +17,7 @@ use function App\Helpers\getAndCheckModelById;
 class UserController extends Controller
 {
 
-    
+
 
     public function index()
     {
@@ -77,13 +76,13 @@ class UserController extends Controller
     }
 
     /**
-     * Users in same subdomain 
+     * Users in same subdomain
      */
     public function same_subdomain_users()
     {
 
         try {
-            
+
             // View Users list of the subdomain users (company name- email- account- industrial area- phone No.)
             // Get the industrial area id to get the users belongs to this industrial area
             $industrial_area_id = Auth::user()->stakeholder->industrial_area_id;

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Notifications\Notification;
 use App\Models\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -54,7 +53,7 @@ class User extends Authenticatable
     ];
 
 
-    public function user_profile()
+    public function user_profile(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(UserProfile::class, 'user_id');
     }
@@ -64,22 +63,22 @@ class User extends Authenticatable
         return $this->hasMany(PortalSetting::class, 'user_id');
     }
 
-    public function pages()
+    public function pages(): HasMany
     {
         return $this->hasMany(Page::class, 'user_id');
     }
 
-    public function participating_entities()
+    public function participating_entities(): HasMany
     {
         return $this->hasMany(ParticipatingEntity::class, 'user_id');
     }
 
-    public function contact_us_messages()
+    public function contact_us_messages(): HasMany
     {
         return $this->hasMany(ContactUsMessage::class, 'user_id');
     }
 
-    public function chats()
+    public function chats(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Chat::class, 'chat_members', 'user_id', 'chat_id');
     }
@@ -104,12 +103,12 @@ class User extends Authenticatable
         return $this->hasMany(MonitoringPoint::class, 'user_id');
     }
 
-    public function stakeholder()
+    public function stakeholder(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Stakeholder::class, 'user_id');
     }
 
-    public function industrial_area()
+    public function industrial_area(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(IndustrialArea::class, 'industrial_area_id');
     }

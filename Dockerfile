@@ -1,6 +1,6 @@
 FROM ubuntu:latest
-# Use the official PHP 8.0 image
-FROM php:8.0-apache
+# Use the official PHP 8.2 image
+FROM php:8.2-fpm
 LABEL authors="Muhmad Omar"
 
 # Set working directory
@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libonig-dev \
+    libxml2-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
@@ -35,9 +37,22 @@ ENV PHP_MEMORY_LIMIT 512M
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Expose port 80
-EXPOSE 80
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy existing application directory contents
+COPY . /var/www/html
+
+# Copy existing application directory permissions
+COPY --chown=www-data:www-data . /var/www/html
+
+# Change current user to www
+USER www-data
+
+
+# Expose port 81
+EXPOSE 9000
 
 # Start apache
-CMD ["apache2-foreground"]
+CMD ["php-fpm"]
 ENTRYPOINT ["top", "-b"]

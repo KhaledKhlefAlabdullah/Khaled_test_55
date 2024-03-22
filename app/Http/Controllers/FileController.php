@@ -20,6 +20,7 @@ use function App\Helpers\getMediaType;
 use function App\Helpers\stakeholder_id;
 use function App\Helpers\store_files;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -420,20 +421,20 @@ class FileController extends Controller
                 ['station' => 'RAMA VI Dam', 'discharge' => '', 'water_level' => '', 'crisis_point' => 'Yesterday - 1,698'],
                 ['station' => 'C.54, Samutprakran Province', 'discharge' => '', 'water_level' => '', 'crisis_point' => 'Today - 1,799'],
             ];
-            
+
             $rows = '';
             foreach ($data as $row) {
                 $rows .= "<w:tr><w:tc><w:p><w:r><w:t>{$row['station']}</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t>{$row['discharge']}</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t>{$row['water_level']}</w:t></w:r></w:p></w:tc><w:tc><w:p><w:r><w:t>{$row['crisis_point']}</w:t></w:r></w:p></w:tc></w:tr>";
             }
 
             $templateProcessor->setValue('table_data', $rows);
-            
+
             $templateProcessor->saveAs('files/ReportsTemplet/companyReport_updated.docx');
             // $templateProcessor->setImageValue('map_image', array('path' => public_path('/images/profile_images/defualt_user_avatar.png'), 'width' => 100, 'height' => 100));
-            
+
             // return response()->download('files/ReportsTemplet/companyReport.docx');
             // $templateProcessor->saveAs('files/ReportsTemplet/companyReport.pdf');
-    
+
             // Download the generated PDF
             return response()->download('files/ReportsTemplet/companyReport.pdf')->deleteFileAfterSend(true);
         } catch (Exception $e) {
@@ -454,31 +455,31 @@ class FileController extends Controller
             $info = [
                 'company_name' => $name,
                 'date' => now()->format('d/m/y'),
-                
+
                 //3- Map image: displaying the company's production sites and flood water level in the surrounding area
                 'map_image' => '',
-                
+
                 //4- Company operational status: Operating,Evacuating, Trapped or Evacuated 
                 'company_operational_status' => $company_state,
-                
+
                 //5- Monitoring graphs: displaying water level in monitoring points and dams (observation + prediction) example
                 'monitoring_graphs' => '',
-                
+
                 //6.1.Production sites: Safe Production sites - Not Safe Production Sites- Impacted Date
                 'production_sites' => '',
-                
+
                 //6.2.Suppliers: Material : Safe suppliers - Not Safe suppliers - Impacted date
                 'Suppliers' => '',
-                
+
                 //6.3.Employees: Department : Safe Staff+leaders - Not Safe Staff +Leaders - Impacted Date
                 'Employees' => '',
-                
+
                 //6.4.Shipments: Product : Safe Customers - Not Safe Customers
                 'Shipments' => '',
-                
+
                 //6.5. Wastes: Safe Wastes - Not Safe Wastes - Impacted Date
                 'Wastes' => '',
-                
+
                 //7.1. Service name - Status (available,partially interrupted , interrupted) - Stop date -Start date - Last updated"					
                 'infrastructure_services_status' => ''
             ];
@@ -486,6 +487,27 @@ class FileController extends Controller
             return $info;
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'getting-report-info-erroe', code: 500);
+        }
+    }
+
+    public function get_map_image()
+    {
+        $latitude = 40.7128;
+        $longitude = -74.0060;
+        $apiKey = 'YOUR_API_KEY';
+        $mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=13&size=600x300&key=$apiKey";
+    
+        $response = Http::get($mapUrl);
+    
+        if ($response->ok()) {
+            $image = $response->body();
+            // save the image in localstorage
+            $filePath = public_path('images/reports/map_image.jpg');
+            file_put_contents($filePath, $image);
+
+            return $filePath;
+        } else {
+            return "Failed to retrieve map image";
         }
     }
 }

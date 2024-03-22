@@ -9,21 +9,59 @@ use App\Models\Dam;
 use Exception;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
+
+use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getPortalId;
 
 class DamController extends Controller
 {
-
+    //Dam_data=
+    // {
+    //     "datetime": "21-03-2024",
+    //     "damname": "BHUMIBOL DAM",
+    //     "waterlevel": 239.07,
+    //     "tailwater": 139.77,
+    //     "inflow": 1.17,
+    //     "released": 25.08,
+    //     "storage": 7799.42,
+    //     "spillway": 0,
+    //     "losses": 0,
+    //     "evap": 0.07
+    // }
     /**
      * Get Dams data
      */
-    public function getData(){
-        try{
-            $data = Http::get('https://water.egat.co.th/API/1day/QwkOf1eK2rJy4Hu7bT8mGn5Vv4cF9pRa5Eq6xD2gZu3XkSeZ3j');
-            return $data;
-        }
-        catch(Exception $e){
+    public function getDamsData()
+    {
+        try {
+            $response = Http::get('https://water.egat.co.th/API/1day/QwkOf1eK2rJy4Hu7bT8mGn5Vv4cF9pRa5Eq6xD2gZu3XkSeZ3j');
 
+            if ($response->successful()) {
+                $data = $response->json();
+
+                foreach ($data as $dam) {
+                    // Check if the dam with the same name already exists
+                    $existingDam = Dam::where('name', $dam['damname'])->first();
+
+                    if (!$existingDam) {
+                        // Create a new Dam record only if it doesn't exist
+
+                        Dam::create([
+                            'user_id' => getPortalId(),
+                            'name' => $dam['damname'],
+                            'location' => '',
+                            'water_level' => $dam['waterlevel'],
+                            'discharge' => '',
+                            'source' => '',
+                            'Dam_data' => json_encode($dam)
+                        ]);
+                    }
+                }
+            }
+            return api_response(message:'adding-dams-success');
+        } catch (Exception $e) {
+            return api_response(errors: $e->getMessage(), message: 'adding-dams-error', code: 500);
         }
     }
 
@@ -70,7 +108,6 @@ class DamController extends Controller
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
-
     }
 
     /**
@@ -93,7 +130,6 @@ class DamController extends Controller
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }
-
     }
 
     /**
@@ -109,7 +145,21 @@ class DamController extends Controller
             $dam->delete();
 
             return response()->json(['message' => 'Dam deleted successfully']);
+        } catch (NotFoundResourceException $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
+    }
+    public function destroy_all()
+    {
+        try {
+            // Get Dam by ID and check if it exists
+            $dams = Dam::all();
 
+            // Delete Dam
+            foreach($dams as $dam)
+             $dam->delete();
+
+            return response()->json(['message' => 'Dam deleted successfully']);
         } catch (NotFoundResourceException $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());
         }

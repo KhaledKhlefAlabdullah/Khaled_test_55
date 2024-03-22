@@ -33,6 +33,7 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
+use App\Http\Controllers\WeatherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -736,8 +737,9 @@ Route::group(['prefix' => 'api'], function () {
 
     // todo ** complete here tomoro
     Route::get('/test',[FileController::class,'generatePDF']);
+    Route::get('/get-dams',[DamController::class,'getDamsData']);
+    Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
 
     require __DIR__ . '/auth.php';
 
 });
-Route::get('/',[DamController::class,'getData']);

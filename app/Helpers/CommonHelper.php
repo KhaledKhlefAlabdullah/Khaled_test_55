@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Mail\PortalMails;
 use App\Models\Notifications\NotificationsSetting;
 use App\Models\Page;
+use App\Models\User;
 use App\Notifications\PortalNotifications;
 use Exception;
 use Illuminate\Contracts\Cache\Store;
@@ -592,5 +593,19 @@ if (!function_exists('getIndustrialAreaID')) {
             return $industrial_Area_id;
         else
             return abort(code: 500, message: 'There no industrial area id for this user');
+    }
+}
+
+/**
+ * @return string portal manager id
+ */
+if(!function_exists('getPortalId')){
+    function getPortalId(){
+        $porat_manager = User::where('stakeholder_type','Portal_manager')->first();
+        if(!$porat_manager){
+            return abort(code: 500, message: 'There no portal manager');
+        }
+
+        return $porat_manager->id;
     }
 }

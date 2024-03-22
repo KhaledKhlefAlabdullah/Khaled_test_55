@@ -739,9 +739,9 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/test', [FileController::class, 'generatePDF']);
-    Route::get('/get-dams', [DamController::class, 'getDamsData']);
-    Route::get('/get-weather', [WeatherController::class, 'getWeatherData']);
+    Route::get('/report',[FileController::class,'generatePDF']);
+    Route::get('/get-dams',[DamController::class,'getDamsData']);
+    Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
 
 //Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
     Route::get('report', function () {

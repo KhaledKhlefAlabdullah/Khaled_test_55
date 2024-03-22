@@ -743,11 +743,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/get-dams', [DamController::class, 'getDamsData']);
     Route::get('/get-weather', [WeatherController::class, 'getWeatherData']);
 
-//Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
-    Route::get('report', function () {
-        return view('report-page-1');
-    });
-
 
     require __DIR__ . '/auth.php';
 

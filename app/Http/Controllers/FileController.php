@@ -20,6 +20,7 @@ use function App\Helpers\getMediaType;
 use function App\Helpers\stakeholder_id;
 use function App\Helpers\store_files;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -459,6 +460,7 @@ class FileController extends Controller
                 'map_image' => '',
 
                 //4- Company operational status: Operating,Evacuating, Trapped or Evacuated
+
                 'company_operational_status' => $company_state,
 
                 //5- Monitoring graphs: displaying water level in monitoring points and dams (observation + prediction) example
@@ -479,13 +481,35 @@ class FileController extends Controller
                 //6.5. Wastes: Safe Wastes - Not Safe Wastes - Impacted Date
                 'Wastes' => '',
 
-                //7.1. Service name - Status (available,partially interrupted , interrupted) - Stop date -Start date - Last updated"
+
+                //7.1. Service name - Status (available,partially interrupted , interrupted) - Stop date -Start date - Last updated"					
                 'infrastructure_services_status' => ''
             ];
 
             return $info;
         } catch (Exception $e) {
             return api_response(errors: [$e->getMessage()], message: 'getting-report-info-erroe', code: 500);
+        }
+    }
+
+    public function get_map_image()
+    {
+        $latitude = 40.7128;
+        $longitude = -74.0060;
+        $apiKey = 'YOUR_API_KEY';
+        $mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=13&size=600x300&key=$apiKey";
+    
+        $response = Http::get($mapUrl);
+    
+        if ($response->ok()) {
+            $image = $response->body();
+            // save the image in localstorage
+            $filePath = public_path('images/reports/map_image.jpg');
+            file_put_contents($filePath, $image);
+
+            return $filePath;
+        } else {
+            return "Failed to retrieve map image";
         }
     }
 }

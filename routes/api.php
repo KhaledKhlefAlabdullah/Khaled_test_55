@@ -36,6 +36,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WasteController;
+use App\Http\Controllers\WeatherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -738,10 +739,11 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/test', [FileController::class, 'generatePDF']);
+    Route::get('/test',[FileController::class,'generatePDF']);
+    Route::get('/get-dams',[DamController::class,'getDamsData']);
+    Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
 
-
-//    Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
+//Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
     Route::get('report', function () {
         return view('report-page-1');
     });
@@ -759,4 +761,3 @@ Route::group(['prefix' => 'api'], function () {
     require __DIR__ . '/auth.php';
 
 });
-Route::get('/', [DamController::class, 'getData']);

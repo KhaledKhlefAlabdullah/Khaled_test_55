@@ -24,8 +24,22 @@ class Dam extends Model
         'location',
         'water_level',
         'discharge',
-        'source'
+        'source',
+        'dam_data'
     ];
+    //Dam_data=
+    // {
+    //     "datetime": "21-03-2024",
+    //     "damname": "BHUMIBOL DAM",
+    //     "waterlevel": 239.07,
+    //     "tailwater": 139.77,
+    //     "inflow": 1.17,
+    //     "released": 25.08,
+    //     "storage": 7799.42,
+    //     "spillway": 0,
+    //     "losses": 0,
+    //     "evap": 0.07
+    // }
 
     public function user()
     {

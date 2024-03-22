@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->float('water_level');
             $table->string('discharge');
             $table->string('source')->nullable();
+            $table->text('dam_data')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

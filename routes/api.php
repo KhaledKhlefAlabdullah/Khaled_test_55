@@ -739,6 +739,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/report',[FileController::class,'generatePDF']);
     Route::get('/get-dams',[DamController::class,'getDamsData']);
     Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
+    Route::get('/map',[FileController::class,'get_map_image']);
 
 //Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
     Route::get('report', function () {

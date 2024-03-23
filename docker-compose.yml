@@ -1,0 +1,59 @@
+version: '3'
+services:
+    app:
+        image: 'php:8.2-fpm'
+        volumes:
+            - '.:/var/www/html'
+        working_dir: '/var/www/html'
+        environment:
+            - DB_HOST=env(DB_HOST)
+            - DB_PORT=env(DB_PORT)
+            - DB_DATABASE=env(DB_DATABASE)
+            - DB_USERNAME=env(DB_USERNAME)
+            - DB_PASSWORD=env(DB_PASSWORD)
+        networks:
+            - app-network
+
+    webserver:
+        image: 'nginx:alpine'
+        volumes:
+            - '.:/var/www/html'
+            - './docker/nginx/conf.d:/etc/nginx/conf.d'
+        ports:
+            - '81:81'
+        networks:
+            - app-network
+        depends_on:
+            - app
+
+    db:
+        image: 'mysql:latest'
+        volumes:
+            - 'dbdata:/var/lib/mysql'
+        environment:
+            - MYSQL_DATABASE=env(DB_DATABASE)
+            - MYSQL_USER=env(DB_USERNAME)
+            - MYSQL_PASSWORD=env(DB_PASSWORD)
+            - MYSQL_ROOT_PASSWORD=env(DB_ROOT_PASSWORD)
+        networks:
+            - app-network
+
+    websocket:
+        image: 'php:8.2-fpm'
+        volumes:
+            - '.:/var/www/html'
+        working_dir: '/var/www/html'
+        command: php artisan websockets:serve
+        ports:
+            - '6001:6001'
+        networks:
+            - app-network
+        depends_on:
+            - app
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    dbdata:

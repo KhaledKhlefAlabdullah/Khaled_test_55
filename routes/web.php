@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('/download-educational-file',[FileController::class,'download_files']);
 
-
+Route::get('/map', [MapController::class, 'index']);
 Route::get('/test',[FileController::class,'generatePDF']);
 
 //Route::get('/get-csv', [\App\Http\Controllers\EmployeeController::class,'export_csv_employees_file']);

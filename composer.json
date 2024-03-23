@@ -17,7 +17,6 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "mcamara/laravel-localization": "^1.8",
-        "nnnick/chartjs": "*",
         "phpoffice/phpword": "^1.2",
         "psr/simple-cache": "2.0",
         "pusher/pusher-php-server": "^7.0"
@@ -25,6 +24,7 @@
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
+        "laravel/telescope": "^5.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "phpunit/phpunit": "^10.1",

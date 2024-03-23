@@ -7,7 +7,8 @@ use App\Http\Requests\Message\MessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use Exception;
-use http\Env\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use function App\Helpers\api_response;
 use function App\Helpers\getAndCheckModelById;
@@ -34,7 +35,7 @@ class MessageController extends Controller
             return api_response(data: $messages, message: 'messages-getting-success');
 
         } catch (Exception $e) {
-            return api_response(errors: [$e->getMessage()], message: 'messages-getting-error', code: 500);
+            return api_response(message: 'messages-getting-error', code: 500, errors: [$e->getMessage()]);
         }
     }
 
@@ -94,9 +95,9 @@ class MessageController extends Controller
 
             $media_ur = null;
 
-            $file_type ='text';
+            $file_type = 'text';
 
-            if($request->has('media')){
+            if ($request->has('media')) {
 
                 $file = $request->media;
 
@@ -143,9 +144,9 @@ class MessageController extends Controller
      */
     public function update(MessageRequest $request, string $id)
     {
-        try{
-             // Get the message by message ID
-            $message = getAndCheckModelById(Message::class,$id);
+        try {
+            // Get the message by message ID
+            $message = getAndCheckModelById(Message::class, $id);
 
             // Validate the message
             $request->validated();
@@ -155,10 +156,9 @@ class MessageController extends Controller
                 'message' => $request->input('message')
             ]);
 
-            return api_response(message:'message-editting-success');
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'message-editting-error',code:500);
+            return api_response(message: 'message-editting-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'message-editting-error', code: 500);
         }
 
     }
@@ -168,53 +168,53 @@ class MessageController extends Controller
      */
     public function destroy(string $id)
     {
-        try{
+        try {
             // Get the message by ID
-            $message = getAndCheckModelById(Message::class,$id);
+            $message = getAndCheckModelById(Message::class, $id);
 
-            if($message->media_url){
+            if ($message->media_url) {
                 unlink(public_path($message->media_url));
             }
             // Delete the message
             $message->delete();
 
             // Return the deleted message
-            return api_response(message:'message-delete-success');
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'message-delete-error',code:500);
+            return api_response(message: 'message-delete-success');
+        } catch (Exception $e) {
+            return api_response(message: 'message-delete-error', code: 500, errors: [$e->getMessage()]);
         }
 
     }
 
 
     /**
+     * Handles the sending of a chat message.
      *
+     * This method captures the message and sender's ID from the request,
+     * broadcasts the message to other users except the sender, and
+     * returns a success response.
+     *
+     * @param Request $request The incoming request with message and sender_id.
+     * @return JsonResponse
      */
     public function send_message(Request $request)
     {
-        $data = $request->only(['message', 'sender_id']);
+        $valid_data = $request->validate([
+            'received_id' => ['uuid', 'exists:users,id'],
+            'message' => ['required', 'string'],
+        ]);
+
+        if (!$valid_data) {
+            return api_response(message: 'validation-error', code: 400, errors: $valid_data->errors());
+        }
+
+
         // send event for receiver user but not to current user
-        broadcast(new ChatEvent($data))->toOthers(); //
+        broadcast(new ChatEvent(...$valid_data))->toOthers();
 
         return api_response(
+            data: $valid_data,
             message: __('send-message-successfully')
         );
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

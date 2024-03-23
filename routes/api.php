@@ -1,12 +1,12 @@
 <?php
 
+use App\Events\ChatEvent;
 use App\Http\Controllers\AnnouncementsController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactUsMessageController;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\DamController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
@@ -741,10 +741,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
     Route::get('/map',[FileController::class,'get_map_image']);
 
-//Route::get('report', [\App\Http\Controllers\ReportController::class, 'generateReport']);
-    Route::get('report', function () {
-        return view('report-page-1');
-    });
 
     require __DIR__ . '/auth.php';
 

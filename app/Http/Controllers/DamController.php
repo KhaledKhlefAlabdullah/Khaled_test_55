@@ -32,7 +32,7 @@ class DamController extends Controller
     /**
      * Get Dams data
      */
-    public function getDamsData()
+    public function get_dams_data()
     {
         try {
             $response = Http::get('https://water.egat.co.th/API/1day/QwkOf1eK2rJy4Hu7bT8mGn5Vv4cF9pRa5Eq6xD2gZu3XkSeZ3j');

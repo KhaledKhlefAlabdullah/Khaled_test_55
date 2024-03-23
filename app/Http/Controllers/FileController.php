@@ -395,7 +395,7 @@ class FileController extends Controller
     /**
      * Generet reports pdf files
      */
-    public function generatePDF()
+    public function generate_pdf()
     {
         try {
 
@@ -460,7 +460,8 @@ class FileController extends Controller
                 //3- Map image: displaying the company's production sites and flood water level in the surrounding area
                 'map_image' => '',
 
-                //4- Company operational status: Operating,Evacuating, Trapped or Evacuated 
+                //4- Company operational status: Operating,Evacuating, Trapped or Evacuated
+
                 'company_operational_status' => $company_state,
 
                 //5- Monitoring graphs: displaying water level in monitoring points and dams (observation + prediction) example
@@ -480,6 +481,7 @@ class FileController extends Controller
 
                 //6.5. Wastes: Safe Wastes - Not Safe Wastes - Impacted Date
                 'Wastes' => '',
+
 
                 //7.1. Service name - Status (available,partially interrupted , interrupted) - Stop date -Start date - Last updated"					
                 'infrastructure_services_status' => ''

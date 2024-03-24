@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AnnouncementsRequest;
+use App\Models\Category;
 use App\Models\Post;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use function App\Helpers\api_response;
 use function App\Helpers\edit_file;
 use function App\Helpers\getAndCheckModelById;
+use function App\Helpers\getIdByName;
 
 class AnnouncementsController extends Controller
 {
@@ -30,8 +32,9 @@ class AnnouncementsController extends Controller
 
         try {
             // Get list of announcements
-            // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
-            $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+            $category_id = getIdByName(Category::class, 'Announcements');
+
+            $data = Post::where('category_id', '=', $category_id)
                 ->select(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url'])->get();
 
             // Check if any announcements were found
@@ -56,7 +59,6 @@ class AnnouncementsController extends Controller
     }
 
 
-
     /**
      * View the list of announcements created by the authenticated user.
      *
@@ -71,9 +73,9 @@ class AnnouncementsController extends Controller
 
         try {
             // Get list of user announcements
-            // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
-            // user_id is created announcements
-            $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+            $category_id = getIdByName(Category::class, 'Announcements');
+
+            $data = Post::where('category_id', '=', $category_id)
                 ->where('user_id', '=', Auth::id())
                 ->select(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url'])->get();
 
@@ -217,8 +219,10 @@ class AnnouncementsController extends Controller
     {
         try {
             // Get list of announcements
-            // this id 048e9200-e29b-41d4-a716-446655440000 for announcements category
-            $data = Post::where('category_id', '=', '048e9200-e29b-41d4-a716-446655440000')
+            // Get list of announcements
+            $category_id = getIdByName(Category::class, 'Announcements');
+
+            $data = Post::where('category_id', '=', $category_id)
                 ->select(['id', 'user_id', 'title', 'body', 'is_publish', 'media_url'])->get();
 
             // Check if any announcements were found

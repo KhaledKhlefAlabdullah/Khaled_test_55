@@ -21,9 +21,19 @@ class MessageController extends Controller
 
 
     /**
+     * Display a listing of the resource.
+     *
+     *
+     */
+    public function index(string $chat_id): JsonResponse
+    {
+        return $this->get_messages_by_conditions(['chat_id' => $chat_id]);
+    }
+
+    /**
      * Get messages by conditions
      */
-    public function get_messages_by_conditions(array $conditions)
+    public function get_messages_by_conditions(array $conditions): JsonResponse
     {
         try {
             // Get all messages from the authenticated user
@@ -40,19 +50,9 @@ class MessageController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     *
-     */
-    public function index(string $chat_id)
-    {
-        return $this->get_messages_by_conditions(['chat_id' => $chat_id]);
-    }
-
-    /**
      * Display list of starred messages
      */
-    public function get_starred_messages(string $chat_id)
+    public function get_starred_messages(string $chat_id): JsonResponse
     {
         return $this->get_messages_by_conditions(['chat_id' => $chat_id, 'is_starred' => true]);
     }
@@ -60,7 +60,7 @@ class MessageController extends Controller
     /**
      * Search for message in chat
      */
-    public function search_message(string $chat_id, string $query)
+    public function search_message(string $chat_id, string $query): JsonResponse
     {
         return search(Message::class, ['chat_id' => $chat_id], $query);
     }
@@ -68,7 +68,7 @@ class MessageController extends Controller
     /**
      * Set message as starred
      */
-    public function set_message_starred(string $message_id)
+    public function set_message_starred(string $message_id): JsonResponse
     {
         try {
 
@@ -85,9 +85,33 @@ class MessageController extends Controller
     }
 
     /**
+     * Update the specified resource in storage.
+     */
+    public function update(MessageRequest $request, string $id): JsonResponse
+    {
+        try {
+            // Get the message by message ID
+            $message = getAndCheckModelById(Message::class, $id);
+
+            // Validate the message
+            $request->validated();
+
+            // Update the message
+            $message->update([
+                'message' => $request->input('message')
+            ]);
+
+            return api_response(message: 'message-editting-success');
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'message-editting-error', code: 500);
+        }
+
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
-    public function store(MessageRequest $request)
+    public function store(MessageRequest $request): JsonResponse
     {
         try {
             // Validate the request data
@@ -119,6 +143,8 @@ class MessageController extends Controller
                 'message_type' => $file_type,
             ]);
 
+            broadcast(new ChatEvent($request->input(['message']), $request->input('receiver_id')))->toOthers();
+
             return api_response(message: 'message-creating-success');
 
         } catch (Exception $e) {
@@ -129,7 +155,7 @@ class MessageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): MessageResource|JsonResponse
     {
         // Get the message by message ID
         $message = Message::find($id);
@@ -140,33 +166,9 @@ class MessageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(MessageRequest $request, string $id)
-    {
-        try {
-            // Get the message by message ID
-            $message = getAndCheckModelById(Message::class, $id);
-
-            // Validate the message
-            $request->validated();
-
-            // Update the message
-            $message->update([
-                'message' => $request->input('message')
-            ]);
-
-            return api_response(message: 'message-editting-success');
-        } catch (Exception $e) {
-            return api_response(errors: [$e->getMessage()], message: 'message-editting-error', code: 500);
-        }
-
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         try {
             // Get the message by ID
@@ -197,24 +199,24 @@ class MessageController extends Controller
      * @param Request $request The incoming request with message and sender_id.
      * @return JsonResponse
      */
-    public function send_message(Request $request)
-    {
-        $valid_data = $request->validate([
-            'received_id' => ['uuid', 'exists:users,id'],
-            'message' => ['required', 'string'],
-        ]);
-
-        if (!$valid_data) {
-            return api_response(message: 'validation-error', code: 400, errors: $valid_data->errors());
-        }
-
-
-        // send event for receiver user but not to current user
-        broadcast(new ChatEvent(...$valid_data))->toOthers();
-
-        return api_response(
-            data: $valid_data,
-            message: __('send-message-successfully')
-        );
-    }
+//    public function send_message(Request $request)
+//    {
+//        $valid_data = $request->validate([
+//            'received_id' => ['uuid', 'exists:users,id'],
+//            'message' => ['required', 'string'],
+//        ]);
+//
+//        if (!$valid_data) {
+//            return api_response(message: 'validation-error', code: 400, errors: $valid_data->errors());
+//        }
+//
+//        // send event for receiver user but not to current user
+//        broadcast(new ChatEvent(...$valid_data))->toOthers();
+//
+//
+//        return api_response(
+//            data: $valid_data,
+//            message: __('send-message-successfully')
+//        );
+//    }
 }

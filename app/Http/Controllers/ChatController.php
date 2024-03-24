@@ -20,10 +20,11 @@ class ChatController extends Controller
     /**
      * Get the users in same industrial are
      */
-    public function get_users_in_same_industrial_area(){
+    public function get_users_in_same_industrial_area()
+    {
         try {
 
-            $compaies = UserProfile::select('stakeholders.id as stakeholder_id','stakeholders.tenant_company_state as state', 'user_profiles.name', 'user_profiles.avatar_url')
+            $compaies = UserProfile::select('stakeholders.id as stakeholder_id', 'stakeholders.tenant_company_state as state', 'user_profiles.name', 'user_profiles.avatar_url')
                 ->join('stakeholders', 'user_profiles.user_id', '=', 'stakeholders.user_id')
                 ->join('users', 'stakeholders.user_id', 'users.id')
                 ->where(['stakeholders.industrial_area_id' => getIndustrialAreaID()])
@@ -41,28 +42,27 @@ class ChatController extends Controller
      */
     public function index()
     {
-        try{
+        try {
 
             $industrial_area_id = getIndustrialAreaID();
 
             // Get a list of all chats
             $chatIds = DB::table('chat_members')
-            ->where('user_id', Auth::id())
-            ->pluck('chat_id');
-            
+                ->where('user_id', Auth::id())
+                ->pluck('chat_id');
+
             $chats = Chat::whereIn('chats.id', $chatIds)
-            ->join('chat_members as cm', 'chats.id', '=', 'cm.chat_id')
-            ->join('users as u', 'cm.user_id', '=', 'u.id')
-            ->join('user_profiles as up', 'u.id', '=', 'up.user_id')
-            ->select('chats.id as chat_id', 'u.id as user_id', 'up.name as user_name', 'up.avatar_url as avatar_url')
-            ->where('u.id', '<>', Auth::id())
-            ->get();
+                ->join('chat_members as cm', 'chats.id', '=', 'cm.chat_id')
+                ->join('users as u', 'cm.user_id', '=', 'u.id')
+                ->join('user_profiles as up', 'u.id', '=', 'up.user_id')
+                ->select('chats.id as chat_id', 'u.id as user_id', 'up.name as user_name', 'up.avatar_url as avatar_url')
+                ->where('u.id', '<>', Auth::id())
+                ->get();
 
-            return api_response(data:$chats,message:'chats-getting-success');
+            return api_response(data: $chats, message: 'chats-getting-success');
 
-        }
-        catch(Exception $e){
-            return api_response(errors:[$e->getMessage()],message:'chats-getting-error',code:500);
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], message: 'chats-getting-error', code: 500);
         }
     }
 
@@ -70,7 +70,7 @@ class ChatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): ChatResource
     {
         // Validate the request
         $valid_data = $request->validate([
@@ -88,7 +88,7 @@ class ChatController extends Controller
      * Display the specified resource.
      *
      */
-    public function show(string $id)
+    public function show(string $id): \Illuminate\Http\JsonResponse|ChatResource
     {
         // Get the chat
         $chat = Chat::find($id);
@@ -112,7 +112,7 @@ class ChatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): \Illuminate\Http\JsonResponse|ChatResource
     {
         // Validate the request
         $valid_data = $request->validate([
@@ -137,7 +137,7 @@ class ChatController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): \Illuminate\Http\JsonResponse
     {
         // Get the chat By ID
         $chat = Chat::find($id);

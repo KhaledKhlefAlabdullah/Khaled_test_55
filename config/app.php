@@ -172,6 +172,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         Barryvdh\Dompdf\ServiceProvider::class,
+        Barryvdh\Snappy\ServiceProvider::class,
     ])->toArray(),
 
     /*

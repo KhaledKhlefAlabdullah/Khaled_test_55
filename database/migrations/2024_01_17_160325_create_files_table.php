@@ -21,6 +21,7 @@ return new class extends Migration {
             $table->string('media_url')->nullable();
             $table->enum('media_type', ['image', 'video', 'file'])->nullable();
             $table->enum('update_frequency', ['daily', 'weekly', 'monthly'])->nullable();
+            $table->enum('update_state', ['Up to date','overdue'])->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('main_category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('sub_category_id')->references('id')->on('categories')->onDelete('cascade');

@@ -81,7 +81,7 @@ class FileController extends Controller
      */
     public function view_my_guidelines_and_updates()
     {
-        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-44665544GAU', 'user_id' => Auth::id()]);
+        return $this->get_files(['main_category_id' => '003e8400-e29b-41d4-a716-44665544GAU', 'files.user_id' => Auth::id()]);
     }
 
     /**
@@ -108,11 +108,11 @@ class FileController extends Controller
         try {
 
             $files = File::where($Conditions)->join('categories', 'categories.id', '=', 'files.sub_category_id')
-            ->join('user_profiles','files.user_id','=','user_profiles.user_id')
+            ->leftJoin('user_profiles','files.user_id','=','user_profiles.user_id')
             ->when(Auth::check(), function ($query) {
-                return $query->addSelect('files.id', 'categories.id as category_id', 'categories.name as ctegory', 'user_profiles.name','files.title', 'files.description', 'files.media_url', 'files.created_at');
+                return $query->addSelect('files.id', 'categories.id as category_id', 'categories.name as ctegory', 'user_profiles.name as Auther','files.title', 'files.description', 'files.media_url', 'files.update_state as state', 'files.created_at');
             }, function ($query) {
-                return $query->addSelect('files.id', 'categories.name as ctegory', 'user_profiles.name','files.title', 'files.description', 'files.created_at');
+                return $query->addSelect('files.id', 'categories.name as ctegory', 'user_profiles.name as Auther','files.title', 'files.description', 'files.created_at');
             })->get();
 
             return api_response($files, 'files-getting-success');

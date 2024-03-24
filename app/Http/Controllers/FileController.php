@@ -107,10 +107,12 @@ class FileController extends Controller
     {
         try {
 
-            $files = File::where($Conditions)->join('categories', 'categories.id', '=', 'files.sub_category_id')->when(Auth::check(), function ($query) {
-                return $query->addSelect('files.id', 'categories.id as category_id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.media_url', 'files.created_at');
+            $files = File::where($Conditions)->join('categories', 'categories.id', '=', 'files.sub_category_id')
+            ->join('user_profiles','files.user_id','=','user_profiles.user_id')
+            ->when(Auth::check(), function ($query) {
+                return $query->addSelect('files.id', 'categories.id as category_id', 'categories.name as ctegory', 'user_profiles.name','files.title', 'files.description', 'files.media_url', 'files.created_at');
             }, function ($query) {
-                return $query->addSelect('files.id', 'categories.name as ctegory', 'files.title', 'files.description', 'files.created_at');
+                return $query->addSelect('files.id', 'categories.name as ctegory', 'user_profiles.name','files.title', 'files.description', 'files.created_at');
             })->get();
 
             return api_response($files, 'files-getting-success');
@@ -200,10 +202,8 @@ class FileController extends Controller
             $request->validated();
 
             $file = $request->file;
-
-            $main_category_id = getIdByName(Category::class,'File');
  
-            $sub_category_id = getIdByName(Category::class, $file_type);
+            $main_category_id = getIdByName(Category::class, $file_type);
 
             $path = store_files($file, '/files/' . $file_type);
 
@@ -214,6 +214,12 @@ class FileController extends Controller
                 $version = $request->input('version');
             } else {
                 $version = null;
+            }
+
+            if($file_type == 'Guideline_And_Updates'){
+                $sub_category_id = getIdByName(Category::class,'File');
+            }else{
+                $sub_category_id = $request->input('category_id');
             }
 
             File::create([

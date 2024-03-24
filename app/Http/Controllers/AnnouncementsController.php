@@ -56,6 +56,7 @@ class AnnouncementsController extends Controller
     }
 
 
+
     /**
      * View the list of announcements created by the authenticated user.
      *
@@ -154,7 +155,7 @@ class AnnouncementsController extends Controller
     }
 
 
-    /*
+    /**
      * Edit my  Announcement
      *
      */
@@ -262,6 +263,17 @@ class AnnouncementsController extends Controller
             );
 
         }
+    }
+
+
+    public function add_announcements(AnnouncementsRequest $request)
+    {
+        $data = Post::create($request->all());
+
+        return api_response(
+            data: $data,
+            message: __('created-successfully')
+        );
     }
 
 }

@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests;
 
+
+use App\Models\Category;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use function App\Helpers\getIdByName;
 
 class AnnouncementsRequest extends FormRequest
 {
@@ -17,7 +22,7 @@ class AnnouncementsRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -27,5 +32,15 @@ class AnnouncementsRequest extends FormRequest
             'media_url' => ['nullable'],
             'is_publish' => ['boolean', 'sometimes'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        // Set user_id based on the current user making the request
+        $this->merge([
+            'user_id' => Auth::id(),
+            'category_id' => getIdByName(Category::class, 'Announcements')
+        ]);
+
     }
 }

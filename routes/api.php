@@ -324,25 +324,29 @@ Route::group(['prefix' => 'api'], function () {
 
 
             // Announcements Start
-            Route::group(['prefix' => 'announcements'], function () {
+            Route::group(['prefix' => 'announcements', 'controller' => AnnouncementsController::class], function () {
 
                 // View list of Announcements
                 // View announcements list (publisher-published date-content )
-                Route::get('/view-list-of-announcements', [AnnouncementsController::class, 'view_list_of_announcements']);
+                Route::get('view-list-of-announcements', 'view_list_of_announcements');
 
                 // View list of my Announcements
                 // View my Announcements list (content-last published date)
-                Route::get('/view-list-of-my-announcements', [AnnouncementsController::class, 'view_list_of_my_announcements']);
+                Route::get('/view-list-of-my-announcements', 'view_list_of_my_announcements');
 
                 // Publish an Announcements
                 // Publish an Announcement to be displayed to portal users
-                Route::put('/publish-an-announcements', [AnnouncementsController::class, 'publish_an_announcements']);
+                Route::put('/publish-an-announcements', 'publish_an_announcements');
 
                 // edit_announcements
-                Route::put('/edit-announcements/{id}', [AnnouncementsController::class, 'edit_announcements']);
+                Route::put('/edit-announcements/{id}', 'edit_announcements');
 
                 // Delete an Announcement
-                Route::delete('/delete-announcements/{id}', [AnnouncementsController::class, 'delete_announcements']);
+                Route::delete('/delete-announcements/{id}', 'delete_announcements');
+
+
+                // Add an Announcement
+                Route::post('/add', 'add_announcements');
             });
             // Announcements End
 
@@ -737,9 +741,9 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/report',[FileController::class,'generatePDF']);
-    Route::get('/get-dams',[DamController::class,'getDamsData']);
-    Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
+    Route::get('/report', [FileController::class, 'generatePDF']);
+    Route::get('/get-dams', [DamController::class, 'getDamsData']);
+    Route::get('/get-weather', [WeatherController::class, 'getWeatherData']);
     Route::get('/map', [MapController::class, 'index'])->name('map');
 
 

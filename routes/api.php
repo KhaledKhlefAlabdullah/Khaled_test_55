@@ -12,6 +12,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EntityController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\IndustrialAreaController;
+use App\Http\Controllers\MapController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MonitoringPointController;
 use App\Http\Controllers\Notification\NotificationController;
@@ -739,7 +740,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/report',[FileController::class,'generatePDF']);
     Route::get('/get-dams',[DamController::class,'getDamsData']);
     Route::get('/get-weather',[WeatherController::class,'getWeatherData']);
-    Route::get('/map',[FileController::class,'get_map_image']);
+    Route::get('/map', [MapController::class, 'index'])->name('map');
 
 
     require __DIR__ . '/auth.php';

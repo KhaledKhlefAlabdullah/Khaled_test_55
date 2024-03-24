@@ -20,7 +20,6 @@ class File extends Model
         'user_id',
         'main_category_id',
         'sub_category_id',
-        'version_id',
         'title',
         'description',
         'version',

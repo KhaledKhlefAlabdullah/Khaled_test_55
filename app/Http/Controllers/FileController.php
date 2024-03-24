@@ -23,6 +23,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Symfony\Component\Process\Process;
 
 class FileController extends Controller
 {
@@ -192,7 +193,7 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $file_type)
+    public function store(FileRequest $request, $file_type)
     {
         try {
 
@@ -200,29 +201,28 @@ class FileController extends Controller
 
             $file = $request->file;
 
-            $category_id = getIdByName(Category::class, $file_type);
+            $main_category_id = getIdByName(Category::class,'File');
+ 
+            $sub_category_id = getIdByName(Category::class, $file_type);
 
             $path = store_files($file, '/files/' . $file_type);
 
             if ($file_type == 'Education' && !$request->has('version_id')) {
                 $version_id = Str::uuid();
                 $version = '1';
-            } elseif ($file_type == 'Education' && $request->has('version_id')) {
-                $version_id = $request->input('version_id');
+            } elseif ($file_type == 'Education') {
                 $version = $request->input('version');
             } else {
-                $version_id = null;
                 $version = null;
             }
 
             File::create([
                 'user_id' => Auth::id(),
-                'main_category_id' => $category_id,
-                'sub_category_id' => $request->input('category_id'),
+                'main_category_id' => $main_category_id,
+                'sub_category_id' => $sub_category_id,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $version,
-                'version_id' => $version_id,
                 'media_url' => $path,
                 'media_type' => getMediaType($file)
             ]);
@@ -494,22 +494,25 @@ class FileController extends Controller
 
     public function get_map_image()
     {
-        $latitude = 40.7128;
-        $longitude = -74.0060;
-        $apiKey = 'YOUR_API_KEY';
-        $mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=13&size=600x300&key=$apiKey";
-    
-        $response = Http::get($mapUrl);
-    
-        if ($response->ok()) {
-            $image = $response->body();
-            // save the image in localstorage
-            $filePath = public_path('images/reports/map_image.jpg');
-            file_put_contents($filePath, $image);
 
-            return $filePath;
+        $locations = [
+            ['name' => 'Location 1', 'latitude' => 40.7128, 'longitude' => -74.0060],
+            ['name' => 'Location 2', 'latitude' => 40.7306, 'longitude' => -73.9352],
+            ['name' => 'Location 3', 'latitude' => 40.7484, 'longitude' => -73.9857]
+            // Add more locations as needed
+        ];
+
+        $mapUrl = route('map');
+        $filePath = public_path('images/reports/map_screenshot.png');
+
+        $command = "node public/js/map_imag.js $mapUrl $filePath";
+        $process = Process::fromShellCommandline($command);
+        $process->run();
+
+        if ($process->isSuccessful()) {
+            return view('map', compact('locations', 'mapUrl'));
         } else {
-            return "Failed to retrieve map image";
+            return "Failed to capture map screenshot";
         }
     }
 }

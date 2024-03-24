@@ -22,7 +22,6 @@ class FileRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required','string','exists:categories,id'],
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'version' => ['sometimes','required', 'string'],

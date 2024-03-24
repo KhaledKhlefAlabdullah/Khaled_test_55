@@ -193,7 +193,7 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $file_type)
+    public function store(FileRequest $request, $file_type)
     {
         try {
 
@@ -201,29 +201,28 @@ class FileController extends Controller
 
             $file = $request->file;
 
-            $category_id = getIdByName(Category::class, $file_type);
+            $main_category_id = getIdByName(Category::class,'File');
+ 
+            $sub_category_id = getIdByName(Category::class, $file_type);
 
             $path = store_files($file, '/files/' . $file_type);
 
             if ($file_type == 'Education' && !$request->has('version_id')) {
                 $version_id = Str::uuid();
                 $version = '1';
-            } elseif ($file_type == 'Education' && $request->has('version_id')) {
-                $version_id = $request->input('version_id');
+            } elseif ($file_type == 'Education') {
                 $version = $request->input('version');
             } else {
-                $version_id = null;
                 $version = null;
             }
 
             File::create([
                 'user_id' => Auth::id(),
-                'main_category_id' => $category_id,
-                'sub_category_id' => $request->input('category_id'),
+                'main_category_id' => $main_category_id,
+                'sub_category_id' => $sub_category_id,
                 'title' => $request->input('title'),
                 'description' => $request->input('description'),
                 'version' => $version,
-                'version_id' => $version_id,
                 'media_url' => $path,
                 'media_type' => getMediaType($file)
             ]);

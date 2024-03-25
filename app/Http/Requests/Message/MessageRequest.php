@@ -19,7 +19,7 @@ class MessageRequest extends FormRequest
     /**
      * Data preparation before validation.
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         // Set sender_id based on the current user making the request
         $this->merge(['sender_id' => Auth::id()]);
@@ -50,7 +50,7 @@ class MessageRequest extends FormRequest
      *
      * @return array
      */
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'sender_id' => 'Sender',

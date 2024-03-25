@@ -244,12 +244,13 @@ class FileController extends Controller
             }else{
                 $sub_category_id = $request->input('category_id');
             }
-
+            
             File::create([
                 'user_id' => Auth::id(),
                 'main_category_id' => $main_category_id,
                 'sub_category_id' => $sub_category_id,
                 'title' => $request->input('title'),
+                'tags' => $request->has('tags') ? $request->input('tags') : null,
                 'description' => $request->input('description'),
                 'version' => $version,
                 'media_url' => $path,
@@ -378,6 +379,7 @@ class FileController extends Controller
                 'sub_category_id' => $request->input('category_id'),
                 'file_type' => $file_type,
                 'title' => $request->input('title'),
+                'tags' => $request->has('tags') ? $request->input('tags') : null,
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
                 'media_url' => $file_path,

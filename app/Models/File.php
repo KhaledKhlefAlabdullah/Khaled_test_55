@@ -25,7 +25,8 @@ class File extends Model
         'version',
         'media_url',
         'media_type',
-        'update_state'
+        'update_state',
+        'update_frequency'
     ];
 
     public function user()

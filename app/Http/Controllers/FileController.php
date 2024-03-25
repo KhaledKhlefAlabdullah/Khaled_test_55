@@ -233,10 +233,7 @@ class FileController extends Controller
 
             $path = store_files($file, '/files/' . $file_type);
 
-            if ($file_type == 'Education' && !$request->has('version_id')) {
-                $version_id = Str::uuid();
-                $version = '1';
-            } elseif ($file_type == 'Education') {
+           if ($file_type == 'Education') {
                 $version = $request->input('version');
             } else {
                 $version = null;

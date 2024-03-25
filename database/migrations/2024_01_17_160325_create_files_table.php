@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('sub_category_id');
             $table->string('title');
             $table->string('tags')->nullable();
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('version')->nullable();
             $table->string('media_url')->nullable();
             $table->enum('media_type', ['image', 'video', 'file'])->nullable();

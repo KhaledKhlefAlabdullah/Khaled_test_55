@@ -21,6 +21,7 @@ class File extends Model
         'main_category_id',
         'sub_category_id',
         'title',
+        'tags',
         'description',
         'version',
         'media_url',

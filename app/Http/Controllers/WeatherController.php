@@ -23,7 +23,7 @@ class WeatherController extends Controller
             $array = json_decode(json_encode(simplexml_load_string($xml)), true); // Convert XML to an array
             // encode the json to store in database
             //$json = json_encode($array, JSON_PRETTY_PRINT);
-            return api_response(data:$array,message:'getting-weather-data-success');
+            return api_response(data:$array['Stations']['Station'],message:'getting-weather-data-success');
         }
         catch(Exception $e){
             return api_response(errors:$e->getMessage(),message:'getting-weather-data-error',code:500);

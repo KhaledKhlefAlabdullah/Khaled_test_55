@@ -711,6 +711,11 @@ Route::group(['prefix' => 'api'], function () {
 
         Route::get('/download-educational-file/{id}', [FileController::class, 'download_file']);
 
+        Route::get('/bcp-checklist', [FileController::class, 'download_checklist']);
+
+        Route::get('/bcp-templet', [FileController::class, 'download_templet']);
+
+        
     });
 
     // public routes
@@ -741,9 +746,9 @@ Route::group(['prefix' => 'api'], function () {
 
 
     // todo ** complete here tomoro
-    Route::get('/report', [FileController::class, 'generatePDF']);
-    Route::get('/get-dams', [DamController::class, 'getDamsData']);
-    Route::get('/get-weather', [WeatherController::class, 'getWeatherData']);
+    Route::get('/report',[FileController::class,'generate_PDF']);
+    Route::get('/get-dams',[DamController::class,'get_dams_data']);
+    Route::get('/get-weather',[WeatherController::class,'get_weather_data']);
     Route::get('/map', [MapController::class, 'index'])->name('map');
 
 

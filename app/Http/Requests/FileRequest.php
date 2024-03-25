@@ -22,11 +22,11 @@ class FileRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required','sometimes','string','exists:categories,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string', 'max:255'],
+            'category_id' => ['sometimes','required','string','exists:categories,id'],
+            'title' => ['sometimes','required', 'string', 'max:255'],
+            'description' => ['sometimes','required', 'string', 'max:255'],
             'version' => ['sometimes','required', 'string'],
-            'version_id' => ['sometimes','string','required','exists:files,version_id'],
+            // 'version_id' => ['sometimes','string','required','exists:files,version_id'],
             'file' => ['sometimes', 'mimes:pdf,pptx,jpg,jpeg,png,gif,mp4,mp3'],
             'update_frequency' => ['sometimes', 'in:daily,weekly,monthly'],
         ];

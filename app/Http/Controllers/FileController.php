@@ -140,6 +140,32 @@ class FileController extends Controller
     }
 
     /**
+     * Download BCP Checklist
+     */
+    public function download_checklist()
+    {
+
+        try {
+            return response()->download(public_path('files/BCP/Business_Continuity_Plan_Checklist.docx'));
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], code: 500, message: 'download-error');
+        }
+    }
+
+      /**
+     * Download BCP Checklist
+     */
+    public function download_templet()
+    {
+
+        try {
+            return response()->download(public_path('files/BCP/Reference_BCP.docx'));
+        } catch (Exception $e) {
+            return api_response(errors: [$e->getMessage()], code: 500, message: 'download-error');
+        }
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()
@@ -207,10 +233,7 @@ class FileController extends Controller
 
             $path = store_files($file, '/files/' . $file_type);
 
-            if ($file_type == 'Education' && !$request->has('version_id')) {
-                $version_id = Str::uuid();
-                $version = '1';
-            } elseif ($file_type == 'Education') {
+           if ($file_type == 'Education') {
                 $version = $request->input('version');
             } else {
                 $version = null;
@@ -230,7 +253,9 @@ class FileController extends Controller
                 'description' => $request->input('description'),
                 'version' => $version,
                 'media_url' => $path,
-                'media_type' => getMediaType($file)
+                'media_type' => getMediaType($file),
+                'update_frequency' => $request->has('update_frequency') ? $request->input('update_frequency') : null
+
             ]);
 
 
@@ -285,7 +310,7 @@ class FileController extends Controller
     /**
      * edit Guideline_And_Updates files
      */
-    public function update_guidelines_and_updates_files(Request $request, string $id)
+    public function update_guidelines_and_updates_files(FileRequest $request, string $id)
     {
         try {
 
@@ -306,9 +331,6 @@ class FileController extends Controller
             }
 
             $file_->update([
-                'title' => $request->input('title'),
-                'description' => $request->input('description'),
-                'version' => $request->input('version'),
                 'media_url' => $file_path,
             ]);
 
@@ -324,7 +346,7 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $file_type, string $id)
+    public function update(FileRequest $request, string $file_type, string $id)
     {
         try {
 
@@ -359,7 +381,8 @@ class FileController extends Controller
                 'description' => $request->input('description'),
                 'version' => $request->input('version'),
                 'media_url' => $file_path,
-                'media_type' => $file_type
+                'media_type' => $file_type,
+                'update_frequency' => $request->has('update_frequency') ? $request->input('update_frequency') : null
             ]);
 
 
